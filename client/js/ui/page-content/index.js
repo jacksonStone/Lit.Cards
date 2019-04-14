@@ -11,10 +11,11 @@ module.exports = () => html`
                     
         </div>
         <div class="grid-col-8">
+          <button class="usa-button usa-button--unstyled" style="position: absolute;top: 5px;right: 10px;">use image</button>
           <div id="editor" class="pell"></div>
             <div style="text-align: center">
-                    <button class="usa-button usa-button--outline usa-button--accent-cool flip-card"
-                        style="margin: 20px auto; min-width: 80%">
+                    <button class="usa-button usa-button--outline flip-card"
+                        style="margin: 30px auto; min-width: 80%">
                     <div style="font-size: 22px">Flip</div><div style="font-size: 14px; margin-top: 5px">(press space)</div>
                     </button>
             </div>

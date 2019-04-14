@@ -5,14 +5,14 @@ const { navigateToLoginPage } = require('logic/login')
 const { makeClickHandler } = require('../globals')
 module.exports = (userInfo) => html`
       <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-<header class="usa-header usa-header--extended" role="banner">
+    <header class="usa-header usa-header--extended" role="banner">
     <div class="usa-nav-container">
         <div class="usa-navbar">
             <div class="usa-logo" id="basic-logo">
-                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home">Lit.Cards</a><div style="font-size:10px">Woo! Get lit!  <span style="font-size:5px">&nbsp&nbsp&nbsp About Studying!</span></div></em>
+                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home">Lit.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
             </div>
             <button class="usa-menu-btn">Menu</button>
-        </div>
+        </div>      
        
         <nav role="navigation" class="usa-nav">
          <button class="usa-nav__close"><img src="/assets/img/close.svg" alt="close"></button>
