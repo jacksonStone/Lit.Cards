@@ -1,0 +1,16 @@
+@import "uswds/dist/css/uswds.min.css";
+@font-face {
+  font-family: 'publicSans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('publicSansc'),
+  url('/fonts/PublicSans-Medium.woff') format('woff');
+}
+
+$font-stack:    publicSans;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
