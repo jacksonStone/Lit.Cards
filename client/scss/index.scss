@@ -1,4 +1,9 @@
 @import "uswds/dist/css/uswds.min.css";
+$pell-content-height: 300px;
+// See all overwriteable variables in src/pell.scss
+
+// Then import pell.scss into styles:
+@import '../../node_modules/pell/src/pell';
 @font-face {
   font-family: 'publicSans';
   font-style: normal;

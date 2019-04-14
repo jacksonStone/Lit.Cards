@@ -7,15 +7,15 @@ const code = require('../../nodeAbstractions/responseCodes')
 
 router.post('/', async (req, res) => {
   if (!req.body) return code.unathorized(res)
-  const username = req.body.username
+  const userId = req.body.userId
   const password = req.body.password
-  if (!username || !password) return code.unathorized(res)
+  if (!userId || !password) return code.unathorized(res)
 
-  const newUser = await signup(username, password)
+  const newUser = await signup(userId, password)
   if (!newUser) {
     return code.invalidRequest(res)
   }
-  const cookie = getLoginCookie(username)
+  const cookie = getLoginCookie(userId)
   addCookie(res, cookie)
   return code.ok(res)
 })

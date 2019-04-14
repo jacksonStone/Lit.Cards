@@ -1,18 +1,18 @@
 const db = require('../externalConnections/fakeData')
 const tableName = 'user'
 
-async function getUser (username) {
-  const results = await db.getRecord(tableName, { username: username })
+async function getUser (userId) {
+  const results = await db.getRecord(tableName, { userId: userId })
   if (results && results.length) return results[0]
 }
 
-async function getSafeUser (username) {
-  const user = await getUser(username)
+async function getSafeUser (userId) {
+  const user = await getUser(userId)
   return trimUnsafeParameters(user)
 }
 
-async function userExists (username) {
-  const user = await getUser(username)
+async function userExists (userId) {
+  const user = await getUser(userId)
   return !!user
 }
 
@@ -23,10 +23,10 @@ function trimUnsafeParameters (user) {
   return user
 }
 
-async function createUser (username, salt, password) {
-  const results = await db.getRecord(tableName, { username })
+async function createUser (userId, salt, password) {
+  const results = await db.getRecord(tableName, { userId })
   if (results.length) return
-  return db.setRecord(tableName, { username, salt, password })
+  return db.setRecord(tableName, { userId, salt, password })
 }
 
 module.exports = {

@@ -23,14 +23,14 @@ function validateUserCookie (cookies) {
   const decryptedCookie = authUtils.decrypt(authCookie)
   const youngCookie = checkCookieExperation(decryptedCookie)
   if (youngCookie) {
-    return youngCookie.username
+    return youngCookie.userId
   }
 }
 
-function createUserCookie (username) {
+function createUserCookie (userId) {
   const now = Date.now()
   var userCookie = {
-    username: username,
+    userId: userId,
     created: now
   }
   var encryptedCookied = authUtils.encrypt(JSON.stringify(userCookie))

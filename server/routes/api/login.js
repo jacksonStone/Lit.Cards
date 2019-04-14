@@ -6,10 +6,10 @@ const { addCookie } = require('../../nodeAbstractions/cookie')
 
 router.post('/', async (req, res) => {
   if (!req.body) return code.unathorized(res)
-  const username = req.body.username
+  const userId = req.body.userId
   const password = req.body.password
-  if (!username || !password) return code.unathorized(res)
-  const cookie = getLoginCookie(username)
+  if (!userId || !password) return code.unathorized(res)
+  const cookie = getLoginCookie(userId)
   addCookie(res, cookie)
   return code.ok(res)
 })

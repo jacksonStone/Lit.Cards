@@ -4,9 +4,9 @@ const code = require('api/responseCodes')
 const pages = require('site/pages')
 const { login: loginPage } = require('site/pages')
 
-exports.login = async (username, password) => {
-  if (!username || !password) throw new Error('Invalid arguments')
-  const result = await login(username, password)
+exports.login = async (userId, password) => {
+  if (!userId || !password) throw new Error('Invalid arguments')
+  const result = await login(userId, password)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()
@@ -14,13 +14,13 @@ exports.login = async (username, password) => {
 }
 
 exports.navigateToLoginPage = async () => {
-  console.log("NAVIGATION")
+  console.log('NAVIGATION')
   return loginPage()
 }
 
-exports.signup = async (username, password) => {
-  if (!username || !password) throw new Error('Invalid arguments')
-  const result = await signup(username, password)
+exports.signup = async (userId, password) => {
+  if (!userId || !password) throw new Error('Invalid arguments')
+  const result = await signup(userId, password)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()

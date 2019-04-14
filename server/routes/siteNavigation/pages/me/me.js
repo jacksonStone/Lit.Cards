@@ -3,7 +3,7 @@ var router = express.Router()
 
 // Make sure they are logged in to view "me" pages
 router.use((req, res, next) => {
-  if (!req.username) return res.redirect('/')
+  if (!req.userId) return res.redirect('/')
   next()
 })
 

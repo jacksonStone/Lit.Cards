@@ -9,7 +9,7 @@ module.exports = (userInfo) => html`
     <div class="usa-nav-container">
         <div class="usa-navbar">
             <div class="usa-logo" id="basic-logo">
-                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home">Lit Cards</a><div style="font-size:10px">Woo! Get lit!  <span style="font-size:5px">&nbsp&nbsp&nbsp About Studying!</span></div></em>
+                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home">Lit.Cards</a><div style="font-size:10px">Woo! Get lit!  <span style="font-size:5px">&nbsp&nbsp&nbsp About Studying!</span></div></em>
             </div>
             <button class="usa-menu-btn">Menu</button>
         </div>
@@ -41,7 +41,7 @@ function loginPageHeader () {
 function notLoggedInHeader () {
   makeClickHandler('navigateToLoginPage', navigateToLoginPage)
   return html`
-             <button class="usa-button usa-button--outline" onclick="sn.clickHandler('navigateToLoginPage')()">Login</button>
+             <button class="usa-button" onclick="sn.clickHandler('navigateToLoginPage')()">Login</button>
             `
 }
 function loggedInHeader (userInfo) {

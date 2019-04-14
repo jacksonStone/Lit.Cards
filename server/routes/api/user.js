@@ -3,7 +3,7 @@ const router = express.Router()
 const { getUserDetails } = require('../../buisnessLogic/users/getUserDetails')
 
 router.get('/me', async (req, res) => {
-  const user = await getUserDetails(req.username)
+  const user = await getUserDetails(req.userId)
   res.send(user)
   res.end()
 })

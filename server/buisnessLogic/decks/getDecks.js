@@ -1,7 +1,7 @@
 const { Deck } = require('../../database')
 
-async function getDecks (username, deck) {
-  return Deck.getDecks(username)
+async function getDecks (userId, deck) {
+  return Deck.getDecks(userId)
 }
 
 module.exports = {

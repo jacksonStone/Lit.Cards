@@ -3,23 +3,23 @@ const { createId } = require('./utils')
 const { deckExists } = require('./deck')
 const tableName = 'card'
 
-async function getCards (username, deck) {
-  console.log('Getting cards: ', username, deck)
-  const results = await db.getRecord(tableName, { username, deck })
+async function getCards (userId, deck) {
+  console.log('Getting cards: ', userId, deck)
+  const results = await db.getRecord(tableName, { userId, deck })
   console.log(results)
   return results || []
 }
 
-async function createCard (username, deck, content) {
-  if (!username || !content) return
+async function createCard (userId, deck, content) {
+  if (!userId || !content) return
   const id = createId()
 
   // Required
-  const deckDoesExist = await deckExists(username, deck)
+  const deckDoesExist = await deckExists(userId, deck)
   if (!deckDoesExist) return
   console.log('Deck does exist')
 
-  return db.setRecord(tableName, { username, deck, content, id })
+  return db.setRecord(tableName, { userId, deck, content, id })
 }
 
 module.exports = {

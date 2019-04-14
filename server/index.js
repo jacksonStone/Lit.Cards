@@ -10,8 +10,8 @@ const routes = require('./routes')
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(async (req, res, next) => {
-  const username = await loginUtils.getUsername(req.cookies)
-  req.username = username
+  const userId = await loginUtils.getuserId(req.cookies)
+  req.userId = userId
   next()
 })
 app.get('/', function (req, res) {

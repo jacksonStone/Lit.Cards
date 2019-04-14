@@ -1,5 +1,5 @@
 const { $ } = require('./$')
-
+const pell = require('pell')
 const editorConfig = {
   customConfig: '',
   toolbar: [
@@ -12,9 +12,13 @@ const editorConfig = {
 
 const MAX_FONT_SIZE = 5
 
-function initEditor (elementId, startingContent) {
-  const editor = CKEDITOR.replace(elementId, editorConfig)
-  CKEDITOR.instances[elementId].setData(startingContent)
+function initEditor (elementId, startingContent, onChange) {
+  const editor = pell.init({
+    element: document.getElementById(elementId),
+    actions: ['bold', 'italic', 'olist', 'ulist'],
+    onChange: onChange
+  })
+  editor.content.innerHTML = startingContent
 }
 
 function getEditorData (elementId) {
