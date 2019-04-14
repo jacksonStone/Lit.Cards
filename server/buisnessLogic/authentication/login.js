@@ -6,6 +6,7 @@ async function verify (userId, plainTextPassword) {
   const user = await User.getUser(userId)
   if (!user) return false
   const hashResult = authUtils.hashValues(plainTextPassword, user.salt)
+  console.log(hashResult)
   return hashResult === user.password
 }
 

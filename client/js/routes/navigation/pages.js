@@ -35,6 +35,6 @@ landingPage.getRouteAsString = function () {
 
 // Pages
 exports.landingPage = landingPage
-exports.home = setUpRoute('home')
+exports.home = setUpRoute('me')
 exports.decks = setUpRoute('me/decks')
 exports.login = setUpRoute('login')

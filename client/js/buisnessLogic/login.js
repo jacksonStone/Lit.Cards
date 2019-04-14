@@ -14,7 +14,6 @@ exports.login = async (userId, password) => {
 }
 
 exports.navigateToLoginPage = async () => {
-  console.log('NAVIGATION')
   return loginPage()
 }
 

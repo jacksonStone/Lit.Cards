@@ -1,12 +1,8 @@
 const { html } = require('lit-html/lit-html')
 const { makeClickHandler } = require('../globals')
-const { grabFormData } = require('abstract/grabForm')
-const { login } = require('logic/login')
 makeClickHandler('login', (event) => {
-  event.preventDefault()
-  const values = grabFormData('#login')
-  login(values.email, values.password)
-
+    event.preventDefault()
+    console.log(event)
 })
 makeClickHandler('signup', (event) => {
     event.preventDefault()
@@ -14,15 +10,16 @@ makeClickHandler('signup', (event) => {
 })
 module.exports = () => html`
     <div class="grid-container">
-    <form class="usa-form" id="login">
+    <form class="usa-form" id="signup">
       <fieldset class="usa-fieldset">
-        <legend class="usa-legend">Login</legend>
+        <legend class="usa-legend">Sign-up</legend>
         <label class="usa-label" for="email">Email</label>
         <input class="usa-input" id="email" name="email" type="text" required aria-required="true">
-        <label class="usa-label" for="password">Password</label>
+        <label class="usa-label" for="username">Password</label>
         <input class="usa-input" id="password" name="password" type="password" required aria-required="true">
+        <label class="usa-label" for="username">Repeat Password</label>
+        <input class="usa-input" id="password-repeat" name="password-repeat" type="password" required aria-required="true">
       </fieldset>
-      <button onclick="sn.clickHandler('login')(event)" class="usa-button">Login</button>
       <button onclick="sn.clickHandler('signup')(event)" class="usa-button--outline">Signup</button>
     </form>
     </div> 
