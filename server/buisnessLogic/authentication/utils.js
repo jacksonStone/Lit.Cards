@@ -49,9 +49,8 @@ function decrypt (text) {
     let dec = decipher.update(encryptedText, 'hex', 'utf8')
     dec += decipher.final('utf8')
     return dec
-  }
-  catch(e) {
-    return  false
+  } catch (e) {
+    return false
   }
 }
 

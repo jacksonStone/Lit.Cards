@@ -1,14 +1,5 @@
 const { $ } = require('./$')
 const pell = require('pell')
-const editorConfig = {
-  customConfig: '',
-  toolbar: [
-    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline'] },
-    { name: 'paragraph', groups: [ 'list' ], items: [ 'NumberedList', 'BulletedList'] }
-  ],
-  removePlugins: 'elementspath',
-  uiColor: '#ffffff'
-}
 
 const MAX_FONT_SIZE = 5
 
@@ -22,11 +13,11 @@ function initEditor (elementId, startingContent, onChange) {
 }
 
 function getEditorData (elementId) {
-  return CKEDITOR.instances[elementId].getData()
+  // return CKEDITOR.instances[elementId].getData()
 }
 
 function unrenderEditor (elementId) {
-  return CKEDITOR.instances[elementId].destroy()
+  // return CKEDITOR.instances[elementId].destroy()
 }
 
 function getWYSIWYGEditor (elementId) {

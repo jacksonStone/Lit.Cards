@@ -1,7 +1,13 @@
 require('uswds')
 const { render } = require('lit-html/lit-html')
 const appHeader = require('component/app-header')
-
+const defaultErrorObject = {
+  fields: {},
+  abstract: {}
+}
+const clone = (obj) => {
+  return JSON.parse(JSON.stringify(obj))
+}
 const sn = window.sn = {
   test: false,
   testRoutes: [],
@@ -9,8 +15,10 @@ const sn = window.sn = {
   clickHandler: (name) => {
     return sn._clickHandler[name]
   },
-  _presentPage: ()=>{},
-  data: {},
+  _presentPage: () => {},
+  data: {
+    errors: clone(defaultErrorObject)
+  },
   getData: (key) => {
     const value = sn.data[key]
     if ((typeof value === 'object') && (value !== null)) {
@@ -19,11 +27,18 @@ const sn = window.sn = {
     return value
   },
   _willRerender: false,
+  recordError: (path, error) => {
+    sn.setData('errors.' + path, error)
+  },
+  resetErrors: () => {
+    sn.setData('errors', clone(defaultErrorObject), true)
+  },
   /**
    * @param key:  can be in  form "foo.bar"
    * @param value: Current value to set the data
+   * @param NO_UPDATE: Prevents setData from trying to re-render
    */
-  setData: (key, value) => {
+  setData: (key, value, NO_UPDATE) => {
     const paths = key.split('.')
     let parent = sn.data
     for (let i = 0; i < paths.length; i++) {
@@ -35,7 +50,7 @@ const sn = window.sn = {
         parent = parent[currentPath] = (parent[currentPath] || {})
       }
     }
-    if (!sn.data._willRerender) {
+    if (!sn.data._willRerender && !NO_UPDATE) {
       sn.data._willRerender = true
       window.requestAnimationFrame(() => {
         sn.data._willRerender = false
@@ -54,6 +69,7 @@ function renderPage (pageContentFunc) {
   render(pageContentFunc(sn.data), document.querySelector('#main-content'))
   recordCurrentPage(pageContentFunc)
 }
+
 function recordCurrentPage (pageContentFunc) {
   sn._presentPage = pageContentFunc
 }
