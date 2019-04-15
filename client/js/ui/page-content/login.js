@@ -14,6 +14,8 @@ makeClickHandler('signup', (event) => {
   navigateToSignupPage()
 })
 module.exports = (data) => {
+  // TODO:: Add weird error message that
+  // Changes based on how many failed logins
   const { fields: ef, abstract: ea } = data.errors
   return html`
     <div class="grid-container">
@@ -26,7 +28,7 @@ module.exports = (data) => {
               <div class="usa-alert usa-alert--error" role="alert">
   <div class="usa-alert__body">
     <h3 class="usa-alert__heading">Bad login</h3>
-    <p class="usa-alert__text">Either your email is bad, your password, or both :)</p>
+    <p class="usa-alert__text">Nice try though! Perhaps it is the next one!</p>
   </div>
 </div>
               `}
