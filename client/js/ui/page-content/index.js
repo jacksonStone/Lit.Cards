@@ -1,33 +1,25 @@
 const { html } = require('lit-html/lit-html')
+const cardEditor = require('component/card-editor')
 module.exports = () => html`
-    <div class="grid-container">
-        <div class="grid-row">
-        <div class="grid-col-2" style="text-align: center">  
-            <button class="usa-button usa-button--outline flip-card"
-              style="margin: 20px 20px; height: 280px; box-shadow: none;">
-            <div style="font-size: 53px; margin-bottom: 10px">←</div>
-            <div style="font-size: 14px; margin-bottom: 10px">previous</div>
-            </button>
-                    
-        </div>
-        <div class="grid-col-8">
-          <button class="usa-button usa-button--unstyled" style="position: absolute;top: 5px;right: 10px;">use image</button>
-          <div id="editor" class="pell"></div>
-            <div style="text-align: center">
-                    <button class="usa-button usa-button--outline flip-card"
-                        style="margin: 30px auto; min-width: 80%">
-                    <div style="font-size: 22px">Flip</div><div style="font-size: 14px; margin-top: 5px">(press space)</div>
-                    </button>
-            </div>
-        </div>    
-        <div class="grid-col-2" style="text-align: center">
-         <button class="usa-button usa-button--outline flip-card"
-              style="margin: 20px 20px; height: 280px; box-shadow: none;">
-            <div style="font-size: 53px; margin-bottom: 10px">→</div>
-            <div style="font-size: 14px; margin-bottom: 10px">next</div>
-         </button>
-        </div> 
-        </div>
-    </div> 
+<div class="grid-container">
+<div class="usa-prose">
+    <header>
+        <h1>Online notecards that Don't Suck.</h1>
+    </header>
+    <p>Typesetting controls the readability of a text with the size, style, and spacing of its type. It’s a function of microtypography (how text is styled within a text block) and macrotypography (how content elements are arranged on the page). The more readable a text the more easily users can understand its content. Text with poor readability turns off readers and can make it challenging for them to stay focused.</p>
+    
+</div>
+</div>
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+    <br>     
+${cardEditor()}
     
 `

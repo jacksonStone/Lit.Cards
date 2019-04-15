@@ -38,3 +38,4 @@ exports.landingPage = landingPage
 exports.home = setUpRoute('me')
 exports.decks = setUpRoute('me/decks')
 exports.login = setUpRoute('login')
+exports.signup = setUpRoute('signup')

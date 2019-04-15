@@ -4,7 +4,9 @@ module.exports = {
   mode: 'development',
   entry: {
     index: './client/js/entry-points/index.js',
-    login: './client/js/entry-points/login.js'
+    login: './client/js/entry-points/login.js',
+    me: './client/js/entry-points/me.js',
+    signup: './client/js/entry-points/signup.js'
   },
   watch: true,
   output: {

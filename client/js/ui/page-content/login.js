@@ -1,16 +1,17 @@
 const { html } = require('lit-html/lit-html')
 const { makeClickHandler } = require('../globals')
 const { grabFormData } = require('abstract/grabForm')
+const { navigateToSignupPage } = require('logic/login')
+
 const { login } = require('logic/login')
 makeClickHandler('login', (event) => {
   event.preventDefault()
   const values = grabFormData('#login')
   login(values.email, values.password)
-
 })
 makeClickHandler('signup', (event) => {
-    event.preventDefault()
-    console.log(event)
+  event.preventDefault()
+  navigateToSignupPage()
 })
 module.exports = () => html`
     <div class="grid-container">
@@ -23,7 +24,7 @@ module.exports = () => html`
         <input class="usa-input" id="password" name="password" type="password" required aria-required="true">
       </fieldset>
       <button onclick="sn.clickHandler('login')(event)" class="usa-button">Login</button>
-      <button onclick="sn.clickHandler('signup')(event)" class="usa-button--outline">Signup</button>
+      <button onclick="sn.clickHandler('signup')(event)" class="usa-button usa-button--outline">Signup</button>
     </form>
     </div> 
 `

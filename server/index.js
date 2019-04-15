@@ -15,6 +15,9 @@ app.use(async (req, res, next) => {
   next()
 })
 app.get('/', function (req, res) {
+  if (req.userId) {
+    res.redirect('/site/me')
+  }
   res.sendFile(path.join(ROOT, '/client/html/index.html'))
 })
 app.use('/api', routes.api)
