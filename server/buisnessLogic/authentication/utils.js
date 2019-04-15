@@ -41,13 +41,18 @@ function decrypt (text) {
   if (!verifyBodyWithHMAC(text)) {
     return false
   }
-  const parts = text.split(':')
-  const nonce = parts[0]
-  const encryptedText = parts[1]
-  const decipher = crypto.createDecipheriv(ENCRYPTION_FUNCTION_NAME, ENCRYPTION_PASSWORD, nonce)
-  let dec = decipher.update(encryptedText, 'hex', 'utf8')
-  dec += decipher.final('utf8')
-  return dec
+  try {
+    const parts = text.split(':')
+    const nonce = parts[0]
+    const encryptedText = parts[1]
+    const decipher = crypto.createDecipheriv(ENCRYPTION_FUNCTION_NAME, ENCRYPTION_PASSWORD, nonce)
+    let dec = decipher.update(encryptedText, 'hex', 'utf8')
+    dec += decipher.final('utf8')
+    return dec
+  }
+  catch(e) {
+    return  false
+  }
 }
 
 function verifyBodyWithHMAC (encryptionBody) {

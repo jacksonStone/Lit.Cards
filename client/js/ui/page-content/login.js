@@ -15,16 +15,22 @@ makeClickHandler('signup', (event) => {
 })
 module.exports = () => html`
     <div class="grid-container">
-    <form class="usa-form" id="login">
-      <fieldset class="usa-fieldset">
-        <legend class="usa-legend">Login</legend>
-        <label class="usa-label" for="email">Email</label>
-        <input class="usa-input" id="email" name="email" type="text" required aria-required="true">
-        <label class="usa-label" for="password">Password</label>
-        <input class="usa-input" id="password" name="password" type="password" required aria-required="true">
-      </fieldset>
-      <button onclick="sn.clickHandler('login')(event)" class="usa-button">Login</button>
-      <button onclick="sn.clickHandler('signup')(event)" class="usa-button usa-button--outline">Signup</button>
-    </form>
+    <div class="grid-row">
+        <div class="grid-col-4"></div>
+        <div class="grid-col-4">
+            <form class="usa-form" id="login">
+              <fieldset class="usa-fieldset">
+                <legend class="usa-legend">Login</legend>
+                <label class="usa-label" for="email">Email</label>
+                <input class="usa-input" id="email" name="email" type="text" required aria-required="true">
+                <label class="usa-label" for="password">Password</label>
+                <input class="usa-input" id="password" name="password" type="password" required aria-required="true">
+              </fieldset>
+              <button onclick="sn.clickHandler('login')(event)" class="usa-button">Login</button>
+              <button onclick="sn.clickHandler('signup')(event)" class="usa-button usa-button--outline">Signup</button>
+            </form>
+        </div>
+        <div class="grid-col-4"></div>
+    </div>
     </div> 
 `

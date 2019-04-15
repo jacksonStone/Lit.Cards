@@ -29,7 +29,7 @@ module.exports = (userInfo) => html`
 function getNavOptions (userInfo) {
   if (userInfo) {
     return loggedInHeader(userInfo)
-  } else if (!onPage('login')) {
+  } else if (!onPage('login') && !onPage('signup')) {
     return notLoggedInHeader()
   } else {
     return loginPageHeader()
