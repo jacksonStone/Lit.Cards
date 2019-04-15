@@ -2,7 +2,7 @@
 const { html } = require('lit-html/lit-html')
 const { onPage } = require('abstract/url')
 const { navigateToLoginPage, logout } = require('logic/login')
-const { makeClickHandler } = require('../globals')
+const makeClickHandler = require('../click-handler')
 module.exports = (userInfo) => html`
       <a class="usa-skipnav" href="#main-content">Skip to main content</a>
     <header class="usa-header usa-header--extended" role="banner">

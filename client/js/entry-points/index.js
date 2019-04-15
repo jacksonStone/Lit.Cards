@@ -1,7 +1,7 @@
-const render = require('../ui/render-page')
+const {renderPage} = require('../ui/globals')
 const content = require('../ui/page-content/index')
 const { initEditor } = require('abstract/editor')
-render(content)
+renderPage(content)
 initEditor('editor', '<span>Hey there</span>', () => {
   console.log('changed')
 })

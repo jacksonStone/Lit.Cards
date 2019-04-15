@@ -1,5 +1,5 @@
 const { html } = require('lit-html/lit-html')
-const { makeClickHandler } = require('../globals')
+const makeClickHandler = require('../click-handler')
 const { grabFormData } = require('abstract/grabForm')
 const { signup } = require('logic/login')
 makeClickHandler('signup', (event) => {

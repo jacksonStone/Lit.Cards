@@ -1,3 +1,3 @@
-const render = require('../ui/render-page')
+const { renderPage } = require('../ui/globals')
 const content = require('../ui/page-content/signup')
-render(content)
+renderPage(content)

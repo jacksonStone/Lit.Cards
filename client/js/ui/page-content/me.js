@@ -1,7 +1,7 @@
 const { html } = require('lit-html/lit-html')
 const leftArrow = require('component/left-arrow')
 const rightArrow = require('component/right-arrow')
-module.exports = (data) => {
+module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
         <div class="grid-row">
@@ -14,7 +14,7 @@ module.exports = (data) => {
             <div style="text-align: center">
                     <button class="usa-button usa-button--outline flip-card"
                         style="margin: 30px auto; min-width: 80%">
-                    <div style="font-size: 22px">${data.decks}:${JSON.stringify(data.user)}</div>
+                    <div style="font-size: 22px">${data.decks}:${JSON.stringify(data.user || {})}</div>
                     </button>
             </div>
         </div>    

@@ -1,8 +1,10 @@
-const render = require('../ui/render-page')
-const content = require('../ui/page-content/me.js')
+const { renderPage } = require('../ui/globals')
+const content = require('../ui/page-content/me')
 const { fetchUser } = require('logic/getUser')
 const { getDecks } = require('logic/decks')
+renderPage(content)
 ;(async () => {
   const [user, decks] = await Promise.all([fetchUser(), getDecks()])
-  render(content, { user, decks })
+  window.sn.setData('user', user)
+  window.sn.setData('decks', decks)
 })()
