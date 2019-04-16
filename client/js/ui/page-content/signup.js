@@ -1,14 +1,13 @@
 const { html } = require('lit-html/lit-html')
-const makeClickHandler = require('../click-handler')
 const { grabFormData } = require('abstract/grabForm')
 const { signup } = require('logic/login')
 const errorableInput = require('component/errorable-input')
 const errorBanner = require('component/error-banner')
-makeClickHandler('signup', (event) => {
+function signupBtn(event) {
   event.preventDefault()
   const signupData = grabFormData('#signup')
   return signup(signupData.email, signupData.password, signupData['password-repeat'])
-})
+}
 module.exports = (data) => {
   const { fields: ef, abstract: ea } = data.errors
   return html`
@@ -25,7 +24,7 @@ module.exports = (data) => {
                 ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
                 ${errorableInput(ef.repeatPassword, 'Must repeat password', 'password-repeat', 'Repeat Password', 'password')}
               </fieldset>
-              <button onclick="sn.clickHandler('signup')(event)" class="usa-button">Signup</button>
+              <button @click=${signupBtn} class="usa-button">Signup</button>
             </form>
         </div>
         <div class="grid-col-4"></div>

@@ -11,10 +11,6 @@ const clone = (obj) => {
 const sn = window.sn = {
   test: false,
   testRoutes: [],
-  _clickHandler: {},
-  clickHandler: (name) => {
-    return sn._clickHandler[name]
-  },
   _presentPage: () => {},
   data: {
     errors: clone(defaultErrorObject)
@@ -63,7 +59,6 @@ const sn = window.sn = {
     renderPage(sn._presentPage)
   }
 }
-
 function renderPage (pageContentFunc) {
   render(appHeader(sn.getData('user')), document.querySelector('#app-header'))
   render(pageContentFunc(sn.data), document.querySelector('#main-content'))

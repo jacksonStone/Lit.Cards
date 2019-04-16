@@ -2,7 +2,6 @@
 const { html } = require('lit-html/lit-html')
 const { onPage } = require('abstract/url')
 const { navigateToLoginPage, logout } = require('logic/login')
-const makeClickHandler = require('../click-handler')
 module.exports = (userInfo) => html`
       <a class="usa-skipnav" href="#main-content">Skip to main content</a>
     <header class="usa-header usa-header--extended" role="banner">
@@ -39,14 +38,12 @@ function loginPageHeader () {
 }
 
 function notLoggedInHeader () {
-  makeClickHandler('navigateToLoginPage', navigateToLoginPage)
   return html`
-             <button class="usa-button" onclick="sn.clickHandler('navigateToLoginPage')()">Login</button>
+             <button class="usa-button" @click=${navigateToLoginPage}>Login</button>
             `
 }
 function loggedInHeader (userInfo) {
-  makeClickHandler('logout', logout)
   return html`
-             <button class="usa-button usa-button--outline" onclick="sn.clickHandler('logout')()">Logout</button>
+             <button class="usa-button usa-button--outline" @click=${logout}>Logout</button>
             `
 }

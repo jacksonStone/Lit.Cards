@@ -1,20 +1,19 @@
 const { html } = require('lit-html/lit-html')
-const makeClickHandler = require('../click-handler')
 const { grabFormData } = require('abstract/grabForm')
 const { navigateToSignupPage } = require('logic/login')
 const errorableInput = require('component/errorable-input')
 const errorBanner = require('component/error-banner')
 
 const { login } = require('logic/login')
-makeClickHandler('login', (event) => {
+const loginBtn = (event) => {
   event.preventDefault()
   const values = grabFormData('#login')
   login(values.email, values.password)
-})
-makeClickHandler('signup', (event) => {
+}
+const signupBtn = (event) => {
   event.preventDefault()
   navigateToSignupPage()
-})
+}
 module.exports = (data) => {
   // TODO:: Add weird error message that
   // Changes based on how many failed logins
@@ -31,8 +30,8 @@ module.exports = (data) => {
                 ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
                 ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
               </fieldset>
-              <button onclick="sn.clickHandler('login')(event)" class="usa-button">Login</button>
-              <button onclick="sn.clickHandler('signup')(event)" class="usa-button usa-button--outline">Signup</button>
+              <button @click=${loginBtn} class="usa-button">Login</button>
+              <button @click=${signupBtn} class="usa-button usa-button--outline">Signup</button>
             </form>
         </div>
         <div class="grid-col-4"></div>
