@@ -32,14 +32,33 @@ exports.navigateToSignupPage = async () => {
   return signupPage()
 }
 
-exports.signup = async (userId, password) => {
-  if (!userId || !password) throw new Error('Invalid arguments')
+exports.signup = async (userId, password, repeatPassword) => {
+  window.sn.resetErrors() // make sure we have no field failures hanging around
+  const recordError = window.sn.recordError
+
+  if (!userId || !password || !repeatPassword) {
+    if (!userId) {
+      recordError('fields.userId', 'empty')
+    }
+    if (!password) {
+      recordError('fields.password', 'empty')
+    }
+    if (!repeatPassword) {
+      recordError('fields.repeatPassword', 'empty')
+    }
+    return
+  }
+  if (password !== repeatPassword) {
+    recordError('abstract.mismatchPasswords', true)
+    return
+  }
+
   const result = await signup(userId, password)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()
   }
-  throw new Error('Invalid arguments')
+  recordError('abstract.usernameTaken', true)
 }
 
 exports.logout = async () => {

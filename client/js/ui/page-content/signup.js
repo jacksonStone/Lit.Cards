@@ -2,23 +2,16 @@ const { html } = require('lit-html/lit-html')
 const makeClickHandler = require('../click-handler')
 const { grabFormData } = require('abstract/grabForm')
 const { signup } = require('logic/login')
+const errorableInput = require('component/errorable-input')
+const errorBanner = require('component/error-banner')
 makeClickHandler('signup', (event) => {
   event.preventDefault()
   const signupData = grabFormData('#signup')
-  if (!signupData.email || !signupData['password-repeat'] || !signupData.password) {
-    // TODO::Handle this
-    return
-  }
-  if (signupData['password-repeat'] !== signupData.password) {
-    // TODO::Handle this
-    return
-  }
-  return signup(signupData.email, signupData.password).catch(e => {
-    console.log(e)
-    // TODO::Handle this
-  })
+  return signup(signupData.email, signupData.password, signupData['password-repeat'])
 })
-module.exports = () => html`
+module.exports = (data) => {
+  const { fields: ef, abstract: ea } = data.errors
+  return html`
     <div class="grid-container">
     <div class="grid-row">
         <div class="grid-col-4"></div>
@@ -26,12 +19,11 @@ module.exports = () => html`
              <form class="usa-form" id="signup">
               <fieldset class="usa-fieldset">
                 <legend class="usa-legend">Sign-up</legend>
-                <label class="usa-label" for="email">Email</label>
-                <input class="usa-input" id="email" name="email" type="text" required aria-required="true">
-                <label class="usa-label" for="password">Password</label>
-                <input class="usa-input" id="password" name="password" type="password" required aria-required="true">
-                <label class="usa-label" for="password-repeat">Repeat Password</label>
-                <input class="usa-input" id="password-repeat" name="password-repeat" type="password" required aria-required="true">
+                ${ea.mismatchPasswords && errorBanner('Bad Passwords', 'Passwords did not match')}
+                ${ea.usernameTaken && errorBanner('Bad  Email', 'Email already taken')}
+                ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
+                ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
+                ${errorableInput(ef.repeatPassword, 'Must repeat password', 'password-repeat', 'Repeat Password', 'password')}
               </fieldset>
               <button onclick="sn.clickHandler('signup')(event)" class="usa-button">Signup</button>
             </form>
@@ -40,3 +32,4 @@ module.exports = () => html`
     </div>
     </div> 
 `
+}

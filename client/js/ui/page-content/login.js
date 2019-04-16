@@ -2,6 +2,8 @@ const { html } = require('lit-html/lit-html')
 const makeClickHandler = require('../click-handler')
 const { grabFormData } = require('abstract/grabForm')
 const { navigateToSignupPage } = require('logic/login')
+const errorableInput = require('component/errorable-input')
+const errorBanner = require('component/error-banner')
 
 const { login } = require('logic/login')
 makeClickHandler('login', (event) => {
@@ -24,30 +26,10 @@ module.exports = (data) => {
         <div class="grid-col-4">
             <form class="usa-form" id="login">
               <fieldset class="usa-fieldset">
-              ${ea.loginFailed && html`
-              <div class="usa-alert usa-alert--error" role="alert">
-  <div class="usa-alert__body">
-    <h3 class="usa-alert__heading">Bad login</h3>
-    <p class="usa-alert__text">Nice try though! Perhaps it is the next one!</p>
-  </div>
-</div>
-              `}
-              
+                ${ea.loginFailed && errorBanner('Bad login', 'Perhaps it is your next guess!')}
                 <legend class="usa-legend">Login</legend>
-                ${!ef.userId ? html`
-      <label class="usa-label" for="email">Email</label>
-      <input class="usa-input" id="email" name="email" type="text" required aria-required="true">`
-    : html`
-      <div class="usa-form-group usa-form-group--error">
-        <label class="usa-label usa-label--error" for="input-error">Email</label>
-        <span class="usa-error-message" id="input-error-message" role="alert">Valid email is required</span>
-        <input class="usa-input usa-input--error" id="email" name="email" type="text" required aria-required="true">
-      </div>
-`
-}
-
-                <label class="usa-label" for="password">Password</label>
-                <input class="usa-input" id="password" name="password" type="password" required aria-required="true">
+                ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
+                ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
               </fieldset>
               <button onclick="sn.clickHandler('login')(event)" class="usa-button">Login</button>
               <button onclick="sn.clickHandler('signup')(event)" class="usa-button usa-button--outline">Signup</button>
