@@ -13,7 +13,11 @@ let fakeData = {
   ],
   deck: [
     { userId: 'jackson@someemail.com', name: 'myDeck', cardCount: 2, date: Date.now() },
-    { userId: 'jackson@someemail.com', name: 'Second study session', cardCount: 42, date: Date.now() }]
+    { userId: 'jackson@someemail.com', name: 'Second study session', cardCount: 42, date: Date.now() },
+    { userId: 'jackson@someemail.com', name: 'THIRD study session', cardCount: 122, date: Date.now() },
+    { userId: 'jackson@someemail.com', name: 'Fourth study session', cardCount: 700, date: Date.now() }
+  ]
+
 }
 const fakeDataBackup = _.cloneDeep(fakeData)
 

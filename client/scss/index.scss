@@ -1,22 +1,16 @@
 @import "uswds/dist/css/uswds.min.css";
+// use these
+@import "https://use.fontawesome.com/releases/v5.8.1/css/fontawesome.css";
+@import "https://use.fontawesome.com/releases/v5.8.1/css/regular.css";
 $pell-content-height: 300px;
 // See all overwriteable variables in src/pell.scss
 
-// Then import pell.scss into styles:
 @import '../../node_modules/pell/src/pell';
-@font-face {
-  font-family: 'publicSans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('publicSansc'),
-  url('/fonts/PublicSans-Medium.woff') format('woff');
-}
 
-$font-stack:    publicSans;
 $primary-color: #333;
 
 body {
-  font: 100% $font-stack;
+  //font: 100% $font-stack;
   color: $primary-color;
 }
 

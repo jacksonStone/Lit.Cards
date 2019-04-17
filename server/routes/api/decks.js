@@ -15,7 +15,6 @@ router.get('/me', async (req, res) => {
   if (!req.userId) return code.unathorized(res)
   const decks = await getDecks(req.userId)
   res.send(decks)
-  res.end()
 })
 
 module.exports = router
