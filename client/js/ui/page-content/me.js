@@ -1,27 +1,66 @@
 const { html } = require('lit-html/lit-html')
-const leftArrow = require('component/left-arrow')
-const rightArrow = require('component/right-arrow')
+
+// Keep  this in sync with col-n below
+const numPerRow = 3
+function deckPreview (deck) {
+  return html`
+    <div class="grid-col-4">
+            <span class="deck-card-outline"
+            style="
+              position: absolute;
+              top: -6px;
+              left: 6px;
+              ">
+        </span>
+        <span class="deck-card-outline" style="
+              position: absolute;
+              top: -3px;
+              left: 3px;
+              ">
+        </span>
+        <button class="usa-button deck-card-outline"
+        style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              "
+              
+        >
+            <span style="
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            font-size: 12px;
+            ">${formatDate(deck.date)}</span>
+  
+        ${deck.name}<br><br><span style="
+            font-size: 12px;
+            ">Card Count: ${deck.cardCount}</span></button>
+    </div>
+`
+}
+const _memo = {}
+function formatDate (date) {
+  if (!_memo[date]) {
+    _memo[date] = new Intl.DateTimeFormat().format(new Date(date))
+  }
+  return _memo[date]
+}
+
+function deckRow (decks) {
+  return html`<div class="grid-row">${decks.map(deckPreview)}</div>`
+}
+
+function deckRows (allDecks) {
+  for (let i = 0; i < allDecks.length; i += numPerRow) {
+    return deckRow(allDecks.splice(i, numPerRow))
+  }
+}
+
 module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
-        <div class="grid-row">
-        <div class="grid-col-2" style="text-align: center">  
-           ${leftArrow(data)}
-        </div>
-        <div class="grid-col-8">
-          <button class="usa-button usa-button--unstyled" style="position: absolute;top: 5px;right: 10px;">use image</button>
-          <div id="editor" class="pell"></div>
-            <div style="text-align: center">
-                    <button class="usa-button usa-button--outline flip-card"
-                        style="margin: 30px auto; min-width: 80%">
-                    <div style="font-size: 22px">${data.decks}:${JSON.stringify(data.user || {})}</div>
-                    </button>
-            </div>
-        </div>    
-        <div class="grid-col-2" style="text-align: center">
-            ${rightArrow(data)}
-        </div> 
-        </div>
+        ${data.decks && deckRows(data.decks)}
     </div> 
     
 `

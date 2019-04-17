@@ -8,10 +8,12 @@ let fakeData = {
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57'
   }],
   card: [
-    { userId: 'user10', deck: 'myDeck', content: { body: 'Blah' } },
-    { userId: 'user10', deck: 'myDeck', content: { body: 'Blah2' } }
+    { userId: 'jackson@someemail.com', deck: 'myDeck', content: { body: 'Blah' } },
+    { userId: 'jackson@someemail.com', deck: 'myDeck', content: { body: 'Blah2' } }
   ],
-  deck: [{ userId: 'user10', name: 'myDeck' }]
+  deck: [
+    { userId: 'jackson@someemail.com', name: 'myDeck', cardCount: 2, date: Date.now() },
+    { userId: 'jackson@someemail.com', name: 'Second study session', cardCount: 42, date: Date.now() }]
 }
 const fakeDataBackup = _.cloneDeep(fakeData)
 
