@@ -5,7 +5,7 @@ const numPerRow = 3
 
 function deckPreview (deck) {
   return html`
-    <div class="grid-col-4">
+    <div class="mobile-lg:grid-col-4">
            <div style="position:relative">
            ${makeBackgroundCards(0, 0, deck.cardCount)}
            

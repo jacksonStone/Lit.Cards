@@ -30,23 +30,34 @@ body {
   height:100px;
 }
 .spacing {
-  margin-top: 170px;
+  margin-top: 150px;
 }
 .remove-button {
   width: 20px;
   height: 20px;
   font-size: 14px;
   position: absolute;
-  top:15px;
+  top:20px;
   left: 73%;
   color: rgb(216, 57, 51);
-  i {
-    position: absolute;
-    //margin-right:  5px
-  }
   //color: red
 }
-
+@media (max-width: 750px) {
+  .remove-button {
+    left: 71%
+  }
+}
+@media (max-width: 550px) {
+  .remove-button {
+    left: 67%
+  }
+}
+//Mobile view!
+@media (max-width: 480px) {
+  .remove-button {
+    left: 73%;
+  }
+}
 .remove-button:hover{
   color: rgb(216, 57, 51);
 }
@@ -54,4 +65,5 @@ body {
 .deck-selection:hover{
   color:#2e2e2e;
   background:#fafafa;
+  border: #ddd 1px solid;
 }
