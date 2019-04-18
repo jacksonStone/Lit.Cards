@@ -4,13 +4,12 @@ const { html } = require('lit-html/lit-html')
 const numPerRow = 3
 
 function deckPreview (deck) {
-  console.log("deck preview!")
   return html`
     <div class="grid-col-4">
-            <button class="usa-button usa-button--unstyled">Delete</button>
-            ${makeBackgroundCards(0, 0, deck.cardCount)}
+           <div style="position:relative">
+           ${makeBackgroundCards(0, 0, deck.cardCount)}
            
-        <button class="usa-button deck-card-outline"
+        <button class="usa-button deck-card-outline deck-selection"
         style="
               position: absolute;
               top: 0;
@@ -18,6 +17,7 @@ function deckPreview (deck) {
               "
               
         >
+     
             <span style="
             position: absolute;
             top: 10px;
@@ -26,6 +26,17 @@ function deckPreview (deck) {
             ">${formatDate(deck.date)}</span>
   
         ${deck.name}</button>
+        <button 
+            class="usa-button usa-button--unstyled remove-button" >
+                <i class="fas fa-times-circle" aria-hidden="true"></i>
+                <span style="display:none;">Remove this deck</span>
+            </button>
+        </div>
+        <div class="spacing" style="text-align: right;">
+</div>
+            
+        
+            
     </div>
 `
 }
@@ -68,7 +79,7 @@ function makeBackgroundCards (startingTop, startingLeft, cardCount) {
 }
 
 function deckRow (decks) {
-  return html`<div class="grid-row" style="margin-bottom: 200px">${decks.map(deckPreview)}</div>`
+  return html`<div class="grid-row" style="margin-bottom: 20px">${decks.map(deckPreview)}</div>`
 }
 
 function deckRows (allDecks) {

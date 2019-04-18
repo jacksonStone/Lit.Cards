@@ -18,7 +18,6 @@ router.get('/me', async (req, res) => {
   if (!deck) return code.invalidRequest(res)
   const cards = await getCards(req.userId, deck)
   res.send(cards)
-  res.end()
 })
 
 module.exports = router

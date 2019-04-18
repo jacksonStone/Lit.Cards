@@ -1,7 +1,6 @@
 @import "uswds/dist/css/uswds.min.css";
 // use these
-@import "https://use.fontawesome.com/releases/v5.8.1/css/fontawesome.css";
-@import "https://use.fontawesome.com/releases/v5.8.1/css/regular.css";
+@import "https://use.fontawesome.com/releases/v5.8.1/css/all.css";
 $pell-content-height: 300px;
 // See all overwriteable variables in src/pell.scss
 
@@ -20,13 +19,39 @@ body {
 
 .deck-card-outline {
   background-color: #fff;
-  border: 1px solid #2e2e2e;
+  border: 1px solid #ddd;
   margin-bottom: 1rem;
   margin-top: 1rem;
   padding-bottom: 1rem;
   padding-top: 1rem;
   border-radius: .25rem;
   color: #2e2e2e;
-  width:250px;
-  height:150px;
+  width:80%;
+  height:100px;
+}
+.spacing {
+  margin-top: 170px;
+}
+.remove-button {
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  position: absolute;
+  top:15px;
+  left: 73%;
+  color: rgb(216, 57, 51);
+  i {
+    position: absolute;
+    //margin-right:  5px
+  }
+  //color: red
+}
+
+.remove-button:hover{
+  color: rgb(216, 57, 51);
+}
+
+.deck-selection:hover{
+  color:#2e2e2e;
+  background:#fafafa;
 }
