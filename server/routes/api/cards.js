@@ -17,7 +17,15 @@ router.get('/me', async (req, res) => {
   const deck = req.query.deck
   if (!deck) return code.invalidRequest(res)
   const cards = await getCards(req.userId, deck)
-  res.send(cards)
+  if (!cards || !cards.length) {
+    res.send([])
+  }
+  const trimmedCards = cards.map(card => {
+    delete card.userId
+    delete card.deck
+    return card
+  })
+  res.send(trimmedCards)
 })
 
 module.exports = router

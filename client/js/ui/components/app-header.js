@@ -14,7 +14,7 @@ module.exports = (userInfo) => html`
         </div>      
        
         <nav role="navigation" class="usa-nav">
-         <button class="usa-nav__close"><img src="/assets/img/close.svg" alt="close"></button>
+         <button class="usa-nav__close">Close</button>
 
         <div class="usa-nav__inner">
             <div class="usa-nav__secondary" style="bottom: 1.5rem; right: 1rem; text-align: right">
