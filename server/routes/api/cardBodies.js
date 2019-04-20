@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
   const cardBody = await getCardBody(req.userId, deck, card)
   if (cardBody && cardBody.length) {
     res.send(cardBody[0])
+    return
   }
   return code.invalidRequest(res)
 })

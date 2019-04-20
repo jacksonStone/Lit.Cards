@@ -10,7 +10,8 @@ renderPage(content)
   window.sn.setData('user', user)
   window.sn.setData('cards', cards)
   window.sn.setData('cardBody', cardBody)
-  initEditor('editor', cardBody.front, () => {
+  window.sn.setData('showingAnswer', false)
+  initEditor(cardBody.front, () => {
     console.log('changed')
   })
 })()
