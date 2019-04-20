@@ -3,7 +3,7 @@ const { grabFormData } = require('abstract/grabForm')
 const { signup } = require('logic/login')
 const errorableInput = require('component/errorable-input')
 const errorBanner = require('component/error-banner')
-function signupBtn(event) {
+function signupBtn (event) {
   event.preventDefault()
   const signupData = grabFormData('#signup')
   return signup(signupData.email, signupData.password, signupData['password-repeat'])

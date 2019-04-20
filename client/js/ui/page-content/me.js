@@ -1,5 +1,5 @@
 const { html } = require('lit-html/lit-html')
-
+const { navigateToDeckPage } = require('logic/deck')
 // Keep  this in sync with col-n below
 const numPerRow = 3
 
@@ -15,7 +15,7 @@ function deckPreview (deck) {
               top: 0;
               left: 0;
               "
-              
+         @click=${() => { navigateToDeckPage(deck.name) }}
         >
      
             <span style="

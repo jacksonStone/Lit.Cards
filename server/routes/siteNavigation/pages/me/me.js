@@ -12,5 +12,6 @@ router.get('/', (_, res) => {
 })
 
 router.use('/decks', require('./decks'))
+router.use('/deck', require('./deck'))
 
 module.exports = router

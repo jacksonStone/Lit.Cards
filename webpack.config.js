@@ -6,6 +6,7 @@ module.exports = {
     index: './client/js/entry-points/index.js',
     login: './client/js/entry-points/login.js',
     me: './client/js/entry-points/me.js',
+    deck: './client/js/entry-points/deck.js',
     signup: './client/js/entry-points/signup.js'
   },
   watch: true,
