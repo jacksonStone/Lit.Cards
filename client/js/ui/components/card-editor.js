@@ -1,15 +1,19 @@
 const { html } = require('lit-html/lit-html')
-const leftArrow = require('component/left-arrow')
-const rightArrow = require('component/right-arrow')
-module.exports = (leftAction, rightAction, spaceAction, answerSide) => html`
+const { simulateKey } = require('abstract/keyboard')
+const spaceAction = () => {
+  simulateKey('Space')
+}
+module.exports = (addImageAction) => html`
     <div class="card-editor">
-
-          <button class="usa-button usa-button--unstyled" style="position: absolute;top: 5px;right: 10px;">Add Image</button>
+              <div class="upload-container" style="position: absolute;top: 5px;right: 10px;">
+                <input @change=${addImageAction} type="file" name="upload" id="image-upload" accept="image/*" class="image-upload-input"/>
+                <label for="upload" class="image-upload-label usa-button usa-button--unstyled" >Add Image</label>
+              </div>
           <div id="editor" class="pell"></div>
             <div style="text-align: center">
             <div class="grid-row">
                  <div class="grid-col-2" style="text-align: center">  
-                ${answerSide ? leftArrow(leftAction) : ''}
+          
                 </div>
                 <div class="grid-col-8">
                 <button class="usa-button usa-button--outline flip-card"
@@ -20,9 +24,11 @@ module.exports = (leftAction, rightAction, spaceAction, answerSide) => html`
                 </div>
                     
                   <div class="grid-col-2" style="text-align: center">
-                  ${answerSide ? rightArrow(rightAction) : ''}
                   </div>
-        </div> 
+        </div>
+                      <div>
+              <img src="" alt="" id="image-spot">
+</div> 
         </div>    
       </div>
 `

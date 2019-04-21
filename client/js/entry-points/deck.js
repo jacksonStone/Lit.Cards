@@ -7,8 +7,10 @@ const { getCardBody } = require('logic/cardBodies')
 renderPage(content)
 ;(async () => {
   const [user, cards, cardBody] = await Promise.all([fetchUser(), getCards(), getCardBody()])
+  const firstCardId = (cards && cards.length && cards[0].id) || undefined
   window.sn.setData('user', user)
   window.sn.setData('cards', cards)
+  window.sn.setData('activeCardId', firstCardId)
   window.sn.setData('cardBody', cardBody)
   window.sn.setData('showingAnswer', false)
   initEditor(cardBody.front, () => {

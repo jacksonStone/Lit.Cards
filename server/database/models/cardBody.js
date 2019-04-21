@@ -4,7 +4,7 @@ const tableName = 'cardBody'
 async function getCardBody (userId, deck, card) {
   let results
   if (card) {
-    results = await db.getRecord(tableName, { userId, deck, card })
+    results = await db.getRecord(tableName, { userId, deck, id: card })
   } else {
     results = await db.getRecord(tableName, { userId, deck }, 1)
   }

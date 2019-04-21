@@ -28,7 +28,7 @@ function deckPreview (deck) {
         ${deck.name}</button>
         <button 
             class="usa-button usa-button--unstyled remove-button" >
-                <i class="fas fa-times-circle" aria-hidden="true"></i>
+                <i class="far fa-times-circle" aria-hidden="true"></i>
                 <span style="display:none;">Remove this deck</span>
             </button>
         </div>

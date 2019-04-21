@@ -18,7 +18,7 @@ const sn = window.sn = {
   getData: (key) => {
     const value = sn.data[key]
     if ((typeof value === 'object') && (value !== null)) {
-      return Object.assign({}, value)
+      return JSON.parse(JSON.stringify(value))
     }
     return value
   },
@@ -60,8 +60,10 @@ const sn = window.sn = {
   }
 }
 function renderPage (pageContentFunc) {
+
   render(appHeader(sn.getData('user')), document.querySelector('#app-header'))
   render(pageContentFunc(sn.data), document.querySelector('#main-content'))
+
   recordCurrentPage(pageContentFunc)
 }
 

@@ -23,6 +23,7 @@ app.get('/', function (req, res) {
 app.use('/api', routes.api)
 app.use('/site', routes.siteNavigation)
 app.use('/uswds', express.static(path.join(ROOT, 'node_modules/uswds')))
+app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts')))
 app.use('/fonts', express.static(path.join(ROOT, 'client/fonts')))
 app.use(express.static(path.join(ROOT, '/client/dist')))
 

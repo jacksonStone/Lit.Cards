@@ -1,10 +1,11 @@
 @import "uswds/dist/css/uswds.min.css";
 // use these
-@import "https://use.fontawesome.com/releases/v5.8.1/css/all.css";
-$pell-content-height: 300px;
 // See all overwriteable variables in src/pell.scss
+$pell-content-height: 350px;
 
 @import '../../node_modules/pell/src/pell';
+@import '../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import '../../node_modules/@fortawesome/fontawesome-free/scss/regular';
 
 $primary-color: #333;
 
@@ -66,4 +67,18 @@ body {
   color:#2e2e2e;
   background:#fafafa;
   border: #ddd 1px solid;
+}
+
+//.card-editor {
+//  margin-top: 30px;
+//}
+
+.image-upload-input {
+  opacity: 0;
+  position:absolute;
+  width: 76px;
+}
+ input:focus + label.image-upload-label{
+  outline: .25rem solid #2491ff;
+  outline-offset: 8px;
 }

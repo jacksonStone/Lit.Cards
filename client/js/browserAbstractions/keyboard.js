@@ -17,16 +17,8 @@ function resetAllKeyBindings () {
   cmdKeyBindings = {}
 }
 
-// console.log(e.shiftKey)
-// console.log(e.ctrlKey)
-// console.log(e.metaKey)
-// console.log(e.altKey)
-// console.log(e.code === 'Space')
-
 function _handleKeyDown (e) {
   const keyForCMD = isMac ? 'metaKey' : 'ctrlKey'
-  console.log('META: ' + e.metaKey)
-  console.log(e.code)
   if (e[keyForCMD] && cmdKeyBindings[e.code]) {
     e.preventDefault()
     return cmdKeyBindings[e.code]()
@@ -36,10 +28,16 @@ function _handleKeyDown (e) {
     return keyBindings[e.code]()
   }
 }
+
+function simulateKey (code) {
+  keyBindings[code]()
+}
+
 window.document.addEventListener('keydown', _handleKeyDown)
 
 module.exports = {
   listenForKey,
   resetAllKeyBindings,
-  listenForCMDKey
+  listenForCMDKey,
+  simulateKey
 }
