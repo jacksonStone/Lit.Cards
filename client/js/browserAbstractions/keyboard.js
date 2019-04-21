@@ -17,11 +17,19 @@ function resetAllKeyBindings () {
   cmdKeyBindings = {}
 }
 
+function isMultipleKeys(e) {
+  return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
+}
+
 function _handleKeyDown (e) {
   const keyForCMD = isMac ? 'metaKey' : 'ctrlKey'
   if (e[keyForCMD] && cmdKeyBindings[e.code]) {
     e.preventDefault()
     return cmdKeyBindings[e.code]()
+  }
+  // Let all other hotkeys through as normal
+  if (isMultipleKeys(e)) {
+    return
   }
   if (keyBindings[e.code] && !focusingOnSomething()) {
     e.preventDefault()

@@ -5,8 +5,8 @@ const pages = require('site/pages')
 const { login: loginPage, signup: signupPage } = require('site/pages')
 
 exports.login = async (userId, password) => {
-  window.sn.resetErrors() // make sure we have no field failures hanging around
-  const recordError = window.sn.recordError
+  window.lc.resetErrors() // make sure we have no field failures hanging around
+  const recordError = window.lc.recordError
   if (!userId || !password) {
     if (!userId) {
       recordError('fields.userId', 'empty')
@@ -33,8 +33,8 @@ exports.navigateToSignupPage = async () => {
 }
 
 exports.signup = async (userId, password, repeatPassword) => {
-  window.sn.resetErrors() // make sure we have no field failures hanging around
-  const recordError = window.sn.recordError
+  window.lc.resetErrors() // make sure we have no field failures hanging around
+  const recordError = window.lc.recordError
 
   if (!userId || !password || !repeatPassword) {
     if (!userId) {

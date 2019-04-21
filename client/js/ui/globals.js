@@ -8,7 +8,7 @@ const defaultErrorObject = {
 const clone = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
-const sn = window.sn = {
+const lc = window.lc = {
   test: false,
   testRoutes: [],
   _presentPage: () => {},
@@ -16,7 +16,13 @@ const sn = window.sn = {
     errors: clone(defaultErrorObject)
   },
   getData: (key) => {
-    const value = sn.data[key]
+    const parts = key.split('.')
+    let currentPiece = lc.data
+    for (let part of parts) {
+      if (!currentPiece) return currentPiece
+      currentPiece = currentPiece[part]
+    }
+    const value = currentPiece
     if ((typeof value === 'object') && (value !== null)) {
       return JSON.parse(JSON.stringify(value))
     }
@@ -24,10 +30,10 @@ const sn = window.sn = {
   },
   _willRerender: false,
   recordError: (path, error) => {
-    sn.setData('errors.' + path, error)
+    lc.setData('errors.' + path, error)
   },
   resetErrors: () => {
-    sn.setData('errors', clone(defaultErrorObject), true)
+    lc.setData('errors', clone(defaultErrorObject), true)
   },
   /**
    * @param key:  can be in  form "foo.bar"
@@ -36,7 +42,7 @@ const sn = window.sn = {
    */
   setData: (key, value, NO_UPDATE) => {
     const paths = key.split('.')
-    let parent = sn.data
+    let parent = lc.data
     for (let i = 0; i < paths.length; i++) {
       const currentPath = paths[i]
       if (i === paths.length - 1) {
@@ -46,51 +52,51 @@ const sn = window.sn = {
         parent = parent[currentPath] = (parent[currentPath] || {})
       }
     }
-    if (!sn.data._willRerender && !NO_UPDATE) {
-      sn.data._willRerender = true
+    if (!lc.data._willRerender && !NO_UPDATE) {
+      lc.data._willRerender = true
       window.requestAnimationFrame(() => {
-        sn.data._willRerender = false
-        sn._rerender()
+        lc.data._willRerender = false
+        lc._rerender()
       })
     }
   },
   _rerender: () => {
     console.log('rerender')
-    renderPage(sn._presentPage)
+    renderPage(lc._presentPage)
   }
 }
 function renderPage (pageContentFunc) {
 
-  render(appHeader(sn.getData('user')), document.querySelector('#app-header'))
-  render(pageContentFunc(sn.data), document.querySelector('#main-content'))
+  render(appHeader(lc.getData('user')), document.querySelector('#app-header'))
+  render(pageContentFunc(lc.data), document.querySelector('#main-content'))
 
   recordCurrentPage(pageContentFunc)
 }
 
 function recordCurrentPage (pageContentFunc) {
-  sn._presentPage = pageContentFunc
+  lc._presentPage = pageContentFunc
 }
 
 exports.renderPage = renderPage
 
 exports.makeTesting = () => {
-  sn.test = true
+  lc.test = true
 }
 
 exports.testing = {
   isTesting () {
-    return sn.test
+    return lc.test
   },
   addTestRoute (route) {
-    return sn.testRoutes.push(route)
+    return lc.testRoutes.push(route)
   },
   getTestRoutes () {
-    return sn.testRoutes
+    return lc.testRoutes
   },
   lastRoute () {
-    const length = sn.testRoutes.length
+    const length = lc.testRoutes.length
     if (length) {
-      return sn.testRoutes[ length - 1 ]
+      return lc.testRoutes[ length - 1 ]
     }
   }
 }

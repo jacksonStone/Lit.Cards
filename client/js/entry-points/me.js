@@ -5,6 +5,6 @@ const { getDecks } = require('logic/decks')
 renderPage(content)
 ;(async () => {
   const [user, decks] = await Promise.all([fetchUser(), getDecks()])
-  window.sn.setData('user', user)
-  window.sn.setData('decks', decks)
+  window.lc.setData('user', user)
+  window.lc.setData('decks', decks)
 })()

@@ -7,7 +7,9 @@ function renderPreviewImageFromUploadEvent (e, targetId) {
   const reader = new window.FileReader()
 
   reader.onload = (e) => {
-    document.getElementById(targetId).setAttribute('src', e.target.result)
+    window.document
+      .getElementById(targetId)
+      .setAttribute('style', `background-image:url(${e.target.result}`)
   }
 
   reader.readAsDataURL(file)
