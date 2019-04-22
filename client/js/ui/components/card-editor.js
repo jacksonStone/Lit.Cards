@@ -1,19 +1,59 @@
 const { html } = require('lit-html/lit-html')
 const { simulateKey } = require('abstract/keyboard')
+const { copyImageFromBackgroundtoImage } = require('abstract/file-upload')
+const { runNextRender } = require('abstract/rendering-meta')
 const spaceAction = () => {
   simulateKey('Space')
 }
 const removeImageAction = () => {
   simulateKey('KeyR')
 }
-module.exports = (addImageAction, hasImage) => html`
+const showPopup = () => {
+  window.lc.setData('showingPopup', true)
+}
+const hidePopup = () => {
+  window.lc.setData('showingPopup', false)
+}
+
+const popupComponent = () => {
+  if (!window.lc.getData('showingPopup')) {
+    return null
+  }
+  runNextRender(() => {
+    copyImageFromBackgroundtoImage('image-spot', 'popup-image')
+  })
+  return html`<div class="popup" style="
+    position: fixed;
+    width: 800px;
+    height: 600px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -400px;
+    z-index: 1;
+    padding: 5px;">
+    <img id="popup-image" 
+    style="
+    width:auto;
+    height: auto;
+    position:absolute;
+    top:0;
+    bottom:0;
+    margin:auto;
+    "/>
+</div>`
+}
+
+module.exports = (addImageAction, hasImage) => {
+  return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
-             
+              ${popupComponent()}
               <div alt="preview-of-crad-image" 
                 class="${hasImage ? 'image-spot-with-image' : 'image-spot-without-image'}" 
                 id="image-spot" class="usa-button usa-button--outline"
                 tabindex="${hasImage ? '0' : ''}" 
-                @click=${() => { console.log('clicked!') }}></div>
+                @click=${showPopup}></div>
               ${hasImage ? html`
                 <button style="position: absolute; top: 208px; right: 49px;"
                     class="usa-button usa-button--unstyled" id="remove-image-from-card"
@@ -49,3 +89,4 @@ module.exports = (addImageAction, hasImage) => html`
         </div>    
       </div>
 `
+}
