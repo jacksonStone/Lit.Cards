@@ -10,7 +10,7 @@ function handleImageUpload (e) {
   } else {
     window.lc.setPersistent(`cardBody.${cardId}.frontHasImage`, true)
   }
-  refreshEditor(undefined, false)
+  _refreshEditor()
 }
 
 function nextCard () {
@@ -52,7 +52,7 @@ function removeImage () {
     window.lc.setPersistent(`cardBody.${id}.frontHasImage`, false)
     // window.lc.setPersistent(`cardBody.${id}.frontImage`, undefined)
   }
-  refreshEditor()
+  _refreshEditor()
 }
 
 function hasImage () {
@@ -62,7 +62,6 @@ function hasImage () {
   } else {
     hasImage = window.lc.getData('cardBody.frontHasImage')
   }
-  console.log('HAS IMAGE: ', hasImage)
   return hasImage || false
 }
 
@@ -71,31 +70,27 @@ function showingAnswer () {
 }
 
 function mergeWithChanges (cardBody, id) {
-  console.log('TRYING TO MERGE WITH CHANGES')
   const changes = window.lc.getData(`changes.cardBody.${id}`) || {}
-  console.log('current changes', changes)
-  console.log('current cardBody', cardBody)
   return Object.assign({}, cardBody, changes)
 }
 
-function refreshEditor (cardBody, flipToQuestion = true) {
-  if (!cardBody) {
-    cardBody = window.lc.getData('cardBody')
-  }
-  const id = cardBody.id
-  const withChangesApplied = mergeWithChanges(cardBody, id)
-  window.lc.setData('cardBody', withChangesApplied)
-  if (flipToQuestion) {
-    window.lc.setData('showingAnswer', false)
-  }
-  _updateEditorData()
+function _flipToQuestionSide () {
+  window.lc.setData('showingAnswer', false)
 }
 
 async function _updateCardBody (id) {
   const cardBody = await getCardBody(undefined, id)
-  refreshEditor(cardBody)
+  window.lc.setData('cardBody', cardBody)
+  _flipToQuestionSide()
+  _refreshEditor()
 }
-
+function _refreshEditor () {
+  const cardBody = window.lc.getData('cardBody')
+  const id = cardBody.id
+  const withChangesApplied = mergeWithChanges(cardBody, id)
+  window.lc.setData('cardBody', withChangesApplied)
+  _updateEditorData()
+}
 function _updateEditorData () {
   const getData = window.lc.getData
   const cardBody = getData('cardBody')

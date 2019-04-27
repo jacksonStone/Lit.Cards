@@ -8,7 +8,6 @@ async function getCardBody (userId, deck, card) {
   } else {
     results = await db.getRecord(tableName, { userId, deck }, 1)
   }
-  console.log(results)
   return results || {}
 }
 
