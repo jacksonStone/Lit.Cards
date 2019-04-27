@@ -8,6 +8,9 @@ function focusingOnSomething () {
 function listenForCMDKey (key, callback) {
   cmdKeyBindings[key] = callback
 }
+function stopListeningForKey(key) {
+  delete keyBindings[key]
+}
 function listenForKey (key, callback) {
   keyBindings[key] = callback
 }
@@ -17,7 +20,7 @@ function resetAllKeyBindings () {
   cmdKeyBindings = {}
 }
 
-function isMultipleKeys(e) {
+function isMultipleKeys (e) {
   return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
 }
 
@@ -25,7 +28,7 @@ function _handleKeyDown (e) {
   const keyForCMD = isMac ? 'metaKey' : 'ctrlKey'
   if (e[keyForCMD] && cmdKeyBindings[e.code]) {
     e.preventDefault()
-    return cmdKeyBindings[e.code]()
+    return cmdKeyBindings[e.code](e)
   }
   // Let all other hotkeys through as normal
   if (isMultipleKeys(e)) {
@@ -33,7 +36,7 @@ function _handleKeyDown (e) {
   }
   if (keyBindings[e.code] && !focusingOnSomething()) {
     e.preventDefault()
-    return keyBindings[e.code]()
+    return keyBindings[e.code](e)
   }
 }
 
@@ -45,6 +48,7 @@ window.document.addEventListener('keydown', _handleKeyDown)
 
 module.exports = {
   listenForKey,
+  stopListeningForKey,
   resetAllKeyBindings,
   listenForCMDKey,
   simulateKey
