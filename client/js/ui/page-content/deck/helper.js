@@ -4,14 +4,24 @@ const { renderPreviewImageWithRawData, getFileData } = require('abstract/file-up
 
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
-  renderPreviewImageWithRawData(imageData, 'image-spot')
   const cardId = _getCurrentCardId()
   if (showingAnswer()) {
     window.lc.setPersistent(`cardBody.${cardId}.backHasImage`, true)
+    window.lc.setPersistent(`cardBody.${cardId}.backImage`, imageData)
   } else {
     window.lc.setPersistent(`cardBody.${cardId}.frontHasImage`, true)
+    window.lc.setPersistent(`cardBody.${cardId}.frontImage`, imageData)
   }
+  renderPreviewImageWithRawData(imageData, 'image-spot')
   _refreshEditor()
+}
+
+function getImageData () {
+  if (!hasImage()) return ''
+  if (showingAnswer()) {
+    return window.lc.getData('cardBody.backImage')
+  }
+  return window.lc.getData('cardBody.frontImage')
 }
 
 function nextCard () {
@@ -35,7 +45,7 @@ function previousCard () {
 function flipCard () {
   const showingAnswer = window.lc.getData('showingAnswer')
   window.lc.setData('showingAnswer', !showingAnswer)
-  _updateEditorData()
+  _refreshEditor()
 }
 
 function pickImage () {
@@ -48,10 +58,10 @@ function removeImage () {
   if (!hasImage()) return
   if (showingAnswer()) {
     window.lc.setPersistent(`cardBody.${id}.backHasImage`, false)
-    // window.lc.setPersistent(`cardBody.${id}.backImage`, undefined)
+    window.lc.setPersistent(`cardBody.${id}.backImage`, undefined)
   } else {
     window.lc.setPersistent(`cardBody.${id}.frontHasImage`, false)
-    // window.lc.setPersistent(`cardBody.${id}.frontImage`, undefined)
+    window.lc.setPersistent(`cardBody.${id}.frontImage`, undefined)
   }
   _refreshEditor()
 }
@@ -90,6 +100,9 @@ function _refreshEditor () {
   const id = cardBody.id
   const withChangesApplied = mergeWithChanges(cardBody, id)
   window.lc.setData('cardBody', withChangesApplied)
+  if (hasImage()) {
+    renderPreviewImageWithRawData(getImageData(), 'image-spot')
+  }
   _updateEditorData()
 }
 function _updateEditorData () {
@@ -126,5 +139,6 @@ module.exports = {
   previousCard,
   nextCard,
   handleImageUpload,
-  hasImage
+  hasImage,
+  getImageData
 }

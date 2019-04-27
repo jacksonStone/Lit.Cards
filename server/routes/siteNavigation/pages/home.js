@@ -5,7 +5,6 @@ const { sendPage } = require('../sendPage')
 
 router.get('/', async (req, res) => {
   const userId = await getuserId(req.cookies)
-  console.log(userId)
   // Need to login
   if (!userId) return res.redirect('/')
 

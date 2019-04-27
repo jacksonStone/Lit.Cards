@@ -24,18 +24,13 @@ function renderPreviewImageWithRawData (data, targetId) {
     .getElementById(targetId)
     .setAttribute('style', `background-image:url(${data}); `)
 }
-function copyImageFromBackgroundtoImage (sourceId, targetId) {
-  // TODO:: CLean up this crap
-  const style = window.document
-    .getElementById(sourceId)
-    .getAttribute('style')
-  const dataURI = style.split('background-image:url(')[1].split(');')[0]
+function addImageDataToImage (data, targetId) {
   const output = document.getElementById(targetId)
-  output.setAttribute('src', dataURI)
+  output.setAttribute('src', data)
 }
 
 module.exports = {
   getFileData,
   renderPreviewImageWithRawData,
-  copyImageFromBackgroundtoImage
+  addImageDataToImage
 }

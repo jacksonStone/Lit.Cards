@@ -84,12 +84,9 @@ function deckRow (decks) {
 
 function deckRows (allDecks) {
   const rows = []
-  console.log(allDecks.length)
   for (let i = 0; i < allDecks.length; i = i + numPerRow) {
     rows.push(deckRow(allDecks.slice(i, i + numPerRow)))
   }
-  console.log('rows.length', rows.length)
-  console.log(rows)
   return rows
 }
 

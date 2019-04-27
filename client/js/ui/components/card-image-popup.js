@@ -1,6 +1,8 @@
 const { html } = require('lit-html/lit-html')
 const { stopListeningForKey, listenForKey } = require('abstract/keyboard')
-const { copyImageFromBackgroundtoImage } = require('abstract/file-upload')
+const { addImageDataToImage } = require('abstract/file-upload')
+// TODO::Consider reworking deps here
+const { getImageData } = require('../page-content/deck/helper')
 const { runNextRender } = require('abstract/rendering-meta')
 
 const _hidePopup = (e) => {
@@ -19,7 +21,7 @@ const popupComponent = () => {
     return null
   }
   runNextRender(() => {
-    copyImageFromBackgroundtoImage('image-spot', 'popup-image')
+    addImageDataToImage(getImageData(), 'popup-image')
   })
   return html`<div id="overlay" style="
     position: fixed;

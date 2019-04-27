@@ -14,7 +14,7 @@ let fakeData = {
     { userId: 'jackson@someemail.com', deck: 'myDeck', summary: 'the is a preview summary of the card content', id: '4' }
   ],
   cardBody: [
-    { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 1', back: 'This is the back of card 1  <img src="https://homepages.cae.wisc.edu/~ece533/images/airplane.png">', id: '1' },
+    { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 1', back: 'This is the back of card 1', id: '1' },
     { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 2', back: 'This is the back of card 2', id: '2' },
     { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 3', back: 'This is the back of card 3', id: '3' },
     { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 4', back: 'This is the back of card 4', id: '4' }
