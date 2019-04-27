@@ -1,4 +1,4 @@
-function runNextRender(callback) {
+function runNextRender (callback) {
   window.requestAnimationFrame(callback)
 }
 

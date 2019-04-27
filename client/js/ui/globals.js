@@ -13,7 +13,8 @@ const lc = window.lc = {
   testRoutes: [],
   _presentPage: () => {},
   data: {
-    errors: clone(defaultErrorObject)
+    errors: clone(defaultErrorObject),
+    changes: {}
   },
   getData: (key) => {
     const parts = key.split('.')
@@ -63,10 +64,15 @@ const lc = window.lc = {
   _rerender: () => {
     console.log('rerender')
     renderPage(lc._presentPage)
+  },
+  setPersistent (key, value) {
+    console.log('calling setPersistent', key, value)
+    // TODO:: Maybe add some stuff so that this saves locally right away and saves to server async
+    lc.setData('changes.' + key, value, true)
+    lc.setData('hasPersistentChanges', true)
   }
 }
 function renderPage (pageContentFunc) {
-
   render(appHeader(lc.getData('user')), document.querySelector('#app-header'))
   render(pageContentFunc(lc.data), document.querySelector('#main-content'))
 

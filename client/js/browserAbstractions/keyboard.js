@@ -8,7 +8,7 @@ function focusingOnSomething () {
 function listenForCMDKey (key, callback) {
   cmdKeyBindings[key] = callback
 }
-function stopListeningForKey(key) {
+function stopListeningForKey (key) {
   delete keyBindings[key]
 }
 function listenForKey (key, callback) {
