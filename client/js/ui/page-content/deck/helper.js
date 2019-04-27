@@ -1,9 +1,10 @@
 const { setEditorData } = require('abstract/editor')
 const { getCardBody } = require('logic/cardBodies')
-const { renderPreviewImageFromUploadEvent } = require('abstract/file-upload')
+const { renderPreviewImageWithRawData, getFileData } = require('abstract/file-upload')
 
-function handleImageUpload (e) {
-  renderPreviewImageFromUploadEvent(e, 'image-spot')
+async function handleImageUpload (e) {
+  const imageData = await getFileData(e)
+  renderPreviewImageWithRawData(imageData, 'image-spot')
   const cardId = _getCurrentCardId()
   if (showingAnswer()) {
     window.lc.setPersistent(`cardBody.${cardId}.backHasImage`, true)

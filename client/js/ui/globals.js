@@ -69,7 +69,7 @@ const lc = window.lc = {
     console.log('calling setPersistent', key, value)
     // TODO:: Maybe add some stuff so that this saves locally right away and saves to server async
     lc.setData('changes.' + key, value, true)
-    lc.setData('hasPersistentChanges', true)
+    lc.setData('hasPersistentChanges', true, true)
   }
 }
 function renderPage (pageContentFunc) {
