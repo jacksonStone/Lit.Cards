@@ -2,7 +2,7 @@ const { html } = require('lit-html/lit-html')
 const { stopListeningForKey, listenForKey } = require('abstract/keyboard')
 const { addImageDataToImage } = require('abstract/file-upload')
 // TODO::Consider reworking deps here
-const { getImageData } = require('../page-content/deck/helper')
+const { getImageData } = require('../helper')
 const { runNextRender } = require('abstract/rendering-meta')
 
 const _hidePopup = (e) => {

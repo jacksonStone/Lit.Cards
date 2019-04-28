@@ -1,5 +1,7 @@
 const { renderPage } = require('../ui/globals')
 const content = require('../ui/page-content/deck')
+const { handleEditorTextChange } = require('../ui/page-content/deck/helper')
+
 const { initEditor } = require('abstract/editor')
 const { fetchUser } = require('logic/getUser')
 const { getCards } = require('logic/cards')
@@ -13,7 +15,5 @@ renderPage(content)
   window.lc.setData('activeCardId', firstCardId)
   window.lc.setData('cardBody', cardBody)
   window.lc.setData('showingAnswer', false)
-  initEditor(cardBody.front, () => {
-    console.log('changed')
-  })
+  initEditor(cardBody.front, handleEditorTextChange)
 })()

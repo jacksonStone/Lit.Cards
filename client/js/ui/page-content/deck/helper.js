@@ -1,19 +1,37 @@
 const { setEditorData } = require('abstract/editor')
 const { getCardBody } = require('logic/cardBodies')
-const { renderPreviewImageWithRawData, getFileData } = require('abstract/file-upload')
+const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
 
+// TODO::Make it so when you swap cards where the swapped to card has no image you make sure popup closes
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
-  const cardId = _getCurrentCardId()
+  const croppedImage = await getImageAtDifferentSize(imageData)
   if (showingAnswer()) {
-    window.lc.setPersistent(`cardBody.${cardId}.backHasImage`, true)
-    window.lc.setPersistent(`cardBody.${cardId}.backImage`, imageData)
+    setPersistentForCardBody('backHasImage', true)
+    setPersistentForCardBody('backImage', croppedImage)
   } else {
-    window.lc.setPersistent(`cardBody.${cardId}.frontHasImage`, true)
-    window.lc.setPersistent(`cardBody.${cardId}.frontImage`, imageData)
+    setPersistentForCardBody('frontHasImage', true)
+    setPersistentForCardBody('frontImage', croppedImage)
   }
-  renderPreviewImageWithRawData(imageData, 'image-spot')
+  renderPreviewImageWithRawData(croppedImage, 'image-spot')
+
   _refreshEditor()
+}
+
+function setPersistentForCardBody (key, value) {
+  const cardId = _getCurrentCardId()
+  const changeKey = `cardBody.${cardId}.${key}`
+  window.lc.setPersistent(changeKey, value)
+}
+
+function handleEditorTextChange (newText) {
+  // TODO:: Handle text resize
+  // TODO:: Store things for CMD+Z
+  console.log(arguments)
+  if (showingAnswer()) {
+    return setPersistentForCardBody('back', newText)
+  }
+  setPersistentForCardBody('front', newText)
 }
 
 function getImageData () {
@@ -54,14 +72,13 @@ function pickImage () {
 }
 
 function removeImage () {
-  const id = _getCurrentCardId()
   if (!hasImage()) return
   if (showingAnswer()) {
-    window.lc.setPersistent(`cardBody.${id}.backHasImage`, false)
-    window.lc.setPersistent(`cardBody.${id}.backImage`, undefined)
+    setPersistentForCardBody('backHasImage', false)
+    setPersistentForCardBody('backImage', undefined)
   } else {
-    window.lc.setPersistent(`cardBody.${id}.frontHasImage`, false)
-    window.lc.setPersistent(`cardBody.${id}.frontImage`, undefined)
+    setPersistentForCardBody('frontHasImage', false)
+    setPersistentForCardBody('frontImage', undefined)
   }
   _refreshEditor()
 }
@@ -140,5 +157,6 @@ module.exports = {
   nextCard,
   handleImageUpload,
   hasImage,
-  getImageData
+  getImageData,
+  handleEditorTextChange
 }

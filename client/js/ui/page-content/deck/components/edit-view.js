@@ -1,6 +1,6 @@
 const { html } = require('lit-html/lit-html')
-const editor = require('component/card-editor')
-const cardEditStack = require('component/card-edit-stack')
+const editor = require('./card-editor')
+const cardEditStack = require('./card-edit-stack')
 
 module.exports = (cardId, cards, addImage, hasImage) => html`
   <div class="grid-container">

@@ -1,4 +1,4 @@
-@import "uswds/dist/css/uswds.min.css";
+@import 'uswds/dist/css/uswds.min.css';
 // use these
 // See all overwriteable variables in src/pell.scss
 $pell-content-height: 300px;
@@ -10,7 +10,6 @@ $pell-content-height: 300px;
 $primary-color: #333;
 
 body {
-  //font: 100% $font-stack;
   color: $primary-color;
 }
 
@@ -83,7 +82,8 @@ body {
   width:auto;
 }
 .has-image-editor {
-  height:100px;
+  // TODO:: Make this less brittle
+  height:133px;
 }
 .image-spot-with-image {
   height:200px;

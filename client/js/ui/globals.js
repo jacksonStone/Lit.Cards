@@ -17,15 +17,15 @@ const lc = window.lc = {
     changes: {}
   },
   getData: (key) => {
-    const parts = key.split('.')
     let currentPiece = lc.data
+    const parts = key.split('.')
     for (let part of parts) {
       if (!currentPiece) return currentPiece
       currentPiece = currentPiece[part]
     }
     const value = currentPiece
     if ((typeof value === 'object') && (value !== null)) {
-      return JSON.parse(JSON.stringify(value))
+      return value
     }
     return value
   },
@@ -62,7 +62,6 @@ const lc = window.lc = {
     }
   },
   _rerender: () => {
-    console.log('rerender')
     renderPage(lc._presentPage)
   },
   setPersistent (key, value) {

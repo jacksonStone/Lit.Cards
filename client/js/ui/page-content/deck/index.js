@@ -1,5 +1,5 @@
 const { html } = require('lit-html/lit-html')
-const editView = require('component/edit-view')
+const editView = require('./components/edit-view')
 require('./key-commands')
 const { handleImageUpload, hasImage } = require('./helper')
 

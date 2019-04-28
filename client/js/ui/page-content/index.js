@@ -1,5 +1,5 @@
 const { html } = require('lit-html/lit-html')
-const cardEditor = require('component/card-editor')
+const cardEditor = require('./deck/components/card-editor')
 module.exports = () => html`
 <div class="grid-container">
 <div class="usa-prose">
