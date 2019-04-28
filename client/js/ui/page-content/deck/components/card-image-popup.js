@@ -36,13 +36,13 @@ const popupComponent = () => {
     >
     <div class="popup" style="
     position: fixed;
-    width: 800px;
+    width: 600px;
     height: 600px;
     position: fixed;
     top: 50%;
     left: 50%;
     margin-top: -300px;
-    margin-left: -400px;
+    margin-left: -300px;
     padding: 5px;">
     <img id="popup-image" 
     style="

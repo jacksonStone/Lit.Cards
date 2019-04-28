@@ -44,13 +44,10 @@ async function getImageAtDifferentSize (imageData, ...sizes) {
             height = MAX_HEIGHT
           }
         }
-        console.log('Trying to create with width: ' + width)
-        console.log('Trying to create with height: ' + height)
-
         canvasElement.width = width
         canvasElement.height = height
         ctx.drawImage(img, 0, 0, width, height)
-        results.push(canvasElement.toDataURL())
+        results.push(canvasElement.toDataURL('image/jpeg' ,0.9))
       }
       resolve(results)
     }

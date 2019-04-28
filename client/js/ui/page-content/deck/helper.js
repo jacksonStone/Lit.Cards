@@ -5,15 +5,20 @@ const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = 
 // TODO::Make it so when you swap cards where the swapped to card has no image you make sure popup closes
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
-  const [largeImage, thumbnail] = (await getImageAtDifferentSize(imageData, [600,600], [40,40]))
+  let imagePreview
   if (showingAnswer()) {
+    const [largeImage] = await getImageAtDifferentSize(imageData, [600, 600])
     setPersistentForCardBody('backHasImage', true)
     setPersistentForCardBody('backImage', largeImage)
+    imagePreview = largeImage
   } else {
+    const [largeImage, thumbnail] = await getImageAtDifferentSize(imageData, [600, 600], [60, 60])
     setPersistentForCardBody('frontHasImage', true)
+    setPersistentForCard('image', thumbnail)
     setPersistentForCardBody('frontImage', largeImage)
+    imagePreview = largeImage
   }
-  renderPreviewImageWithRawData(largeImage, 'image-spot')
+  renderPreviewImageWithRawData(imagePreview, 'image-spot')
 
   _refreshEditor()
 }
@@ -21,6 +26,11 @@ async function handleImageUpload (e) {
 function setPersistentForCardBody (key, value) {
   const cardId = _getCurrentCardId()
   const changeKey = `cardBody.${cardId}.${key}`
+  window.lc.setPersistent(changeKey, value)
+}
+function setPersistentForCard (key, value) {
+  const cardId = _getCurrentCardId()
+  const changeKey = `card.${cardId}.${key}`
   window.lc.setPersistent(changeKey, value)
 }
 
