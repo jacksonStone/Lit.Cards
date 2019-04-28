@@ -5,15 +5,15 @@ const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = 
 // TODO::Make it so when you swap cards where the swapped to card has no image you make sure popup closes
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
-  const croppedImage = await getImageAtDifferentSize(imageData)
+  const [largeImage, thumbnail] = (await getImageAtDifferentSize(imageData, [600,600], [40,40]))
   if (showingAnswer()) {
     setPersistentForCardBody('backHasImage', true)
-    setPersistentForCardBody('backImage', croppedImage)
+    setPersistentForCardBody('backImage', largeImage)
   } else {
     setPersistentForCardBody('frontHasImage', true)
-    setPersistentForCardBody('frontImage', croppedImage)
+    setPersistentForCardBody('frontImage', largeImage)
   }
-  renderPreviewImageWithRawData(croppedImage, 'image-spot')
+  renderPreviewImageWithRawData(largeImage, 'image-spot')
 
   _refreshEditor()
 }

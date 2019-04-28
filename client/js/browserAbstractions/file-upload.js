@@ -19,35 +19,40 @@ function getFileData (e) {
   })
 }
 
-async function getImageAtDifferentSize (imageData, MAX_HEIGHT = 600, MAX_WIDTH = 600) {
+async function getImageAtDifferentSize (imageData, ...sizes) {
+  sizes = !sizes.length ? [[600, 600]] : sizes
   return new Promise((resolve) => {
     const img = document.createElement('img')
     const canvasElement = document.createElement('canvas')
     img.src = imageData
     img.onload = () => {
       const ctx = canvasElement.getContext('2d')
+      const results = []
+      for (let i = 0; i < sizes.length; i++) {
+        let [MAX_WIDTH, MAX_HEIGHT] = sizes[i]
+        let width = img.width
+        let height = img.height
 
-      let width = img.width
-      let height = img.height
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width
+            width = MAX_WIDTH
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height
+            height = MAX_HEIGHT
+          }
+        }
+        console.log('Trying to create with width: ' + width)
+        console.log('Trying to create with height: ' + height)
 
-      if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width
-          width = MAX_WIDTH
-        }
-      } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height
-          height = MAX_HEIGHT
-        }
+        canvasElement.width = width
+        canvasElement.height = height
+        ctx.drawImage(img, 0, 0, width, height)
+        results.push(canvasElement.toDataURL())
       }
-      console.log('Trying to create with width: ' + width)
-      console.log('Trying to create with height: ' + height)
-
-      canvasElement.width = width
-      canvasElement.height = height
-      ctx.drawImage(img, 0, 0, width, height)
-      resolve(canvasElement.toDataURL())
+      resolve(results)
     }
   })
 }
