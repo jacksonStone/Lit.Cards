@@ -26,6 +26,8 @@ function isMultipleKeys (e) {
 
 function _handleKeyDown (e) {
   const keyForCMD = isMac ? 'metaKey' : 'ctrlKey'
+  console.log("CALLING KEY")
+  console.log(e.code)
   if (e[keyForCMD] && cmdKeyBindings[e.code]) {
     e.preventDefault()
     return cmdKeyBindings[e.code](e)

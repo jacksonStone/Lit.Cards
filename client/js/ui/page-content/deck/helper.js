@@ -5,14 +5,16 @@ const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = 
 // TODO::Make it so when you swap cards where the swapped to card has no image you make sure popup closes
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
+  const largeImageSize = [600, 600]
+  const thumbnailSize = [60, 60]
   let imagePreview
   if (showingAnswer()) {
-    const [largeImage] = await getImageAtDifferentSize(imageData, [600, 600])
+    const [largeImage] = await getImageAtDifferentSize(imageData, largeImageSize)
     setPersistentForCardBody('backHasImage', true)
     setPersistentForCardBody('backImage', largeImage)
     imagePreview = largeImage
   } else {
-    const [largeImage, thumbnail] = await getImageAtDifferentSize(imageData, [600, 600], [60, 60])
+    const [largeImage, thumbnail] = await getImageAtDifferentSize(imageData, largeImageSize, thumbnailSize)
     setPersistentForCardBody('frontHasImage', true)
     setPersistentForCard('image', thumbnail)
     setPersistentForCardBody('frontImage', largeImage)
@@ -112,6 +114,27 @@ function mergeWithChanges (cardBody, id) {
   return Object.assign({}, cardBody, changes)
 }
 
+function addNewCard () {
+  const allCards = window.lc.getData('cards')
+  const cardCount = allCards.length
+  // TODO:: Maybe want to do more here
+  const newId = generateNewId(16)
+
+  const changeKey = `card.${cardCount}`
+  // Get current deck?
+  window.lc.setPersistent(changeKey, { id: newId, isNew: true })
+}
+
+function generateNewId (length) {
+  const charArray = []
+  const possibleValues = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  for (let i = 0; i < length; i++) {
+    charArray.push(possibleValues[((Math.random() * possibleValues.length) | 0)])
+  }
+  return charArray.join('')
+}
+
 function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
 }
@@ -163,6 +186,7 @@ module.exports = {
   removeImage,
   pickImage,
   flipCard,
+  addNewCard,
   previousCard,
   nextCard,
   handleImageUpload,
