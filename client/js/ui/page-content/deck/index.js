@@ -4,5 +4,5 @@ require('./key-commands')
 const { handleImageUpload, hasImage } = require('./helper')
 
 module.exports = (data) => html`
-     ${editView(data.activeCardId, data.cards, handleImageUpload, hasImage())}
+     ${editView(data.activeCardId, data.orderedCards, handleImageUpload, hasImage())}
 `

@@ -16,8 +16,8 @@ async function handleImageUpload (e) {
   } else {
     const [largeImage, thumbnail] = await getImageAtDifferentSize(imageData, largeImageSize, thumbnailSize)
     setPersistentForCardBody('frontHasImage', true)
-    setPersistentForCard('image', thumbnail)
     setPersistentForCardBody('frontImage', largeImage)
+    setPersistentForCard('image', thumbnail)
     imagePreview = largeImage
   }
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
@@ -48,15 +48,16 @@ function handleEditorTextChange (newText) {
 
 function getImageData () {
   if (!hasImage()) return ''
+  const cardBody = _getCurrentCardBody()
   if (showingAnswer()) {
-    return window.lc.getData('cardBody.backImage')
+    return cardBody.backImage
   }
-  return window.lc.getData('cardBody.frontImage')
+  return cardBody.frontImage
 }
 
 function nextCard () {
   let index = _getCurrentCardIndex()
-  const cards = window.lc.getData('cards')
+  const cards = window.lc.getData('orderedCards')
   index++
   const newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
@@ -65,7 +66,7 @@ function nextCard () {
 
 function previousCard () {
   let index = _getCurrentCardIndex()
-  const cards = window.lc.getData('cards')
+  const cards = window.lc.getData('orderedCards')
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
@@ -98,9 +99,9 @@ function removeImage () {
 function hasImage () {
   let hasImage
   if (showingAnswer()) {
-    hasImage = window.lc.getData('cardBody.backHasImage')
+    hasImage = window.lc.getData(`cardBody.${_getCurrentCardId()}.backHasImage`)
   } else {
-    hasImage = window.lc.getData('cardBody.frontHasImage')
+    hasImage = window.lc.getData(`cardBody.${_getCurrentCardId()}.frontHasImage`)
   }
   return hasImage || false
 }
@@ -108,21 +109,27 @@ function hasImage () {
 function showingAnswer () {
   return window.lc.getData('showingAnswer') || false
 }
-
-function mergeWithChanges (cardBody, id) {
-  const changes = window.lc.getData(`changes.cardBody.${id}`) || {}
-  return Object.assign({}, cardBody, changes)
+function getCardMapping (cards) {
+  const mapping = {}
+  for (let i = 0; i < cards.length; i++) {
+    mapping[cards[i].id] = cards[i]
+  }
+  return mapping
 }
 
 function addNewCard () {
-  const allCards = window.lc.getData('cards')
-  const cardCount = allCards.length
-  // TODO:: Maybe want to do more here
   const newId = generateNewId(16)
 
-  const changeKey = `card.${cardCount}`
+  const changeKeyCard = `card.${newId}`
+  const changeKeyCardBody = `cardBody.${newId}`
+  const card = { id: newId, isNew: true }
+  const cardBody = { id: newId, isNew: true, front: '', back: '' }
   // Get current deck?
-  window.lc.setPersistent(changeKey, { id: newId, isNew: true })
+  window.lc.setPersistent(changeKeyCard, card)
+  window.lc.setPersistent(changeKeyCardBody, cardBody)
+  window.lc.addDataListEntry('orderedCards', card)
+  window.lc.setData('activeCardId', newId)
+  _refreshEditor()
 }
 
 function generateNewId (length) {
@@ -140,25 +147,29 @@ function _flipToQuestionSide () {
 }
 
 async function _updateCardBody (id) {
+  const currentCardBody = window.lc.getData('cardBody.' + id)
+  if (currentCardBody) {
+    _refreshEditor()
+    return
+  }
   const cardBody = await getCardBody(undefined, id)
-  window.lc.setData('cardBody', cardBody)
+  window.lc.setData('cardBody.' + id, cardBody)
   _flipToQuestionSide()
   _refreshEditor()
 }
 function _refreshEditor () {
-  const cardBody = window.lc.getData('cardBody')
-  const id = cardBody.id
-  const withChangesApplied = mergeWithChanges(cardBody, id)
-  window.lc.setData('cardBody', withChangesApplied)
   if (hasImage()) {
     renderPreviewImageWithRawData(getImageData(), 'image-spot')
   }
   _updateEditorData()
 }
+function _getCurrentCardBody () {
+  const id = _getCurrentCardId()
+  return window.lc.getData(`cardBody.${id}`)
+}
 function _updateEditorData () {
-  const getData = window.lc.getData
-  const cardBody = getData('cardBody')
-  const showingAnswer = getData('showingAnswer')
+  const cardBody = _getCurrentCardBody()
+  const showingAnswer = window.lc.getData('showingAnswer')
   if (showingAnswer) {
     // Show answer
     setEditorData(cardBody.back)
@@ -171,7 +182,7 @@ function _getCurrentCardId () {
 }
 function _getCurrentCardIndex () {
   const currentId = _getCurrentCardId()
-  const cards = window.lc.getData('cards')
+  const cards = window.lc.getData('orderedCards')
   let currentIndex
   for (let i = 0; i < cards.length; i++) {
     if (cards[i].id === currentId) {
@@ -192,5 +203,6 @@ module.exports = {
   handleImageUpload,
   hasImage,
   getImageData,
+  getCardMapping,
   handleEditorTextChange
 }

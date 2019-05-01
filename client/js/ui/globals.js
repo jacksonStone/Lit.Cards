@@ -36,6 +36,14 @@ const lc = window.lc = {
   resetErrors: () => {
     lc.setData('errors', clone(defaultErrorObject), true)
   },
+  addDataListEntry (obj, data) {
+    const objs = lc.data[obj]
+    if (!objs) {
+      lc.data[obj] = [data]
+    } else {
+      objs.push(data)
+    }
+  },
   /**
    * @param key:  can be in  form "foo.bar"
    * @param value: Current value to set the data
@@ -62,17 +70,43 @@ const lc = window.lc = {
     }
   },
   _rerender: () => {
+    // mergeChangesIntoData()
     renderPage(lc._presentPage)
   },
   setPersistent (key, value) {
-    console.log('calling setPersistent', key, value)
-    // TODO:: Maybe add some stuff so that this saves locally right away and saves to server async
     lc.setData('changes.' + key, value, true)
     lc.setData('hasPersistentChanges', true, true)
+    lc.setData(key, value)
   }
 }
+
+// function mergeChangesIntoData () {
+//   const data = lc.data
+//   const changes = lc.data.changes
+//   const objsInData = Object.keys(data)
+//   for (let i = 0; i < objsInData.length; i++) {
+//     const key = objsInData[i]
+//     if (!changes[key]) continue
+//     const changeForObj = changes[key]
+//     const changesNotYetMerged = clone(changeForObj)
+//     // Merge changes to existing records
+//     for (let j = 0; j < data[key].length; j++) {
+//       const id = data[key][j].id
+//       if (changeForObj[id]) {
+//         data[key][j] = Object.assign({}, data[key][j], changesNotYetMerged[id])
+//         delete changesNotYetMerged[id]
+//       }
+//     }
+//     // Merge in new records
+//     for (let change in changesNotYetMerged) {
+//       data[key].push(changesNotYetMerged[change])
+//     }
+//   }
+//
+// }
 function renderPage (pageContentFunc) {
   render(appHeader(lc.getData('user')), document.querySelector('#app-header'))
+
   render(pageContentFunc(lc.data), document.querySelector('#main-content'))
 
   recordCurrentPage(pageContentFunc)
