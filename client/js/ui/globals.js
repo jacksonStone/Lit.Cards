@@ -23,11 +23,8 @@ const lc = window.lc = {
       if (!currentPiece) return currentPiece
       currentPiece = currentPiece[part]
     }
-    const value = currentPiece
-    if ((typeof value === 'object') && (value !== null)) {
-      return value
-    }
-    return value
+    // Do not clone this
+    return currentPiece
   },
   _willRerender: false,
   recordError: (path, error) => {
@@ -74,36 +71,24 @@ const lc = window.lc = {
     renderPage(lc._presentPage)
   },
   setPersistent (key, value) {
-    lc.setData('changes.' + key, value, true)
-    lc.setData('hasPersistentChanges', true, true)
+    lc.setData('changes.' + key, value)
+    lc.setData('hasPersistentChanges', true)
     lc.setData(key, value)
+  },
+  setDeleted (obj, id) {
+    const record = lc.data[obj][id]
+    delete lc.data[obj][id]
+    if (record.isNew) {
+      return // nothing to persist, hasn't been saved
+    }
+    const currentDeletions = lc.getData(`deletions.${obj}`) || []
+    currentDeletions.push(id)
+    lc.setData(`deletions.${obj}`, currentDeletions)
+    lc.setData('hasPersistentChanges', true)
+
   }
 }
 
-// function mergeChangesIntoData () {
-//   const data = lc.data
-//   const changes = lc.data.changes
-//   const objsInData = Object.keys(data)
-//   for (let i = 0; i < objsInData.length; i++) {
-//     const key = objsInData[i]
-//     if (!changes[key]) continue
-//     const changeForObj = changes[key]
-//     const changesNotYetMerged = clone(changeForObj)
-//     // Merge changes to existing records
-//     for (let j = 0; j < data[key].length; j++) {
-//       const id = data[key][j].id
-//       if (changeForObj[id]) {
-//         data[key][j] = Object.assign({}, data[key][j], changesNotYetMerged[id])
-//         delete changesNotYetMerged[id]
-//       }
-//     }
-//     // Merge in new records
-//     for (let change in changesNotYetMerged) {
-//       data[key].push(changesNotYetMerged[change])
-//     }
-//   }
-//
-// }
 function renderPage (pageContentFunc) {
   render(appHeader(lc.getData('user')), document.querySelector('#app-header'))
 

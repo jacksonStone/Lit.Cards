@@ -1,8 +1,12 @@
 const { html } = require('lit-html/lit-html')
 const { simulateKey } = require('abstract/keyboard')
+const { removeCard } = require('../helper')
 const { popupComponent, showPopup } = require('./card-image-popup')
 const spaceAction = () => {
   simulateKey('Space')
+}
+const newAction = () => {
+  simulateKey('KeyN')
 }
 const removeImageAction = () => {
   simulateKey('KeyR')
@@ -31,29 +35,43 @@ module.exports = (addImageAction, hasImage, showingAnswer) => {
               `}
               <div style="position:absolute; left: 50%;">
                 ${showingAnswer ? html`
-                   <div class="bg-secondary-vivid label-pill">ANSWER</div>
+                   <div class="bg-secondary label-pill">ANSWER</div>
                 ` : html`
-                   <div class="bg-primary-vivid label-pill">QUESTION</div>
+                   <div class="bg-primary label-pill">QUESTION</div>
                 `}
               </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : ''}"></div>
             <div style="text-align: center">
             <div class="grid-row">
-                 <div class="grid-col-2" style="text-align: center">  
-          
-                </div>
-                <div class="grid-col-8">
-                <button class="usa-button usa-button--outline flip-card"
-                        style="margin: 30px auto; min-width: 80%"
-                        @click=${spaceAction}>
-                    <div style="font-size: 22px">Flip</div><div style="font-size: 14px; margin-top: 5px">(press space)</div>
+                    <div class="grid-col-3">
+                    <button class="usa-button usa-button--outline"
+                        @click=${removeCard}
+                        style="
+                               color:#d83933;
+                               box-shadow: inset 0 0 0 2px #d83933;
+                        ">
+                    <div><i class="far fa-times-circle" aria-hidden="true">
+                    <span class="sr-only">Remove</span>
+                    </i>&nbsp;card</div>
                     </button>
+                    </div>
+                    <div class="grid-col-6">
+                     <button class="usa-button usa-button--primary flip-card"
+                        style=""
+                        @click=${spaceAction}>
+                    <div>Flip <span style="font-size: 14px; margin-top: 5px"> (space)</span></div>
+                    </button>
+                    </div>
+                    <div class="grid-col-3">
+                    <button class="usa-button usa-button--outline"
+                        @click=${newAction}
+                        style="">
+                    <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
+</i>&nbsp;card <span style="font-size: 14px; margin-top: 5px"> (n)</span></div>
+                    </button>
+                    </div>
                 </div>
-                    
-                  <div class="grid-col-2" style="text-align: center">
-                  </div>
                 </div>
-       
         </div>    
       </div>
 `

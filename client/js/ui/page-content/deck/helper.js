@@ -64,8 +64,21 @@ function nextCard () {
   _updateCardBody(newCard.id)
 }
 
-function previousCard () {
+function removeCard () {
   let index = _getCurrentCardIndex()
+  let id = _getCurrentCardId()
+  const cards = window.lc.getData('orderedCards')
+  cards.splice(index, 1)
+  window.lc.setDeleted('card', id)
+  window.lc.setDeleted('cardBody', id)
+  index--
+  const newCard = cards[((index + cards.length) % cards.length)]
+  window.lc.setData('activeCardId', newCard.id)
+  _updateCardBody(newCard.id)
+}
+
+function previousCard () {
+  index = _getCurrentCardIndex()
   const cards = window.lc.getData('orderedCards')
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
@@ -204,5 +217,6 @@ module.exports = {
   hasImage,
   getImageData,
   getCardMapping,
+  removeCard,
   handleEditorTextChange
 }
