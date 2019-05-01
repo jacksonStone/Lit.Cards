@@ -42,8 +42,8 @@ module.exports = (addImageAction, hasImage, showingAnswer) => {
               </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : ''}"></div>
             <div style="text-align: center">
-            <div class="grid-row">
-                    <div class="grid-col-3">
+            <div class="grid-row" style="margin-top:30px">
+                    <div class="grid-col-3" style="text-align: left">
                     <button class="usa-button usa-button--outline"
                         @click=${removeCard}
                         style="
@@ -52,22 +52,23 @@ module.exports = (addImageAction, hasImage, showingAnswer) => {
                         ">
                     <div><i class="far fa-times-circle" aria-hidden="true">
                     <span class="sr-only">Remove</span>
-                    </i>&nbsp;card</div>
+                    </i>&nbsp;&nbsp;card</div>
                     </button>
                     </div>
                     <div class="grid-col-6">
                      <button class="usa-button usa-button--primary flip-card"
                         style=""
-                        @click=${spaceAction}>
+                        @click=${spaceAction}
+                        style="margin-right:0">
                     <div>Flip <span style="font-size: 14px; margin-top: 5px"> (space)</span></div>
                     </button>
                     </div>
-                    <div class="grid-col-3">
+                    <div class="grid-col-3" style="text-align: right;">
                     <button class="usa-button usa-button--outline"
                         @click=${newAction}
-                        style="">
+                        style="margin-right:0">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
-</i>&nbsp;card <span style="font-size: 14px; margin-top: 5px"> (n)</span></div>
+</i>&nbsp;&nbsp;card </div>
                     </button>
                     </div>
                 </div>
