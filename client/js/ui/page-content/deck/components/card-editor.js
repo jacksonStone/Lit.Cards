@@ -8,7 +8,7 @@ const removeImageAction = () => {
   simulateKey('KeyR')
 }
 
-module.exports = (addImageAction, hasImage) => {
+module.exports = (addImageAction, hasImage, showingAnswer) => {
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}
@@ -28,8 +28,14 @@ module.exports = (addImageAction, hasImage) => {
                 <input @change=${addImageAction} type="file" name="upload" id="image-upload" accept="image/*" class="image-upload-input"/>
                 <label for="upload" class="image-upload-label usa-button usa-button--unstyled" >Add Image</label>
               </div>
-              
               `}
+              <div style="position:absolute; left: 50%;">
+                ${showingAnswer ? html`
+                   <div class="bg-secondary-vivid label-pill">ANSWER</div>
+                ` : html`
+                   <div class="bg-primary-vivid label-pill">QUESTION</div>
+                `}
+              </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : ''}"></div>
             <div style="text-align: center">
             <div class="grid-row">
