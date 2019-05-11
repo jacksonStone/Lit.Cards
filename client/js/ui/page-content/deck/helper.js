@@ -6,7 +6,7 @@ const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = 
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
   const largeImageSize = [600, 600]
-  const thumbnailSize = [60, 60]
+  const thumbnailSize = [120, 120]
   let imagePreview
   if (showingAnswer()) {
     const [largeImage] = await getImageAtDifferentSize(imageData, largeImageSize)
