@@ -35,17 +35,16 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
               `}
               <div style="position:absolute; left: 50%;">
                 ${showingAnswer ? html`
-                   <div class="bg-secondary label-pill">ANSWER</div>
+                   <div class="label-pill">ANSWER</div>
                 ` : html``}
               </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : 'size-' + currentfontSize}"></div>
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
-                    <button class="usa-button usa-button--outline"
+                    <button class="usa-button usa-button--outline remove-card"
                         @click=${removeCard}
                         style="
-                               color:#d83933;
                                box-shadow: none;
                                width:100%;
                                margin-right:0; 
@@ -63,7 +62,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
-                    <button class="usa-button usa-button--outline"
+                    <button class="usa-button usa-button--outline add-card"
                         @click=${newAction}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>

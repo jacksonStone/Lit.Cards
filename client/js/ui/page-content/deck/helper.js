@@ -184,7 +184,7 @@ function getCardMapping (cards) {
 }
 
 function addNewCard () {
-  const newId = generateNewId(16)
+  const newId = _generateNewId(16)
 
   const changeKeyCard = `card.${newId}`
   const changeKeyCardBody = `cardBody.${newId}`
@@ -195,10 +195,11 @@ function addNewCard () {
   window.lc.setPersistent(changeKeyCardBody, cardBody)
   window.lc.addDataListEntry('orderedCards', card)
   window.lc.setData('activeCardId', newId)
+  _flipToQuestionSide()
   _refreshEditor()
 }
 
-function generateNewId (length) {
+function _generateNewId (length) {
   const charArray = []
   const possibleValues = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
     'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -213,6 +214,7 @@ function _flipToQuestionSide () {
 }
 
 async function _updateCardBody (id) {
+  _flipToQuestionSide()
   const currentCardBody = window.lc.getData('cardBody.' + id)
   if (currentCardBody) {
     _refreshEditor()
@@ -220,7 +222,6 @@ async function _updateCardBody (id) {
   }
   const cardBody = await getCardBody(undefined, id)
   window.lc.setData('cardBody.' + id, cardBody)
-  _flipToQuestionSide()
   _refreshEditor()
 }
 function _refreshEditor () {
