@@ -1,6 +1,7 @@
-const { setEditorData } = require('abstract/editor')
+const { setEditorData, getFontSize, getTextOnly } = require('abstract/editor')
 const { getCardBody } = require('logic/cardBodies')
 const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
+const { runNextRender } = require('abstract/rendering-meta')
 
 // TODO::Make it so when you swap cards where the swapped to card has no image you make sure popup closes
 async function handleImageUpload (e) {
@@ -35,13 +36,65 @@ function setPersistentForCard (key, value) {
   const changeKey = `card.${cardId}.${key}`
   window.lc.setPersistent(changeKey, value)
 }
+function updateFontSizeIfNecessary (oldCardBody, newText) {
+  if (!oldCardBody) return
+  const ratioOfWatermarkBeforeDownsize = 1.3
+  if (showingAnswer()) {
+    if (getTextOnly(newText).length === 0) {
+      return setPersistentForCardBody('backFontSize', 1)
+    }
+
+    if (oldCardBody.backWatermark &&
+      (oldCardBody.backWatermark / newText.length > ratioOfWatermarkBeforeDownsize) &&
+      oldCardBody.backFontSize > 1) {
+      // Reset watermark
+      setPersistentForCardBody('frontWatermark', newText.length)
+      return setPersistentForCardBody('backFontSize', oldCardBody.backFontSize - 1)
+    }
+    const newFontSize = getFontSize(oldCardBody.backFontSize || 1)
+    if (newFontSize !== oldCardBody.backFontSize) {
+      setPersistentForCardBody('backFontSize', newFontSize)
+    }
+  } else {
+    if (getTextOnly(newText).length === 0) {
+      return setPersistentForCardBody('frontFontSize', 1)
+    }
+    if (oldCardBody.frontWatermark &&
+      oldCardBody.frontWatermark / newText.length > ratioOfWatermarkBeforeDownsize &&
+      oldCardBody.frontFontSize > 1) {
+      // Reset watermark
+      setPersistentForCardBody('frontWatermark', newText.length)
+      return setPersistentForCardBody('frontFontSize', oldCardBody.frontFontSize - 1)
+    }
+    const newFontSize = getFontSize(oldCardBody.frontFontSize || 1)
+    if (newFontSize !== oldCardBody.frontFontSize) {
+      setPersistentForCardBody('frontFontSize', newFontSize)
+    }
+  }
+}
+function getPresentFontSize () {
+  const cardBody = _getCurrentCardBody()
+  if (!cardBody) return 1
+  if (showingAnswer()) {
+    return cardBody.backFontSize
+  }
+  return cardBody.frontFontSize
+}
 
 function handleEditorTextChange (newText) {
-  // TODO:: Handle text resize
-  // TODO:: Store things for CMD+Z
   console.log(arguments)
+  const oldCardBody = JSON.parse(JSON.stringify(_getCurrentCardBody()))
+  runNextRender(() => {
+    updateFontSizeIfNecessary(oldCardBody, newText)
+  })
   if (showingAnswer()) {
+    if (newText.length > (oldCardBody.backWatermark || 0)) {
+      setPersistentForCardBody('backWatermark', newText.length)
+    }
     return setPersistentForCardBody('back', newText)
+  }
+  if (newText.length > (oldCardBody.frontWatermark || 0)) {
+    setPersistentForCardBody('frontWatermark', newText.length)
   }
   setPersistentForCardBody('front', newText)
 }
@@ -78,7 +131,7 @@ function removeCard () {
 }
 
 function previousCard () {
-  index = _getCurrentCardIndex()
+  let index = _getCurrentCardIndex()
   const cards = window.lc.getData('orderedCards')
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
@@ -218,5 +271,6 @@ module.exports = {
   getImageData,
   getCardMapping,
   removeCard,
-  handleEditorTextChange
+  handleEditorTextChange,
+  getPresentFontSize
 }

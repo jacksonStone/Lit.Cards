@@ -12,7 +12,7 @@ const removeImageAction = () => {
   simulateKey('KeyR')
 }
 
-module.exports = (addImageAction, hasImage, showingAnswer) => {
+module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}
@@ -36,11 +36,9 @@ module.exports = (addImageAction, hasImage, showingAnswer) => {
               <div style="position:absolute; left: 50%;">
                 ${showingAnswer ? html`
                    <div class="bg-secondary label-pill">ANSWER</div>
-                ` : html`
-                   <div class="bg-primary label-pill">QUESTION</div>
-                `}
+                ` : html``}
               </div>
-            <div id="editor" class="pell ${hasImage ? 'has-image-editor' : ''}"></div>
+            <div id="editor" class="pell ${hasImage ? 'has-image-editor' : 'size-' + currentfontSize}"></div>
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:30px">
                     <div class="grid-col-3" style="text-align: left">
