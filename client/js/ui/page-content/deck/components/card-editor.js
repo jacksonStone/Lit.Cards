@@ -40,13 +40,15 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
               </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : 'size-' + currentfontSize}"></div>
             <div style="text-align: center">
-            <div class="grid-row" style="margin-top:30px">
+            <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
                     <button class="usa-button usa-button--outline"
                         @click=${removeCard}
                         style="
                                color:#d83933;
-                               box-shadow: inset 0 0 0 2px #d83933;
+                               box-shadow: none;
+                               width:100%;
+                               margin-right:0; 
                         ">
                     <div><i class="far fa-times-circle" aria-hidden="true">
                     <span class="sr-only">Remove</span>
@@ -55,16 +57,15 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     </div>
                     <div class="grid-col-6">
                      <button class="usa-button usa-button--primary flip-card"
-                        style=""
                         @click=${spaceAction}
-                        style="margin-right:0">
+                        style="margin-right:0; width:100%;">
                     <div>Flip <span style="font-size: 14px; margin-top: 5px"> (space)</span></div>
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
                     <button class="usa-button usa-button--outline"
                         @click=${newAction}
-                        style="margin-right:0">
+                        style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
 </i>&nbsp;&nbsp;card </div>
                     </button>
