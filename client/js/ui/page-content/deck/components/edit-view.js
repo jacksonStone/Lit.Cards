@@ -7,6 +7,16 @@ module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) =>
   <div class="grid-container">
         <div class="grid-row">
         <div class="grid-col-3">
+            <div style="    margin-right: 40px;">
+             <label class="usa-label usa-sr-only" for="input-type-text">Text input label</label>
+<!--             Add real value here-->
+            <input class="usa-input" id="input-type-text" name="input-type-text" type="text" value="myDeck" style="
+                margin-top:0;
+                font-size:20px;
+                border-color:rgba(10, 10, 10, 0.1);
+                border-bottom:none;
+            "/>
+</div>
             
             ${sidenav()}
         </div>

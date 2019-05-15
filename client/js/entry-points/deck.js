@@ -9,7 +9,7 @@ const { getCardBody, getCardBodyForEmptyState } = require('logic/cardBodies')
 renderPage(content)
 ;(async () => {
   // TODO:: User info should determine if in dark mode or not
-  setDarkMode(true)
+  // setDarkMode(true)
   let [user, cards, cardBody] = await Promise.all([fetchUser(), getCards(), getCardBody()])
   if (!cards || !cardBody) {
     const newId = window.lc.generateNewId()
