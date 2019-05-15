@@ -4,13 +4,18 @@ const { handleEditorTextChange, getCardMapping } = require('../ui/page-content/d
 const { initEditor } = require('abstract/editor')
 const { setDarkMode } = require('abstract/darkmode')
 const { fetchUser } = require('logic/getUser')
-const { getCards } = require('logic/cards')
-const { getCardBody } = require('logic/cardBodies')
+const { getCards, getCardsForEmptyState } = require('logic/cards')
+const { getCardBody, getCardBodyForEmptyState } = require('logic/cardBodies')
 renderPage(content)
 ;(async () => {
   // TODO:: User info should determine if in dark mode or not
   setDarkMode(true)
-  const [user, cards, cardBody] = await Promise.all([fetchUser(), getCards(), getCardBody()])
+  let [user, cards, cardBody] = await Promise.all([fetchUser(), getCards(), getCardBody()])
+  if (!cards || !cardBody) {
+    const newId = window.lc.generateNewId()
+    cardBody = getCardBodyForEmptyState(newId)
+    cards = getCardsForEmptyState(newId)
+  }
   const firstCardId = (cards && cards.length && cards[0].id) || undefined
   window.lc.setData('orderedCards', cards)
   window.lc.setData('activeCardId', firstCardId)

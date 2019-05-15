@@ -6,6 +6,13 @@ exports.getCards = async () => {
   return JSON.parse(await getCards(deck))
 }
 
+exports.getCardsForEmptyState = (newId) => {
+  const emptyValue = { id: newId, isNew: true }
+  // Record we made this on the fly
+  window.lc.setData(`changes.card.${newId}`, emptyValue)
+  return [emptyValue]
+}
+
 exports.createCard = (deckName, body) => {
   return createCard(deckName, body)
 }

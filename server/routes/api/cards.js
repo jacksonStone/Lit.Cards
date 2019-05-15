@@ -18,7 +18,7 @@ router.get('/me', async (req, res) => {
   if (!deck) return code.invalidRequest(res)
   const cards = await getCards(req.userId, deck)
   if (!cards || !cards.length) {
-    res.send([])
+    return res.send([])
   }
   const trimmedCards = cards.map(card => {
     delete card.userId

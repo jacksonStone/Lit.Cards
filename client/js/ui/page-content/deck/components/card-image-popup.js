@@ -30,7 +30,6 @@ const popupComponent = () => {
     top: 0;
     left: 0;
     z-index: 1;
-    background-color: rgba(240,240,240,.9);
     "
     @click=${_hidePopup}
     >

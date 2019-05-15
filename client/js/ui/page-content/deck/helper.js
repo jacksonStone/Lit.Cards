@@ -184,7 +184,7 @@ function getCardMapping (cards) {
 }
 
 function addNewCard () {
-  const newId = _generateNewId(16)
+  const newId = window.lc.generateNewId()
 
   const changeKeyCard = `card.${newId}`
   const changeKeyCardBody = `cardBody.${newId}`

@@ -6,9 +6,21 @@ exports.getCardBody = async (deck, card) => {
     deck = getParam('deck')
   }
   if (!cachedCardBodies[`${deck}:${card}`]) {
-    cachedCardBodies[`${deck}:${card}`] = JSON.parse(await getCardBody(deck, card))
+    const cardData = await getCardBody(deck, card)
+    try {
+      cachedCardBodies[`${deck}:${card}`] = JSON.parse(cardData)
+    } catch (e) {
+      return
+    }
   }
   return JSON.parse(JSON.stringify(cachedCardBodies[`${deck}:${card}`]))
+}
+
+exports.getCardBodyForEmptyState = (newId) => {
+  const emptyValue = { id: newId, isNew: true, front: '', back: '' }
+  // Record we made this on the fly
+  window.lc.setData(`changes.cardBody.${newId}`, emptyValue)
+  return emptyValue
 }
 
 exports.persistCardBodyChange = (cardBody, key, value) => {
@@ -25,8 +37,3 @@ exports.mergeCardBodyWithChanges = (cardBody) => {
 function getCardBodyChangeId (cardBody) {
   return `changes.cardBody.${cardBody.id}`
 }
-
-//
-// exports.createCard = (deckName, body) => {
-//   return createCard(deckName, body)
-// }

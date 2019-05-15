@@ -21,14 +21,14 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                 id="image-spot" class="usa-button usa-button--outline"
                 @click=${showPopup}></div>
               ${hasImage ? html`
-                <button style="position: absolute; top: 208px; right: 49px;"
+                <button style="position: absolute; top: 208px; right: 10px;"
                     class="usa-button usa-button--unstyled" id="remove-image-from-card"
                     @click=${removeImageAction}>
                 <i class="far fa-times-circle" aria-hidden="true"></i>
                 Remove image
                 </button>` : html`
               
-               <div class="upload-container" style="position: absolute;top: 5px;right: 50px;">
+               <div class="upload-container" style="position: absolute;top: 5px;right: 10px;">
                 <input @change=${addImageAction} type="file" name="upload" id="image-upload" accept="image/*" class="image-upload-input"/>
                 <label for="upload" class="image-upload-label usa-button usa-button--unstyled" >Add Image</label>
               </div>

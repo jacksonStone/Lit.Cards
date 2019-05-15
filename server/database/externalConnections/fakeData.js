@@ -8,22 +8,22 @@ let fakeData = {
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57'
   }],
   card: [
-    { userId: 'jackson@someemail.com', deck: 'myDeck', summary: 'the is a preview summary of the card content', id: 'fe' },
-    { userId: 'jackson@someemail.com', deck: 'myDeck', summary: 'the is a preview summary of the card content', id: 'fo' },
-    { userId: 'jackson@someemail.com', deck: 'myDeck', summary: 'the is a preview summary of the card content', id: 'fi' },
-    { userId: 'jackson@someemail.com', deck: 'myDeck', summary: 'the is a preview summary of the card content', id: 'fum' }
+    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fe' },
+    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fo' },
+    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fi' },
+    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fum' }
   ],
   cardBody: [
-    { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 1', back: 'This is the back of card 1', id: 'fe' },
-    { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 2', back: 'This is the back of card 2', id: 'fo' },
-    { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 3', back: 'This is the back of card 3', id: 'fi' },
-    { userId: 'jackson@someemail.com', deck: 'myDeck', front: 'This is the front of card 4', back: 'This is the back of card 4', id: 'fum' }
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 1', back: 'This is the back of card 1', id: 'fe' },
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 2', back: 'This is the back of card 2', id: 'fo' },
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 3', back: 'This is the back of card 3', id: 'fi' },
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 4', back: 'This is the back of card 4', id: 'fum' }
   ],
   deck: [
-    { userId: 'jackson@someemail.com', name: 'myDeck', cardCount: 2, date: Date.now() },
-    { userId: 'jackson@someemail.com', name: 'Second study session', cardCount: 42, date: Date.now() },
-    { userId: 'jackson@someemail.com', name: 'THIRD study session', cardCount: 122, date: Date.now() },
-    { userId: 'jackson@someemail.com', name: 'Fourth study session', cardCount: 700, date: Date.now() }
+    { userId: 'jackson@someemail.com', name: 'myDeck', cardCount: 2, date: Date.now(), id: 'foo' },
+    { userId: 'jackson@someemail.com', name: 'Second study session', cardCount: 42, date: Date.now(), id: 'fee' },
+    { userId: 'jackson@someemail.com', name: 'THIRD study session', cardCount: 122, date: Date.now(), id: 'fii' },
+    { userId: 'jackson@someemail.com', name: 'Fourth study session', cardCount: 700, date: Date.now(), id: 'fum' }
   ]
 
 }

@@ -2,8 +2,25 @@ const { html } = require('lit-html/lit-html')
 const { navigateToDeckPage } = require('logic/deck')
 // Keep  this in sync with col-n below
 const numPerRow = 3
-
+function addDeckCard() {
+  return html`<div class="mobile-lg:grid-col-4">
+        <button class="usa-button deck-card-outline deck-selection"
+        style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              "
+         @click=${() => { console.log('clicked') }}
+        >
+  
+        <i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">Add new</span>
+</i>&nbsp;&nbsp;Deck </button>
+    </div>`
+}
 function deckPreview (deck) {
+  if (deck.addDeck) {
+    return addDeckCard()
+  }
   return html`
     <div class="mobile-lg:grid-col-4">
            <div style="position:relative">
@@ -15,7 +32,7 @@ function deckPreview (deck) {
               top: 0;
               left: 0;
               "
-         @click=${() => { navigateToDeckPage(deck.name) }}
+         @click=${() => { navigateToDeckPage(deck.id) }}
         >
      
             <span style="
@@ -79,10 +96,11 @@ function makeBackgroundCards (startingTop, startingLeft, cardCount) {
 }
 
 function deckRow (decks) {
-  return html`<div class="grid-row" style="margin-bottom: 20px">${decks.map(deckPreview)}</div>`
+  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map(deckPreview)}</div>`
 }
 
 function deckRows (allDecks) {
+  allDecks = [...allDecks, { addDeck: true }]
   const rows = []
   for (let i = 0; i < allDecks.length; i = i + numPerRow) {
     rows.push(deckRow(allDecks.slice(i, i + numPerRow)))
