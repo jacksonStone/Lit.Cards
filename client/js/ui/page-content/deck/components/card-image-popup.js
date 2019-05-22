@@ -37,7 +37,6 @@ const popupComponent = () => {
     position: fixed;
     width: 600px;
     height: 600px;
-    position: fixed;
     top: 50%;
     left: 50%;
     margin-top: -300px;

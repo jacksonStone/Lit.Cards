@@ -209,6 +209,10 @@ function _generateNewId (length) {
   return charArray.join('')
 }
 
+function updateDeckName(name) {
+
+}
+
 function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
 }

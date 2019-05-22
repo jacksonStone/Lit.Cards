@@ -1,6 +1,6 @@
 const { $ } = require('./$')
-
-function setDarkMode (shouldBeDark) {
+const { get, set } = require('abstract/browser-storage')
+function _setDarkMode (shouldBeDark) {
   if (shouldBeDark) {
     $('html').className = 'darkmode'
     $('body').className = 'darkmode'
@@ -10,6 +10,15 @@ function setDarkMode (shouldBeDark) {
   }
 }
 
+function defaultDarkMode () {
+  _setDarkMode(get('darkmode') === 'true')
+}
+
+function recordAndSetDarkMode (value) {
+  set('darkmode', value)
+  _setDarkMode(value)
+}
 module.exports = {
-  setDarkMode
+  recordAndSetDarkMode,
+  defaultDarkMode
 }

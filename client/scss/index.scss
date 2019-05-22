@@ -236,5 +236,14 @@ body {
   .usa-logo a {
     color: #555
   }
-
+  .site-sidenav{
+    border-color: #555;
+  }
+  .usa-sidenav__item {
+    border-color: #555;
+  }
+  .usa-sidenav__item a:hover{
+    background-color: #161616;
+    color: rgb(0, 94, 162, .8);
+  }
 }

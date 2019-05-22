@@ -7,7 +7,12 @@ async function getDecks (userId) {
   }
   return decks
 }
+// TODO Repurpose to allow public  decks without user
+async function getDeck (userId, deckId) {
+  return Deck.getDeck(userId, deckId)
+}
 
 module.exports = {
-  getDecks
+  getDecks,
+  getDeck
 }

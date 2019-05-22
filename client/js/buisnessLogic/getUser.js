@@ -1,4 +1,5 @@
 const { getUserDetails } = require('api/getUserDetails')
+const { recordAndSetDarkMode } = require('abstract/darkmode')
 let userDetails
 
 async function fetchUser () {
@@ -9,6 +10,7 @@ async function fetchUser () {
   } catch (e) {
     return userDetailsUnformatted
   }
+  recordAndSetDarkMode(userDetails.darkMode)
   return userDetails
 }
 

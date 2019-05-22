@@ -22,9 +22,9 @@ app.get('/', function (req, res) {
 })
 app.use('/api', routes.api)
 app.use('/site', routes.siteNavigation)
-app.use('/uswds', express.static(path.join(ROOT, 'node_modules/uswds')))
-app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts')))
-app.use('/fonts', express.static(path.join(ROOT, 'client/fonts')))
+app.use('/uswds', express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: 1000 * 60 * 60 * 24 }))
+app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 1000 * 60 * 60 * 24 * 360 }))
+app.use('/fonts', express.static(path.join(ROOT, 'client/fonts'), { maxAge: 1000 * 60 * 60 * 24 * 360 }))
 app.use(express.static(path.join(ROOT, '/client/dist')))
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

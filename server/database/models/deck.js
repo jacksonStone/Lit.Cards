@@ -6,6 +6,13 @@ async function getDecks (userId) {
   const results = await db.getRecord(tableName, { userId })
   return results || []
 }
+async function getDeck (userId, deck) {
+  const results = await db.getRecord(tableName, { userId, id: deck })
+  if (results && results.length) {
+    return results[0]
+  }
+  return {}
+}
 
 async function deckExists (userId, name) {
   const results = await db.getRecord(tableName, { userId, name })
@@ -28,6 +35,7 @@ async function createDeck (userId, name) {
 
 module.exports = {
   getDecks,
+  getDeck,
   deckExists,
   createDeck
 }

@@ -5,7 +5,7 @@ exports.getDecks = () => {
 }
 
 exports.getDeck = (id) => {
-  return api(`decks/me/${id}`)
+  return api(`decks/${id}`)
 }
 
 exports.createDeck = (name) => {
