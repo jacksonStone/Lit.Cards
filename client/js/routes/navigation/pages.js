@@ -40,3 +40,7 @@ exports.decks = setUpRoute('me/decks')
 exports.deck = setUpRoute('me/deck')
 exports.login = setUpRoute('login')
 exports.signup = setUpRoute('signup')
+
+exports.getDeckRoute = (id) => {
+  return `/site/me/deck?deck=${id}`
+}

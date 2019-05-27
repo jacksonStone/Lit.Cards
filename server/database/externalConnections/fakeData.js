@@ -6,7 +6,7 @@ let fakeData = {
     userId: 'jackson@someemail.com',
     password: 'X0VIy9vshnkFZVZO8tLB4Uod5JDREmf1eIh9qIP6KR0=',
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57',
-    darkMode: true
+    darkMode: false
   }],
   card: [
     { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fe' },
@@ -60,6 +60,12 @@ async function setRecord (table, values) {
   return values
 }
 
+async function unsetRecord (table, values) {
+  const tableData = fakeData[table]
+  if (!tableData) return
+  fakeData[table] = _.reject(tableData, values)
+}
+
 // For testing
 function setFakeData (newFakeData) {
   fakeData = newFakeData
@@ -69,4 +75,4 @@ function resetData () {
   fakeData = fakeDataBackup
 }
 
-module.exports = { getRecord, setRecord, setFakeData, resetData }
+module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord }

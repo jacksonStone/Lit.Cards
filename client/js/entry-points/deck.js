@@ -11,13 +11,16 @@ const { getDeck } = require('logic/deck')
 ;(async () => {
   // TODO:: User info should determine if in dark mode or not
   defaultDarkMode()
-  let [user, cards, cardBody, deck] = await Promise.all([fetchUser(), getCards(), getCardBody(), getDeck()])
+  let [user, cards, deck] = await Promise.all([fetchUser(), getCards(), getDeck()])
+  // TODO::Could do this in one pass, sever can figure out first card
+  let firstCardId = (cards && cards.length && cards[0].id) || undefined
+  let cardBody = await getCardBody(undefined, firstCardId)
   if (!cards || !cardBody) {
     const newId = window.lc.generateNewId()
+    firstCardId = newId
     cardBody = getCardBodyForEmptyState(newId)
     cards = getCardsForEmptyState(newId)
   }
-  const firstCardId = (cards && cards.length && cards[0].id) || undefined
   window.lc.setData('orderedCards', cards)
   window.lc.setData('deck', deck)
   window.lc.setData('activeCardId', firstCardId)

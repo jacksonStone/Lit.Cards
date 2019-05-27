@@ -11,3 +11,6 @@ exports.getDeck = (id) => {
 exports.createDeck = (name) => {
   return api('decks/create', { name })
 }
+exports.deleteDeck = (id) => {
+  return api('decks/delete', { id })
+}

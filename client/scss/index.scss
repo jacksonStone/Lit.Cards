@@ -35,7 +35,7 @@ body {
   height:150px;
 }
 .spacing {
-  margin-top: 150px;
+  margin-top: 170px;
 }
 .remove-button {
   width: 20px;
@@ -46,6 +46,9 @@ body {
   left: 73%;
   color: rgb(216, 57, 51);
   //color: red
+}
+.study-button {
+  font-size: 14px;
 }
 @media (max-width: 750px) {
   .remove-button {
@@ -66,13 +69,6 @@ body {
 .remove-button:hover{
   color: rgb(216, 57, 51);
 }
-
-.deck-selection:hover{
-  color:#2e2e2e;
-  background:#fafafa;
-  border: #ddd 1px solid;
-}
-
 //.card-editor {
 //  margin-top: 30px;
 //}

@@ -2,6 +2,9 @@ const { getCardBody } = require('api/cardBodies')
 const { getParam } = require('abstract/url')
 const cachedCardBodies = {}
 exports.getCardBody = async (deck, card) => {
+  if (!card) {
+    return
+  }
   if (!deck) {
     deck = getParam('deck')
   }

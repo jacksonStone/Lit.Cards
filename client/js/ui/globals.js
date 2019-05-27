@@ -1,5 +1,6 @@
 require('uswds')
 const { render } = require('lit-html/lit-html')
+const { generateId } = require('../../../shared/id-generator')
 const appHeader = require('component/app-header')
 const defaultErrorObject = {
   fields: {},
@@ -11,15 +12,7 @@ const clone = (obj) => {
 const lc = window.lc = {
   test: false,
   testRoutes: [],
-  generateNewId: (length = 16) => {
-    const charArray = []
-    const possibleValues = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-      'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    for (let i = 0; i < length; i++) {
-      charArray.push(possibleValues[((Math.random() * possibleValues.length) | 0)])
-    }
-    return charArray.join('')
-  },
+  generateNewId: generateId,
   _presentPage: () => {},
   data: {
     errors: clone(defaultErrorObject),

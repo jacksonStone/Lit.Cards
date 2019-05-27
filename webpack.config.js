@@ -19,6 +19,7 @@ module.exports = {
       'logic': path.join(__dirname, 'client/js/buisnessLogic'),
       'api': path.join(__dirname, 'client/js/routes/api'),
       'site': path.join(__dirname, 'client/js/routes/navigation'),
+      'utils': path.join(__dirname, 'client/js/utils'),
       'component': path.join(__dirname, 'client/js/ui/shared-components'),
       'abstract': path.join(__dirname, 'client/js/browserAbstractions')
     }

@@ -1,7 +1,7 @@
 const db = require('../externalConnections/fakeData')
 const tableName = 'deck'
 const { userExists } = require('./user')
-
+const { generateId } = require('../../../shared/id-generator')
 async function getDecks (userId) {
   const results = await db.getRecord(tableName, { userId })
   return results || []
@@ -21,21 +21,27 @@ async function deckExists (userId, name) {
 
 async function createDeck (userId, name) {
   if (!userId || !name) return
-
-  // Prevent conflict
-  const currentDeck = await deckExists(userId, name)
-  if (currentDeck) return
-
   // Required
   const currentUser = await userExists(userId)
   if (!currentUser) return
+  const id = generateId()
+  const dateMade = Date.now()
+  const cardCount = 0
+  return db.setRecord(tableName, { userId, name, id, date: dateMade, cardCount })
+}
 
-  return db.setRecord(tableName, { userId, name })
+async function deleteDeck (userId, id) {
+  if (!userId || !id) return
+  // Required
+  const currentUser = await userExists(userId)
+  if (!currentUser) return
+  return db.unsetRecord(tableName, { userId, id })
 }
 
 module.exports = {
   getDecks,
   getDeck,
+  deleteDeck,
   deckExists,
   createDeck
 }
