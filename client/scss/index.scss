@@ -50,6 +50,11 @@ body {
 .study-button {
   font-size: 14px;
 }
+.deck-selection:hover{
+  color:#2e2e2e;
+  background:#fafafa;
+  border: #ddd 1px solid;
+}
 @media (max-width: 750px) {
   .remove-button {
     left: 71%
@@ -179,6 +184,9 @@ body {
 }
 
 .remove-card {
+  color:#d83933;
+}
+.remove-card:hover {
   color:#d83933;
 }
 .darkmode {

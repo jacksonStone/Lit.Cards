@@ -1,6 +1,6 @@
+// TODO:: STUDY
 const { html } = require('lit-html/lit-html')
 const { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck')
-const { createStudySession } = require('logic/study')
 // Keep numPerRow in sync with col-n below
 const numPerRow = 3
 function addDeckCard () {
@@ -11,12 +11,15 @@ function addDeckCard () {
               top: 0;
               left: 0;
               "
-         @click=${createDeck}
+         @click=${createNewDeckBtn}
         >
   
         <i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">Add new</span>
 </i>&nbsp;&nbsp;Deck </button>
     </div>`
+}
+function createNewDeckBtn (e) {
+  createDeck()
 }
 function deleteDeckBtn (id) {
   if (window.confirm('Are you sure you want to delete this deck?')) {
@@ -33,7 +36,7 @@ function deckPreview (deck) {
            <div style="position:relative">
            ${makeBackgroundCards(0, 0, deck.cardCount)}
            
-        <div class=" deck-card-outline"
+        <div class=" deck-card-outline deck-selection"
         style="
               position: absolute;
               top: 0;
@@ -69,7 +72,7 @@ function deckPreview (deck) {
             >Edit</button>
             <div style="position: absolute; top:  175px; right: 60px;">
             <button
-            @click=${() => { createStudySession(deck.id) }} 
+            @click=${() => { console.log('study') }} 
             class="usa-button">
                 Study
             </button>

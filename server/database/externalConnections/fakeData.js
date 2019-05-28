@@ -8,11 +8,14 @@ let fakeData = {
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57',
     darkMode: false
   }],
+  studySession: [
+    { userId: 'jackson@someemail.com', studyState: 'RW_M', currentCard: 2, deck: 'foo', id: 'fee' }
+  ],
   card: [
-    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fe' },
-    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fo' },
-    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fi' },
-    { userId: 'jackson@someemail.com', deck: 'foo', summary: 'the is a preview summary of the card content', id: 'fum' }
+    { userId: 'jackson@someemail.com', deck: 'foo', id: 'fe' },
+    { userId: 'jackson@someemail.com', deck: 'foo', id: 'fo' },
+    { userId: 'jackson@someemail.com', deck: 'foo', id: 'fi' },
+    { userId: 'jackson@someemail.com', deck: 'foo', id: 'fum' }
   ],
   cardBody: [
     { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 1', back: 'This is the back of card 1', id: 'fe' },

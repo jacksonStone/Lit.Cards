@@ -38,9 +38,6 @@ exports.landingPage = landingPage
 exports.home = setUpRoute('me')
 exports.decks = setUpRoute('me/decks')
 exports.deck = setUpRoute('me/deck')
+exports.study = setUpRoute('me/study')
 exports.login = setUpRoute('login')
 exports.signup = setUpRoute('signup')
-
-exports.getDeckRoute = (id) => {
-  return `/site/me/deck?deck=${id}`
-}

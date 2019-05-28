@@ -1,13 +1,10 @@
-const { deck: deckPage, getDeckRoute } = require('site/pages')
+const { deck: deckPage } = require('site/pages')
 const { getParam } = require('abstract/url')
 const { getDeck, createDeck, deleteDeck } = require('api/decks')
 const { reject } = require('utils')
 
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
-}
-exports.getDeckPageURL = (id) => {
-  return getDeckRoute(id)
 }
 exports.navigateToDeckPage = navigateToDeckPage
 exports.getDeck = async (deckId) => {

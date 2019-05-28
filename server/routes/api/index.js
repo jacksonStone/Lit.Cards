@@ -7,6 +7,7 @@ router.use('/user', require('./user'))
 router.use('/signup', require('./signup'))
 router.use('/cards', require('./cards'))
 router.use('/decks', require('./decks'))
+router.use('/study', require('./study'))
 router.use('/card-body', require('./cardBodies'))
 
 module.exports = router

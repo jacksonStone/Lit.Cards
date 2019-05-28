@@ -13,5 +13,6 @@ router.get('/', (_, res) => {
 
 router.use('/decks', require('./decks'))
 router.use('/deck', require('./deck'))
+router.use('/study', require('./study'))
 
 module.exports = router
