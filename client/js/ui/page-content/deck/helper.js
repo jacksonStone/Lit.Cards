@@ -164,11 +164,13 @@ function removeImage () {
 
 function hasImage () {
   let hasImage
+  debugger
   if (showingAnswer()) {
     hasImage = window.lc.getData(`cardBody.${_getCurrentCardId()}.backHasImage`)
   } else {
     hasImage = window.lc.getData(`cardBody.${_getCurrentCardId()}.frontHasImage`)
   }
+  debugger
   return hasImage || false
 }
 
@@ -199,16 +201,6 @@ function addNewCard () {
   _refreshEditor()
 }
 
-function _generateNewId (length) {
-  const charArray = []
-  const possibleValues = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-  for (let i = 0; i < length; i++) {
-    charArray.push(possibleValues[((Math.random() * possibleValues.length) | 0)])
-  }
-  return charArray.join('')
-}
-
 function updateDeckName(name) {
 
 }
@@ -230,7 +222,7 @@ async function _updateCardBody (id) {
 }
 function _refreshEditor () {
   if (hasImage()) {
-    renderPreviewImageWithRawData(getImageData(), 'image-spot')
+    renderPreviewImageWithRawData(getImageData())
   }
   _updateEditorData()
 }

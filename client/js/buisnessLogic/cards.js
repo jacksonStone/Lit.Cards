@@ -1,8 +1,8 @@
 const { getCards, createCard } = require('api/cards')
 const { getParam } = require('abstract/url')
 
-exports.getCards = async () => {
-  const deck = getParam('deck')
+exports.getCards = async (deck) => {
+  deck = deck || getParam('deck')
   return JSON.parse(await getCards(deck))
 }
 

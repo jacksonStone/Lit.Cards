@@ -6,10 +6,10 @@ function badInput (response) {
   return response === 'Bad Request'
 }
 
-function unathorized (response) {
-  return response === 'Unathorized'
+function unauthorized (response) {
+  return response === 'unauthorized'
 }
 
 exports.ok = ok
 exports.badInput = badInput
-exports.unathorized = unathorized
+exports.unauthorized = unauthorized

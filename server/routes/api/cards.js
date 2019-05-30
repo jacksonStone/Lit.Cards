@@ -6,7 +6,7 @@ const code = require('../../nodeAbstractions/responseCodes')
 
 router.post('/create', async (req, res) => {
   if (!req.body) return code.invalidRequest(res)
-  if (!req.userId) return code.unathorized(res)
+  if (!req.userId) return code.unauthorized(res)
   if (!req.body.deck) return code.invalidRequest(res)
   if (!req.body.content) return code.invalidRequest(res)
   await addCard(req.userId, req.body.deck, req.body.content)

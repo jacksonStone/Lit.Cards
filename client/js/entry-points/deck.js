@@ -8,6 +8,9 @@ const { fetchUser } = require('logic/getUser')
 const { getCards, getCardsForEmptyState } = require('logic/cards')
 const { getCardBody, getCardBodyForEmptyState } = require('logic/cardBodies')
 const { getDeck } = require('logic/deck')
+// TODO::Consider pulling this from a URL
+const { renderPreviewImageWithRawData } = require('abstract/file-upload')
+
 ;(async () => {
   // TODO:: User info should determine if in dark mode or not
   defaultDarkMode()
@@ -30,6 +33,9 @@ const { getDeck } = require('logic/deck')
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
   runNextRender(() => {
     initEditor(cardBody.front, handleEditorTextChange)
+    if (cardBody.frontHasImage) {
+      renderPreviewImageWithRawData(cardBody.frontImage)
+    }
   })
   renderPage(content)
 })()

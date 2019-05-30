@@ -54,7 +54,7 @@ async function getImageAtDifferentSize (imageData, ...sizes) {
   })
 }
 
-function renderPreviewImageWithRawData (data, targetId) {
+function renderPreviewImageWithRawData (data, targetId = 'image-spot') {
   window.document
     .getElementById(targetId)
     .setAttribute('style', `background-image:url(${data}); `)
