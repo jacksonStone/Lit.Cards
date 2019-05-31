@@ -7,5 +7,5 @@ function set (key, value) {
 
 module.exports = {
   get,
-  set,
+  set
 }

@@ -197,11 +197,9 @@ function addNewCard () {
   _flipToQuestionSide()
   _refreshEditor()
 }
-
-function updateDeckName(name) {
-
-}
-
+// function updateDeckName (name) {
+//
+// }
 function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
 }

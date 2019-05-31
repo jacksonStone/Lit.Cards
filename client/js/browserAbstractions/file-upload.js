@@ -47,7 +47,7 @@ async function getImageAtDifferentSize (imageData, ...sizes) {
         canvasElement.width = width
         canvasElement.height = height
         ctx.drawImage(img, 0, 0, width, height)
-        results.push(canvasElement.toDataURL('image/jpeg' ,0.9))
+        results.push(canvasElement.toDataURL('image/jpeg', 0.9))
       }
       resolve(results)
     }

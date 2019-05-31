@@ -87,7 +87,6 @@ const lc = window.lc = {
     currentDeletions.push(id)
     lc.setData(`deletions.${obj}`, currentDeletions)
     lc.setData('hasPersistentChanges', true)
-
   }
 }
 

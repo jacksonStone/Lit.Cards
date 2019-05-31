@@ -41,7 +41,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                     <div class="grid-col-3" style="text-align: right;">
 
                     ${showingAnswer ? html`<button class="usa-button usa-button--outline add-card"
-                        @click=${()=>{console.log('Mark Right')}}
+                        @click=${() => { console.log('Mark Right') }}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-check-circle" aria-hidden="true"><span class="sr-only">Mark Correct</span>
                         </i>&nbsp;&nbsp;Right </div>

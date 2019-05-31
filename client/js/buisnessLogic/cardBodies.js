@@ -26,7 +26,6 @@ exports.getCardBody = async (card, deck) => {
       }
       cachedCardBodies[`${deck}:${card}`] = cardDataAsJSON
     } catch (e) {
-      debugger
       return
     }
   }
