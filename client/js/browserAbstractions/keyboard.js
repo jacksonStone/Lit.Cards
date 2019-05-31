@@ -8,16 +8,29 @@ function focusingOnSomething () {
 function listenForCMDKey (key, callback) {
   cmdKeyBindings[key] = callback
 }
-function stopListeningForKey (key) {
-  delete keyBindings[key]
-}
 function listenForKey (key, callback) {
   keyBindings[key] = callback
+}
+
+let archivedKeyBindings = {}
+function archiveCurrentKeyBindings () {
+  archivedKeyBindings = {
+    keyBindings: Object.assign(keyBindings),
+    cmdKeyBindings: Object.assign(cmdKeyBindings)
+  }
+  keyBindings = {}
+  cmdKeyBindings = {}
+}
+function restoreArchivedKeyBindings () {
+  keyBindings = archivedKeyBindings.keyBindings || {}
+  cmdKeyBindings = archivedKeyBindings.cmdKeyBindings || {}
+  archivedKeyBindings = {}
 }
 
 function resetAllKeyBindings () {
   keyBindings = {}
   cmdKeyBindings = {}
+  archivedKeyBindings = {}
 }
 
 function isMultipleKeys (e) {
@@ -26,8 +39,6 @@ function isMultipleKeys (e) {
 
 function _handleKeyDown (e) {
   const keyForCMD = isMac ? 'metaKey' : 'ctrlKey'
-  console.log("CALLING KEY")
-  console.log(e.code)
   if (e[keyForCMD] && cmdKeyBindings[e.code]) {
     e.preventDefault()
     return cmdKeyBindings[e.code](e)
@@ -50,7 +61,8 @@ window.document.addEventListener('keydown', _handleKeyDown)
 
 module.exports = {
   listenForKey,
-  stopListeningForKey,
+  archiveCurrentKeyBindings,
+  restoreArchivedKeyBindings,
   resetAllKeyBindings,
   listenForCMDKey,
   simulateKey

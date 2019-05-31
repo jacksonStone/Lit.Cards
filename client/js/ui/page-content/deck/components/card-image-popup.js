@@ -1,5 +1,5 @@
 const { html } = require('lit-html/lit-html')
-const { stopListeningForKey, listenForKey } = require('abstract/keyboard')
+const { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
 const { addImageDataToImage } = require('abstract/file-upload')
 // TODO::Consider reworking deps here
 const { getImageData } = require('../helper')
@@ -7,11 +7,12 @@ const { runNextRender } = require('abstract/rendering-meta')
 
 const _hidePopup = (e) => {
   e.preventDefault()
-  stopListeningForKey('Escape')
+  restoreArchivedKeyBindings()
   window.lc.setData('showingPopup', false)
 }
 
 const showPopup = () => {
+  archiveCurrentKeyBindings()
   listenForKey('Escape', _hidePopup)
   window.lc.setData('showingPopup', true)
 }

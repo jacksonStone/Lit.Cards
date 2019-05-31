@@ -164,13 +164,11 @@ function removeImage () {
 
 function hasImage () {
   let hasImage
-  debugger
   if (showingAnswer()) {
     hasImage = window.lc.getData(`cardBody.${_getCurrentCardId()}.backHasImage`)
   } else {
     hasImage = window.lc.getData(`cardBody.${_getCurrentCardId()}.frontHasImage`)
   }
-  debugger
   return hasImage || false
 }
 
@@ -216,7 +214,7 @@ async function _updateCardBody (id) {
     _refreshEditor()
     return
   }
-  const cardBody = await getCardBody(undefined, id)
+  const cardBody = await getCardBody(id)
   window.lc.setData('cardBody.' + id, cardBody)
   _refreshEditor()
 }

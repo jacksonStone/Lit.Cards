@@ -8,3 +8,10 @@ module.exports.reject = (list, condition) => {
     }
   }).filter(entry => entry !== undefined)
 }
+module.exports.keyBy = (list, key) => {
+  const mapped = {}
+  list.forEach(entry => {
+    mapped[entry[key]] = entry
+  })
+  return mapped
+}

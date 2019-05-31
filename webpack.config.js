@@ -22,7 +22,8 @@ module.exports = {
       'site': path.join(__dirname, 'client/js/routes/navigation'),
       'utils': path.join(__dirname, 'client/js/utils'),
       'component': path.join(__dirname, 'client/js/ui/shared-components'),
-      'abstract': path.join(__dirname, 'client/js/browserAbstractions')
+      'abstract': path.join(__dirname, 'client/js/browserAbstractions'),
+      'shared': path.join(__dirname, 'shared')
     }
   }
 }

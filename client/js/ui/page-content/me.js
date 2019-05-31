@@ -1,6 +1,6 @@
 const { html } = require('lit-html/lit-html')
 const { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck')
-const { createStudySession } = require('logic/study')
+const { createStudySession, navigateToStudySession } = require('logic/study')
 // Keep numPerRow in sync with col-n below
 const numPerRow = 3
 function addDeckCard () {
@@ -23,8 +23,22 @@ function deleteDeckBtn (id) {
     deleteDeck(id)
   }
 }
-
-function deckPreview (deck) {
+function getStudyBtn (deck, sessionMapping) {
+  const session = sessionMapping[deck.id]
+  if (!session) {
+    return html`<button
+            @click=${() => { createStudySession(deck.id) }} 
+            class="usa-button">
+                Study
+            </button>`
+  }
+  return html`<button
+            @click=${() => { navigateToStudySession(session.id) }} 
+            class="usa-button">
+                Continue Studying
+            </button>`
+}
+function deckPreview (deck, sessionMapping) {
   if (deck.addDeck) {
     return addDeckCard()
   }
@@ -68,12 +82,7 @@ function deckPreview (deck) {
             class="usa-button usa-button--unstyled" @click=${() => { navigateToDeckPage(deck.id) }}
             >Edit</button>
             <div style="position: absolute; top:  175px; right: 60px;">
-            <button
-            @click=${() => { createStudySession(deck.id) }} 
-            class="usa-button">
-                Study
-            </button>
-
+                ${getStudyBtn(deck, sessionMapping)}
             </div>
             
         </div>
@@ -123,15 +132,15 @@ function makeBackgroundCards (startingTop, startingLeft, cardCount) {
   return cards
 }
 
-function deckRow (decks) {
-  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map(deckPreview)}</div>`
+function deckRow (decks, studySessionsByDeck) {
+  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck) })}</div>`
 }
 
-function deckRows (allDecks) {
+function deckRows (allDecks, studySessionsByDeck) {
   allDecks = [...allDecks, { addDeck: true }]
   const rows = []
   for (let i = 0; i < allDecks.length; i = i + numPerRow) {
-    rows.push(deckRow(allDecks.slice(i, i + numPerRow)))
+    rows.push(deckRow(allDecks.slice(i, i + numPerRow), studySessionsByDeck))
   }
   return rows
 }
@@ -139,8 +148,14 @@ function deckRows (allDecks) {
 module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
-        ${data.decks && deckRows(data.decks)}
+        <h1>Your Decks</h1>
+        ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
     </div> 
     
 `
+  /**
+   * <div class="fancy-line" style="border-top: 1px solid #d5d8df; margin-top:80px"></div>
+   <h1>Others Decks</h1>
+   ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
+   */
 }

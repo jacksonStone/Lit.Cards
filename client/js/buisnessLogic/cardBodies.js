@@ -1,18 +1,32 @@
 const { getCardBody } = require('api/cardBodies')
 const { getParam } = require('abstract/url')
+const { jdecompress } = require('shared/compress')
 const cachedCardBodies = {}
-exports.getCardBody = async (deck, card) => {
+exports.getCardBody = async (card, deck) => {
   if (!card) {
     return
   }
   if (!deck) {
     deck = getParam('deck')
+    if (!deck) {
+      const dataDeck = window.lc.getData('deck')
+      if (dataDeck && dataDeck.id) {
+        deck = dataDeck.id
+      }
+    }
   }
   if (!cachedCardBodies[`${deck}:${card}`]) {
-    const cardData = await getCardBody(deck, card)
     try {
-      cachedCardBodies[`${deck}:${card}`] = JSON.parse(cardData)
+      let cardData = await getCardBody(deck, card)
+      const cardDataAsJSON = JSON.parse(cardData)
+      if (cardDataAsJSON && cardDataAsJSON.content) {
+        const content = jdecompress(cardDataAsJSON.content)
+        Object.assign(cardDataAsJSON, content)
+        delete cardDataAsJSON.content
+      }
+      cachedCardBodies[`${deck}:${card}`] = cardDataAsJSON
     } catch (e) {
+      debugger
       return
     }
   }

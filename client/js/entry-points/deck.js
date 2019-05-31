@@ -17,7 +17,7 @@ const { renderPreviewImageWithRawData } = require('abstract/file-upload')
   let [user, cards, deck] = await Promise.all([fetchUser(), getCards(), getDeck()])
   // TODO::Could do this in one pass, sever can figure out first card
   let firstCardId = (cards && cards.length && cards[0].id) || undefined
-  let cardBody = await getCardBody(undefined, firstCardId)
+  let cardBody = await getCardBody(firstCardId)
   if (!cards || !cardBody) {
     const newId = window.lc.generateNewId()
     firstCardId = newId

@@ -11,7 +11,7 @@ async function getDeck (userId, deck) {
   if (results && results.length) {
     return results[0]
   }
-  return {}
+  return { none: true }
 }
 
 async function deckExists (userId, name) {
