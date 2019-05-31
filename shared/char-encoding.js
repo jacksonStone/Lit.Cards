@@ -1,5 +1,5 @@
-function listToStr(list) {
-  //TODO:: Maybe look into how spread op is implemented
+function listToStr (list) {
+  // TODO:: Maybe look into how spread op is implemented
   return String.fromCharCode(...list)
 }
 function strToList (str) {

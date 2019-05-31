@@ -18,7 +18,7 @@
     "ws": "npm run sw",
     "sassw": "sass --watch client/scss/index.scss client/dist/index.css",
     "sw": "cd server && nodemon index.js",
-    "lint": "eslint --fix server/** client/js/**"
+    "lint": "eslint --fix server/** client/js/** shared/**"
   },
   "author": "",
   "license": "ISC",
