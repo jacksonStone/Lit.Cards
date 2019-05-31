@@ -12,7 +12,6 @@ router.post('/create', async (req, res) => {
 })
 
 router.post('/delete', async (req, res) => {
-  console.log()
   if (!req.body || !req.body.id) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   await deleteDeck(req.userId, req.body.id)

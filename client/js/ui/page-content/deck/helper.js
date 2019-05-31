@@ -82,7 +82,6 @@ function getPresentFontSize () {
 }
 
 function handleEditorTextChange (newText) {
-  console.log(arguments)
   const oldCardBody = JSON.parse(JSON.stringify(_getCurrentCardBody()))
   runNextRender(() => {
     updateFontSizeIfNecessary(oldCardBody, newText)
@@ -109,7 +108,7 @@ function getImageData () {
 }
 
 function nextCard () {
-  let index = _getCurrentCardIndex()
+  let index = getCurrentCardIndex()
   const cards = window.lc.getData('orderedCards')
   index++
   const newCard = cards[(index % cards.length)]
@@ -118,7 +117,7 @@ function nextCard () {
 }
 
 function removeCard () {
-  let index = _getCurrentCardIndex()
+  let index = getCurrentCardIndex()
   let id = _getCurrentCardId()
   const cards = window.lc.getData('orderedCards')
   cards.splice(index, 1)
@@ -131,7 +130,7 @@ function removeCard () {
 }
 
 function previousCard () {
-  let index = _getCurrentCardIndex()
+  let index = getCurrentCardIndex()
   const cards = window.lc.getData('orderedCards')
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
@@ -241,7 +240,7 @@ function _updateEditorData () {
 function _getCurrentCardId () {
   return window.lc.getData('activeCardId')
 }
-function _getCurrentCardIndex () {
+function getCurrentCardIndex () {
   const currentId = _getCurrentCardId()
   const cards = window.lc.getData('orderedCards')
   let currentIndex
@@ -266,6 +265,7 @@ module.exports = {
   getImageData,
   getCardMapping,
   removeCard,
+  getCurrentCardIndex,
   handleEditorTextChange,
   getPresentFontSize
 }

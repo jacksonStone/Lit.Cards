@@ -11,7 +11,7 @@ const {
 resetAllKeyBindings()
 
 listenForCMDKey('KeyS', () => {
-  console.log('CMD + S')
+  // console.log('CMD + S')
 })
 
 listenForKey('KeyN', addNewCard)

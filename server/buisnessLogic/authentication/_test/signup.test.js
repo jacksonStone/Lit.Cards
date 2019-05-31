@@ -16,6 +16,7 @@ describe('User signup', () => {
     assert.strictEqual(correctPasswordHash, true, 'Provided correct creds')
   })
   it('Does not create duplicate user', async () => {
+    await signupTest('user10', plainTextPassword)
     const result = await signupTest('user10', plainTextPassword)
     assert.strictEqual(result, undefined, 'did not create duplicate user')
   })
