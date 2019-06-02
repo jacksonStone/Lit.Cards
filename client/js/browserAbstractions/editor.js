@@ -14,6 +14,8 @@ function initEditor (startingContent, onChange) {
 
 function setEditorData (content) {
   const editor = document.getElementById(elementId)
+  // If we are on the study page for example
+  if (!editor || !editor.content) return
   editor.content.innerHTML = content
 }
 

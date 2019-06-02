@@ -225,15 +225,19 @@ function _getCurrentCardBody () {
   const id = _getCurrentCardId()
   return window.lc.getData(`cardBody.${id}`)
 }
-function _updateEditorData () {
+function getTextToShowForCard () {
   const cardBody = _getCurrentCardBody()
+  if (!cardBody) return ''
   const showingAnswer = window.lc.getData('showingAnswer')
   if (showingAnswer) {
     // Show answer
-    setEditorData(cardBody.back)
-  } else {
-    setEditorData(cardBody.front)
+    return cardBody.back
   }
+  return cardBody.front
+}
+
+function _updateEditorData () {
+  setEditorData(getTextToShowForCard())
 }
 function _getCurrentCardId () {
   return window.lc.getData('activeCardId')
@@ -263,6 +267,7 @@ module.exports = {
   getImageData,
   getCardMapping,
   removeCard,
+  getTextToShowForCard,
   getCurrentCardIndex,
   handleEditorTextChange,
   getPresentFontSize

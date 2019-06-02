@@ -8,6 +8,7 @@ $pell-content-height: 300px;
 @import '../../node_modules/@fortawesome/fontawesome-free/scss/regular';
 
 $primary-color: #333;
+$faded-color: #ccc;
 
 body {
   color: $primary-color;
@@ -130,6 +131,7 @@ body {
 }
 .flip-card {
   padding: 12px 40px;
+  height: 41px;
 }
 .border {
   border: 1px solid rgba(10, 10, 10, 0.1);
@@ -183,11 +185,49 @@ body {
   background-color: black;
 }
 
-.remove-card {
+.negative-button-no-outline {
   color:#d83933;
 }
-.remove-card:hover {
+.negative-button-no-outline:hover {
   color:#d83933;
+}
+.add-card::after {
+  content:"( n )";
+  bottom: -8px;
+  left: 50px;
+  font-size: 14px;
+  color:$faded-color;
+  position: absolute;
+}
+.flip-card::after {
+  content: "( space )";
+  bottom: -23px;
+  font-size: 14px;
+  left:94px;
+  color:$faded-color;
+  position: absolute;
+}
+.mark-wrong::after {
+  content:"( ⇦ )";
+  bottom: -8px;
+  left: 55px;
+  font-size: 14px;
+  color:$faded-color;
+  position: absolute;
+}
+.mark-right::after {
+  content:"( ⇨ )";
+  font-size: 14px;
+  bottom: -8px;
+  left: 55px;
+  color:$faded-color;
+  position: absolute;
+}
+.study-card-no-image {
+  height: 300px;
+}
+.study-card-with-image {
+  height: 100px;
 }
 .darkmode {
   color: #555;
@@ -217,16 +257,16 @@ body {
   .pell {
     border: 1px solid rgb(80, 80, 80);
   }
-  .remove-card {
+  .negative-button-no-outline {
     color:#d8393399;
   }
-  .add-card {
+  .affermative-button-no-outline {
     color: rgb(0, 94, 162, .8);
   }
   .flip-card {
     background-color: transparent;
     border: 2px solid rgb(0, 94, 162, .8);
-    color: #555;
+    color: #777;
   }
   .label-pill {
     border: 2px solid #d8393399;
@@ -249,5 +289,17 @@ body {
   .usa-sidenav__item a:hover{
     background-color: #161616;
     color: rgb(0, 94, 162, .8);
+  }
+  .add-card::after {
+    color:#333;
+  }
+  .flip-card::after {
+    color:#333;
+  }
+  .mark-wrong::after {
+    color:#333;
+  }
+  .mark-right::after {
+    color:#333;
   }
 }

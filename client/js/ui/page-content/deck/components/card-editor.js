@@ -42,7 +42,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
-                    <button class="usa-button usa-button--outline remove-card"
+                    <button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         style="
                                box-shadow: none;
@@ -58,11 +58,11 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                      <button class="usa-button usa-button--primary flip-card"
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
-                    <div>Flip <span style="font-size: 14px; margin-top: 5px"> (space)</span></div>
+                    Flip
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
-                    <button class="usa-button usa-button--outline add-card"
+                    <button class="usa-button usa-button--outline affermative-button-no-outline add-card"
                         @click=${newAction}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>

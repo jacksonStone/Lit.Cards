@@ -47,6 +47,7 @@ function _handleKeyDown (e) {
   if (isMultipleKeys(e)) {
     return
   }
+  console.log(e.code)
   if (keyBindings[e.code] && !focusingOnSomething()) {
     e.preventDefault()
     return keyBindings[e.code](e)
