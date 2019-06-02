@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { simulateKey } = require('abstract/keyboard')
 const { removeCard } = require('../helper')
 const { popupComponent, showPopup } = require('./card-image-popup')

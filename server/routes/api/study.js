@@ -5,6 +5,7 @@ const {
   createSession,
   deleteSession,
   getSession,
+  getSessionByDeck,
   getSessions
 } = require('../../buisnessLogic/study')
 const code = require('../../nodeAbstractions/responseCodes')
@@ -28,10 +29,14 @@ router.get('/me', async (req, res) => {
   const sessions = await getSessions(req.userId)
   res.send(sessions)
 })
-
 router.get('/:id', async (req, res) => {
   if (!req.userId || !req.params.id) return code.unauthorized(res)
   const session = await getSession(req.userId, req.params.id)
+  res.send(session)
+})
+router.get('/deck/:id', async (req, res) => {
+  if (!req.userId || !req.params.id) return code.unauthorized(res)
+  const session = await getSessionByDeck(req.userId, req.params.id)
   res.send(session)
 })
 

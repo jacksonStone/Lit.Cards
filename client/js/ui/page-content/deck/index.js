@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const editView = require('./components/edit-view')
 require('./key-commands')
 const { handleImageUpload, hasImage, getPresentFontSize } = require('./helper')

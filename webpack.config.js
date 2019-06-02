@@ -17,6 +17,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      'lit': path.join(__dirname, 'node_modules/lit-html/lit-html'),
       'logic': path.join(__dirname, 'client/js/buisnessLogic'),
       'api': path.join(__dirname, 'client/js/routes/api'),
       'site': path.join(__dirname, 'client/js/routes/navigation'),

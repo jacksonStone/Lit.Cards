@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck')
 const { createStudySession, navigateToStudySession } = require('logic/study')
 // Keep numPerRow in sync with col-n below

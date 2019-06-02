@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const studyView = require('./components/study-view')
 require('./key-commands')
 const { hasImage, getPresentFontSize } = require('../deck/helper')

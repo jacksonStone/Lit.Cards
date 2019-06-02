@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { getValueFromInput } = require('abstract/events')
 function getName () {
   return window.lc.getData('deck.name')

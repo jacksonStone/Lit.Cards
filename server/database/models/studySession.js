@@ -16,7 +16,8 @@ async function getStudySession (userId, sessionId) {
   }
   return { none: true }
 }
-async function _getStudySessionByDeckId (userId, deck) {
+
+async function getStudySessionByDeckId (userId, deck) {
   const results = await db.getRecord(tableName, { userId, deck })
   if (results && results.length) {
     return results[0]
@@ -29,7 +30,7 @@ async function createStudySession (userId, deckId, studyState) {
   const deck = await getDeck(userId, deckId)
   // Required
   if (deck.none) return
-  if (!(await _getStudySessionByDeckId(userId, deckId)).none) {
+  if (!(await getStudySessionByDeckId(userId, deckId)).none) {
     // Person already has a session for that deck
     return
   }
@@ -59,6 +60,7 @@ async function deleteStudySession (userId, id) {
 module.exports = {
   createStudySession,
   getStudySession,
+  getStudySessionByDeckId,
   getStudySessions,
   deleteStudySession
 }

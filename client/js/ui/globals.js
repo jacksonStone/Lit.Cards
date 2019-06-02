@@ -9,91 +9,98 @@ const defaultErrorObject = {
 const clone = (obj) => {
   return JSON.parse(JSON.stringify(obj))
 }
-const lc = window.lc = {
-  test: false,
-  testRoutes: [],
-  generateNewId: generateId,
-  _presentPage: () => {},
-  data: {
-    errors: clone(defaultErrorObject),
-    changes: {}
-  },
-  getData: (key) => {
-    let currentPiece = lc.data
-    const parts = key.split('.')
-    for (let part of parts) {
-      if (!currentPiece) return currentPiece
-      currentPiece = currentPiece[part]
-    }
-    // Do not clone this
-    return currentPiece
-  },
-  _willRerender: false,
-  recordError: (path, error) => {
-    lc.setData('errors.' + path, error)
-  },
-  resetErrors: () => {
-    lc.setData('errors', clone(defaultErrorObject), true)
-  },
-  addDataListEntry (obj, data) {
-    const objs = lc.data[obj]
-    if (!objs) {
-      lc.data[obj] = [data]
-    } else {
-      objs.push(data)
-    }
-  },
-  /**
-   * @param key:  can be in  form "foo.bar"
-   * @param value: Current value to set the data
-   * @param NO_UPDATE: Prevents setData from trying to re-render
-   */
-  setData: (key, value, NO_UPDATE) => {
-    const paths = key.split('.')
-    let parent = lc.data
-    for (let i = 0; i < paths.length; i++) {
-      const currentPath = paths[i]
-      if (i === paths.length - 1) {
-        parent[currentPath] = value
-        break
-      } else {
-        parent = parent[currentPath] = (parent[currentPath] || {})
+const emptyDataState = {
+  errors: defaultErrorObject,
+  changes: {}
+}
+function resetData () {
+  lc.data = clone(emptyDataState)
+}
+function initLC () {
+  return {
+    test: false,
+    testRoutes: [],
+    generateNewId: generateId,
+    _presentPage: () => {},
+    data: clone(emptyDataState),
+    getData: (key) => {
+      let currentPiece = lc.data
+      const parts = key.split('.')
+      for (let part of parts) {
+        if (!currentPiece) return currentPiece
+        currentPiece = currentPiece[part]
       }
-    }
-    if (!lc.data._willRerender && !NO_UPDATE) {
-      lc.data._willRerender = true
-      window.requestAnimationFrame(() => {
-        lc.data._willRerender = false
-        lc._rerender()
-      })
-    }
-  },
-  _rerender: () => {
+      // Do not clone this
+      return currentPiece
+    },
+    _willRerender: false,
+    recordError: (path, error) => {
+      lc.setData('errors.' + path, error)
+    },
+    resetErrors: () => {
+      lc.setData('errors', clone(defaultErrorObject), true)
+    },
+    addDataListEntry (obj, data) {
+      const objs = lc.data[obj]
+      if (!objs) {
+        lc.data[obj] = [data]
+      } else {
+        objs.push(data)
+      }
+    },
+    /**
+     * @param key:  can be in  form "foo.bar"
+     * @param value: Current value to set the data
+     * @param NO_UPDATE: Prevents setData from trying to re-render
+     */
+    setData: (key, value, NO_UPDATE) => {
+      const paths = key.split('.')
+      let parent = lc.data
+      for (let i = 0; i < paths.length; i++) {
+        const currentPath = paths[i]
+        if (i === paths.length - 1) {
+          parent[currentPath] = value
+          break
+        } else {
+          parent = parent[currentPath] = (parent[currentPath] || {})
+        }
+      }
+      if (!lc.data._willRerender && !NO_UPDATE) {
+        lc.data._willRerender = true
+        window.requestAnimationFrame(() => {
+          lc.data._willRerender = false
+          lc._rerender()
+        })
+      }
+    },
+    _rerender: () => {
     // mergeChangesIntoData()
-    renderPage(lc._presentPage)
-  },
-  setPersistent (key, value) {
-    lc.setData('changes.' + key, value)
-    lc.setData('hasPersistentChanges', true)
-    lc.setData(key, value)
-  },
-  setDeleted (obj, id) {
-    const record = lc.data[obj][id]
-    delete lc.data[obj][id]
-    if (record.isNew) {
-      return // nothing to persist, hasn't been saved
+      renderPage(lc._presentPage)
+    },
+    setPersistent (key, value) {
+      lc.setData('changes.' + key, value)
+      lc.setData('hasPersistentChanges', true)
+      lc.setData(key, value)
+    },
+    setDeleted (obj, id) {
+      const record = lc.data[obj][id]
+      delete lc.data[obj][id]
+      if (record.isNew) {
+        return // nothing to persist, hasn't been saved
+      }
+      const currentDeletions = lc.getData(`deletions.${obj}`) || []
+      currentDeletions.push(id)
+      lc.setData(`deletions.${obj}`, currentDeletions)
+      lc.setData('hasPersistentChanges', true)
     }
-    const currentDeletions = lc.getData(`deletions.${obj}`) || []
-    currentDeletions.push(id)
-    lc.setData(`deletions.${obj}`, currentDeletions)
-    lc.setData('hasPersistentChanges', true)
   }
 }
+const lc = window.lc = initLC()
 
 function renderPage (pageContentFunc) {
-  render(appHeader(lc.getData('user')), document.querySelector('#app-header'))
+  render(appHeader(lc.getData('user')), window.document.querySelector('#app-header'))
 
-  render(pageContentFunc(lc.data), document.querySelector('#main-content'))
+  render(pageContentFunc(lc.data), window.document.querySelector('#main-content'))
 
   recordCurrentPage(pageContentFunc)
 }
@@ -108,20 +115,5 @@ exports.makeTesting = () => {
   lc.test = true
 }
 
-exports.testing = {
-  isTesting () {
-    return lc.test
-  },
-  addTestRoute (route) {
-    return lc.testRoutes.push(route)
-  },
-  getTestRoutes () {
-    return lc.testRoutes
-  },
-  lastRoute () {
-    const length = lc.testRoutes.length
-    if (length) {
-      return lc.testRoutes[ length - 1 ]
-    }
-  }
-}
+exports.initLC = initLC
+exports.resetData = resetData

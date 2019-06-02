@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
 const { addImageDataToImage } = require('abstract/file-upload')
 // TODO::Consider reworking deps here

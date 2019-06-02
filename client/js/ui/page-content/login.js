@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { grabFormData } = require('abstract/grabForm')
 const { navigateToSignupPage } = require('logic/login')
 const errorableInput = require('component/errorable-input')

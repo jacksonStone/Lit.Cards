@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { simulateKey } = require('abstract/keyboard')
 const { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
 const spaceAction = () => {
@@ -26,7 +26,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                                width:100%;
                                margin-right:0; 
                         ">
-                    <div><i class="far fa-times-circle" aria-hidden="true">
+                    <div><i class="far fa-thumbs-down" aria-hidden="true">
                     <span class="sr-only">Mark Wrong</span>
                     </i>&nbsp;&nbsp;Wrong</div>
                     </button>` : html``}
@@ -43,7 +43,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                     ${showingAnswer ? html`<button class="usa-button usa-button--outline add-card"
                         @click=${() => { console.log('Mark Right') }}
                         style="margin-right:0; width: 100%; box-shadow: none;">
-                    <div><i class="far fa-check-circle" aria-hidden="true"><span class="sr-only">Mark Correct</span>
+                    <div><i class="far fa-thumbs-up" aria-hidden="true"><span class="sr-only">Mark Correct</span>
                         </i>&nbsp;&nbsp;Right </div>
                     </button>` : html``}
                     </div>

@@ -4,7 +4,21 @@
   "description": "",
   "main": "server/index.js",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFiles": [
+      "./test-utils/test-setup.js"
+    ],
+    "moduleNameMapper": {
+      "^component/(.*)": "<rootDir>/client/js/ui/shared-components/$1.js",
+      "^logic/(.*)": "<rootDir>/client/js/buisnessLogic/$1.js",
+      "^api/(.*)": "<rootDir>/client/js/routes/api/$1.js",
+      "^site/(.*)": "<rootDir>/client/js/routes/navigation/$1.js",
+      "^abstract/(.*)": "<rootDir>/client/js/browserAbstractions/$1.js",
+      "^shared/(.*)": "<rootDir>/shared/$1.js",
+      "^utils": "<rootDir>/client/js/utils.js",
+      "^lit":"<rootDir>/test-utils/lit-html.js",
+      "^uswds":"<rootDir>/test-utils/uswds.js"
+    }
   },
   "nodemonConfig": {
     "delay": "1000"

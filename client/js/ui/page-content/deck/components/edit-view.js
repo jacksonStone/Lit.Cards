@@ -1,4 +1,4 @@
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const editor = require('./card-editor')
 const cardEditStack = require('./card-edit-stack')
 const sidenav = require('./sidenav')

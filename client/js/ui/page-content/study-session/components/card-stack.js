@@ -1,5 +1,5 @@
 
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 module.exports = (currentCardId, cards) => {
   // Humans are 1-based
   if (!cards) return

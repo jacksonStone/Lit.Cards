@@ -1,5 +1,5 @@
 
-const { html } = require('lit-html/lit-html')
+const { html } = require('lit')
 const { onPage } = require('abstract/url')
 const { navigateToLoginPage, logout } = require('logic/login')
 module.exports = (userInfo) => html`
