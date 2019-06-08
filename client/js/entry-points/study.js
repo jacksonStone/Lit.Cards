@@ -2,6 +2,7 @@
 const { renderPage } = require('../ui/globals')
 const { home: homePage } = require('../routes/navigation/pages')
 const content = require('../ui/page-content/study-session')
+const { initKeyCommands } = require('../ui/page-content/study-session/key-commands')
 const { getCardMapping } = require('../ui/page-content/deck/helper')
 const { defaultDarkMode } = require('abstract/darkmode')
 const { runNextRender } = require('abstract/rendering-meta')
@@ -10,7 +11,6 @@ const { getCards } = require('logic/cards')
 const { getCardBody } = require('logic/cardBodies')
 const { getDeck } = require('logic/deck')
 const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers } = require('logic/study')
-const { renderPreviewImageWithRawData } = require('abstract/file-upload')
 
 ;(async () => {
   defaultDarkMode()
@@ -33,11 +33,6 @@ const { renderPreviewImageWithRawData } = require('abstract/file-upload')
   window.lc.setData('showingAnswer', false)
   window.lc.setData('card', getCardMapping(cards))
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
-  runNextRender(() => {
-    // TODO::Consider doing this better
-    if (cardBody.frontHasImage) {
-      renderPreviewImageWithRawData(cardBody.frontImage)
-    }
-  })
+  runNextRender(initKeyCommands)
   renderPage(content)
 })()

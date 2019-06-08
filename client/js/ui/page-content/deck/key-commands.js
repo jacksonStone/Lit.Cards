@@ -7,16 +7,21 @@ const {
   addNewCard
 } = require('./helper')
 
-resetAllKeyBindings()
+function initCommands () {
+  resetAllKeyBindings()
 
-listenForCMDKey('KeyS', () => {
-  // console.log('CMD + S')
-})
-
-listenForKey('KeyN', addNewCard)
-listenForKey('Space', flipCard)
-listenForKey('ArrowUp', previousCard)
-listenForKey('KeyI', pickImage)
+  listenForCMDKey('KeyS', () => {
+    // console.log('CMD + S')
+  })
+  listenForKey('KeyN', addNewCard)
+  listenForKey('Space', flipCard)
+  listenForKey('ArrowUp', previousCard)
+  listenForKey('KeyI', pickImage)
 // We use the RKey for "restoring State"
 // listenForKey('KeyR', removeImage)
-listenForKey('ArrowDown', nextCard)
+  listenForKey('ArrowDown', nextCard)
+}
+
+module.exports = {
+  initCommands
+}

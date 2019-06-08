@@ -1,7 +1,9 @@
 const { html } = require('lit')
 const { simulateKey } = require('abstract/keyboard')
 const { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
-const { getTextToShowForCard } = require('../../deck/helper')
+const { getTextToShowForCard, refreshEditor } = require('../../deck/helper')
+const { runNextRender } = require('abstract/rendering-meta')
+const { showingAnswerKeyBindings, showingQuestionKeyBindings } = require('../key-commands')
 const { unsafeHTML } = require('lit-html/directives/unsafe-html')
 const spaceAction = () => {
   simulateKey('Space')
@@ -13,6 +15,13 @@ const leftAction = () => {
   simulateKey('ArrowLeft')
 }
 module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
+  if (showingAnswer) {
+    showingAnswerKeyBindings()
+  } else {
+    showingQuestionKeyBindings()
+  }
+  runNextRender(refreshEditor)
+
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}

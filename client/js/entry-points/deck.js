@@ -1,5 +1,6 @@
 const { renderPage } = require('../ui/globals')
 const content = require('../ui/page-content/deck')
+const { initCommands } = require('../ui/page-content/deck/key-commands')
 const { handleEditorTextChange, getCardMapping } = require('../ui/page-content/deck/helper')
 const { initEditor } = require('abstract/editor')
 const { runNextRender } = require('abstract/rendering-meta')
@@ -36,9 +37,7 @@ const { renderPreviewImageWithRawData } = require('abstract/file-upload')
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
   runNextRender(() => {
     initEditor(cardBody.front, handleEditorTextChange)
-    if (cardBody.frontHasImage) {
-      renderPreviewImageWithRawData(cardBody.frontImage)
-    }
+    initCommands()
   })
   renderPage(content)
 })()
