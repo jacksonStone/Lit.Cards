@@ -1,6 +1,5 @@
 const { listenForKey, resetAllKeyBindings, listenForCMDKey } = require('abstract/keyboard')
 const {
-  removeImage,
   pickImage,
   flipCard,
   previousCard,
@@ -18,5 +17,6 @@ listenForKey('KeyN', addNewCard)
 listenForKey('Space', flipCard)
 listenForKey('ArrowUp', previousCard)
 listenForKey('KeyI', pickImage)
-listenForKey('KeyR', removeImage)
+// We use the RKey for "restoring State"
+// listenForKey('KeyR', removeImage)
 listenForKey('ArrowDown', nextCard)

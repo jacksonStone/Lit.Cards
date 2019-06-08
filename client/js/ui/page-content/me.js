@@ -11,7 +11,7 @@ function addDeckCard () {
               top: 0;
               left: 0;
               "
-         @click=${createDeck}
+         @click=${() => { createDeck('Untitled') }}
         >
   
         <i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">Add new</span>
@@ -27,7 +27,7 @@ function getStudyBtn (deck, sessionMapping) {
   const session = sessionMapping[deck.id]
   if (!session) {
     return html`<button
-            @click=${() => { createStudySession(deck.id) }} 
+            @click=${() => { createStudySession(deck.id) }}
             class="usa-button">
                 Study
             </button>`

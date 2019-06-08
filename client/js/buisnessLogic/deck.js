@@ -11,7 +11,7 @@ exports.getDeck = async (deckId) => {
   deckId = deckId || getParam('deck')
   return JSON.parse(await getDeck(deckId))
 }
-exports.createDeck = async (name = 'Untitled') => {
+exports.createDeck = async (name) => {
   const newDeck = JSON.parse(await createDeck(name))
   navigateToDeckPage(newDeck.id)
 }

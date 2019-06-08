@@ -1,6 +1,9 @@
 let keyBindings = {}
+let globalBindings = {}
 let cmdKeyBindings = {}
-const isMac = navigator.platform.indexOf('Mac') !== -1
+function isMac() {
+  return window.navigator.platform.indexOf('Mac') !== -1
+}
 function focusingOnSomething () {
   return window.document.activeElement !== window.document.body
 }
@@ -10,6 +13,18 @@ function listenForCMDKey (key, callback) {
 }
 function listenForKey (key, callback) {
   keyBindings[key] = callback
+}
+
+function listenForKeyGlobal (key, callback) {
+  globalBindings[key] = callback
+}
+
+function resetKeyGlobal (key) {
+  delete globalBindings[key]
+}
+
+function resetKey (key) {
+  delete keyBindings[key]
 }
 
 let archivedKeyBindings = {}
@@ -38,7 +53,7 @@ function isMultipleKeys (e) {
 }
 
 function _handleKeyDown (e) {
-  const keyForCMD = isMac ? 'metaKey' : 'ctrlKey'
+  const keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
   if (e[keyForCMD] && cmdKeyBindings[e.code]) {
     e.preventDefault()
     return cmdKeyBindings[e.code](e)
@@ -47,21 +62,29 @@ function _handleKeyDown (e) {
   if (isMultipleKeys(e)) {
     return
   }
-  console.log(e.code)
+  // console.log(e.code)
   if (keyBindings[e.code] && !focusingOnSomething()) {
     e.preventDefault()
     return keyBindings[e.code](e)
+  }
+  if (globalBindings[e.code] && !focusingOnSomething()) {
+    e.preventDefault()
+    return globalBindings[e.code](e)
   }
 }
 
 function simulateKey (code) {
   keyBindings[code]()
 }
-
-window.document.addEventListener('keydown', _handleKeyDown)
+if (process.env.NODE_ENV !== 'test') {
+  window.document.addEventListener('keydown', _handleKeyDown)
+}
 
 module.exports = {
   listenForKey,
+  listenForKeyGlobal,
+  resetKey,
+  resetKeyGlobal,
   archiveCurrentKeyBindings,
   restoreArchivedKeyBindings,
   resetAllKeyBindings,

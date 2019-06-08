@@ -9,25 +9,24 @@ const { fetchUser } = require('logic/getUser')
 const { getCards } = require('logic/cards')
 const { getCardBody } = require('logic/cardBodies')
 const { getDeck } = require('logic/deck')
-const { getStudySession, sortCardsBySession } = require('logic/study')
+const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers } = require('logic/study')
 const { renderPreviewImageWithRawData } = require('abstract/file-upload')
 
 ;(async () => {
-  // TODO:: User info should determine if in dark mode or not
   defaultDarkMode()
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   const deckId = studySession.deck
   let [deck, cards] = await Promise.all([getDeck(deckId), getCards(deckId)])
-  cards = sortCardsBySession(cards, studySession)
-  // TODO::Could do this in one pass, sever can figure out first card
-  // TODO:: Base this on currentCard + ordering of session
   let firstCardId = (cards && cards.length && cards[studySession.currentCard || 0].id) || undefined
+  let sessionOrderedCards = sortCardsBySession(cards, studySession)
+  let visibleCards = trimCardsToOnesAwaitingAnswers(sessionOrderedCards, studySession)
   let cardBody = await getCardBody(firstCardId, deckId)
   if (!cards || !cardBody) {
     return homePage()
   }
-  // TODO:: Sort cards here
-  window.lc.setData('orderedCards', cards)
+  window.lc.setData('orderedCards', visibleCards)
+  window.lc.setData('sessionShuffledCards', sessionOrderedCards)
+  window.lc.setData('session', studySession)
   window.lc.setData('deck', deck)
   window.lc.setData('activeCardId', firstCardId)
   window.lc.setData('user', user)

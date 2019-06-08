@@ -22,8 +22,6 @@ async function handleImageUpload (e) {
     imagePreview = largeImage
   }
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
-
-  _refreshEditor()
 }
 
 function setPersistentForCardBody (key, value) {
@@ -113,7 +111,7 @@ function nextCard () {
   index++
   const newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
-  _updateCardBody(newCard.id)
+  updateCardBody(newCard.id)
 }
 
 function removeCard () {
@@ -126,7 +124,7 @@ function removeCard () {
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
-  _updateCardBody(newCard.id)
+  updateCardBody(newCard.id)
 }
 
 function previousCard () {
@@ -135,13 +133,12 @@ function previousCard () {
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
-  _updateCardBody(newCard.id)
+  updateCardBody(newCard.id)
 }
 
 function flipCard () {
   const showingAnswer = window.lc.getData('showingAnswer')
   window.lc.setData('showingAnswer', !showingAnswer)
-  _refreshEditor()
 }
 
 function pickImage () {
@@ -158,7 +155,6 @@ function removeImage () {
     setPersistentForCardBody('frontHasImage', false)
     setPersistentForCardBody('frontImage', undefined)
   }
-  _refreshEditor()
 }
 
 function hasImage () {
@@ -195,27 +191,22 @@ function addNewCard () {
   window.lc.addDataListEntry('orderedCards', card)
   window.lc.setData('activeCardId', newId)
   _flipToQuestionSide()
-  _refreshEditor()
 }
-// function updateDeckName (name) {
-//
-// }
 function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
 }
 
-async function _updateCardBody (id) {
+async function updateCardBody (id) {
   _flipToQuestionSide()
   const currentCardBody = window.lc.getData('cardBody.' + id)
   if (currentCardBody) {
-    _refreshEditor()
     return
   }
   const cardBody = await getCardBody(id)
   window.lc.setData('cardBody.' + id, cardBody)
-  _refreshEditor()
 }
-function _refreshEditor () {
+// This is called every time there is a change to state on the page
+function refreshEditor () {
   if (hasImage()) {
     renderPreviewImageWithRawData(getImageData())
   }
@@ -261,12 +252,14 @@ module.exports = {
   flipCard,
   addNewCard,
   previousCard,
+  updateCardBody,
   nextCard,
   handleImageUpload,
   hasImage,
   getImageData,
   getCardMapping,
   removeCard,
+  refreshEditor,
   getTextToShowForCard,
   getCurrentCardIndex,
   handleEditorTextChange,

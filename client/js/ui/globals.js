@@ -2,6 +2,7 @@ require('uswds')
 const { render } = require('lit-html/lit-html')
 const { generateId } = require('../../../shared/id-generator')
 const appHeader = require('component/app-header')
+const { initDebug, deactivateDebug } = require('./debug-global')
 const defaultErrorObject = {
   fields: {},
   abstract: {}
@@ -92,10 +93,23 @@ function initLC () {
       currentDeletions.push(id)
       lc.setData(`deletions.${obj}`, currentDeletions)
       lc.setData('hasPersistentChanges', true)
+    },
+    debugging () {
+      return lc._debugging
+    },
+    debugMode (rerender = true) {
+      initDebug(rerender)
+    },
+    prodMode () {
+      lc._debugging = false
+      lc._rerender()
     }
   }
 }
 const lc = window.lc = initLC()
+if (lc._debugging === undefined && process.env.NODE_ENV === 'development') {
+  lc.debugMode(false)
+}
 
 function renderPage (pageContentFunc) {
   render(appHeader(lc.getData('user')), window.document.querySelector('#app-header'))

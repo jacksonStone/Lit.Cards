@@ -12,7 +12,7 @@ let fakeData = {
     darkMode: true
   }],
   studySession: [
-    { userId: 'jackson@someemail.com', studyState: 'RW_M', currentCard: 1, ordering: listToStr([1, 2, 3, 0]), deck: 'foo', id: 'fee' }
+    { userId: 'jackson@someemail.com', studyState: 'RW__', currentCard: 3, ordering: listToStr([1, 2, 3, 0]), deck: 'foo', id: 'fee' }
   ],
   card: [
     { userId: 'jackson@someemail.com', deck: 'foo', id: 'fe' },

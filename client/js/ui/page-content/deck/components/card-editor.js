@@ -1,6 +1,7 @@
 const { html } = require('lit')
 const { simulateKey } = require('abstract/keyboard')
-const { removeCard } = require('../helper')
+const { runNextRender } = require('abstract/rendering-meta')
+const { removeCard, removeImage, refreshEditor } = require('../helper')
 const { popupComponent, showPopup } = require('./card-image-popup')
 const spaceAction = () => {
   simulateKey('Space')
@@ -9,10 +10,11 @@ const newAction = () => {
   simulateKey('KeyN')
 }
 const removeImageAction = () => {
-  simulateKey('KeyR')
+  removeImage()
 }
 
 module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
+  runNextRender(refreshEditor)
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}
