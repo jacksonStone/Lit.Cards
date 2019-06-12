@@ -201,6 +201,12 @@ body {
 .negative-button-no-outline:hover {
   color:#d83933;
 }
+.disabled-button-no-outline {
+  color:#666;
+}
+.disabled-button-no-outline:hover {
+  color:#666;
+}
 .add-card::after {
   content:"( n )";
   bottom: -8px;
@@ -239,6 +245,9 @@ body {
 .study-card-with-image {
   height: 100px;
 }
+.disabled-button-no-outline {
+  color:#666;
+}
 .darkmode {
   color: #555;
   #overlay {
@@ -272,6 +281,9 @@ body {
   }
   .affermative-button-no-outline {
     color: $good-color-dark;
+  }
+  .disabled-button-no-outline {
+    color:#444;
   }
   .flip-card {
     background-color: transparent;
@@ -311,6 +323,9 @@ body {
   }
   .mark-right::after {
     color:#333;
+  }
+  .disabled-button-no-outline:hover {
+    color:#444;
   }
   .wrong-count {
     color: $bad-color-dark;

@@ -13,6 +13,14 @@ const removeImageAction = () => {
   removeImage()
 }
 
+function getSession () {
+  return window.lc.getData('session')
+}
+function alertCantRemove() {
+  // Todo::Improve this
+  window.alert('You cannot delete any cards while they are being studied')
+}
+
 module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
   runNextRender(refreshEditor)
   return html`
@@ -44,17 +52,25 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
-                    <button class="usa-button usa-button--outline negative-button-no-outline"
+                    ${(!getSession()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         style="
                                box-shadow: none;
                                width:100%;
                                margin-right:0; 
-                        ">
-                    <div><i class="far fa-times-circle" aria-hidden="true">
+                        "><div><i class="far fa-times-circle" aria-hidden="true">
                     <span class="sr-only">Remove</span>
                     </i>&nbsp;&nbsp;card</div>
-                    </button>
+                    </button>` : html`<button class="usa-button usa-button--outline disabled-button-no-outline"
+                        @click=${alertCantRemove}
+                        style="
+                             box-shadow: none;
+                             width:100%;
+                             margin-right:0; 
+                        "><div><i class="far fa-times-circle" aria-hidden="true">
+                    <span class="sr-only">Remove</span>
+                    </i>&nbsp;&nbsp;card</div>
+                    </button>`}  
                     </div>
                     <div class="grid-col-6">
                      <button class="usa-button usa-button--primary flip-card"

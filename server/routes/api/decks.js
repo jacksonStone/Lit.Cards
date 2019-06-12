@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { addDeck, deleteDeck } = require('../../buisnessLogic/decks/addDeck')
-const { getDecks, getDeck } = require('../../buisnessLogic/decks/getDecks')
+const { addDeck, deleteDeck, getDecks, getDeck } = require('../../buisnessLogic/deck')
 const code = require('../../nodeAbstractions/responseCodes')
 
 router.post('/create', async (req, res) => {

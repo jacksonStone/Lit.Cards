@@ -5,6 +5,9 @@ async function createSession (userId, deck, startingState) {
 async function deleteSession (userId, id) {
   return StudySession.deleteStudySession(userId, id)
 }
+async function deleteSessionByDeck (userId, deckId) {
+  return StudySession.deleteStudySessionByDeck(userId, deckId)
+}
 async function getSession (userId, id) {
   return StudySession.getStudySession(userId, id)
 }
@@ -19,6 +22,7 @@ module.exports = {
   createSession,
   deleteSession,
   getSessionByDeck,
+  deleteSessionByDeck,
   getSession,
   getSessions
 }

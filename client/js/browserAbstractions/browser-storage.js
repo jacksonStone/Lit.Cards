@@ -7,11 +7,22 @@ function set (key, value) {
   return window.localStorage.setItem(key, value)
 }
 function storeAllState () {
-  const state = window.lc.data
-  set('_latestState', jcompress(state))
+  const data = window.lc.data
+  const path = window.location.pathname
+  set('_latestState', jcompress({ data, path }))
 }
 function retrieveStateStored () {
-  window.lc.data = jdecompress(get('_latestState'))
+  const result = get('_latestState')
+  if (!result) {
+    window.alert('nothing stored')
+    return
+  }
+  const { data, path } = jdecompress(result)
+  if (path !== window.location.pathname || !path) {
+    window.alert('No data for this page')
+    return
+  }
+  window.lc.data = data
   window.lc._rerender()
 }
 

@@ -30,11 +30,19 @@ exports.navigateToStudySession = navigateToStudySession
 exports.getStudySession = async (id) => {
   id = id || getParam('id')
   if (id) {
-    return JSON.parse(await getStudySession(id))
+    const result = JSON.parse(await getStudySession(id))
+    if (result.none) return
+    return result
   }
   const deckId = getParam('deck')
   if (deckId) {
-    return JSON.parse(await getStudySessionForDeck(deckId))
+    const result = JSON.parse(await getStudySessionForDeck(deckId))
+    if (result.none && getParam('upsert')) {
+      // Clicked the study button on an edit page
+      const newSession = JSON.parse(await createStudySession(deckId))
+      return newSession
+    }
+    return result
   }
 }
 exports.getStudySessions = async () => {

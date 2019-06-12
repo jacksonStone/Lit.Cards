@@ -101,8 +101,7 @@ function initLC () {
       initDebug(rerender)
     },
     prodMode () {
-      lc._debugging = false
-      lc._rerender()
+      deactivateDebug()
     }
   }
 }

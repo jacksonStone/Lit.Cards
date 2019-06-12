@@ -15,10 +15,13 @@ module.exports = () => {
     <div style="margin:10px; border-top: none; border-left: none; border-right: none;">Studying: ${getName()}</div>
   </li>
   <li class="usa-sidenav__item" >
-    <a href="/site/me"><i class="far fa-arrow-alt-circle-left"></i>&nbsp;&nbsp;Back to decks</a>
+    <a href="/site/me"><i class="far fa-arrow-alt-circle-left"></i>&nbsp;&nbsp;Decks</a>
   </li>
   <li class="usa-sidenav__item" >
     <a href="/site/me/deck?deck=${getDeckId()}&card=${getActiveCardId()}"><i class="far fa-edit"></i>&nbsp;&nbsp;Edit</a>
+  </li>
+    <li class="usa-sidenav__item" >
+    <a href="/site/me/deck?deck=${getDeckId()}&card=${getActiveCardId()}"><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session (TD)</a>
   </li>
   </ul>`
 }

@@ -57,10 +57,19 @@ async function deleteStudySession (userId, id) {
   return db.unsetRecord(tableName, { userId, id })
 }
 
+async function deleteStudySessionByDeck (userId, deck) {
+  if (!userId || !deck) return
+  // Required
+  const currentUser = await userExists(userId)
+  if (!currentUser) return
+  return db.unsetRecord(tableName, { userId, deck })
+}
+
 module.exports = {
   createStudySession,
   getStudySession,
   getStudySessionByDeckId,
   getStudySessions,
-  deleteStudySession
+  deleteStudySession,
+  deleteStudySessionByDeck
 }

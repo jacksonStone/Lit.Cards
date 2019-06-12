@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { addCard } = require('../../buisnessLogic/cards/addCard')
-const { getCards } = require('../../buisnessLogic/cards/getCards')
+const { addCard, getCards } = require('../../buisnessLogic/card')
 const code = require('../../nodeAbstractions/responseCodes')
 
 router.post('/create', async (req, res) => {

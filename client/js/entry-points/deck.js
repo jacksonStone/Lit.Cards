@@ -9,14 +9,14 @@ const { defaultDarkMode } = require('abstract/darkmode')
 const { fetchUser } = require('logic/getUser')
 const { getCards, getCardsForEmptyState } = require('logic/cards')
 const { getCardBody, getCardBodyForEmptyState } = require('logic/cardBodies')
+const { getStudySession } = require('logic/study')
 const { getDeck } = require('logic/deck')
 // TODO::Consider pulling this from a URL
-const { renderPreviewImageWithRawData } = require('abstract/file-upload')
 
 ;(async () => {
   // TODO:: User info should determine if in dark mode or not
   defaultDarkMode()
-  let [user, cards, deck] = await Promise.all([fetchUser(), getCards(), getDeck()])
+  let [user, cards, deck, studySession] = await Promise.all([fetchUser(), getCards(), getDeck(), getStudySession()])
   // For when you navigate from study to edit
   const activeCard = getParam('card')
   // TODO::Could do this in one pass, sever can figure out first card
@@ -32,6 +32,7 @@ const { renderPreviewImageWithRawData } = require('abstract/file-upload')
   window.lc.setData('deck', deck)
   window.lc.setData('activeCardId', firstCardId)
   window.lc.setData('user', user)
+  window.lc.setData('session', studySession)
   window.lc.setData('showingAnswer', false)
   window.lc.setData('card', getCardMapping(cards))
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)

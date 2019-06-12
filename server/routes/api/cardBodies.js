@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getCardBody } = require('../../buisnessLogic/cardBodies/getCardBody')
+const { getCardBody } = require('../../buisnessLogic/cardBody')
 const code = require('../../nodeAbstractions/responseCodes')
 
 router.get('/', async (req, res) => {
