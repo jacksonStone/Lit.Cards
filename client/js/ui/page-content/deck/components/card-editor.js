@@ -1,7 +1,6 @@
 const { html } = require('lit')
 const { simulateKey } = require('abstract/keyboard')
-const { runNextRender } = require('abstract/rendering-meta')
-const { removeCard, removeImage, refreshEditor } = require('../helper')
+const { removeCard, removeImage } = require('../helper')
 const { popupComponent, showPopup } = require('./card-image-popup')
 const spaceAction = () => {
   simulateKey('Space')
@@ -16,13 +15,12 @@ const removeImageAction = () => {
 function getSession () {
   return window.lc.getData('session')
 }
-function alertCantRemove() {
+function alertCantRemove () {
   // Todo::Improve this
   window.alert('You cannot delete any cards while they are being studied')
 }
 
 module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
-  runNextRender(refreshEditor)
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}

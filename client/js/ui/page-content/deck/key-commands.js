@@ -17,8 +17,8 @@ function initCommands () {
   listenForKey('Space', flipCard)
   listenForKey('ArrowUp', previousCard)
   listenForKey('KeyI', pickImage)
-// We use the RKey for "restoring State"
-// listenForKey('KeyR', removeImage)
+  // We use the RKey for "restoring State"
+  // listenForKey('KeyR', removeImage)
   listenForKey('ArrowDown', nextCard)
 }
 

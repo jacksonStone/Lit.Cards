@@ -10,7 +10,6 @@ async function deleteCardBody (userId, deck, card) {
 // TODO:: Add ability to delete cardbodies in response to deck or card deletion
 async function deleteAllCardBodies (userId, deck) {
   return CardBody.deleteCardBodies(userId, deck)
-
 }
 
 module.exports = {

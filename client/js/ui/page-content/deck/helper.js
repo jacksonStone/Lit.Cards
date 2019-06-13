@@ -22,6 +22,7 @@ async function handleImageUpload (e) {
     imagePreview = largeImage
   }
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
+  refreshEditor()
 }
 
 function setPersistentForCardBody (key, value) {
@@ -139,6 +140,7 @@ function previousCard () {
 function flipCard () {
   const showingAnswer = window.lc.getData('showingAnswer')
   window.lc.setData('showingAnswer', !showingAnswer)
+  refreshEditor()
 }
 
 function pickImage () {
@@ -155,6 +157,7 @@ function removeImage () {
     setPersistentForCardBody('frontHasImage', false)
     setPersistentForCardBody('frontImage', undefined)
   }
+  refreshEditor()
 }
 
 function hasImage () {
@@ -191,6 +194,7 @@ function addNewCard () {
   window.lc.addDataListEntry('orderedCards', card)
   window.lc.setData('activeCardId', newId)
   _flipToQuestionSide()
+  refreshEditor()
 }
 function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
@@ -199,13 +203,13 @@ function _flipToQuestionSide () {
 async function updateCardBody (id) {
   _flipToQuestionSide()
   const currentCardBody = window.lc.getData('cardBody.' + id)
-  if (currentCardBody) {
-    return
+  if (!currentCardBody) {
+    const cardBody = await getCardBody(id)
+    window.lc.setData('cardBody.' + id, cardBody)
   }
-  const cardBody = await getCardBody(id)
-  window.lc.setData('cardBody.' + id, cardBody)
+  refreshEditor()
 }
-// This is called every time there is a change to state on the page
+// Re-renders the card area
 function refreshEditor () {
   if (hasImage()) {
     renderPreviewImageWithRawData(getImageData())

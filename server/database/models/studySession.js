@@ -54,7 +54,6 @@ async function createStudySession (userId, deckId, studyState) {
 
 function getRandomOrderingStr (len) {
   const shuffledList = shuffle(_.range(len))
-  console.log(shuffledList)
   for (let i = 0; i < shuffledList.length; i++) {
     shuffledList[i] = String.fromCharCode(shuffledList[i])
   }

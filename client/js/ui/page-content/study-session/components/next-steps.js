@@ -18,8 +18,8 @@ function oneClick (clickHandler) {
 }
 const resetSessionBtn = oneClick(resetSession)
 const deleteCurrentSessionBtn = oneClick(deleteCurrentSession)
-const restudyWrongBtn = oneClick(()=>{
-  console.log("SOMETHING")
+const restudyWrongBtn = oneClick(() => {
+  console.log('SOMETHING')
 })
 
 function noneWrong () {

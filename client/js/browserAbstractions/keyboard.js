@@ -1,7 +1,7 @@
 let keyBindings = {}
 let globalBindings = {}
 let cmdKeyBindings = {}
-function isMac() {
+function isMac () {
   return window.navigator.platform.indexOf('Mac') !== -1
 }
 function focusingOnSomething () {

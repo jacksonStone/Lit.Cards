@@ -6,7 +6,6 @@ const code = require('../../nodeAbstractions/responseCodes')
 router.post('/create', async (req, res) => {
   if (!req.body || !req.body.name) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
-  console.log(req.body.name)
   const newDeck = await addDeck(req.userId, req.body.name)
   res.send(newDeck)
 })
