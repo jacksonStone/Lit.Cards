@@ -1,9 +1,10 @@
 // TODO:: STUDY
 const db = require('../externalConnections/fakeData')
 const tableName = 'studySession'
+const _ = require('lodash')
 const { userExists } = require('./user')
 const { getDeck } = require('./deck')
-
+const shuffle = require('../../../shared/shuffle')
 const { generateId } = require('../../../shared/id-generator')
 async function getStudySessions (userId) {
   const results = await db.getRecord(tableName, { userId })
@@ -46,9 +47,19 @@ async function createStudySession (userId, deckId, studyState) {
   if (!currentUser) return
   const id = generateId()
   const dateMade = Date.now()
-  return db.setRecord(tableName, { userId, deck: deckId, id, date: dateMade, studyState })
+  const ordering = getRandomOrderingStr(deck.cardCount)
+  const currentCard = Math.floor(Math.random() * deck.cardCount)
+  return db.setRecord(tableName, { userId, currentCard, ordering, deck: deckId, id, date: dateMade, studyState })
 }
 
+function getRandomOrderingStr (len) {
+  const shuffledList = shuffle(_.range(len))
+  console.log(shuffledList)
+  for (let i = 0; i < shuffledList.length; i++) {
+    shuffledList[i] = String.fromCharCode(shuffledList[i])
+  }
+  return shuffledList.join('')
+}
 async function deleteStudySession (userId, id) {
   if (!userId || !id) return
   // Required

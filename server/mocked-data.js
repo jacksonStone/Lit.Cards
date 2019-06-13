@@ -12,7 +12,7 @@ let fakeData = {
   }],
   studySession: [
     // Current card is the index of the card in the initial ordered deck
-    { userId: 'jackson@someemail.com', studyState: '____', currentCard: 0, ordering: listToStr([1, 2, 3, 0]), deck: 'foo', id: 'fee' }
+    { userId: 'jackson@someemail.com', studyState: '___', currentCard: 0, ordering: listToStr([2, 1, 0]), deck: 'foo', id: 'fee' }
   ],
   card: [
     { userId: 'jackson@someemail.com', deck: 'foo', id: 'fe' },

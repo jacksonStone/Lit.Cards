@@ -1,10 +1,10 @@
-const { study: studyPage } = require('site/pages')
+const { study: studyPage, home } = require('site/pages')
 const { getParam } = require('abstract/url')
 const { listenForKey, resetKey } = require('abstract/keyboard')
 const { strToList } = require('shared/char-encoding')
 // TODO:: Move this some
 const { updateCardBody, flipCard } = require('../ui/page-content/deck/helper')
-const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions } = require('api/study')
+const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions, deleteStudySession } = require('api/study')
 // const { reject } = require('utils')
 const NOT_ANSWERED = '_'
 const RIGHT = 'R'
@@ -45,10 +45,16 @@ exports.getStudySession = async (id) => {
     return result
   }
 }
+
+exports.deleteCurrentSession = async () => {
+  const session = getSessionFromState()
+  await deleteStudySession(session.id)
+  home()
+}
 exports.getStudySessions = async () => {
   return JSON.parse(await getStudySessions())
 }
-exports.createStudySession = async (deck, startingState) => {
+const createStudySessionAndNavigate = exports.createStudySession = async (deck, startingState) => {
   const newSession = JSON.parse(await createStudySession(deck, startingState))
   navigateToStudySession(newSession.id)
 }
@@ -88,7 +94,6 @@ function updateStudyState (state) {
   const session = getSessionFromState()
   const allOrderedCards = getSessionOrderedCardsFromState()
   const newVisibleCards = trimCardsToOnesAwaitingAnswers(allOrderedCards, session)
-  // TODO:: Handle empty states/last card
   let index = getCurrentCardIndex()
   const cards = getVisibleCardsFromState()
   index++
@@ -97,6 +102,25 @@ function updateStudyState (state) {
   window.lc.setData('showingAnswer', false)
   window.lc.setData('orderedCards', newVisibleCards)
   updateCardBody(newCard.id)
+}
+// If a card is added to a deck during the studying process
+exports.accountForNewCards = (session, cards) => {
+  let count = 0
+  const startingLength = session.studyState.length
+  const targetLength = cards.length
+  while (session.studyState.length < targetLength) {
+    session.studyState += '_'
+    session.ordering += String.fromCharCode(startingLength + count)
+    count++
+  }
+  return session
+}
+exports.resetSession = async () => {
+  const session = getSessionFromState()
+  await deleteStudySession(session.id)
+  const deck = window.lc.getData('deck')
+  await createStudySessionAndNavigate(deck.id)
+  // navigate
 }
 exports.getNumberRight = () => {
   const session = getSessionFromState()

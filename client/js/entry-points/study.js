@@ -10,17 +10,21 @@ const { fetchUser } = require('logic/getUser')
 const { getCards } = require('logic/cards')
 const { getCardBody } = require('logic/cardBodies')
 const { getDeck } = require('logic/deck')
-const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers } = require('logic/study')
+const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } = require('logic/study')
 
 ;(async () => {
   defaultDarkMode()
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   const deckId = studySession.deck
   let [deck, cards] = await Promise.all([getDeck(deckId), getCards(deckId)])
+  if (studySession) {
+    studySession = accountForNewCards(studySession, cards)
+  }
   let firstCardId = (cards && cards.length && cards[studySession.currentCard || 0].id) || undefined
   let sessionOrderedCards = sortCardsBySession(cards, studySession)
   let visibleCards = trimCardsToOnesAwaitingAnswers(sessionOrderedCards, studySession)
   let cardBody = await getCardBody(firstCardId, deckId)
+  debugger
   if (!cards || !cardBody) {
     return homePage()
   }
