@@ -5,6 +5,7 @@ const _ = require('lodash')
 const { userExists } = require('./user')
 const { getDeck } = require('./deck')
 const shuffle = require('../../../shared/shuffle')
+const { strToList } = require('../../../shared/char-encoding')
 const { generateId } = require('../../../shared/id-generator')
 async function getStudySessions (userId) {
   const results = await db.getRecord(tableName, { userId })
@@ -26,7 +27,7 @@ async function getStudySessionByDeckId (userId, deck) {
   return { none: true }
 }
 
-async function createStudySession (userId, deckId, studyState) {
+async function createStudySession (userId, deckId, startingState) {
   if (!userId || !deckId) return
   const deck = await getDeck(userId, deckId)
   // Required
@@ -35,21 +36,41 @@ async function createStudySession (userId, deckId, studyState) {
     // Person already has a session for that deck
     return
   }
-  if (!studyState && !deck.none) {
+  const currentUser = await userExists(userId)
+  if (!currentUser) return
+
+  let currentCard
+  let studyState
+  let ordering
+  if (!startingState) {
     const defaultState = []
     for (let i = 0; i < deck.cardCount; i++) {
       defaultState.push('_')
     }
     studyState = defaultState.join('')
+    currentCard = Math.floor(Math.random() * deck.cardCount)
+    ordering = getRandomOrderingStr(deck.cardCount)
+  } else {
+    studyState = startingState.studyState
+    currentCard = getStartingCardFromSkips(startingState.ordering, studyState)
+    ordering = startingState.ordering
   }
-  // Required
-  const currentUser = await userExists(userId)
-  if (!currentUser) return
+
   const id = generateId()
   const dateMade = Date.now()
-  const ordering = getRandomOrderingStr(deck.cardCount)
-  const currentCard = Math.floor(Math.random() * deck.cardCount)
   return db.setRecord(tableName, { userId, currentCard, ordering, deck: deckId, id, date: dateMade, studyState })
+}
+
+function getStartingCardFromSkips (ordering, studyState) {
+  const orderingAsList = strToList(ordering)
+  const indexesOfSkipsInIntialDeck = []
+  for (let i = 0; i < studyState.length; i++) {
+    if (studyState[i] === '_') {
+      indexesOfSkipsInIntialDeck.push(orderingAsList[i])
+    }
+  }
+  const randomIndex = Math.floor(Math.random() * indexesOfSkipsInIntialDeck.length)
+  return indexesOfSkipsInIntialDeck[randomIndex]
 }
 
 function getRandomOrderingStr (len) {

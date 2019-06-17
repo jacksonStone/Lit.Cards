@@ -27,4 +27,4 @@ app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/f
 app.use('/fonts', express.static(path.join(ROOT, 'client/fonts'), { maxAge: 1000 * 60 * 60 * 24 * 360 }))
 app.use(express.static(path.join(ROOT, '/client/dist')))
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(3000, () => console.info('Example app listening on port 3000!'))

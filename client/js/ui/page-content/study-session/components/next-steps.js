@@ -1,5 +1,5 @@
 const { html } = require('lit')
-const { getNumberWrong, resetSession, deleteCurrentSession } = require('logic/study')
+const { getNumberWrong, resetSession, deleteCurrentSession, studyWrongAnswers } = require('logic/study')
 
 module.exports = () => {
   if (getNumberWrong()) {
@@ -18,9 +18,7 @@ function oneClick (clickHandler) {
 }
 const resetSessionBtn = oneClick(resetSession)
 const deleteCurrentSessionBtn = oneClick(deleteCurrentSession)
-const restudyWrongBtn = oneClick(() => {
-  console.log('SOMETHING')
-})
+const restudyWrongBtn = oneClick(studyWrongAnswers)
 
 function noneWrong () {
   return html`

@@ -7,7 +7,7 @@ function sendPage (res, page) {
   }
   return res.sendFile(page, options, function (err) {
     if (err) {
-      console.log(err)
+      console.error(err)
     }
   })
 }

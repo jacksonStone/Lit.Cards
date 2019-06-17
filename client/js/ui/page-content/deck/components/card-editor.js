@@ -15,9 +15,14 @@ const removeImageAction = () => {
 function getSession () {
   return window.lc.getData('session')
 }
+function tooFewCardsToDeleteOne () {
+  const cards = window.lc.getData('orderedCards')
+  if (!cards || !cards.length || cards.length === 1) return true
+  return false
+}
 function alertCantRemove () {
   // Todo::Improve this
-  window.alert('You cannot delete any cards while they are being studied')
+  window.alert('You cannot delete any cards while they are being studied or if it\'s the last card')
 }
 
 module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
@@ -50,7 +55,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
-                    ${(!getSession()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
+                    ${(getSession().none && !tooFewCardsToDeleteOne()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         style="
                                box-shadow: none;

@@ -9,7 +9,7 @@ const { createStudySession, getStudySession, getStudySessionForDeck, getStudySes
 const NOT_ANSWERED = '_'
 const RIGHT = 'R'
 const WRONG = 'W'
-// const MISSING = 'M' // Not in this study run
+const SKIP = 'S' // Not in this study run
 
 function navigateToStudySession (id) {
   return studyPage({ id })
@@ -121,6 +121,18 @@ exports.resetSession = async () => {
   const deck = window.lc.getData('deck')
   await createStudySessionAndNavigate(deck.id)
   // navigate
+}
+exports.studyWrongAnswers = async () => {
+  const session = getSessionFromState()
+  await deleteStudySession(session.id)
+  const deck = window.lc.getData('deck')
+  const studyState = convertRightToSkipsAndWrongsToUnanswered(session.studyState)
+
+  await createStudySessionAndNavigate(deck.id, { studyState, ordering: session.ordering })
+}
+function convertRightToSkipsAndWrongsToUnanswered (state) {
+  const rightsToSkips = state.split(RIGHT).join(SKIP)
+  return rightsToSkips.split(WRONG).join(NOT_ANSWERED)
 }
 exports.getNumberRight = () => {
   const session = getSessionFromState()

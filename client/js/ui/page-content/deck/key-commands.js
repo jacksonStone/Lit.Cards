@@ -11,7 +11,7 @@ function initCommands () {
   resetAllKeyBindings()
 
   listenForCMDKey('KeyS', () => {
-    // console.log('CMD + S')
+    // console.info('CMD + S')
   })
   listenForKey('KeyN', addNewCard)
   listenForKey('Space', flipCard)
