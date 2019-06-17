@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { addDeck, deleteDeck, getDecks, getDeck } = require('../../buisnessLogic/deck')
-const code = require('../../nodeAbstractions/responseCodes')
+const { addDeck, deleteDeck, getDecks, getDeck } = require('../../buisness-logic/deck')
+const code = require('../../node-abstractions/response-codes')
 
 router.post('/create', async (req, res) => {
   if (!req.body || !req.body.name) return code.invalidRequest(res)

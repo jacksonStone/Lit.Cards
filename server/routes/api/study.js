@@ -7,8 +7,8 @@ const {
   getSession,
   getSessionByDeck,
   getSessions
-} = require('../../buisnessLogic/study')
-const code = require('../../nodeAbstractions/responseCodes')
+} = require('../../buisness-logic/study')
+const code = require('../../node-abstractions/response-codes')
 
 router.post('/create', async (req, res) => {
   if (!req.body || !req.body.deck) return code.invalidRequest(res)

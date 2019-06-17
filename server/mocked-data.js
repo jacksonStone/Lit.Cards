@@ -1,6 +1,6 @@
 const { listToStr } = require('../shared/char-encoding')
 const { jcompress } = require('../shared/compress')
-const fakeCardBody = require('./fakeCardBody.json')
+const fakeCardBody = require('./fake-card-body.json')
 fakeCardBody.content = jcompress(fakeCardBody.content)
 // password: somePassword
 let fakeData = {

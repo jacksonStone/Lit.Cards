@@ -2,7 +2,7 @@ const {
   jcompress,
   jdecompress
 } = require('../compress')
-const testItem = require('../../server/fakeCardBody.json').content
+const testItem = require('../../server/fake-card-body.json').content
 
 describe('char-encoding', () => {
   it('compresses large JSON into a smaller string', () => {

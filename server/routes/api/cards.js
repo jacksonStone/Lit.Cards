@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { addCard, getCards } = require('../../buisnessLogic/card')
-const code = require('../../nodeAbstractions/responseCodes')
+const { addCard, getCards } = require('../../buisness-logic/card')
+const code = require('../../node-abstractions/response-codes')
 
 router.post('/create', async (req, res) => {
   if (!req.body) return code.invalidRequest(res)

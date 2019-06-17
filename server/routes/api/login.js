@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { getLoginCookie, verify } = require('../../buisnessLogic/authentication/login')
-const code = require('../../nodeAbstractions/responseCodes')
-const { addCookie } = require('../../nodeAbstractions/cookie')
+const { getLoginCookie, verify } = require('../../buisness-logic/authentication/login')
+const code = require('../../node-abstractions/response-codes')
+const { addCookie } = require('../../node-abstractions/cookie')
 
 router.post('/', async (req, res) => {
   if (!req.body) return code.unauthorized(res)

@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { getLogoutCookie } = require('../../buisnessLogic/authentication/login')
-const { addCookie } = require('../../nodeAbstractions/cookie')
-const code = require('../../nodeAbstractions/responseCodes')
+const { getLogoutCookie } = require('../../buisness-logic/authentication/login')
+const { addCookie } = require('../../node-abstractions/cookie')
+const code = require('../../node-abstractions/response-codes')
 
 router.get('/', (_, res) => {
   addCookie(res, getLogoutCookie())

@@ -1,4 +1,4 @@
-const db = require('../externalConnections/fakeData')
+const db = require('../external-connections/fake-database-connector')
 const tableName = 'deck'
 const { userExists } = require('./user')
 const { generateId } = require('../../../shared/id-generator')

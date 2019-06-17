@@ -4,5 +4,5 @@ global.window = {
     href: '/site/foo'
   }
 }
-const { initLC } = require('../client/js/ui/globals')
+const { initLC } = require('../client/ui/globals')
 window.lc = initLC()

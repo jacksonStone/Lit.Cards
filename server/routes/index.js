@@ -1,5 +1,5 @@
 var api = require('./api')
-var siteNavigation = require('./siteNavigation')
+var siteNavigation = require('./site-navigation')
 
 module.exports = {
   api,
