@@ -14,6 +14,11 @@ const SKIP = 'S' // Not in this study run
 function navigateToStudySession (id) {
   return studyPage({ id })
 }
+function resetAnswerKeyListeners () {
+  // Remove listeners
+  resetKey('ArrowLeft')
+  resetKey('ArrowRight')
+}
 exports.flipCard = () => {
   flipCard()
   if (window.lc.getData('showingAnswer')) {
@@ -21,9 +26,7 @@ exports.flipCard = () => {
     listenForKey('ArrowRight', markRight)
     return
   }
-  // Remove listeners
-  resetKey('ArrowLeft')
-  resetKey('ArrowRight')
+  resetAnswerKeyListeners()
 }
 exports.navigateToStudySession = navigateToStudySession
 
@@ -96,6 +99,9 @@ function updateStudyState (state) {
   const newVisibleCards = trimCardsToOnesAwaitingAnswers(allOrderedCards, session)
   let index = getCurrentCardIndex()
   const cards = getVisibleCardsFromState()
+  if (!newVisibleCards.length) {
+    resetAnswerKeyListeners()
+  }
   index++
   const newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
