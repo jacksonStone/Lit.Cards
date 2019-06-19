@@ -10,10 +10,10 @@
     ],
     "moduleNameMapper": {
       "^component/(.*)": "<rootDir>/client/ui/shared-components/$1.js",
-      "^logic/(.*)": "<rootDir>/client/buisnessLogic/$1.js",
+      "^logic/(.*)": "<rootDir>/client/business-logic/$1.js",
       "^api/(.*)": "<rootDir>/client/routes/api/$1.js",
       "^site/(.*)": "<rootDir>/client/routes/navigation/$1.js",
-      "^abstract/(.*)": "<rootDir>/client/browserAbstractions/$1.js",
+      "^abstract/(.*)": "<rootDir>/client/browser-abstractions/$1.js",
       "^shared/(.*)": "<rootDir>/shared/$1.js",
       "^utils": "<rootDir>/client/utils.js",
       "^lit":"<rootDir>/test-utils/lit-html.js",

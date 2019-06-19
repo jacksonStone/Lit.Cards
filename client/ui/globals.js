@@ -1,6 +1,7 @@
 require('uswds')
 const { render } = require('lit-html/lit-html')
 const { generateId } = require('../../shared/id-generator')
+const listenForChanges = require('logic/handle-save')
 const appHeader = require('./shared-components/app-header')
 const { initDebug, deactivateDebug } = require('./debug-global')
 const defaultErrorObject = {
@@ -33,6 +34,12 @@ function initLC () {
       }
       // Do not clone this
       return currentPiece
+    },
+    hasPersistentChanges: () => {
+      return lc.data.hasPersistentChanges
+    },
+    getPersistentChanges: () => {
+      return lc.data.changes
     },
     _willRerender: false,
     recordError: (path, error) => {
@@ -108,6 +115,9 @@ function initLC () {
 const lc = window.lc = initLC()
 if (lc._debugging === undefined && process.env.NODE_ENV === 'development') {
   lc.debugMode(false)
+}
+if (process.env.NODE_ENV !== 'test') {
+  listenForChanges()
 }
 
 function renderPage (pageContentFunc) {
