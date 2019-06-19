@@ -1,4 +1,3 @@
-// TODO:: STUDY
 const db = require('../external-connections/fake-database-connector')
 const tableName = 'studySession'
 const _ = require('lodash')

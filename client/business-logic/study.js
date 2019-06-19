@@ -48,7 +48,13 @@ exports.getStudySession = async (id) => {
     return result
   }
 }
-
+exports.deleteSession = async (id) => {
+  if (window.confirm('Are you sure you want to lose your study progress?')) {
+    await deleteStudySession(id)
+    // maybedo:: Maybe have this be unset instead
+    window.lc.setData('session', { none: true })
+  }
+}
 exports.deleteCurrentSession = async () => {
   const session = getSessionFromState()
   await deleteStudySession(session.id)

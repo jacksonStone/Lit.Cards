@@ -14,7 +14,6 @@ const { getDeck } = require('../business-logic/deck')
 // TODO::Consider pulling this from a URL
 
 ;(async () => {
-  // TODO:: User info should determine if in dark mode or not
   defaultDarkMode()
   let [user, cards, deck, studySession] = await Promise.all([fetchUser(), getCards(), getDeck(), getStudySession()])
   // For when you navigate from study to edit

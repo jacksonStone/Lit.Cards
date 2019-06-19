@@ -3,7 +3,6 @@ const { getCardBody } = require('../../../business-logic/card-bodies')
 const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('../../../browser-abstractions/file-upload')
 const { runNextRender } = require('../../../browser-abstractions/rendering-meta')
 
-// TODO::Make it so when you swap cards where the swapped to card has no image you make sure popup closes
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
   const largeImageSize = [600, 600]

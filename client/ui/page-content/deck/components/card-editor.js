@@ -21,7 +21,7 @@ function tooFewCardsToDeleteOne () {
   return false
 }
 function alertCantRemove () {
-  // Todo::Improve this
+  // maybedo::Improve this
   window.alert('You cannot delete any cards while they are being studied or if it\'s the last card')
 }
 

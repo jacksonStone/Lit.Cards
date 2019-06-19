@@ -1,4 +1,3 @@
-// TODO:: STUDY
 const { api } = require('./api-request')
 
 exports.getStudySessions = () => {

@@ -21,7 +21,6 @@ const deleteCurrentSessionBtn = oneClick(deleteCurrentSession)
 const restudyWrongBtn = oneClick(studyWrongAnswers)
 
 function noneWrong () {
-  // TODO:: Disable left and right keyboard shortcuts
   return html`
     <div style="text-align: center; border: 1px solid rgba(10, 10, 10, 0.1); height: 300px;">
     <h2>Well Done!</h2>

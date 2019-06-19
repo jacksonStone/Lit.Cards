@@ -1,4 +1,3 @@
-// TODO:: MAke this not the deck edit page
 const { renderPage } = require('../ui/globals')
 const { home: homePage } = require('../routes/navigation/pages')
 const content = require('../ui/page-content/study-session')
