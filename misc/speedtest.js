@@ -13,3 +13,5 @@ function speedTestFunction (callback, name = 'untilted', repeats = 1) {
 // DISCOVERIES
 // Under 1,000,000ish entries, string appending performs better than array appending, then it flips and gets more pronounced
 // Spread only works for about 150,000 entries, after that it starts to fall over
+// 1,000,000 obj look ups takes: .02 seconds, or 20 nanoseconds
+// 1,000,000 weakmap lookups take: .05 seconds, or 50 nanoseconds
