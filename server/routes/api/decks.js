@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { addDeck, deleteDeck, getDecks, getDeck } = require('../../buisness-logic/deck')
+const { addDeck, deleteDeck, getDecks, getDeck, renameDeck } = require('../../buisness-logic/deck')
 const code = require('../../node-abstractions/response-codes')
 
 router.post('/create', async (req, res) => {
@@ -14,6 +14,13 @@ router.post('/delete', async (req, res) => {
   if (!req.body || !req.body.id) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   await deleteDeck(req.userId, req.body.id)
+  return code.ok(res)
+})
+router.post('/rename', async (req, res) => {
+  if (!req.body || !req.body.id) return code.invalidRequest(res)
+  if (!req.userId) return code.unauthorized(res)
+  if (!req.body.name) return code.ok(res)
+  await renameDeck(req.userId, req.body.id, req.body.name)
   return code.ok(res)
 })
 

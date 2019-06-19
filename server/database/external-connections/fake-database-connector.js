@@ -38,6 +38,17 @@ async function unsetRecord (table, values) {
   fakeDatabaseConnector[table] = _.reject(tableData, values)
 }
 
+async function editRecord (table, filter, values) {
+  console.log(values)
+  const tableData = fakeDatabaseConnector[table]
+  if (!tableData) return
+  const entries = _.filter(tableData, filter)
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i]
+    Object.assign(entry, values)
+  }
+}
+
 // For testing
 function setFakeData (newFakeData) {
   fakeDatabaseConnector = newFakeData
@@ -47,4 +58,4 @@ function resetData () {
   fakeDatabaseConnector = fakeDataBackup
 }
 
-module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord }
+module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord }

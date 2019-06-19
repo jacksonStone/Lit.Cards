@@ -1,6 +1,6 @@
 const { deck: deckPage } = require('../routes/navigation/pages')
 const { getParam } = require('../browser-abstractions/url')
-const { getDeck, createDeck, deleteDeck } = require('../routes/api/decks')
+const { getDeck, createDeck, deleteDeck, renameDeck } = require('../routes/api/decks')
 const { reject } = require('utils')
 
 function navigateToDeckPage (deckId) {
@@ -21,4 +21,9 @@ exports.deleteDeck = async (id) => {
   const decks = window.lc.getData('decks')
   const decksWithoutDeleted = reject(decks, { id })
   window.lc.setData('decks', decksWithoutDeleted)
+}
+
+exports.updateDeckName = async (name, deckId) => {
+  deckId = deckId || getParam('deck')
+  return renameDeck(deckId, name)
 }

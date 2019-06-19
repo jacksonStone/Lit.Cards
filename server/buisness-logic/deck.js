@@ -13,6 +13,9 @@ async function deleteDeck (userId, id) {
   await deleteAllCardsFromDeck(userId, id)
   return Deck.deleteDeck(userId, id)
 }
+async function renameDeck (userId, id, name) {
+  return Deck.renameDeck(userId, id, name)
+}
 
 async function getDecks (userId) {
   const decks = await Deck.getDecks(userId)
@@ -30,5 +33,6 @@ module.exports = {
   addDeck,
   getDecks,
   getDeck,
+  renameDeck,
   deleteDeck
 }
