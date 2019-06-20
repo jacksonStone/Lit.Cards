@@ -39,7 +39,6 @@ async function unsetRecord (table, values) {
 }
 
 async function editRecord (table, filter, values) {
-  console.log(values)
   const tableData = fakeDatabaseConnector[table]
   if (!tableData) return
   const entries = _.filter(tableData, filter)

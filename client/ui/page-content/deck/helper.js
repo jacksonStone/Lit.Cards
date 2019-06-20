@@ -2,6 +2,7 @@ const { setEditorData, getFontSize, getTextOnly } = require('../../../browser-ab
 const { getCardBody } = require('../../../business-logic/card-bodies')
 const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('../../../browser-abstractions/file-upload')
 const { runNextRender } = require('../../../browser-abstractions/rendering-meta')
+const { compress } = require('shared/compress')
 
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
@@ -11,22 +12,28 @@ async function handleImageUpload (e) {
   if (showingAnswer()) {
     const [largeImage] = await getImageAtDifferentSize(imageData, largeImageSize)
     setPersistentForCardBody('backHasImage', true)
-    setPersistentForCardBody('backImage', largeImage)
+    setPersistentForCardBodyCompressed('backImage', largeImage)
     imagePreview = largeImage
   } else {
-    const [largeImage, thumbnail] = await getImageAtDifferentSize(imageData, largeImageSize, thumbnailSize)
+    const [largeImage] = await getImageAtDifferentSize(imageData, largeImageSize)
     setPersistentForCardBody('frontHasImage', true)
-    setPersistentForCardBody('frontImage', largeImage)
-    setPersistentForCard('image', thumbnail)
+    setPersistentForCardBodyCompressed('frontImage', largeImage)
     imagePreview = largeImage
   }
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
   refreshEditor()
 }
-
+function setPersistentForCardBodyCompressed(key, value) {
+  const cardId = _getCurrentCardId()
+  const changeKey = `cardBody.${cardId}.${key}`
+  window.lc.setPersistentOnly('_changeId', Math.random())
+  window.lc.setPersistentOnly(changeKey, compress(value))
+  window.lc.setData(changeKey, value)
+}
 function setPersistentForCardBody (key, value) {
   const cardId = _getCurrentCardId()
   const changeKey = `cardBody.${cardId}.${key}`
+  window.lc.setPersistentOnly('_changeId', Math.random())
   window.lc.setPersistent(changeKey, value)
 }
 function setPersistentForCard (key, value) {

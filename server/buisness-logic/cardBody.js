@@ -11,9 +11,13 @@ async function deleteCardBody (userId, deck, card) {
 async function deleteAllCardBodies (userId, deck) {
   return CardBody.deleteCardBodies(userId, deck)
 }
+async function editCardBody (userId, deck, card, changes) {
+  return CardBody.editCardBody(userId, deck, card, changes)
+}
 
 module.exports = {
   getCardBody,
+  editCardBody,
   deleteAllCardBodies,
   deleteCardBody
 }

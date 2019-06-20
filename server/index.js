@@ -8,7 +8,7 @@ const app = express()
 const routes = require('./routes')
 
 app.use(cookieParser())
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit:'5mb', extended: true}))
 app.use(async (req, res, next) => {
   const userId = await loginUtils.getuserId(req.cookies)
   req.userId = userId

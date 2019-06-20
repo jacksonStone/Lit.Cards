@@ -1,7 +1,8 @@
 const { listToStr } = require('../shared/char-encoding')
-const { jcompress } = require('../shared/compress')
+const { compress } = require('../shared/compress')
 const fakeCardBody = require('./fake-card-body.json')
-fakeCardBody.content = jcompress(fakeCardBody.content)
+fakeCardBody.frontImage = compress(fakeCardBody.frontImage)
+fakeCardBody.backImage = compress(fakeCardBody.backImage)
 // password: somePassword
 let fakeData = {
   user: [{
@@ -22,9 +23,9 @@ let fakeData = {
   ],
   cardBody: [
     fakeCardBody,
-    { userId: 'jackson@someemail.com', deck: 'foo', content: jcompress({ front: 'This is the front of card 2', back: 'This is the back of card 2' }), id: 'fo' },
-    { userId: 'jackson@someemail.com', deck: 'foo', content: jcompress({ front: 'This is the front of card 3', back: 'This is the back of card 3' }), id: 'fi' },
-    { userId: 'jackson@someemail.com', deck: 'foo', content: jcompress({ front: 'This is the front of card 4', back: 'This is the back of card 4' }), id: 'fum' }
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 2', back: 'This is the back of card 2', id: 'fo' },
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 3', back: 'This is the back of card 3', id: 'fi' },
+    { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 4', back: 'This is the back of card 4', id: 'fum' }
   ],
   deck: [
     { userId: 'jackson@someemail.com', name: 'This is my deck about biology', cardCount: 4, date: Date.now(), id: 'foo' },

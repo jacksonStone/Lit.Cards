@@ -36,7 +36,7 @@ function initLC () {
       return currentPiece
     },
     hasPersistentChanges: () => {
-      return lc.data.hasPersistentChanges
+      return !!Object.keys(lc.data.changes).length
     },
     getPersistentChanges: () => {
       return lc.data.changes
@@ -86,19 +86,16 @@ function initLC () {
     },
     setPersistent (key, value) {
       lc.setData('changes.' + key, value)
-      lc.setData('hasPersistentChanges', true)
       lc.setData(key, value)
+    },
+    setPersistentOnly (key, value) {
+      lc.setData('changes.' + key, value)
     },
     setDeleted (obj, id) {
       const record = lc.data[obj][id]
       delete lc.data[obj][id]
-      if (record.isNew) {
-        return // nothing to persist, hasn't been saved
-      }
       const currentDeletions = lc.getData(`deletions.${obj}`) || []
-      currentDeletions.push(id)
-      lc.setData(`deletions.${obj}`, currentDeletions)
-      lc.setData('hasPersistentChanges', true)
+      lc.setData(`changes.${obj}.${id}.deleted`, true)
     },
     debugging () {
       return lc._debugging

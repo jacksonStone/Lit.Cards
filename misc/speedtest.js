@@ -6,7 +6,6 @@ function speedTestFunction (callback, name = 'untilted', repeats = 1) {
     const end = Date.now()
     sum += (end - start)
   }
-  console.log(sum)
   console.info(`${name} took on average: ${(sum / repeats) / 1000} seconds`)
 }
 

@@ -13,6 +13,10 @@ async function getCardBody (userId, deck, card) {
 async function getCardBodies (userId, deck) {
   return db.getRecord(tableName, { userId, deck })
 }
+async function editCardBody (userId, deck, card, changes) {
+  // Account for images not being changes and text being changed
+  return db.editRecord(tableName, { userId, deck, id: card }, changes)
+}
 async function deleteCardBody (userId, deck, card) {
   db.unsetRecord(tableName, { userId, deck, id: card })
 }
@@ -26,6 +30,7 @@ async function deleteCardBodies (userId, deck) {
 }
 
 module.exports = {
+  editCardBody,
   getCardBody,
   deleteCardBodies,
   deleteCardBody
