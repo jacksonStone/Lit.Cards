@@ -16,8 +16,8 @@
       "^abstract/(.*)": "<rootDir>/client/browser-abstractions/$1.js",
       "^shared/(.*)": "<rootDir>/shared/$1.js",
       "^utils": "<rootDir>/client/utils.js",
-      "^lit":"<rootDir>/test-utils/lit-html.js",
-      "^uswds":"<rootDir>/test-utils/uswds.js"
+      "^lit": "<rootDir>/test-utils/lit-html.js",
+      "^uswds": "<rootDir>/test-utils/uswds.js"
     }
   },
   "nodemonConfig": {
