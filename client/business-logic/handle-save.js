@@ -12,7 +12,7 @@ function listenToSaveableChanges () {
     }).catch(() => {
       runningAlready = false
     })
-  }, 10000)
+  }, 1000)
 }
 
 async function _handleChanges () {
