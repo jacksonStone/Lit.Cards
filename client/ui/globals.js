@@ -92,9 +92,7 @@ function initLC () {
       lc.setData('changes.' + key, value)
     },
     setDeleted (obj, id) {
-      const record = lc.data[obj][id]
       delete lc.data[obj][id]
-      const currentDeletions = lc.getData(`deletions.${obj}`) || []
       lc.setData(`changes.${obj}.${id}.deleted`, true)
     },
     debugging () {

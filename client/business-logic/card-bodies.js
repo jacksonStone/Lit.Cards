@@ -1,8 +1,8 @@
 const { getCardBody, editCardBody } = require('../routes/api/card-bodies')
 const { getParam } = require('../browser-abstractions/url')
-const { decompress, compress } = require('shared/compress')
+const { decompress } = require('shared/compress')
 const cachedCardBodies = {}
-function getDefaultDeck(deck) {
+function getDefaultDeck (deck) {
   if (!deck) {
     deck = getParam('deck')
     if (!deck) {
@@ -24,12 +24,12 @@ exports.getCardBody = async (card, deck) => {
     try {
       let cardData = await getCardBody(deck, card)
       const cardDataAsJSON = JSON.parse(cardData)
-      if(cardDataAsJSON) {
+      if (cardDataAsJSON) {
         // Decompress images
-        if(cardDataAsJSON.frontHasImage) {
+        if (cardDataAsJSON.frontHasImage) {
           cardDataAsJSON.frontImage = decompress(cardDataAsJSON.frontImage)
         }
-        if(cardDataAsJSON.backHasImage) {
+        if (cardDataAsJSON.backHasImage) {
           cardDataAsJSON.backImage = decompress(cardDataAsJSON.backImage)
         }
       }
@@ -52,7 +52,7 @@ exports.persistCardBodyChange = (cardBody, key, value) => {
   const changePath = `${changeCardBodyId}.${key}`
   window.lc.setPersistent(changePath, value)
 }
-function getCardBodyChangeId(cardBody) {
+function getCardBodyChangeId (cardBody) {
   return `cardBody.${cardBody.id}`
 }
 exports.editCardBody = (card, changes, deck) => {

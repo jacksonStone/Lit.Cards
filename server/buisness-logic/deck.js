@@ -1,7 +1,7 @@
 const { Deck } = require('../database')
 const { deleteSessionByDeck } = require('./study')
 const { deleteAllCardsFromDeck } = require('./card')
-const { deleteAllCardBodies } = require('./cardBody')
+const { deleteAllCardBodies } = require('./card-body')
 
 async function addDeck (userId, name) {
   return Deck.createDeck(userId, name)
