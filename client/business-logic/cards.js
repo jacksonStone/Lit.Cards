@@ -9,7 +9,7 @@ exports.getCards = async (deck) => {
 exports.getCardsForEmptyState = (newId) => {
   const emptyValue = { id: newId, isNew: true }
   // Record we made this on the fly
-  window.lc.setData(`changes.card.${newId}`, emptyValue)
+  window.lc.setPersistent(`card.${newId}`, emptyValue)
   return [emptyValue]
 }
 

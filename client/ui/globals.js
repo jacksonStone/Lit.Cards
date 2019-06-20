@@ -82,7 +82,6 @@ function initLC () {
       }
     },
     _rerender: () => {
-    // mergeChangesIntoData()
       renderPage(lc._presentPage)
     },
     setPersistent (key, value) {

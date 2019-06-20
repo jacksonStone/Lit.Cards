@@ -8,7 +8,7 @@ let fakeData = {
     userId: 'jackson@someemail.com',
     password: 'X0VIy9vshnkFZVZO8tLB4Uod5JDREmf1eIh9qIP6KR0=',
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57',
-    darkMode: false
+    darkMode: true
   }],
   studySession: [
     // Current card is the index of the card in the initial ordered deck

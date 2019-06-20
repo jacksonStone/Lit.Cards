@@ -35,7 +35,7 @@ exports.getCardBody = async (card, deck) => {
 exports.getCardBodyForEmptyState = (newId) => {
   const emptyValue = { id: newId, isNew: true, front: '', back: '' }
   // Record we made this on the fly
-  window.lc.setData(`changes.cardBody.${newId}`, emptyValue)
+  window.lc.setPersistent(`cardBody.${newId}`, emptyValue)
   return emptyValue
 }
 
@@ -43,13 +43,4 @@ exports.persistCardBodyChange = (cardBody, key, value) => {
   const changeCardBodyId = getCardBodyChangeId(cardBody)
   const changePath = `${changeCardBodyId}.${key}`
   window.lc.setPersistent(changePath, value)
-}
-
-exports.mergeCardBodyWithChanges = (cardBody) => {
-  const changeCardBodyId = getCardBodyChangeId(cardBody)
-  return Object.assign({}, cardBody, window.lc.getData(changeCardBodyId) || {})
-}
-
-function getCardBodyChangeId (cardBody) {
-  return `changes.cardBody.${cardBody.id}`
 }
