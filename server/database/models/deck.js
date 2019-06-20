@@ -13,10 +13,8 @@ async function getDeck (userId, deck) {
   }
   return { none: true }
 }
-
-async function deckExists (userId, name) {
-  const results = await db.getRecord(tableName, { userId, name })
-  return !!results.length
+async function renameDeck (userId, deck, name) {
+  return db.editRecord(tableName, { userId, id: deck }, { name })
 }
 
 async function createDeck (userId, name) {
@@ -42,6 +40,6 @@ module.exports = {
   getDecks,
   getDeck,
   deleteDeck,
-  deckExists,
+  renameDeck,
   createDeck
 }
