@@ -38,16 +38,19 @@ async function handleNameChange (changes) {
     return
   }
   currentlySavingName = true
-  await updateDeckName(deck.name)
-  currentlySavingName = false
-  if (deck.name === originalName) {
-    // Did not make changes while waiting
-    // Remove the fact that we have changes here
-    delete deck.name
-    if (Object.keys(deck).length === 0) {
-      delete changes.deck
+  updateDeckName(deck.name).then(() => {
+    currentlySavingName = false
+    if (deck.name === originalName) {
+      // Did not make changes while waiting
+      // Remove the fact that we have changes here
+      delete deck.name
+      if (Object.keys(deck).length === 0) {
+        delete changes.deck
+      }
     }
-  }
+  }).catch(() => {
+    // TODO:: Think of something to do here
+  })
 }
 
 const cardsBeingEdited = {}
@@ -72,7 +75,7 @@ async function handleCardBodyChange (changes) {
         }
         delete cardsBeingEdited[cardId]
       }).catch(() => {
-        delete cardsBeingEdited[cardId]
+        // delete cardsBeingEdited[cardId]
         // TODO:: Think of what to do here
       })
     } else if (cardBody.isNew && !cardBody.deleted) {
@@ -89,7 +92,7 @@ async function handleCardBodyChange (changes) {
         }
         delete cardsBeingAdded[cardId]
       }).catch(() => {
-        delete cardsBeingAdded[cardId]
+        // delete cardsBeingAdded[cardId]
         // TODO:: Think of what to do here
       })
     }
