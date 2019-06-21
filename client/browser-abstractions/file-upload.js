@@ -20,7 +20,8 @@ function getFileData (e) {
 }
 
 async function getImageAtDifferentSize (imageData, ...sizes) {
-  sizes = !sizes.length ? [[600, 600]] : sizes
+  const defaultSize = 600
+  sizes = !sizes.length ? [[defaultSize, defaultSize]] : sizes
   return new Promise((resolve) => {
     const img = document.createElement('img')
     const canvasElement = document.createElement('canvas')

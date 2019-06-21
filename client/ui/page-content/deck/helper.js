@@ -6,16 +6,14 @@ const { compress } = require('shared/compress')
 
 async function handleImageUpload (e) {
   const imageData = await getFileData(e)
-  const largeImageSize = [600, 600]
-  const thumbnailSize = [120, 120]
   let imagePreview
   if (showingAnswer()) {
-    const [largeImage] = await getImageAtDifferentSize(imageData, largeImageSize)
+    const [largeImage] = await getImageAtDifferentSize(imageData)
     setPersistentForCardBody('backHasImage', true)
     setPersistentForCardBodyCompressed('backImage', largeImage)
     imagePreview = largeImage
   } else {
-    const [largeImage] = await getImageAtDifferentSize(imageData, largeImageSize)
+    const [largeImage] = await getImageAtDifferentSize(imageData)
     setPersistentForCardBody('frontHasImage', true)
     setPersistentForCardBodyCompressed('frontImage', largeImage)
     imagePreview = largeImage

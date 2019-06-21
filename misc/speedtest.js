@@ -14,3 +14,4 @@ function speedTestFunction (callback, name = 'untilted', repeats = 1) {
 // 1,000,000 obj look ups takes: .02 seconds, or 20 nanoseconds
 // 1,000,000 weakmap lookups take: .05 seconds, or 50 nanoseconds, and it's fine on IE 11, go figure
 // HTML-sanitize takes under 1 millisecond even for pretty large documents
+// jpeg has about 8.25 bits per pixel at 100%, we are 90% which in my tests is about 6bits per pixel as an upper bound
