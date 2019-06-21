@@ -5,5 +5,10 @@ exports.getCardBody = (deck, card = '') => {
 }
 
 exports.editCardBody = (deck, card = '', changes) => {
-  return api(`card-body/edit`, {deck, card, changes})
+  debugger
+  return api(`card-body/edit`, { deck, card, changes })
+}
+
+exports.addCardBody = (deck, changes) => {
+  return api(`card-body/add`, { deck, changes })
 }

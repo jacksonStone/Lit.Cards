@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getCardBody, editCardBody } = require('../../buisness-logic/card-body')
+const { getCardBody, editCardBody, addCardBody } = require('../../buisness-logic/card-body')
 const code = require('../../node-abstractions/response-codes')
 
 router.get('/', async (req, res) => {
@@ -28,6 +28,17 @@ router.post('/edit', async (req, res) => {
   }
   await editCardBody(req.userId, deck, card, changes)
   return code.ok(res)
+})
+router.post('/add', async (req, res) => {
+  const deck = req.body.deck
+  const changes = req.body.changes
+  delete changes._changeId
+  delete changes.isNew
+  // Add a card here toos
+  if (!deck) return code.invalidRequest(res)
+  if (!req.userId) return code.unauthorized(res)
+  const newId = await addCardBody(req.userId, deck, changes)
+  return res.send(newId)
 })
 
 module.exports = router

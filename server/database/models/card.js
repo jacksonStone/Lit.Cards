@@ -15,15 +15,9 @@ async function deleteCards (userId, deck) {
   }
 }
 // TODO::Correct to use deck ID
-async function createCard (userId, deck, content) {
-  if (!userId || !content) return
+async function createCard (userId, deck) {
   const id = createId()
-  //
-  // // Required
-  // const deckDoesExist = await deckExists(userId, deck)
-  // if (!deckDoesExist) return
-
-  return db.setRecord(tableName, { userId, deck, content, id })
+  return db.setRecord(tableName, { userId, deck, id })
 }
 
 module.exports = {

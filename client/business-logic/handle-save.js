@@ -1,5 +1,5 @@
 const { updateDeckName } = require('logic/deck')
-const { editCardBody } = require('logic/card-bodies')
+const { editCardBody, addCardBody } = require('logic/card-bodies')
 function listenToSaveableChanges () {
   let runningAlready = false
   setInterval(() => {
@@ -51,6 +51,8 @@ async function handleNameChange (changes) {
 }
 
 const cardsBeingEdited = {}
+const cardsBeingAdded = {}
+const addedCardsTempIdToTrueId = {}
 async function handleCardBodyChange (changes) {
   // Edit cardBodeis
   // Delete cardBodies
@@ -59,17 +61,35 @@ async function handleCardBodyChange (changes) {
     const cardId = cardsWithChanges[i]
     const cardBody = changes.cardBody[cardId]
     const changeId = cardBody._changeId
-    if (!cardBody.isNew || !cardBody.deleted) {
+    if (!cardBody.isNew && !cardBody.deleted) {
       // Is an edit
-      if (cardsBeingEdited[cardId]) return
+      if (cardsBeingEdited[cardId]) continue
       cardsBeingEdited[cardId] = true
-      editCardBody(cardId, cardBody).then(res => {
+      const idToSend = addedCardsTempIdToTrueId[cardId] || cardId
+      editCardBody(idToSend, cardBody).then(() => {
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]
         }
         delete cardsBeingEdited[cardId]
       }).catch(() => {
         delete cardsBeingEdited[cardId]
+        // TODO:: Think of what to do here
+      })
+    } else if (cardBody.isNew && !cardBody.deleted) {
+      if (cardsBeingAdded[cardId]) {
+        continue
+      }
+      cardsBeingAdded[cardId] = true
+      addCardBody(cardBody).then((newId) => {
+        addedCardsTempIdToTrueId[cardId] = newId
+        if (changeId === cardBody._changeId) {
+          delete changes.cardBody[cardId]
+        } else {
+          delete changes.cardBody[cardId].isNew
+        }
+        delete cardsBeingAdded[cardId]
+      }).catch(() => {
+        delete cardsBeingAdded[cardId]
         // TODO:: Think of what to do here
       })
     }
