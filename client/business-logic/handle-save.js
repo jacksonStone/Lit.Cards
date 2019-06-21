@@ -72,6 +72,9 @@ async function handleCardBodyChange (changes) {
       editCardBody(idToSend, cardBody).then(() => {
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]
+          if (Object.keys(changes.cardBody).length === 0) {
+            delete changes.cardBody
+          }
         }
         delete cardsBeingEdited[cardId]
       }).catch(() => {
@@ -87,6 +90,9 @@ async function handleCardBodyChange (changes) {
         addedCardsTempIdToTrueId[cardId] = newId
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]
+          if (Object.keys(changes.cardBody).length === 0) {
+            delete changes.cardBody
+          }
         } else {
           delete changes.cardBody[cardId].isNew
         }

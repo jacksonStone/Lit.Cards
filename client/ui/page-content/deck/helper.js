@@ -21,22 +21,17 @@ async function handleImageUpload (e) {
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
   refreshEditor()
 }
-function setPersistentForCardBodyCompressed(key, value) {
+function setPersistentForCardBodyCompressed (key, value) {
   const cardId = _getCurrentCardId()
   const changeKey = `cardBody.${cardId}.${key}`
-  window.lc.setPersistentOnly('_changeId', Math.random())
+  window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
   window.lc.setPersistentOnly(changeKey, compress(value))
   window.lc.setData(changeKey, value)
 }
 function setPersistentForCardBody (key, value) {
   const cardId = _getCurrentCardId()
   const changeKey = `cardBody.${cardId}.${key}`
-  window.lc.setPersistentOnly('_changeId', Math.random())
-  window.lc.setPersistent(changeKey, value)
-}
-function setPersistentForCard (key, value) {
-  const cardId = _getCurrentCardId()
-  const changeKey = `card.${cardId}.${key}`
+  window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
   window.lc.setPersistent(changeKey, value)
 }
 function updateFontSizeIfNecessary (oldCardBody, newText) {
@@ -111,7 +106,7 @@ function getImageData () {
 }
 
 function nextCard () {
-  let index = getCurrentCardIndex()
+  let index = _getCurrentCardIndex()
   const cards = window.lc.getData('orderedCards')
   index++
   const newCard = cards[(index % cards.length)]
@@ -120,11 +115,12 @@ function nextCard () {
 }
 
 function removeCard () {
-  let index = getCurrentCardIndex()
+  let index = _getCurrentCardIndex()
   let id = _getCurrentCardId()
   const cards = window.lc.getData('orderedCards')
   cards.splice(index, 1)
-  window.lc.setDeleted('card', id)
+  // Card bodies handle "card" creation/deletion
+  // window.lc.setDeleted('card', id)
   window.lc.setDeleted('cardBody', id)
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
@@ -133,7 +129,7 @@ function removeCard () {
 }
 
 function previousCard () {
-  let index = getCurrentCardIndex()
+  let index = _getCurrentCardIndex()
   const cards = window.lc.getData('orderedCards')
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
@@ -187,13 +183,13 @@ function getCardMapping (cards) {
 
 function addNewCard () {
   const newId = window.lc.generateNewId()
-
-  const changeKeyCard = `card.${newId}`
-  const changeKeyCardBody = `cardBody.${newId}`
+  // Cardbodies handle card creation/deletion
+  // const changeKeyCard = `card.${newId}`
   const card = { id: newId, isNew: true }
+  // window.lc.setPersistent(changeKeyCard, card)
+
+  const changeKeyCardBody = `cardBody.${newId}`
   const cardBody = { id: newId, isNew: true, front: '', back: '' }
-  // Get current deck?
-  window.lc.setPersistent(changeKeyCard, card)
   window.lc.setPersistent(changeKeyCardBody, cardBody)
   window.lc.addDataListEntry('orderedCards', card)
   window.lc.setData('activeCardId', newId)
@@ -241,7 +237,7 @@ function _updateEditorData () {
 function _getCurrentCardId () {
   return window.lc.getData('activeCardId')
 }
-function getCurrentCardIndex () {
+function _getCurrentCardIndex () {
   const currentId = _getCurrentCardId()
   const cards = window.lc.getData('orderedCards')
   let currentIndex
@@ -269,7 +265,6 @@ module.exports = {
   removeCard,
   refreshEditor,
   getTextToShowForCard,
-  getCurrentCardIndex,
   handleEditorTextChange,
   getPresentFontSize
 }
