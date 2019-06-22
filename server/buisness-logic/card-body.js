@@ -1,14 +1,16 @@
 const { CardBody } = require('../database')
 const { Card } = require('../database')
+const { Deck } = require('../database')
 const sanitizeHTML = require('sanitize-html')
 async function getCardBody (userId, deck, card) {
   return CardBody.getCardBody(userId, deck, card)
 }
-// TODO:: Fire this when deleting a card
 async function deleteCardBody (userId, deck, card) {
+  //TODO:: Wrap this in a transaction or something
+  await Deck.decrementCardCount(userId, deck)
+  await Card.deleteCard(userId, deck, card)
   return CardBody.deleteCardBody(userId, deck, card)
 }
-// TODO:: Add ability to delete cardbodies in response to deck or card deletion
 async function deleteAllCardBodies (userId, deck) {
   return CardBody.deleteCardBodies(userId, deck)
 }
@@ -27,6 +29,8 @@ async function editCardBody (userId, deck, card, changes) {
 async function addCardBody (userId, deck, changes) {
   sanitizeCardContent(changes)
   delete changes.id
+  //TODO:: Wrap this in a transaction or something
+  await Deck.incrementCardCount(userId, deck)
   const card = await Card.createCard(userId, deck)
   await CardBody.addCardBody(userId, deck, card.id, changes)
   return card.id

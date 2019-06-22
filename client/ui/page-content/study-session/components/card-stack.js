@@ -19,7 +19,7 @@ font-weight: normal;
 font-size: 40px;
 margin: 0;
 margin-top: 20px;
-"><span class="right-count">${getNumberRight() + 128}</span> | <span class="wrong-count">${getNumberWrong() + 423}</span></h1>
+"><span class="right-count">${getNumberRight()}</span> | <span class="wrong-count">${getNumberWrong()}</span></h1>
         <div style="margin-left:8px; margin-top: 5px">Right  |  Wrong</div>
     </div>`
 }

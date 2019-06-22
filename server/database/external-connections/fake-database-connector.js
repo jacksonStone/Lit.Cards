@@ -57,4 +57,7 @@ function resetData () {
   fakeDatabaseConnector = fakeDataBackup
 }
 
-module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord }
+function getAllData() {
+  return fakeDatabaseConnector
+}
+module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord, getAllData }

@@ -1,5 +1,5 @@
 const { updateDeckName } = require('logic/deck')
-const { editCardBody, addCardBody } = require('logic/card-bodies')
+const { editCardBody, addCardBody, deleteCardBody } = require('logic/card-bodies')
 function listenToSaveableChanges () {
   let runningAlready = false
   setInterval(() => {
@@ -18,7 +18,6 @@ function listenToSaveableChanges () {
 
 async function _handleChanges () {
   const changes = window.lc.getPersistentChanges()
-  console.log(changes)
   if (changes.deck) {
     if (changes.deck.name) {
       handleNameChange(changes)
@@ -55,10 +54,9 @@ async function handleNameChange (changes) {
 
 const cardsBeingEdited = {}
 const cardsBeingAdded = {}
+const cardsBeingDeleted = {}
 const addedCardsTempIdToTrueId = {}
 async function handleCardBodyChange (changes) {
-  // Edit cardBodeis
-  // Delete cardBodies
   const cardsWithChanges = Object.keys(changes.cardBody)
   for (let i = 0; i < cardsWithChanges.length; i++) {
     const cardId = cardsWithChanges[i]
@@ -101,6 +99,20 @@ async function handleCardBodyChange (changes) {
         // delete cardsBeingAdded[cardId]
         // TODO:: Think of what to do here
       })
+    } else if(cardBody.deleted) {
+      if (cardsBeingDeleted[cardId]) {
+        continue
+      }
+      cardsBeingDeleted[cardId] = true
+      deleteCardBody(cardId).then(()=>{
+        debugger
+        delete changes.cardBody[cardId]
+        delete cardsBeingDeleted[cardId]
+      }).catch(()=>{
+        debugger
+        delete changes.cardBody[cardId]
+      })
+
     }
   }
 }

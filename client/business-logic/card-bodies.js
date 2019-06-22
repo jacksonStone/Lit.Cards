@@ -1,4 +1,4 @@
-const { getCardBody, editCardBody, addCardBody } = require('../routes/api/card-bodies')
+const { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../routes/api/card-bodies')
 const { getParam } = require('../browser-abstractions/url')
 const { decompress } = require('shared/compress')
 const cachedCardBodies = {}
@@ -60,6 +60,13 @@ exports.editCardBody = (card, changes, deck) => {
   }
   deck = getDefaultDeck(deck)
   return editCardBody(deck, card, changes)
+}
+exports.deleteCardBody = (card, deck) => {
+  if (!card) {
+    return
+  }
+  deck = getDefaultDeck(deck)
+  return deleteCardBody(deck, card)
 }
 exports.addCardBody = async (changes, deck) => {
   deck = getDefaultDeck(deck)

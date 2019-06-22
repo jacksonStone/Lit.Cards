@@ -17,6 +17,23 @@ async function renameDeck (userId, deck, name) {
   return db.editRecord(tableName, { userId, id: deck }, { name })
 }
 
+async function incrementCardCount (userId, deck, name) {
+  const results = await db.getRecord(tableName, { userId, id: deck })
+  if(!results || !results.length) {
+    return
+  }
+  const record = results[0]
+  return db.editRecord(tableName, { userId, id: deck }, { cardCount: record.cardCount + 1 })
+}
+async function decrementCardCount (userId, deck, name) {
+  const results = await db.getRecord(tableName, { userId, id: deck })
+  if(!results || !results.length) {
+    return
+  }
+  const record = results[0]
+  console.log(record)
+  return db.editRecord(tableName, { userId, id: deck }, { cardCount: record.cardCount - 1 })
+}
 async function createDeck (userId, name) {
   if (!userId || !name) return
   // Required
@@ -41,5 +58,7 @@ module.exports = {
   getDeck,
   deleteDeck,
   renameDeck,
+  incrementCardCount,
+  decrementCardCount,
   createDeck
 }

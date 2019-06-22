@@ -14,7 +14,9 @@ async function deleteCards (userId, deck) {
     }
   }
 }
-// TODO::Correct to use deck ID
+async function deleteCard (userId, deck, card) {
+  await db.unsetRecord(tableName, {deck, id: card, userId})
+}
 async function createCard (userId, deck) {
   const id = createId()
   return db.setRecord(tableName, { userId, deck, id })
@@ -23,5 +25,6 @@ async function createCard (userId, deck) {
 module.exports = {
   getCards,
   deleteCards,
+  deleteCard,
   createCard
 }
