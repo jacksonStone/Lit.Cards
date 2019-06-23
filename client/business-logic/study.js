@@ -56,7 +56,12 @@ exports.deleteSession = async (id) => {
   }
 }
 exports.editStudySessionState = async (session) => {
-  const id = getParam('id')
+  const sessionInState = getSessionFromState()
+  let id = sessionInState && sessionInState.id
+  if (!id) {
+    id = getParam('id')
+  }
+  if (!id) return
   await editStudySessionState(id, session)
 }
 exports.deleteCurrentSessionWithConfirmation = async () => {
@@ -77,7 +82,6 @@ const createStudySessionAndNavigate = exports.createStudySession = async (deck, 
   navigateToStudySession(newSession.id)
 }
 exports.sortCardsBySession = (cards, session) => {
-  debugger
   const ordering = strToList(session.ordering)
   const shuffledCards = []
   for (let i = 0; i < cards.length; i++) {
@@ -147,7 +151,6 @@ exports.accountForNewCards = (session, cards) => {
     window.lc.setPersistent('session.ordering', session.ordering)
     count++
   }
-  debugger
   return session
 }
 exports.resetSession = async () => {

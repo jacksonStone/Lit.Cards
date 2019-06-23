@@ -109,11 +109,9 @@ async function handleCardBodyChange (changes) {
       }
       cardsBeingDeleted[cardId] = true
       deleteCardBody(cardId).then(()=>{
-        debugger
         delete changes.cardBody[cardId]
         delete cardsBeingDeleted[cardId]
       }).catch(()=>{
-        debugger
         delete changes.cardBody[cardId]
       })
 
