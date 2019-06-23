@@ -1,8 +1,8 @@
 const { html } = require('lit')
 const viewer = require('./card-viewer')
-const cardStack = require('./card-stack')
+const cardStack = require('./right-wrong')
 const sidenav = require('./sidenav')
-const nextSteps = require('./next-steps')
+const nextSteps = require('./end-of-session')
 const { storeAllState, retrieveStateStored } = require('../../../../browser-abstractions/browser-storage')
 module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => html`
     ${window.lc.debugging() ? html`

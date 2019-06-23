@@ -1,6 +1,6 @@
 const { html } = require('lit')
 const editor = require('./card-editor')
-const cardEditStack = require('./card-edit-stack')
+const cardEditStack = require('./side-numbers')
 const sidenav = require('./sidenav')
 const nameEdit = require('./name-edit')
 

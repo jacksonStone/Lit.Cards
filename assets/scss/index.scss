@@ -248,6 +248,16 @@ body {
 .disabled-button-no-outline {
   color:#666;
 }
+.prev-next {
+  //font-size:12px;
+  //width: 100px;
+  margin: 0;
+  margin-top: 10px;
+  padding:0;
+  font-size: 44px;
+  box-shadow: none;
+}
+
 .darkmode {
   color: #555;
   #overlay {
@@ -332,5 +342,9 @@ body {
   }
   .right-count {
     color: $good-color-dark;
+  }
+  .prev-next {
+    box-shadow: none;
+    color: #555
   }
 }
