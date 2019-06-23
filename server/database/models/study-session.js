@@ -81,10 +81,13 @@ function getRandomOrderingStr (len) {
 }
 async function deleteStudySession (userId, id) {
   if (!userId || !id) return
-  // Required
-  const currentUser = await userExists(userId)
-  if (!currentUser) return
   return db.unsetRecord(tableName, { userId, id })
+}
+
+async function editStudySessionState(userId, id, sessionChanges) {
+  const session = await getStudySession(userId, id)
+  if (session.none) return
+  return db.editRecord(tableName, { userId, id }, sessionChanges)
 }
 
 async function deleteStudySessionByDeck (userId, deck) {
@@ -98,6 +101,7 @@ async function deleteStudySessionByDeck (userId, deck) {
 module.exports = {
   createStudySession,
   getStudySession,
+  editStudySessionState,
   getStudySessionByDeckId,
   getStudySessions,
   deleteStudySession,

@@ -4,7 +4,7 @@ const { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
 const { strToList } = require('shared/char-encoding')
 // TODO:: Move this some
 const { updateCardBody, flipCard } = require('../ui/page-content/deck/helper')
-const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions, deleteStudySession } = require('../routes/api/study')
+const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions, deleteStudySession, editStudySessionState } = require('../routes/api/study')
 // const { reject } = require('utils')
 const NOT_ANSWERED = '_'
 const RIGHT = 'R'
@@ -55,6 +55,10 @@ exports.deleteSession = async (id) => {
     window.lc.setData('session', { none: true })
   }
 }
+exports.editStudySessionState = async (session) => {
+  const id = getParam('id')
+  await editStudySessionState(id, session)
+}
 exports.deleteCurrentSession = async () => {
   const session = getSessionFromState()
   await deleteStudySession(session.id)
@@ -68,13 +72,13 @@ const createStudySessionAndNavigate = exports.createStudySession = async (deck, 
   navigateToStudySession(newSession.id)
 }
 exports.sortCardsBySession = (cards, session) => {
+  debugger
   const ordering = strToList(session.ordering)
   const shuffledCards = []
   for (let i = 0; i < cards.length; i++) {
     shuffledCards.push(cards[ordering[i]])
   }
   return shuffledCards
-  // return trimCardsToOnesAwaitingAnswers(shuffledCards, session)
 }
 const trimCardsToOnesAwaitingAnswers = exports.trimCardsToOnesAwaitingAnswers = (cards, session) => {
   if (!cards || !cards.length) return cards
@@ -110,9 +114,20 @@ function updateStudyState (state) {
   }
   index++
   const newCard = cards[(index % cards.length)]
+  // TODO::Push changes to current card here to persistent store
   window.lc.setData('activeCardId', newCard.id)
   window.lc.setData('showingAnswer', false)
   window.lc.setData('orderedCards', newVisibleCards)
+  //Grab next card based on index in original deck order
+  let newCurrentCard
+  const originalCardOrder = window.lc.getData('originalCardOrder')
+  for(let i = 0; i < originalCardOrder.length; i++) {
+    if(originalCardOrder[i].id === newCard.id) {
+      newCurrentCard = i
+      break
+    }
+  }
+  window.lc.setPersistent('session.currentCard', newCurrentCard)
   updateCardBody(newCard.id)
 }
 // If a card is added to a deck during the studying process
@@ -123,8 +138,11 @@ exports.accountForNewCards = (session, cards) => {
   while (session.studyState.length < targetLength) {
     session.studyState += '_'
     session.ordering += String.fromCharCode(startingLength + count)
+    window.lc.setPersistent('session.studyState', session.studyState)
+    window.lc.setPersistent('session.ordering', session.ordering)
     count++
   }
+  debugger
   return session
 }
 exports.resetSession = async () => {

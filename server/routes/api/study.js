@@ -3,6 +3,7 @@ const router = express.Router()
 const {
   createSession,
   deleteSession,
+  editSessionState,
   getSession,
   getSessionByDeck,
   getSessions
@@ -20,6 +21,13 @@ router.post('/delete', async (req, res) => {
   if (!req.body || !req.body.id) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   await deleteSession(req.userId, req.body.id)
+  return code.ok(res)
+})
+router.post('/edit', async (req, res) => {
+  console.log(req.body)
+  if (!req.body || !req.body.id || !req.body.session) return code.invalidRequest(res)
+  if (!req.userId) return code.unauthorized(res)
+  await editSessionState(req.userId, req.body.id, req.body.session)
   return code.ok(res)
 })
 

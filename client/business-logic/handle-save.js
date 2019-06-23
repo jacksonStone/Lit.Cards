@@ -1,5 +1,6 @@
 const { updateDeckName } = require('logic/deck')
 const { editCardBody, addCardBody, deleteCardBody } = require('logic/card-bodies')
+const { editStudySessionState } = require('logic/study')
 function listenToSaveableChanges () {
   let runningAlready = false
   setInterval(() => {
@@ -26,6 +27,9 @@ async function _handleChanges () {
   }
   if (changes.cardBody) {
     handleCardBodyChange(changes)
+  }
+  if(changes.session) {
+    handleSessionStateChanges(changes)
   }
 }
 
@@ -117,3 +121,24 @@ async function handleCardBodyChange (changes) {
   }
 }
 module.exports = listenToSaveableChanges
+
+let savingSession = false
+async function handleSessionStateChanges(changes) {
+  if(savingSession) {
+    return
+  }
+  savingSession = true
+  let currentlySaving = changes.session.studyState
+  editStudySessionState(changes.session).then(()=>{
+    if(currentlySaving === changes.studyState) {
+      //All caught up
+      delete changes.session.studyState
+      if(!Object.key(changes.session).length) {
+        delete changes.session
+      }
+      savingSession = false
+    }
+  }).catch(()=>{
+    savingSession = false
+  })
+}

@@ -34,6 +34,7 @@ const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, acc
   window.lc.setData('user', user)
   window.lc.setData('showingAnswer', false)
   window.lc.setData('card', getCardMapping(cards))
+  window.lc.setData('originalCardOrder', cards)
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
   runNextRender(initKeyCommands)
   renderPage(content)

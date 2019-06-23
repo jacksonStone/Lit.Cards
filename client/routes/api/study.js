@@ -15,3 +15,6 @@ exports.createStudySession = (deck, startingState) => {
 exports.deleteStudySession = (id) => {
   return api('study/delete', { id })
 }
+exports.editStudySessionState = (id, session) => {
+  return api('study/edit', { id, session })
+}

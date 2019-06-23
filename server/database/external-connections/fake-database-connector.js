@@ -52,12 +52,11 @@ async function editRecord (table, filter, values) {
 function setFakeData (newFakeData) {
   fakeDatabaseConnector = newFakeData
 }
-
 function resetData () {
   fakeDatabaseConnector = fakeDataBackup
 }
-
 function getAllData() {
   return fakeDatabaseConnector
 }
+
 module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord, getAllData }
