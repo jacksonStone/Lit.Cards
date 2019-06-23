@@ -1,5 +1,5 @@
 const { html } = require('lit-html/lit-html')
-const { deleteCurrentSession } = require('logic/study')
+const { deleteCurrentSessionWithConfirmation } = require('logic/study')
 
 function getDeckId () {
   const deck = window.lc.getData('deck')
@@ -23,7 +23,7 @@ module.exports = () => {
     <a href="/site/me/deck?deck=${getDeckId()}&card=${getActiveCardId()}"><i class="far fa-edit"></i>&nbsp;&nbsp;Edit</a>
   </li>
     <li class="usa-sidenav__item" >
-    <a href="#" @click=${() => { deleteCurrentSession() }}><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session</a>
+    <a href="#" @click=${() => { deleteCurrentSessionWithConfirmation() }}><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session</a>
   </li>
   </ul>`
 }

@@ -59,6 +59,11 @@ exports.editStudySessionState = async (session) => {
   const id = getParam('id')
   await editStudySessionState(id, session)
 }
+exports.deleteCurrentSessionWithConfirmation = async () => {
+  if (window.confirm('Are you sure you want to lose your study progress?')) {
+    await exports.deleteCurrentSession()
+  }
+}
 exports.deleteCurrentSession = async () => {
   const session = getSessionFromState()
   await deleteStudySession(session.id)
