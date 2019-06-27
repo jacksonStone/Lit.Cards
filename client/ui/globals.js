@@ -73,6 +73,21 @@ function initLC () {
           parent = parent[currentPath] = (parent[currentPath] || {})
         }
       }
+      if (lc._debugging) {
+        lc.recordedSetData = lc.recordedSetData || []
+        try {
+          throw new Error('Fake error')
+        } catch (e) {
+          const stack = e.stack
+          recordedStack = stack.split('Error: Fake error').join('').split('\n    at ')
+          recordedStack = recordedStack.slice(2)
+          recordedStack.forEach((entry, index) => {
+            const webpackFluff = 'webpack:///'
+            recordedStack[index] = entry.split(webpackFluff).join('')
+          })
+          lc.recordedSetData.push({key, value, NO_UPDATE, stack: recordedStack})
+        }
+      }
       if (!lc.data._willRerender && !NO_UPDATE) {
         lc.data._willRerender = true
         window.requestAnimationFrame(() => {

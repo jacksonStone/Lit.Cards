@@ -2,7 +2,7 @@ const { listenForKey, resetAllKeyBindings, resetKey } = require('../../../browse
 const {
   previousCard,
   nextCard
-} = require('../deck/helper')
+} = require('logic/deck')
 const {
   flipCard,
   markWrong,

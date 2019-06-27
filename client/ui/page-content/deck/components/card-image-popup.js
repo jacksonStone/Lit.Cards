@@ -1,9 +1,9 @@
 const { html } = require('lit')
-const { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('../../../../browser-abstractions/keyboard')
-const { addImageDataToImage } = require('../../../../browser-abstractions/file-upload')
+const { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
+const { addImageDataToImage } = require('abstract/file-upload')
 // TODO::Consider reworking deps here
-const { getImageData } = require('../helper')
-const { runNextRender } = require('../../../../browser-abstractions/rendering-meta')
+const { getImageData } = require('logic/deck')
+const { runNextRender } = require('abstract/rendering-meta')
 
 const _hidePopup = (e) => {
   e.preventDefault()

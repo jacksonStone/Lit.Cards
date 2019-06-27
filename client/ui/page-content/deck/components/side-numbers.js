@@ -1,6 +1,6 @@
 
 const { html } = require('lit')
-const { nextCard, previousCard } = require('../helper')
+const { nextCard, previousCard } = require('logic/deck')
 module.exports = (currentCardId, cards) => {
   if (!cards) return
 

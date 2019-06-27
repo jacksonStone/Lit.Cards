@@ -1,11 +1,11 @@
-const { listenForKey, resetAllKeyBindings, listenForCMDKey } = require('../../../browser-abstractions/keyboard')
+const { listenForKey, resetAllKeyBindings, listenForCMDKey } = require('abstract/keyboard')
 const {
   pickImage,
   flipCard,
   previousCard,
   nextCard,
   addNewCard
-} = require('./helper')
+} = require('logic/deck')
 
 function initCommands () {
   resetAllKeyBindings()

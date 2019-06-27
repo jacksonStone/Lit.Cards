@@ -1,7 +1,7 @@
 
 const { html } = require('lit')
 const { getNumberRight, getNumberWrong } = require('logic/study')
-const { nextCard, previousCard } = require('../../deck/helper')
+const { nextCard, previousCard } = require('logic/deck')
 function stillStudying() {
   const cards = window.lc.getData('orderedCards')
   if (!cards || !cards.length) return false

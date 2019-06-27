@@ -1,6 +1,6 @@
 const { html } = require('lit')
-const { simulateKey } = require('../../../../browser-abstractions/keyboard')
-const { removeCard, removeImage } = require('../helper')
+const { simulateKey } = require('abstract/keyboard')
+const { removeCard, removeImage } = require('logic/deck')
 const { popupComponent, showPopup } = require('./card-image-popup')
 const spaceAction = () => {
   simulateKey('Space')

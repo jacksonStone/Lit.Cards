@@ -2,8 +2,7 @@ const { study: studyPage, home } = require('../routes/navigation/pages')
 const { getParam } = require('../browser-abstractions/url')
 const { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
 const { strToList } = require('shared/char-encoding')
-// TODO:: Move this some
-const { updateCardBody, flipCard } = require('../ui/page-content/deck/helper')
+const { updateCardBody, flipCard } = require('./deck')
 const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions, deleteStudySession, editStudySessionState } = require('../routes/api/study')
 // const { reject } = require('utils')
 const NOT_ANSWERED = '_'
@@ -58,18 +57,15 @@ exports.deleteSession = async (id) => {
 exports.editStudySessionState = async (session) => {
   const sessionInState = getSessionFromState()
   let id = sessionInState && sessionInState.id
-  if (!id) {
-    id = getParam('id')
-  }
   if (!id) return
   await editStudySessionState(id, session)
 }
 exports.deleteCurrentSessionWithConfirmation = async () => {
   if (window.confirm('Are you sure you want to lose your study progress?')) {
-    await exports.deleteCurrentSession()
+    await deleteCurrentSessionAndGoHome()
   }
 }
-exports.deleteCurrentSession = async () => {
+const deleteCurrentSessionAndGoHome = exports.deleteCurrentSession = async () => {
   const session = getSessionFromState()
   await deleteStudySession(session.id)
   home()

@@ -1,8 +1,8 @@
 const { html } = require('lit')
-const { simulateKey } = require('../../../../browser-abstractions/keyboard')
+const { simulateKey } = require('abstract/keyboard')
 const { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
-const { getTextToShowForCard, refreshEditor } = require('../../deck/helper')
-const { runNextRender } = require('../../../../browser-abstractions/rendering-meta')
+const { getTextToShowForCard, refreshEditor } = require('logic/deck')
+const { runNextRender } = require('abstract/rendering-meta')
 const { showingAnswerKeyBindings, showingQuestionKeyBindings } = require('../key-commands')
 const { unsafeHTML } = require('lit-html/directives/unsafe-html')
 const spaceAction = () => {
