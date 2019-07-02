@@ -6,7 +6,6 @@ const ROOT = path.join(__dirname, '../')
 const express = require('express')
 const app = express()
 const routes = require('./routes')
-
 app.use(cookieParser())
 app.use(bodyParser.json({limit:'5mb', extended: true}))
 app.use(async (req, res, next) => {
