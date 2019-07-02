@@ -1,6 +1,7 @@
 const { updateDeckName } = require('logic/deck')
 const { editCardBody, addCardBody, deleteCardBody } = require('logic/card-bodies')
 const { editStudySessionState } = require('logic/study')
+const { updateDarkMode } = require('logic/user')
 function listenToSaveableChanges () {
   let runningAlready = false
   setInterval(() => {
@@ -30,6 +31,9 @@ async function _handleChanges () {
   }
   if(changes.session) {
     handleSessionStateChanges(changes)
+  }
+  if(changes.user) {
+    handleUserChange(changes)
   }
 }
 
@@ -139,4 +143,25 @@ async function handleSessionStateChanges(changes) {
   }).catch(()=>{
     savingSession = false
   })
+}
+
+let savingDarkMode = false
+async function handleUserChange(changes) {
+  const user = changes.user
+  debugger
+  if(user.darkMode !== undefined) {
+    const startingValue = user.darkMode
+    savingDarkMode = true
+    updateDarkMode(user.darkMode).then(() => {
+      if(startingValue === changes.user.darkMode) {
+        delete changes.user.darkMode
+      }
+      savingDarkMode = false
+      if(Object.keys(changes.user).length === 0) {
+        delete changes.user
+      }
+    }).catch(() => {
+      savingDarkMode = false
+    })
+  }
 }

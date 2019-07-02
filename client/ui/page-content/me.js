@@ -1,6 +1,8 @@
 const { html } = require('lit')
 const { navigateToDeckPage, createDeck, deleteDeck } = require('../../business-logic/deck')
 const { createStudySession, navigateToStudySession } = require('../../business-logic/study')
+const darkmodeCheckbox = require('component/darkmode-checkbox')
+
 // Keep numPerRow in sync with col-n below
 const numPerRow = 3
 function addDeckCard () {
@@ -28,13 +30,13 @@ function getStudyBtn (deck, sessionMapping) {
   if (!session) {
     return html`<button
             @click=${() => { createStudySession(deck.id) }}
-            class="usa-button">
+            class="usa-button continue-studying">
                 Study
             </button>`
   }
   return html`<button
             @click=${() => { navigateToStudySession(session.id) }} 
-            class="usa-button">
+            class="usa-button continue-studying">
                 Continue Studying
             </button>`
 }
@@ -151,6 +153,7 @@ module.exports = (data = {}) => {
         <h1>Your Decks</h1>
         ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
     </div> 
+    ${darkmodeCheckbox()}
     
 `
   /**

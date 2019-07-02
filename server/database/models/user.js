@@ -29,9 +29,14 @@ async function createUser (userId, salt, password) {
   return db.setRecord(tableName, { userId, salt, password })
 }
 
+async function updateDarkModeValue(userId, darkmodeValue) {
+  return db.editRecord(tableName, { userId }, {darkMode: darkmodeValue})
+}
+
 module.exports = {
   getUser,
   createUser,
   userExists,
-  getSafeUser
+  getSafeUser,
+  updateDarkModeValue
 }

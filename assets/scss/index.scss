@@ -263,6 +263,17 @@ body {
   #overlay {
     background-color: rgba(0,0,0,.8);
   }
+  .continue-studying {
+    background-color: transparent;
+    border: 2px solid $good-color-dark;
+    color: #777;
+  }
+  .usa-checkbox__input:checked+.usa-checkbox__label:before, .usa-checkbox__input:checked:disabled+.usa-checkbox__label:before {
+    opacity: .6;
+  }
+  .usa-checkbox__input:checked+.usa-checkbox__label:before, .usa-radio__input:checked+.usa-radio__label:before {
+    background-color: transparent;
+  }
   .usa-input  {
     background-color: black;
     color: #555;

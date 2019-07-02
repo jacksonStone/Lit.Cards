@@ -1,4 +1,4 @@
-const { getUserDetails } = require('../routes/api/user-details')
+const { getUserDetails, setDarkMode } = require('../routes/api/user-details')
 const { recordAndSetDarkMode } = require('../browser-abstractions/darkmode')
 let userDetails
 
@@ -22,6 +22,9 @@ function fetchUserNoCache () {
   clearUserData()
   return fetchUser()
 }
+function updateDarkMode (darkMode) {
+  return setDarkMode(darkMode)
+}
 
 function user () {
   return userDetails
@@ -31,5 +34,6 @@ module.exports = {
   fetchUser,
   fetchUserNoCache,
   clearUserData,
+  updateDarkMode,
   getUser: user
 }
