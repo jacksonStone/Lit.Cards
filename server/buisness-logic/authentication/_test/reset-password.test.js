@@ -12,7 +12,7 @@ const password = 'somePassword'
 const fakeCurrent = 9001
 const millisInADay = 24 * 60 * 60 * 1000
 
-describe.only('Login validates correctly', () => {
+describe('Login validates correctly', () => {
   beforeEach(async () => {
     await signupTest(userId, password)
     setTime(fakeCurrent)
@@ -31,7 +31,7 @@ describe.only('Login validates correctly', () => {
     //Expires three days later
     assert(updatedUser.resetTokenExpiration === fakeCurrent + millisInADay * 3)
     while (!getTestEmails().length) {
-      //We do not await email sending...
+      //We do not await email sending, so wait for it
       await Promise.resolve()
     }
     const testEmail = getTestEmails()[0];
