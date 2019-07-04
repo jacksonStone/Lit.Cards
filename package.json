@@ -24,9 +24,10 @@
     "delay": "1000"
   },
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "start": "node server/index.js",
-    "w": "webpack",
+    "w": "concurrently --kill-others \"npm run ww\" \"npm run ss\" \"npm run sassw\"",
+    "webpack":"webpack",
     "ww": "webpack -w",
     "ss": "npm run sw",
     "ws": "npm run sw",
@@ -38,6 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "concurrently": "^4.1.1",
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "lit-html": "^1.0.0",
