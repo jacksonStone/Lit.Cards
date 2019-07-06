@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { resetPassword: passwordReset, passwordResetVerify, changePassword } = require('../../buisness-logic/authentication/password')
+const { passwordReset , passwordResetVerify, changePassword } = require('../../buisness-logic/authentication/password')
 const code = require('../../node-abstractions/response-codes')
 const { addCookie } = require('../../node-abstractions/cookie')
 const { redirect } = require('../../node-abstractions/redirect')
@@ -27,7 +27,7 @@ router.post('/verify', async (req, res) => {
     return code.invalidRequest(res, cookieOrError)
   }
   addCookie(res, cookieOrError);
-  return redirect(res, '/site/me');
+  return code.ok(res);
 });
 
 router.post('/change', async (req, res) => {

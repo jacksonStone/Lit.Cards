@@ -15,19 +15,23 @@ const makePageRoute = (path, page, auth) => {
 const pages = {
   '/': {
     page: 'index',
-    auth: false// - default is true
+    auth: false
   },
   '/forgot-password': {
     page: 'forgot-password',
-    auth: false// - default is true
+    auth: false
+  },
+  '/verify': {
+    page: 'verify-password-reset',
+    auth: false
   },
   '/login': {
     page: 'login',
-    auth: false// - default is true
+    auth: false
   },
   '/signup': {
     page: 'signup',
-    auth: false// - default is true
+    auth: false
   },
   // url to visit: /site/me for example
   '/me': {

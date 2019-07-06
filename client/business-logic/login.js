@@ -1,7 +1,8 @@
-const { login, logout, signup } = require('../routes/api/login')
+const { login, logout, verifyPasswordReset, resetPassword } = require('../routes/api/login')
 const { fetchUserNoCache, clearUserData } = require('./user')
 const code = require('../routes/api/response-codes')
 const pages = require('../routes/navigation/pages')
+const { getParam } = require('abstract/url')
 const { login: loginPage, signup: signupPage } = require('../routes/navigation/pages')
 
 exports.login = async (userId, password) => {
@@ -23,6 +24,43 @@ exports.login = async (userId, password) => {
     return
   }
   recordError('abstract.loginFailed', true)
+}
+
+exports.resetPassword = async (userId) => {
+  window.lc.resetErrors() // make sure we have no field failures hanging around
+  const recordError = window.lc.recordError
+  if (!userId) {
+    recordError('fields.userId', 'empty')
+    return
+  }
+  const result = await resetPassword(userId)
+}
+
+exports.verifyPasswordReset = async (password, repeatPassword) => {
+  const recordError = window.lc.recordError
+
+  if (!password || !repeatPassword) {
+    if (!password) {
+      recordError('fields.password', 'empty')
+    }
+    if (!repeatPassword) {
+      recordError('fields.repeatPassword', 'empty')
+    }
+    return;
+  }
+  if (password !== repeatPassword) {
+    recordError('abstract.mismatchPasswords', true)
+    return;
+  }
+  // TODO:: Maybe redirect them to a different page that
+  // doesn't have it in the URL to prevent leaking on referer if they leave page
+  // before finishing reset
+  const result = await verifyPasswordReset(getParam('user'), getParam('token'), password)
+  debugger;
+  await fetchUserNoCache()
+  if (code.ok(result)) {
+    return pages.home()
+  }
 }
 
 exports.navigateToLoginPage = async () => {
