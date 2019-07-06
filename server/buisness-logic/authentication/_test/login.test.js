@@ -9,7 +9,7 @@ describe('Login validates correctly', () => {
   beforeEach(async () => {
     await signupTest(userId, password)
   })
-  afterEach(resetData)
+  afterEach(() => resetData('user'))
   it('correct password', async () => {
     const result = await loginTest.verify(userId, password)
     assert.strictEqual(result, true, 'Provided correct creds')

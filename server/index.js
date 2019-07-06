@@ -9,8 +9,11 @@ const routes = require('./routes')
 app.use(cookieParser())
 app.use(bodyParser.json({limit:'5mb', extended: true}))
 app.use(async (req, res, next) => {
-  const userId = await loginUtils.getuserId(req.cookies)
-  req.userId = userId
+  const user = await loginUtils.getUser(req.cookies)
+  if (user) {
+    req.userId = user.userId
+    req.user = user
+  }
   next()
 })
 app.get('/', function (req, res) {

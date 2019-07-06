@@ -52,8 +52,11 @@ async function editRecord (table, filter, values) {
 function setFakeData (newFakeData) {
   fakeDatabaseConnector = newFakeData
 }
-function resetData () {
-  fakeDatabaseConnector = fakeDataBackup
+function resetData (table) {
+  if(table && typeof table === 'string') {
+    return fakeDatabaseConnector[table] = _.cloneDeep(fakeDataBackup[table]);
+  }
+  fakeDatabaseConnector = _.cloneDeep(fakeDataBackup)
 }
 function getAllData() {
   return fakeDatabaseConnector

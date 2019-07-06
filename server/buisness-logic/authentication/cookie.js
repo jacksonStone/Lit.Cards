@@ -1,6 +1,7 @@
 const authUtils = require('./utils')
 const experation = 1000 * 60 * 60 * 24 * 30
 const authCookieName = 'auth'
+const {UNSAFE_USER} = require('../users/userDetails')
 
 // Expects cookie to be JSON and already de
 function checkCookieExperation (deCookieContent) {
@@ -17,21 +18,27 @@ function checkCookieExperation (deCookieContent) {
   return false
 }
 
-function validateUserCookie (cookies) {
+async function validateUserCookie (cookies) {
   if (!cookies || !cookies.auth) return
   const authCookie = cookies.auth
   const decryptedCookie = authUtils.decrypt(authCookie)
   const youngCookie = checkCookieExperation(decryptedCookie)
-  if (youngCookie) {
-    return youngCookie.userId
+  if (!youngCookie) {
+    return
+  }
+  const userId = youngCookie.userId
+  const user = await UNSAFE_USER(userId)
+  if (user.validSession === youngCookie.session) {
+    return user
   }
 }
 
-function createUserCookie (userId) {
+function createUserCookie (userId, session) {
   const now = Date.now()
   var userCookie = {
     userId: userId,
-    created: now
+    created: now,
+    session
   }
   var encryptedCookied = authUtils.encrypt(JSON.stringify(userCookie))
 

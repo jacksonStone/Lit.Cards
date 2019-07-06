@@ -15,7 +15,7 @@ function deactivateDebug () {
   resetKeyGlobal('KeyS')
 }
 async function getServerDBState () {
-  console.log(JSON.parse(await api('debug')))
+  console.info(JSON.parse(await api('debug')))
 }
 
 module.exports = {

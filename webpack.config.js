@@ -1,15 +1,16 @@
 const path = require('path')
-
+const fs = require('fs')
+const entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
+  return file.match(/.*\.js$/);
+});
+entryForWebpack = {}
+entries.forEach(entry => {
+  const entryName = entry.split('.')[0]
+  entryForWebpack[entryName] ='./client/entry-points/' + entry
+})
 module.exports = {
   mode: 'development',
-  entry: {
-    index: './client/entry-points/index.js',
-    login: './client/entry-points/login.js',
-    me: './client/entry-points/me.js',
-    deck: './client/entry-points/deck.js',
-    signup: './client/entry-points/signup.js',
-    study: './client/entry-points/study.js'
-  },
+  entry: entryForWebpack,
   watch: true,
   output: {
     filename: '[name].js',

@@ -9,6 +9,6 @@ router.use('/cards', require('./cards'))
 router.use('/decks', require('./decks'))
 router.use('/study', require('./study'))
 router.use('/card-body', require('./card-bodies'))
-router.use('/reset-password', require('./reset-password'))
+router.use('/password-reset', require('./password-reset'))
 
 module.exports = router

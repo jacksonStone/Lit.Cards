@@ -31,7 +31,6 @@ async function decrementCardCount (userId, deck, name) {
     return
   }
   const record = results[0]
-  console.log(record)
   return db.editRecord(tableName, { userId, id: deck }, { cardCount: record.cardCount - 1 })
 }
 async function createDeck (userId, name) {

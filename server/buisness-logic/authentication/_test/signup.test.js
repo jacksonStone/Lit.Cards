@@ -6,14 +6,15 @@ const userId = 'user11'
 const plainTextPassword = 'somePassword'
 
 describe('User signup', () => {
-  beforeEach(resetData)
-  afterAll(resetData)
-  it('Populates password hash correctly', async () => {
+  afterEach(() => {resetData('user')})
+  it('Populates user correctly', async () => {
     const result = await signupTest(userId, plainTextPassword)
     assert.notStrictEqual(result.password, plainTextPassword, 'Hashed password')
     assert.ok(result.salt, 'Has salt')
     const correctPasswordHash = await verify(result.userId, plainTextPassword)
     assert.strictEqual(correctPasswordHash, true, 'Provided correct creds')
+    //Added a valid session tracker
+    assert(result.validSession !== undefined)
   })
   it('Does not create duplicate user', async () => {
     await signupTest('user10', plainTextPassword)

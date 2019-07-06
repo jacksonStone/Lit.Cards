@@ -9,11 +9,11 @@ async function verify (userId, plainTextPassword) {
   return hashResult === user.password
 }
 
-function getLoginCookie (userId) {
-  return cookieUtils.createUserCookie(userId)
+function getLoginCookie (user) {
+  return cookieUtils.createUserCookie(user.userId, user.validSession || 0)
 }
 
-function getuserId (cookies) {
+async function getUser (cookies) {
   if (!cookies) return
   return cookieUtils.validateUserCookie(cookies)
 }
@@ -26,5 +26,5 @@ module.exports = {
   verify,
   getLogoutCookie,
   getLoginCookie,
-  getuserId
+  getUser
 }

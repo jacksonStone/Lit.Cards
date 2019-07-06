@@ -24,7 +24,6 @@ router.post('/delete', async (req, res) => {
   return code.ok(res)
 })
 router.post('/edit', async (req, res) => {
-  console.log(req.body)
   if (!req.body || !req.body.id || !req.body.session) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   await editSessionState(req.userId, req.body.id, req.body.session)

@@ -3,21 +3,32 @@
 const cookieUtils = require('../cookie')
 const authUtils = require('../utils')
 const assert = require('assert')
+const { signup: signupTest } = require('../signup')
+const { resetData } = require('../../../database/external-connections/fake-database-connector')
 const userId = 'Yours truely'
 const authCookieName = 'auth'
 
 describe('Cookie verification works', () => {
-  it('Happy path', () => {
-    const someText = JSON.stringify({ userId: userId, created: Date.now() })
-    const encryptedValue = authUtils.encrypt(someText)
-    const validatedCookie = cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
-    assert.strictEqual(validatedCookie, userId)
+  beforeEach(async () => {
+    await signupTest(userId, '123456')
   })
-  it('Expired', () => {
+  afterEach(() => resetData('user'))
+  it('Happy path', async () => {
+    const someText = JSON.stringify({ userId: userId, created: Date.now(), session: 0 })
+    const encryptedValue = authUtils.encrypt(someText)
+    const validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
+    assert.strictEqual(validatedCookie.userId, userId)
+  })
+  it('Invalid session on cookie', async () => {
+    const someText = JSON.stringify({ userId: userId, created: Date.now(), session: 2 })
+    const encryptedValue = authUtils.encrypt(someText)
+    const validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
+    assert(!validatedCookie)
+  })
+  it('Expired', async () => {
     const someText = JSON.stringify({ userId: userId, created: Date.now() - 1000 * 60 * 60 * 24 * 60 })
     const encryptedValue = authUtils.encrypt(someText)
-
-    const validatedCookie = cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
+    const validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
     assert.strictEqual(validatedCookie, undefined)
   })
   it('Verify cookie created', () => {

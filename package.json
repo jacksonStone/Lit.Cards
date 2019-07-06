@@ -25,7 +25,9 @@
   },
   "scripts": {
     "test": "NODE_ENV=test jest",
-    "watch-test": "node ./scripts/watch-tests.js",
+    "wt": "(npm run test && node ./scripts/watch-tests.js) || node ./scripts/watch-tests.js",
+    "tw": "npm run wt",
+    "tt": "npm run wt",
     "start": "node server/index.js",
     "w": "concurrently --kill-others \"npm run ww\" \"npm run ss\" \"npm run sassw\"",
     "webpack": "webpack",
