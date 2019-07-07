@@ -1,6 +1,8 @@
 const db = require('../external-connections/fake-database-connector')
 const tableName = 'user'
 const _ = require('lodash')
+const { randomString } = require('../../node-abstractions/random')
+
 async function getUser (userId) {
   const results = await db.getRecord(tableName, { userId: userId })
   if (results && results.length) return results[0]
@@ -17,7 +19,8 @@ async function userExists (userId) {
 // Guilty until proven innocent!
 const safeParameters = [
   'userId',
-  'darkMode'
+  'darkMode',
+  'verifiedEmail'
 ]
 function trimAllButSafeParameters (user) {
   if (!user) return user
@@ -32,7 +35,8 @@ function trimAllButSafeParameters (user) {
 async function createUser (userId, salt, password) {
   const results = await db.getRecord(tableName, { userId })
   if (results.length) return
-  return db.setRecord(tableName, { userId, salt, password, validSession: 0 })
+  const emailVerificationKey = await randomString(20, 'hex')
+  return db.setRecord(tableName, { userId, salt, password, validSession: 0, emailVerificationKey, verifiedEmail: false })
 }
 
 function editUser(userId, changes) {

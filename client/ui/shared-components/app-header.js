@@ -2,8 +2,10 @@
 const { html } = require('lit')
 const { onPage } = require('../../browser-abstractions/url')
 const { navigateToLoginPage, logout } = require('../../business-logic/login')
+const { resendEmailVerification } = require('logic/login')
+
 module.exports = (userInfo) => html`
-      <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
     <header class="usa-header usa-header--extended" role="banner">
     <div class="usa-nav-container">
         <div class="usa-navbar">
@@ -22,8 +24,50 @@ module.exports = (userInfo) => html`
             </div>
         </div>
         </nav>
+        <div style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
     </div>
 </header>`
+
+function waitingOnEmailVerification() {
+  const user = window.lc.getData('user')
+  if (!user || user.verifiedEmail) {
+    return false
+  }
+  return true
+}
+
+function emailVerificationLink() {
+  if(justVerifiedEmail()) {
+    setTimeout(()=> {
+      window.lc.setData('justVerifiedEmail', false)
+    }, 2000)
+    return html`<div style="font-size: 12px; padding: 8px;
+    text-align: center;
+    background: #b5ee85;"
+    >Email verified!</div>`
+  }
+  if(window.lc.getData('resentEmailConfirmation')) {
+    return html`<div style="font-size: 12px; padding: 8px;
+    text-align: center;
+    background: #eee;"
+    >Confirmation email resent.</div>`
+  }
+  if(waitingOnEmailVerification()) {
+    return html`<div style="font-size: 12px; padding: 8px;
+    text-align: center;
+    background: #eee;"
+
+    >Please verify your email by clicking the confirmation link emailed to your address. <button class="usa-button usa-button--outline" style="margin-left: 10px; font-size: 12px; padding: 5px;" @click=${() => {
+      resendEmailVerification()
+      window.lc.setData('resentEmailConfirmation', true)
+    }}>Resend confirmation email</button></div>`
+  }
+  return html``
+}
+
+function justVerifiedEmail () {
+  return window.lc.getData('justVerifiedEmail')
+}
 
 function getNavOptions (userInfo) {
   if (userInfo) {

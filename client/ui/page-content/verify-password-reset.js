@@ -19,6 +19,7 @@ module.exports = (data) => {
               <fieldset class="usa-fieldset">
                 <legend class="usa-legend">Sign-up</legend>
                 ${ea.mismatchPasswords && errorBanner('Bad Passwords', 'Passwords did not match')}
+                ${ea.badEmail && errorBanner('Bad  Email', 'Email is formatted incorrectly')}
                 ${errorableInput(ef.password, 'Password is required', 'password', 'New Password', 'password')}
                 ${errorableInput(ef.repeatPassword, 'Must repeat password', 'password-repeat', 'Repeat New Password', 'password')}
               </fieldset>

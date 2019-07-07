@@ -27,6 +27,7 @@ async function waitForEmail() {
 describe('Login validates correctly', () => {
   beforeEach(async () => {
     await signupTest(userId, password)
+    resetTestEmails()
     setTime(fakeCurrent)
   })
   afterEach(() => {

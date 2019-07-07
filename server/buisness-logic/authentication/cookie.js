@@ -28,6 +28,9 @@ async function validateUserCookie (cookies) {
   }
   const userId = youngCookie.userId
   const user = await UNSAFE_USER(userId)
+  if (!user) {
+    return
+  }
   if (user.validSession === youngCookie.session) {
     return user
   }

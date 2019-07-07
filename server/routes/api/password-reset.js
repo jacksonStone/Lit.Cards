@@ -4,10 +4,11 @@ const { passwordReset , passwordResetVerify, changePassword } = require('../../b
 const code = require('../../node-abstractions/response-codes')
 const { addCookie } = require('../../node-abstractions/cookie')
 const { redirect } = require('../../node-abstractions/redirect')
+const { emailIsValid } = require('../../../shared/email-address-validation')
 
 router.post('/', async (req, res) => {
   const userId = req.body && req.body.userId
-  if (!userId) return code.invalidRequest(res)
+  if (!userId || !emailIsValid(userId)) return code.invalidRequest(res)
   await passwordReset(userId)
   return code.ok(res)
 })

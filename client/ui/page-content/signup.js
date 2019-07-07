@@ -20,6 +20,7 @@ module.exports = (data) => {
                 <legend class="usa-legend">Sign-up</legend>
                 ${ea.mismatchPasswords && errorBanner('Bad Passwords', 'Passwords did not match')}
                 ${ea.usernameTaken && errorBanner('Bad  Email', 'Email already taken')}
+                ${ea.badEmail && errorBanner('Bad  Email', 'Email is formatted incorrectly')}
                 ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
                 ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
                 ${errorableInput(ef.repeatPassword, 'Must repeat password', 'password-repeat', 'Repeat Password', 'password')}

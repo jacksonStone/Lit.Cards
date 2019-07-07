@@ -4,6 +4,8 @@ const cookieUtils = require('../cookie')
 const authUtils = require('../utils')
 const assert = require('assert')
 const { signup: signupTest } = require('../signup')
+const { resetTestEmails } = require('../../../node-abstractions/email')
+
 const { resetData } = require('../../../database/external-connections/fake-database-connector')
 const userId = 'Yours truely'
 const authCookieName = 'auth'
@@ -12,7 +14,10 @@ describe('Cookie verification works', () => {
   beforeEach(async () => {
     await signupTest(userId, '123456')
   })
-  afterEach(() => resetData('user'))
+  afterEach(() => {
+    resetTestEmails()
+    resetData('user')
+  })
   it('Happy path', async () => {
     const someText = JSON.stringify({ userId: userId, created: Date.now(), session: 0 })
     const encryptedValue = authUtils.encrypt(someText)

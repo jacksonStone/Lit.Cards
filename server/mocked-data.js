@@ -10,7 +10,9 @@ let fakeData = {
     password: 'X0VIy9vshnkFZVZO8tLB4Uod5JDREmf1eIh9qIP6KR0=',
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57',
     darkMode: true,
-    validSession: 0
+    validSession: 0,
+    verifiedEmail: true,
+    emailVerificationKey: undefined
   }],
   studySession: [
     // Current card is the index of the card in the initial ordered deck

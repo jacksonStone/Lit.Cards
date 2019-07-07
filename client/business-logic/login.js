@@ -1,8 +1,9 @@
-const { login, logout, verifyPasswordReset, resetPassword } = require('../routes/api/login')
+const { login, logout, verifyPasswordReset, resetPassword, signup, resendEmailVerification, verifyEmail } = require('../routes/api/login')
 const { fetchUserNoCache, clearUserData } = require('./user')
 const code = require('../routes/api/response-codes')
 const pages = require('../routes/navigation/pages')
 const { getParam } = require('abstract/url')
+const { emailIsValid } = require('shared/email-address-validation')
 const { login: loginPage, signup: signupPage } = require('../routes/navigation/pages')
 
 exports.login = async (userId, password) => {
@@ -33,11 +34,16 @@ exports.resetPassword = async (userId) => {
     recordError('fields.userId', 'empty')
     return
   }
+  if(!emailIsValid(userId)) {
+    recordError('abstract.badEmail', true)
+    return
+  }
   const result = await resetPassword(userId)
 }
 
 exports.verifyPasswordReset = async (password, repeatPassword) => {
   const recordError = window.lc.recordError
+  window.lc.resetErrors() // make sure we have no field failures hanging around
 
   if (!password || !repeatPassword) {
     if (!password) {
@@ -56,7 +62,6 @@ exports.verifyPasswordReset = async (password, repeatPassword) => {
   // doesn't have it in the URL to prevent leaking on referer if they leave page
   // before finishing reset
   const result = await verifyPasswordReset(getParam('user'), getParam('token'), password)
-  debugger;
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()
@@ -90,6 +95,10 @@ exports.signup = async (userId, password, repeatPassword) => {
     recordError('abstract.mismatchPasswords', true)
     return
   }
+  if(!emailIsValid(userId)) {
+    recordError('abstract.badEmail', true)
+    return
+  }
 
   const result = await signup(userId, password)
   await fetchUserNoCache()
@@ -104,3 +113,15 @@ exports.logout = async () => {
   clearUserData()
   pages.landingPage()
 }
+
+exports.verifyEmail = async () => {
+  const token = getParam('verification')
+  if (!token) {
+    return
+  }
+  await verifyEmail(token)
+}
+exports.resendEmailVerification = async () => {
+  await resendEmailVerification()
+}
+

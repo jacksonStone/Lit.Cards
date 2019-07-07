@@ -5,12 +5,11 @@ const { sendMail } = require('../../node-abstractions/email')
 const { getLoginCookie } = require('./login')
 const authUtils = require('./utils');
 const millisInADay = 1000 * 60 * 60 * 24;
-const NUM_OF_BYTES_FOR_32_CHAR_BASE_64 = 24
 const routeToVerifyReset = '/site/verify?token='
 const baseURL = process.env.SITE_DOMAIN_ROOT
 
 function generateRandomReset() {
-  return randomString(NUM_OF_BYTES_FOR_32_CHAR_BASE_64);
+  return randomString(20, 'hex')
 }
 function hashRandomReset(user, token) {
   const salt = user.salt;
