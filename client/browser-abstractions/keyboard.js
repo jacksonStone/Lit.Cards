@@ -4,8 +4,14 @@ let cmdKeyBindings = {}
 function isMac () {
   return window.navigator.platform.indexOf('Mac') !== -1
 }
-function focusingOnSomething () {
-  return window.document.activeElement !== window.document.body
+function focusingOnTextInput () {
+  if (window.document.activeElement === window.document.body) {
+    return false
+  }
+  return isTextField(window.document.activeElement)
+}
+function isTextField (activeElement) {
+  return activeElement.classList.contains('pell-content') || activeElement.id === 'deck-name';
 }
 
 function listenForCMDKey (key, callback) {
@@ -54,20 +60,25 @@ function isMultipleKeys (e) {
 
 function _handleKeyDown (e) {
   const keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
-  if (e[keyForCMD] && cmdKeyBindings[e.code]) {
-    e.preventDefault()
-    return cmdKeyBindings[e.code](e)
+  if (e[keyForCMD]) {
+    if(cmdKeyBindings[e.code]) {
+      e.preventDefault()
+      return cmdKeyBindings[e.code](e)
+    // } else if (focusingOnTextInput() && keyBindings[e.code]) {
+    //   e.preventDefault()
+    //   return keyBindings[e.code](e)
+    }
   }
   // Let all other hotkeys through as normal
   if (isMultipleKeys(e)) {
     return
   }
   // console.info(e.code)
-  if (keyBindings[e.code] && !focusingOnSomething()) {
+  if (keyBindings[e.code] && !focusingOnTextInput()) {
     e.preventDefault()
     return keyBindings[e.code](e)
   }
-  if (globalBindings[e.code] && !focusingOnSomething()) {
+  if (globalBindings[e.code] && !focusingOnTextInput()) {
     e.preventDefault()
     return globalBindings[e.code](e)
   }

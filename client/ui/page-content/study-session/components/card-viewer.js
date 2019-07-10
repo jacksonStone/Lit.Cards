@@ -45,13 +45,15 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                     <div><i class="far fa-thumbs-down" aria-hidden="true">
                     <span class="sr-only">Mark Wrong</span>
                     </i>&nbsp;&nbsp;Wrong</div>
+                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( ⇦ )</div></div>
                     </button>` : html``}
                     </div>
                     <div class="grid-col-6">
-                     <button class="usa-button usa-button--primary flip-card"
+                     <button id="flip-button" class="usa-button usa-button--primary flip-card"
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip
+                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( space )</div></div>
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
@@ -61,6 +63,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-thumbs-up" aria-hidden="true"><span class="sr-only">Mark Correct</span>
                         </i>&nbsp;&nbsp;Right </div>
+                        <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( ⇨ )</div></div>
                     </button>` : html``}
                     </div>
                 </div>

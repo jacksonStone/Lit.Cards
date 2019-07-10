@@ -80,6 +80,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip
+                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( space )</div></div>
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
@@ -88,6 +89,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
 </i>&nbsp;&nbsp;card </div>
+                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( n )</div></div>
                     </button>
                     </div>
                 </div>

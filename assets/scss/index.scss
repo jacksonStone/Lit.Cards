@@ -207,37 +207,13 @@ body {
 .disabled-button-no-outline:hover {
   color:#666;
 }
-.add-card::after {
-  content:"( n )";
-  bottom: -8px;
-  left: 50px;
+.hotkey-indicator {
   font-size: 14px;
-  color:$faded-color;
+  color: #ccc;
   position: absolute;
-}
-.flip-card::after {
-  content: "( space )";
-  bottom: -23px;
-  font-size: 14px;
-  left:94px;
-  color:$faded-color;
-  position: absolute;
-}
-.mark-wrong::after {
-  content:"( ⇦ )";
-  bottom: -8px;
-  left: 55px;
-  font-size: 14px;
-  color:$faded-color;
-  position: absolute;
-}
-.mark-right::after {
-  content:"( ⇨ )";
-  font-size: 14px;
-  bottom: -8px;
-  left: 55px;
-  color:$faded-color;
-  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 10px;
 }
 .study-card-no-image {
   height: 300px;
@@ -333,16 +309,7 @@ body {
     background-color: #161616;
     color: $good-color-dark;
   }
-  .add-card::after {
-    color:#333;
-  }
-  .flip-card::after {
-    color:#333;
-  }
-  .mark-wrong::after {
-    color:#333;
-  }
-  .mark-right::after {
+  .hotkey-indicator {
     color:#333;
   }
   .disabled-button-no-outline:hover {

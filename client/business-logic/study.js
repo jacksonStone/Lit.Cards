@@ -3,6 +3,7 @@ const { getParam } = require('../browser-abstractions/url')
 const { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
 const { strToList } = require('shared/char-encoding')
 const { updateCardBody, flipCard } = require('./deck')
+const { setFocusTo } = require('abstract/focus')
 const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions, deleteStudySession, editStudySessionState } = require('../routes/api/study')
 // const { reject } = require('utils')
 const NOT_ANSWERED = '_'
@@ -17,6 +18,9 @@ function resetAnswerKeyListeners () {
   // Remove listeners
   resetKey('ArrowLeft')
   resetKey('ArrowRight')
+}
+function focusOnFlipButton() {
+  setFocusTo('#flip-button')
 }
 exports.flipCard = () => {
   flipCard()
@@ -114,15 +118,17 @@ function updateStudyState (state) {
   const newVisibleCards = trimCardsToOnesAwaitingAnswers(allOrderedCards, session)
   let index = getCurrentCardIndex()
   const cards = getVisibleCardsFromState()
-  if (!newVisibleCards.length) {
-    resetAnswerKeyListeners()
-  }
+
   index++
   const newCard = cards[(index % cards.length)]
   // TODO::Push changes to current card here to persistent store
   window.lc.setData('activeCardId', newCard.id)
   window.lc.setData('showingAnswer', false)
   window.lc.setData('orderedCards', newVisibleCards)
+  if (!newVisibleCards.length) {
+    resetAnswerKeyListeners()
+    return;
+  }
   //Grab next card based on index in original deck order
   let newCurrentCard
   const originalCardOrder = window.lc.getData('originalCardOrder')
@@ -134,6 +140,7 @@ function updateStudyState (state) {
   }
   window.lc.setPersistent('session.currentCard', newCurrentCard)
   updateCardBody(newCard.id)
+  focusOnFlipButton()
 }
 // If a card is added to a deck during the studying process
 exports.accountForNewCards = (session, cards) => {
@@ -212,6 +219,7 @@ const markRight = exports.markRight = () => {
   asArray[cardIndex] = RIGHT
   const newState = asArray.join('')
   updateStudyState(newState)
+
 }
 const markWrong = exports.markWrong = () => {
   // Get session state, modify card to wrong, then go to the next card that works

@@ -3,53 +3,85 @@ var router = express.Router()
 const _ = require('lodash');
 const { sendPage } = require('./send-page');
 
-const makePageRoute = (path, page, auth) => {
+const makePageRoute = (path, details, auth) => {
   router.get(path, async (req, res) => {
     if(auth) {
       if (!req.userId) return res.redirect('/')
     }
-    return sendPage(res, page)
+    return sendPage(res, details, req.user)
   })
 }
 
 const pages = {
   '/': {
-    page: 'index',
+    darkModeable: false,
+    title: 'Lit.Cards',
+    entryFile: 'index.js',
     auth: false
   },
   '/forgot-password': {
+    title: 'Lit: Forgotten password',
+    darkModeable: false,
     page: 'forgot-password',
+    entryFile: 'forgot-password.js',
     auth: false
   },
   '/verify': {
+    darkModeable: false,
+    title: 'Lit: New password',
     page: 'verify-password-reset',
+    entryFile: 'verify-password-reset.js',
     auth: false
   },
   '/login': {
+    title: 'Lit: Login',
+    darkModeable: false,
+    entryFile: 'login.js',
     page: 'login',
     auth: false
   },
   '/signup': {
+    title: 'Lit: Sign Up',
+    darkModeable: false,
     page: 'signup',
     auth: false
   },
   // url to visit: /site/me for example
   '/me': {
-    page: 'me/me', // path to html file in assets
+    title: 'Lit: Your stuff',
+    darkModeable: true,
+    entryFile: 'me.js',
     // auth: true - default
   },
   '/me/deck': {
+    title: 'Lit: Edit deck',
+    darkModeable: true,
+    entryFile: 'deck.js',
     page: 'me/deck',
   },
+  '/me/settings': {
+    title: 'Lit: Settings',
+    entryFile: 'settings.js',
+    darkModeable: true,
+  },
   '/me/study': {
-    page: 'me/study',
-    // Auth: true - default
+    title: 'Lit: Study',
+    entryFile: 'study.js',
+    darkModeable: true,
   },
 }
 
 _.each(pages, (details, path) => {
+  // Auth: true - default
   const auth = details.auth === undefined ? true : details.auth
-  makePageRoute(path, details.page, auth)
+  makePageRoute(path, details, auth)
 })
 
-module.exports = router
+function returnIndexPage (req, res) {
+  return sendPage(res, pages['/'], req.user)
+}
+
+module.exports = {
+  router,
+  returnIndexPage
+}

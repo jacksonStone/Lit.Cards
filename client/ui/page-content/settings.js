@@ -15,28 +15,9 @@ const signupBtn = (event) => {
 }
 
 function passwordField(error) {
-  if (error) {
-    return html`
-      <div class="usa-form-group usa-form-group--error">
-        <label class="usa-label usa-label--error" for="password">Password <a 
-        style="
-        position: absolute;
-        right: 0;
-        top: 25px;
-        font-weight:normal"
-        href="/site/forgot-password"
-        >Forgot password?</a></label>
-        <span class="usa-error-message" id="input-error-message" role="alert">Password is required</span>
-        <input class="usa-input usa-input--error" id="password" name="password" type="password" required aria-required="true">
-      </div>`
-  }
+
   return html`
-      <label class="usa-label" for="password">Password <a 
-        style="
-        position: absolute;
-        right: 0;"
-        href="/site/forgot-password">
-      Forgot password?</a></label>
+      <label class="usa-label" for="password">Password</label>
       <input class="usa-input" id="password" name="password" type="password" required aria-required="true">`
 }
 
@@ -57,7 +38,6 @@ module.exports = (data) => {
                 ${passwordField(ef.password)}
               </fieldset>
               <button @click=${loginBtn} class="usa-button">Login</button>
-              <button @click=${signupBtn} class="usa-button usa-button--outline">Signup</button>
             </form>
         </div>
         <div class="grid-col-4"></div>

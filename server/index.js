@@ -20,10 +20,10 @@ app.get('/', function (req, res) {
   if (req.userId) {
     return res.redirect('/site/me')
   }
-  res.sendFile(path.join(ROOT, '/assets/html/index.html'))
+  return routes.siteNavigation.returnIndexPage(req, res)
 })
 app.use('/api', routes.api)
-app.use('/site', routes.siteNavigation)
+app.use('/site', routes.siteNavigation.router)
 app.use('/uswds', express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: 1000 * 60 * 60 * 24 }))
 app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 1000 * 60 * 60 * 24 * 360 }))
 app.use('/fonts', express.static(path.join(ROOT, 'assets/fonts'), { maxAge: 1000 * 60 * 60 * 24 * 360 }))
