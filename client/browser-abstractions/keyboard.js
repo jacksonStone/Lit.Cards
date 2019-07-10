@@ -1,6 +1,9 @@
 let keyBindings = {}
 let globalBindings = {}
 let cmdKeyBindings = {}
+let keysToStillLetThrough = {
+  'Tab' : true
+};
 function isMac () {
   return window.navigator.platform.indexOf('Mac') !== -1
 }
@@ -62,7 +65,9 @@ function _handleKeyDown (e) {
   const keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
   if (e[keyForCMD]) {
     if(cmdKeyBindings[e.code]) {
-      e.preventDefault()
+      if(!keysToStillLetThrough[(e.code)]) {
+        e.preventDefault()
+      }
       return cmdKeyBindings[e.code](e)
     // } else if (focusingOnTextInput() && keyBindings[e.code]) {
     //   e.preventDefault()
@@ -75,11 +80,15 @@ function _handleKeyDown (e) {
   }
   // console.info(e.code)
   if (keyBindings[e.code] && !focusingOnTextInput()) {
-    e.preventDefault()
+    if(!keysToStillLetThrough[(e.code)]) {
+      e.preventDefault()
+    }
     return keyBindings[e.code](e)
   }
   if (globalBindings[e.code] && !focusingOnTextInput()) {
-    e.preventDefault()
+    if(!keysToStillLetThrough[(e.code)]) {
+      e.preventDefault()
+    }
     return globalBindings[e.code](e)
   }
 }

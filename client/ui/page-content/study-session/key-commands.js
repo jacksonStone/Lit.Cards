@@ -6,7 +6,8 @@ const {
 const {
   flipCard,
   markWrong,
-  markRight
+  markRight,
+  recordTheyAreTabNavigating
 } = require('../../../business-logic/study')
 
 function initKeyCommands () {
@@ -14,7 +15,7 @@ function initKeyCommands () {
   listenForKey('Space', flipCard)
   listenForKey('ArrowUp', previousCard)
   listenForKey('ArrowDown', nextCard)
-  listenForKey('ArrowDown', nextCard)
+  listenForKey('Tab', recordTheyAreTabNavigating)
 }
 
 function showingAnswerKeyBindings () {

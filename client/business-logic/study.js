@@ -20,8 +20,16 @@ function resetAnswerKeyListeners () {
   resetKey('ArrowRight')
 }
 function focusOnFlipButton() {
-  setFocusTo('#flip-button')
+  // Kind of a bad ux if you do not intend to tab navigate,
+  // and so do not care about focus
+  if(window.lc.getData('tabNavigating')) {
+    setFocusTo('#flip-button')
+  }
 }
+function recordTheyAreTabNavigating() {
+  window.lc.setData('tabNavigating', true)
+}
+exports.recordTheyAreTabNavigating = recordTheyAreTabNavigating;
 exports.flipCard = () => {
   flipCard()
   if (window.lc.getData('showingAnswer')) {
