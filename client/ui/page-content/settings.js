@@ -1,47 +1,85 @@
 const { html } = require('lit')
 const { grabFormData } = require('../../browser-abstractions/grab-form')
+const { hash } = require('abstract/url')
 const { navigateToSignupPage } = require('../../business-logic/login')
 const errorableInput = require('../shared-components/errorable-input')
 const errorBanner = require('../shared-components/error-banner')
-const { login } = require('../../business-logic/login')
-const loginBtn = (event) => {
+const { changePassword } = require('../../business-logic/login')
+const darkmodeCheckbox = require('component/darkmode-checkbox')
+
+const changePasswordBtn = (event) => {
   event.preventDefault()
-  const values = grabFormData('#login')
-  login(values.email, values.password)
-}
-const signupBtn = (event) => {
-  event.preventDefault()
-  navigateToSignupPage()
+  const values = grabFormData('#password-change')
+  changePassword(values.password, values.passwordRepeat)
 }
 
-function passwordField(error) {
+function passwordField(error, label='Password', name='password') {
 
   return html`
-      <label class="usa-label" for="password">Password</label>
-      <input class="usa-input" id="password" name="password" type="password" required aria-required="true">`
+      <label class="usa-label" for="password">${label}</label>
+      <input class="usa-input" id=${name} name=${name} type="password" required aria-required="true">`
 }
 
 module.exports = (data) => {
-  // TODO:: Add weird error message that
-  // Changes based on how many failed logins
-  const { fields: ef, abstract: ea } = data.errors
+  // TODO:: Handle darkmode aside
+  //
   return html`
     <div class="grid-container">
+        <aside style="display: block;
+            float: left;
+            margin-bottom: 3rem;
+            margin-top: 2rem;
+            padding-right: 0;
+            padding-left: 2rem;
+            width: 15rem;
+        ">
+  <ul class="usa-sidenav" style="font-size: .9375rem;
+    line-height: 1.35;
+    border-radius: .25rem;
+    padding: 0;">
+    <li class="usa-sidenav__item">
+    <a href="" class="usa-current">Change Password</a>
+  </li><li class="usa-sidenav__item">
+    <a href="">Parent link</a>
+  </li><li class="usa-sidenav__item">
+    <a href="">Parent link</a>
+  </li>
+  </ul>
+    </aside>
+    <div class="grid-container">
     <div class="grid-row">
-        <div class="grid-col-4"></div>
-        <div class="grid-col-4">
-            <form class="usa-form" id="login">
-              <fieldset class="usa-fieldset">
-                ${ea.loginFailed && errorBanner('Bad login', 'Perhaps it is your next guess!')}
-                <legend class="usa-legend">Login</legend>
-                ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
-                ${passwordField(ef.password)}
-              </fieldset>
-              <button @click=${loginBtn} class="usa-button">Login</button>
-            </form>
+        <div class="grid-col-1"></div>
+        <div class="grid-col-10">
+           ${getContents(data)}
         </div>
-        <div class="grid-col-4"></div>
+        <div class="grid-col-1"></div>
     </div>
-    </div> 
+    </div>
+    </div>
+    
+    ${darkmodeCheckbox()}
 `
+}
+
+function getContents(data) {
+  const currentHash = hash()
+  if (!currentHash) {
+    return changePasswordInterface(data)
+  }
+}
+
+function changePasswordInterface(data){
+  const { fields: ef, abstract: ea } = data.errors
+  const updatedPassword = window.lc.getData('updatedPassword')
+  return html` <form class="usa-form" id="password-change">
+              <fieldset class="usa-fieldset">
+                ${updatedPassword ? html`Successfully updated password` : html``}
+                ${ea.mismatchPasswords && errorBanner('Bad Passwords', 'Passwords did not match')}
+                ${ea.samePassword && errorBanner('Same Password', 'Must use a new password')}
+                <legend class="usa-legend">Change password</legend>
+                ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
+                ${errorableInput(ef.repeatPassword, 'Must repeat password', 'passwordRepeat', 'Repeat Password', 'password')}
+              </fieldset>
+              <button @click=${changePasswordBtn} class="usa-button continue-studying">Update Password</button>
+            </form>`;
 }

@@ -50,7 +50,8 @@ function createUserCookie (userId, session) {
     name: authCookieName,
     options: {
       maxAge: experation,
-      httpOnly: true
+      httpOnly: true,
+      overwrite: true
     }
   }
 }

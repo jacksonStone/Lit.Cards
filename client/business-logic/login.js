@@ -1,4 +1,4 @@
-const { login, logout, verifyPasswordReset, resetPassword, signup, resendEmailVerification, verifyEmail } = require('../routes/api/login')
+const { login, logout, verifyPasswordReset, resetPassword, signup, resendEmailVerification, verifyEmail, changePassword } = require('../routes/api/login')
 const { fetchUserNoCache, clearUserData } = require('./user')
 const code = require('../routes/api/response-codes')
 const pages = require('../routes/navigation/pages')
@@ -106,6 +106,33 @@ exports.signup = async (userId, password, repeatPassword) => {
     return pages.home()
   }
   recordError('abstract.usernameTaken', true)
+}
+exports.changePassword = async (password, repeatPassword) => {
+  window.lc.resetErrors() // make sure we have no field failures hanging around
+  window.lc.setData('updatedPassword', false)
+  const recordError = window.lc.recordError
+
+  if (!password || !repeatPassword) {
+    if (!password) {
+      recordError('fields.password', 'empty')
+    }
+    if (!repeatPassword) {
+      recordError('fields.repeatPassword', 'empty')
+    }
+    return
+  }
+  if (password !== repeatPassword) {
+    recordError('abstract.mismatchPasswords', true)
+    return
+  }
+
+  const result = await changePassword(password)
+  if (code.ok(result)) {
+    return window.lc.setData('updatedPassword', true)
+  }
+  if (result === 'same password') {
+    recordError('abstract.samePassword', true)
+  }
 }
 
 exports.logout = async () => {

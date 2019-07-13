@@ -35,14 +35,15 @@ router.post('/change', async (req, res) => {
   if (!req.user) {
     return code.unauthorized(res)
   }
+  const body = req.body
   const newPassword = body && body.newPassword;
   if (!newPassword) return code.invalidRequest(res)
-  const cookieOrError = await changePassword(req.userId, newPassword)
+  const cookieOrError = await changePassword(req.user, newPassword)
   if (cookieOrError === 'same password') {
     return code.invalidRequest(res, cookieOrError)
   }
   addCookie(res, cookieOrError);
-  return redirect(res, '/site/me');
+  return code.ok(res)
 });
 
 module.exports = router

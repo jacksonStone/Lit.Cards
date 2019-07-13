@@ -26,7 +26,14 @@ const getPage = () => {
 const onPage = (pageName) => {
   return getPage().indexOf('/site/' + pageName) !== -1
 }
+
+const hash = () => {
+  const hash = window.location.hash
+  if (!hash) return ''
+  return hash.substring(1)
+}
 module.exports = {
+  hash,
   getParam,
   onPage
 }

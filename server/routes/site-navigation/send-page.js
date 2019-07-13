@@ -3,7 +3,6 @@ const pagePath = path.resolve(__dirname, '../../../assets/html/template.html')
 const defaultPage = require('fs').readFileSync(pagePath, 'utf8')
 const TOKEN_MARKER = '__'
 const pageSplit = defaultPage.split(TOKEN_MARKER)
-console.log(pageSplit)
 function sendPage (res, details, user) {
   const darkMode = details.darkModeable && user && user.darkMode;
   details.darkMode = darkMode ? 'class="darkmode"' : ''

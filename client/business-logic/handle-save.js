@@ -148,7 +148,6 @@ async function handleSessionStateChanges(changes) {
 let savingDarkMode = false
 async function handleUserChange(changes) {
   const user = changes.user
-  debugger
   if(user.darkMode !== undefined) {
     const startingValue = user.darkMode
     savingDarkMode = true

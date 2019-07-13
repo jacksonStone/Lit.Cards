@@ -233,11 +233,18 @@ body {
   font-size: 44px;
   box-shadow: none;
 }
-
+aside .usa-sidenav {
+  border: 2px solid rgba(0,0,0,.1);
+  background: white;
+}
 .darkmode {
   color: #555;
   #overlay {
     background-color: rgba(0,0,0,.8);
+  }
+  aside .usa-sidenav {
+    border: 2px solid rgba(255,255,255,.2);
+    background: black;
   }
   .continue-studying {
     background-color: transparent;
@@ -303,6 +310,9 @@ body {
     border-color: #555;
   }
   .usa-sidenav__item {
+    border-color: #555;
+  }
+  .usa-sidenav {
     border-color: #555;
   }
   .usa-sidenav__item a:hover{

@@ -70,7 +70,6 @@ function justVerifiedEmail () {
 }
 
 function getNavOptions (userInfo) {
-  console.log(userInfo)
   if (userInfo) {
     return loggedInHeader(userInfo)
   } else if (!onPage('login') && !onPage('signup')) {

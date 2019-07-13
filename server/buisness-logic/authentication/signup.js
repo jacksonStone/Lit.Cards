@@ -29,7 +29,6 @@ async function verifyEmail(userId, verificationKey) {
   if (user.verifiedEmail) {
     return 'Already verified';
   }
-  console.log(user.emailVerificationKey, verificationKey)
   if (user.emailVerificationKey !== verificationKey) {
     return 'Invalid verification key';
   }
