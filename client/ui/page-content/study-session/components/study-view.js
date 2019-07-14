@@ -5,7 +5,6 @@ const sidenav = require('./sidenav')
 const nextSteps = require('./end-of-session')
 const { storeAllState, retrieveStateStored } = require('abstract/browser-storage')
 const darkmodeCheckbox = require('component/darkmode-checkbox')
-
 module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => html`
 <div class="grid-container">
     <div class="grid-row">

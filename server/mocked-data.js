@@ -1,8 +1,7 @@
 const { listToStr } = require('../shared/char-encoding')
 const { compress } = require('../shared/compress')
 const fakeCardBody = require('./fake-card-body.json')
-fakeCardBody.frontImage = compress(fakeCardBody.frontImage)
-fakeCardBody.backImage = compress(fakeCardBody.backImage)
+
 // password: somePassword
 let fakeData = {
   user: [{

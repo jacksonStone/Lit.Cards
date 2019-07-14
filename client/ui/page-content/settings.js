@@ -14,14 +14,13 @@ const changePasswordBtn = (event) => {
 }
 
 function passwordField(error, label='Password', name='password') {
-
   return html`
       <label class="usa-label" for="password">${label}</label>
       <input class="usa-input" id=${name} name=${name} type="password" required aria-required="true">`
 }
 
 module.exports = (data) => {
-  // TODO:: Handle darkmode aside
+  // add other screens to settings
   //
   return html`
     <div class="grid-container">

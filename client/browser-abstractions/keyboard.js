@@ -14,6 +14,9 @@ function focusingOnTextInput () {
   return isTextField(window.document.activeElement)
 }
 function isTextField (activeElement) {
+  if(activeElement.nodeName === 'INPUT') {
+    return true;
+  }
   return activeElement.classList.contains('pell-content') || activeElement.id === 'deck-name';
 }
 
