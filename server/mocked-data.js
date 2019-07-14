@@ -1,5 +1,4 @@
 const { listToStr } = require('../shared/char-encoding')
-const { compress } = require('../shared/compress')
 const fakeCardBody = require('./fake-card-body.json')
 
 // password: somePassword
