@@ -130,16 +130,26 @@ async function handleSessionStateChanges(changes) {
     return
   }
   savingSession = true
-  let currentlySaving = changes.session.studyState
+  let currentlySavingState = changes.session.studyState
+  let currentlySavingCurrent = changes.session.currentCard
+  let currentlySavingOrdering = changes.session.ordering
   editStudySessionState(changes.session).then(()=>{
-    if(currentlySaving === changes.studyState) {
+    if(currentlySavingState === changes.session.studyState) {
       //All caught up
       delete changes.session.studyState
-      if(!Object.key(changes.session).length) {
-        delete changes.session
-      }
-      savingSession = false
     }
+    if(currentlySavingOrdering === changes.session.ordering) {
+      //All caught up
+      delete changes.session.ordering
+    }
+    if(currentlySavingCurrent === changes.session.currentCard) {
+      //All caught up
+      delete changes.session.currentCard
+    }
+    if(!Object.keys(changes.session).length) {
+      delete changes.session
+    }
+    savingSession = false
   }).catch(()=>{
     savingSession = false
   })

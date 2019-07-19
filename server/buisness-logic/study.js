@@ -18,8 +18,17 @@ async function getSessions (userId) {
   return StudySession.getStudySessions(userId)
 }
 async function editSessionState(userId, id, sessionChanges) {
+  const safeChanges = {}
+  if (sessionChanges.currentCard !== undefined) {
+    safeChanges.currentCard = sessionChanges.currentCard
+  }
+  if (sessionChanges.studyState !== undefined) {
+    safeChanges.studyState = sessionChanges.studyState
+  }
+  if (sessionChanges.ordering !== undefined) {
+    safeChanges.ordering = sessionChanges.ordering
+  }
   return StudySession.editStudySessionState(userId, id, sessionChanges)
-
 }
 
 module.exports = {
