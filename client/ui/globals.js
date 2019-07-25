@@ -1,7 +1,8 @@
 require('uswds')
 const { render } = require('lit-html/lit-html')
 const { generateId } = require('../../shared/id-generator')
-const listenForChanges = require('logic/handle-save')
+const persistentDataChanges = require('./watchers/persistent-data-changes')
+const userInput = require('./watchers/user-input')
 const appHeader = require('./shared-components/app-header')
 const { initDebug, deactivateDebug } = require('./debug-global')
 const defaultErrorObject = {
@@ -125,8 +126,11 @@ const lc = window.lc = initLC()
 if (lc._debugging === undefined && process.env.NODE_ENV === 'development') {
   lc.debugMode(false)
 }
+
+// Setup app listeners AFTER window.lc is initialized
 if (process.env.NODE_ENV !== 'test') {
-  listenForChanges()
+  persistentDataChanges()
+  userInput()
 }
 
 function renderPage (pageContentFunc) {

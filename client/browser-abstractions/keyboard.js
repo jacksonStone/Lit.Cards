@@ -1,23 +1,17 @@
+//TODO:: Move all this to watchers
+const textFocusedPropName = '_focusingOnText'
 let keyBindings = {}
 let globalBindings = {}
 let cmdKeyBindings = {}
 let keysToStillLetThrough = {
   'Tab' : true
 };
+//TODO::Move to one place
 function isMac () {
   return window.navigator.platform.indexOf('Mac') !== -1
 }
-function focusingOnTextInput () {
-  if (window.document.activeElement === window.document.body) {
-    return false
-  }
-  return isTextField(window.document.activeElement)
-}
-function isTextField (activeElement) {
-  if(activeElement.nodeName === 'INPUT') {
-    return true;
-  }
-  return activeElement.classList.contains('pell-content') || activeElement.id === 'deck-name';
+function dataSaysTextIsFocused() {
+  return window.lc.getData(textFocusedPropName);
 }
 
 function listenForCMDKey (key, callback) {
@@ -82,13 +76,13 @@ function _handleKeyDown (e) {
     return
   }
   // console.info(e.code)
-  if (keyBindings[e.code] && !focusingOnTextInput()) {
+  if (keyBindings[e.code] && !dataSaysTextIsFocused()) {
     if(!keysToStillLetThrough[(e.code)]) {
       e.preventDefault()
     }
     return keyBindings[e.code](e)
   }
-  if (globalBindings[e.code] && !focusingOnTextInput()) {
+  if (globalBindings[e.code] && !dataSaysTextIsFocused()) {
     if(!keysToStillLetThrough[(e.code)]) {
       e.preventDefault()
     }

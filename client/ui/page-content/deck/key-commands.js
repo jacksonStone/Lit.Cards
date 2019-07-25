@@ -11,14 +11,17 @@ function initCommands () {
   resetAllKeyBindings()
 
   listenForCMDKey('KeyS', () => {
-    // console.info('CMD + S')
+    console.info('CMD + S')
+    addNewCard()
   })
-  listenForKey('KeyN', addNewCard)
+  listenForCMDKey('KeyF', () => {
+    console.info('CMD + F')
+    flipCard()
+  })
+  listenForKey('KeyS', addNewCard)
   listenForKey('Space', flipCard)
   listenForKey('ArrowUp', previousCard)
   listenForKey('KeyI', pickImage)
-  // We use the RKey for "restoring State"
-  // listenForKey('KeyR', removeImage)
   listenForKey('ArrowDown', nextCard)
 }
 

@@ -14,7 +14,7 @@ style="text-align: center;">
               font-weight: normal;
               font-size: 75px;
               margin: 0;
-              ">${(index + 998).toLocaleString()}</h1>
+              ">${(index).toLocaleString()}</h1>
         <div>of ${cards.length.toLocaleString()}</div>
         <div style="margin-top:20px"><button class="usa-button usa-button--outline prev-next" @click=${()=>{previousCard()}}><i class="far fa-caret-square-up"><span class="sr-only">Previous card</span></i></button></div>
         <div><button class="usa-button usa-button--outline prev-next" @click=${()=>{nextCard()}}><i class="far fa-caret-square-down"><span class="sr-only">Next card</span></i></button></div>

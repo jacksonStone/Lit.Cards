@@ -2,14 +2,32 @@ const { html } = require('lit')
 const { simulateKey } = require('abstract/keyboard')
 const { removeCard, removeImage } = require('logic/deck')
 const { popupComponent, showPopup } = require('./card-image-popup')
+const focusingOnTextProp = '_focusingOnText'
+
 const spaceAction = () => {
   simulateKey('Space')
 }
 const newAction = () => {
-  simulateKey('KeyN')
+  simulateKey('KeyS')
 }
 const removeImageAction = () => {
   removeImage()
+}
+//TODO::Move to one place
+function isMac () {
+  return window.navigator.platform.indexOf('Mac') !== -1
+}
+function getNameOfShortcutKey() {
+  if(isMac()) {
+    return 'cmd'
+  }
+  return 'ctrl'
+}
+function ifTextNotSelected(htmlTemplate, textSelectedHTMLTemplate) {
+  if(!window.lc.getData(focusingOnTextProp)) {
+    return htmlTemplate
+  }
+  return textSelectedHTMLTemplate || html``;
 }
 
 function getSession () {
@@ -80,7 +98,8 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip
-                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( space )</div></div>
+                    ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( space )</div></div>`
+                      ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( ${getNameOfShortcutKey() } + f )</div></div>`)}
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
@@ -89,7 +108,8 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
 </i>&nbsp;&nbsp;card </div>
-                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( n )</div></div>
+                    ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( s )</div></div>`
+                    ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" >( ${getNameOfShortcutKey() } + s )</div></div>`)}
                     </button>
                     </div>
                 </div>
