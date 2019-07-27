@@ -64,6 +64,9 @@ function getContents(data) {
   if (!currentHash) {
     return changePasswordInterface(data)
   }
+  if(currentHash === 'subscription') {
+    return subscriptionSettingsInterface(data)
+  }
 }
 
 function changePasswordInterface(data){
@@ -82,4 +85,7 @@ function changePasswordInterface(data){
               </fieldset>
               <button @click=${changePasswordBtn} class="usa-button continue-studying">Update Password</button>
             </form>`;
+}
+function subscriptionSettingsInterface(data) {
+  return html`<h1>TODO</h1>`
 }
