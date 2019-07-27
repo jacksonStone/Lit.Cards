@@ -2,7 +2,7 @@ const { deck: deckPage } = require('../routes/navigation/pages')
 const { getParam } = require('abstract/url')
 const { getDeck, createDeck, deleteDeck, renameDeck } = require('../routes/api/decks')
 const { reject } = require('utils')
-const { setEditorData, getFontSize, getTextOnly, childrenHaveTooMuchSpace } = require('abstract/editor')
+const { setEditorData, getFontSize, childrenHaveTooMuchSpace } = require('abstract/editor')
 const { getCardBody } = require('./card-bodies')
 const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
 const { runNextRender } = require('abstract/rendering-meta')
@@ -11,23 +11,23 @@ const { compress } = require('shared/compress')
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
 }
-getDeckLogic = async (deckId) => {
+const getDeckLogic = async (deckId) => {
   deckId = deckId || getParam('deck')
   return JSON.parse(await getDeck(deckId))
 }
-createDeckLogic = async (name) => {
+const createDeckLogic = async (name) => {
   const newDeck = JSON.parse(await createDeck(name))
   navigateToDeckPage(newDeck.id)
 }
 
-deleteDeckLogic = async (id) => {
+const deleteDeckLogic = async (id) => {
   await deleteDeck(id)
   const decks = window.lc.getData('decks')
   const decksWithoutDeleted = reject(decks, { id })
   window.lc.setData('decks', decksWithoutDeleted)
 }
 
-updateDeckNameLogic = async (name, deckId) => {
+const updateDeckNameLogic = async (name, deckId) => {
   deckId = deckId || getParam('deck')
   return renameDeck(deckId, name)
 }
@@ -68,25 +68,25 @@ function decreaseFontSizeIfOverflowing (oldFontSize = 1, frontOrBack) {
     return
   }
   setPersistentForCardBody(frontOrBack, newFontSize)
-  //We may need to bump size multiple times
+  // We may need to bump size multiple times
   runNextRender(() => {
-    //We may need to decrease size multiple times
+    // We may need to decrease size multiple times
     decreaseFontSizeIfOverflowing(newFontSize, frontOrBack)
-  });
+  })
 }
 
 function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack) {
-  if(oldFontSize <= 1) {
+  if (oldFontSize <= 1) {
     return
   }
-  if(!childrenHaveTooMuchSpace()) {
+  if (!childrenHaveTooMuchSpace()) {
     return
   }
   const newFontSize = oldFontSize - 1
   setPersistentForCardBody(frontOrBack, newFontSize)
 
   runNextRender(() => {
-    //We may need to bump size multiple times
+    // We may need to bump size multiple times
     increaseFontIfLotsOfSpace(newFontSize, frontOrBack)
   })
 }

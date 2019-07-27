@@ -12,7 +12,7 @@ renderPage(content)
   // Pull from userInfo
   defaultDarkMode()
   const [user, decks, studySessions] = await Promise.all([fetchUser(), getDecks(), getStudySessions()])
-  if(!user.verifiedEmail && getParam('verification')) {
+  if (!user.verifiedEmail && getParam('verification')) {
     await verifyEmail()
     window.lc.setData('justVerifiedEmail', true)
     user.verifiedEmail = true

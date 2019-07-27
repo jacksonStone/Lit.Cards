@@ -1,7 +1,8 @@
 
 const { html } = require('lit')
-const { onPage } = require('../../browser-abstractions/url')
-const { navigateToLoginPage, logout } = require('../../business-logic/login')
+const { onPage } = require('abstract/url')
+const { navigateToLoginPage, logout } = require('logic/login')
+const { navigateToSettingsPage } = require('logic/settings')
 const { resendEmailVerification } = require('logic/login')
 
 module.exports = (userInfo) => html`
@@ -88,6 +89,10 @@ function notLoggedInHeader () {
 }
 function loggedInHeader (userInfo) {
   return html`
+             <button class="usa-button usa-button--unstyled" @click=${settings} style="margin-right: 10px">Account Settings</button>
              <button class="usa-button usa-button--outline" @click=${logout}>Logout</button>
             `
+}
+function settings() {
+  navigateToSettingsPage();
 }

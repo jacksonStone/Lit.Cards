@@ -1,17 +1,17 @@
-//TODO:: Move all this to watchers
+// TODO:: Move all this to watchers
 const textFocusedPropName = '_focusingOnText'
 let keyBindings = {}
 let globalBindings = {}
 let cmdKeyBindings = {}
 let keysToStillLetThrough = {
-  'Tab' : true
-};
-//TODO::Move to one place
+  'Tab': true
+}
+// TODO::Move to one place
 function isMac () {
   return window.navigator.platform.indexOf('Mac') !== -1
 }
-function dataSaysTextIsFocused() {
-  return window.lc.getData(textFocusedPropName);
+function dataSaysTextIsFocused () {
+  return window.lc.getData(textFocusedPropName)
 }
 
 function listenForCMDKey (key, callback) {
@@ -61,8 +61,8 @@ function isMultipleKeys (e) {
 function _handleKeyDown (e) {
   const keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
   if (e[keyForCMD]) {
-    if(cmdKeyBindings[e.code]) {
-      if(!keysToStillLetThrough[(e.code)]) {
+    if (cmdKeyBindings[e.code]) {
+      if (!keysToStillLetThrough[(e.code)]) {
         e.preventDefault()
       }
       return cmdKeyBindings[e.code](e)
@@ -77,13 +77,13 @@ function _handleKeyDown (e) {
   }
   // console.info(e.code)
   if (keyBindings[e.code] && !dataSaysTextIsFocused()) {
-    if(!keysToStillLetThrough[(e.code)]) {
+    if (!keysToStillLetThrough[(e.code)]) {
       e.preventDefault()
     }
     return keyBindings[e.code](e)
   }
   if (globalBindings[e.code] && !dataSaysTextIsFocused()) {
-    if(!keysToStillLetThrough[(e.code)]) {
+    if (!keysToStillLetThrough[(e.code)]) {
       e.preventDefault()
     }
     return globalBindings[e.code](e)

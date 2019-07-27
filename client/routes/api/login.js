@@ -21,7 +21,7 @@ exports.resetPassword = (userId) => {
 exports.verifyPasswordReset = (userId, token, password) => {
   return api('password-reset/verify', { id: userId, token, newPassword: password })
 }
-exports.changePassword = (newPassword) => {
-  return api('password-reset/change', { newPassword })
+exports.changePassword = (currentPassword, newPassword) => {
+  return api('password-reset/change', { currentPassword, newPassword })
 }
 

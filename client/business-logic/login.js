@@ -34,11 +34,11 @@ exports.resetPassword = async (userId) => {
     recordError('fields.userId', 'empty')
     return
   }
-  if(!emailIsValid(userId)) {
+  if (!emailIsValid(userId)) {
     recordError('abstract.badEmail', true)
     return
   }
-  const result = await resetPassword(userId)
+  return resetPassword(userId)
 }
 
 exports.verifyPasswordReset = async (password, repeatPassword) => {
@@ -52,11 +52,11 @@ exports.verifyPasswordReset = async (password, repeatPassword) => {
     if (!repeatPassword) {
       recordError('fields.repeatPassword', 'empty')
     }
-    return;
+    return
   }
   if (password !== repeatPassword) {
     recordError('abstract.mismatchPasswords', true)
-    return;
+    return
   }
   // TODO:: Maybe redirect them to a different page that
   // doesn't have it in the URL to prevent leaking on referer if they leave page
@@ -95,7 +95,7 @@ exports.signup = async (userId, password, repeatPassword) => {
     recordError('abstract.mismatchPasswords', true)
     return
   }
-  if(!emailIsValid(userId)) {
+  if (!emailIsValid(userId)) {
     recordError('abstract.badEmail', true)
     return
   }
@@ -107,17 +107,20 @@ exports.signup = async (userId, password, repeatPassword) => {
   }
   recordError('abstract.usernameTaken', true)
 }
-exports.changePassword = async (password, repeatPassword) => {
+exports.changePassword = async (currentPassword, password, repeatPassword) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   window.lc.setData('updatedPassword', false)
   const recordError = window.lc.recordError
 
-  if (!password || !repeatPassword) {
+  if (!password || !repeatPassword || !currentPassword) {
     if (!password) {
       recordError('fields.password', 'empty')
     }
     if (!repeatPassword) {
       recordError('fields.repeatPassword', 'empty')
+    }
+    if (!currentPassword) {
+      recordError('fields.currentPassword', 'empty')
     }
     return
   }
@@ -126,12 +129,15 @@ exports.changePassword = async (password, repeatPassword) => {
     return
   }
 
-  const result = await changePassword(password)
+  const result = await changePassword(currentPassword, password)
   if (code.ok(result)) {
     return window.lc.setData('updatedPassword', true)
   }
   if (result === 'same password') {
     recordError('abstract.samePassword', true)
+  }
+  if (result === 'wrong password') {
+    recordError('abstract.wrongPassword', true)
   }
 }
 
@@ -151,4 +157,3 @@ exports.verifyEmail = async () => {
 exports.resendEmailVerification = async () => {
   await resendEmailVerification()
 }
-

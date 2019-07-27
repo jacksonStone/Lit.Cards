@@ -3,15 +3,16 @@ const fs = require('fs')
 const entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
   return file.match(/.*\.js$/);
 });
+const prodMode = process.env.NODE_ENV === 'production'
 entryForWebpack = {}
 entries.forEach(entry => {
   const entryName = entry.split('.')[0]
   entryForWebpack[entryName] ='./client/entry-points/' + entry
 })
 module.exports = {
-  mode: 'development',
+  mode: prodMode ? 'production' : 'development',
   entry: entryForWebpack,
-  watch: true,
+  watch: !prodMode,
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, './assets/dist')

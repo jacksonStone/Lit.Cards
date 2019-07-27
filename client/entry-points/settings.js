@@ -5,7 +5,7 @@ const { fetchUser } = require('logic/user')
 
 renderPage(content)
 ;(async () => {
-  defaultDarkMode();
+  defaultDarkMode()
   let [user] = await Promise.all([fetchUser()])
   window.lc.setData('user', user)
 })()

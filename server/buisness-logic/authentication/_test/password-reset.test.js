@@ -95,13 +95,25 @@ describe('Login validates correctly', () => {
   })
   it('changePassword - same password', async () => {
     const user = await User.getUser(userId);
-    const error = await changePassword(user, password)
+    const error = await changePassword(user, password, password)
     // Attempt to change passwords
     assert(error === 'same password')
   })
+  it('changePassword - wrong password with same password', async () => {
+    const user = await User.getUser(userId);
+    const error = await changePassword(user, password, password + '1')
+    // Attempt to change passwords
+    assert(error === 'wrong password')
+  })
+  it('changePassword - wrong password', async () => {
+    const user = await User.getUser(userId);
+    const error = await changePassword(user, 'fooey', password + '1')
+    // Attempt to change passwords
+    assert(error === 'wrong password')
+  })
   it('changePassword', async () => {
     const user = await User.getUser(userId);
-    await changePassword(user, 'foo')
+    await changePassword(user, 'foo', password)
     const newLoginWorks = await verify(user.userId, 'foo')
     assert(newLoginWorks)
   })

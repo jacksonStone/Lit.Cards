@@ -19,17 +19,17 @@ function resetAnswerKeyListeners () {
   resetKey('ArrowLeft')
   resetKey('ArrowRight')
 }
-function focusOnFlipButton() {
+function focusOnFlipButton () {
   // Kind of a bad ux if you do not intend to tab navigate,
   // and so do not care about focus
-  if(window.lc.getData('tabNavigating')) {
+  if (window.lc.getData('tabNavigating')) {
     setFocusTo('#flip-button')
   }
 }
-function recordTheyAreTabNavigating() {
+function recordTheyAreTabNavigating () {
   window.lc.setData('tabNavigating', true)
 }
-exports.recordTheyAreTabNavigating = recordTheyAreTabNavigating;
+exports.recordTheyAreTabNavigating = recordTheyAreTabNavigating
 exports.flipCard = () => {
   flipCard()
   if (window.lc.getData('showingAnswer')) {
@@ -135,13 +135,13 @@ function updateStudyState (state) {
   window.lc.setData('orderedCards', newVisibleCards)
   if (!newVisibleCards.length) {
     resetAnswerKeyListeners()
-    return;
+    return
   }
-  //Grab next card based on index in original deck order
+  // Grab next card based on index in original deck order
   let newCurrentCard
   const originalCardOrder = window.lc.getData('originalCardOrder')
-  for(let i = 0; i < originalCardOrder.length; i++) {
-    if(originalCardOrder[i].id === newCard.id) {
+  for (let i = 0; i < originalCardOrder.length; i++) {
+    if (originalCardOrder[i].id === newCard.id) {
       newCurrentCard = i
       break
     }
@@ -227,7 +227,6 @@ const markRight = exports.markRight = () => {
   asArray[cardIndex] = RIGHT
   const newState = asArray.join('')
   updateStudyState(newState)
-
 }
 const markWrong = exports.markWrong = () => {
   // Get session state, modify card to wrong, then go to the next card that works

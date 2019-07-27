@@ -56,14 +56,30 @@ async function passwordResetVerify (userId, unhashedResetToken, newPassword) {
   if(!validatePasswordResetVerify(user, unhashedResetToken, newPassword)) {
     return 'unauthorized';
   }
-  return changePassword(user, newPassword)
+  return changePasswordWithoutNeedingCurrentPassword(user, newPassword)
 }
-//Returns a cookie if successful
-async function changePassword(user, newPassword) {
+// For password resets
+async function changePasswordWithoutNeedingCurrentPassword(user, newPassword) {
   const newPasswordHash = authUtils.hashValues(newPassword, user.salt)
   if (newPasswordHash === user.password) {
     return 'same password';
   }
+  return _updatePassword(newPasswordHash, user)
+}
+//Returns a cookie if successful
+async function changePassword(user, newPassword, currentPassword) {
+  const currentPasswordAttemptHash = authUtils.hashValues(currentPassword, user.salt)
+  if (currentPasswordAttemptHash !== user.password) {
+    return 'wrong password';
+  }
+  if (newPassword === currentPassword) {
+    return 'same password';
+  }
+  const newPasswordHash = authUtils.hashValues(newPassword, user.salt)
+  return _updatePassword(newPasswordHash, user)
+}
+
+async function _updatePassword(passwordHash, user) {
   let validSession = user.validSession
   if(validSession!==undefined) {
     validSession += 1;
@@ -72,7 +88,7 @@ async function changePassword(user, newPassword) {
   } else {
     validSession = 1;
   }
-  const changes = { password: newPasswordHash, validSession, resetToken: undefined, resetTokenExpiration: 0 }
+  const changes = { password: passwordHash, validSession, resetToken: undefined, resetTokenExpiration: 0 }
   await User.editUser(user.userId, changes)
   const newUser = Object.assign({}, user, changes)
   const cookie = getLoginCookie(newUser)

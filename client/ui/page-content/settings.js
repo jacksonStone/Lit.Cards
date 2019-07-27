@@ -10,7 +10,7 @@ const darkmodeCheckbox = require('component/darkmode-checkbox')
 const changePasswordBtn = (event) => {
   event.preventDefault()
   const values = grabFormData('#password-change')
-  changePassword(values.password, values.passwordRepeat)
+  changePassword(values.currentPassword, values.password, values.passwordRepeat)
 }
 
 function passwordField(error, label='Password', name='password') {
@@ -22,6 +22,7 @@ function passwordField(error, label='Password', name='password') {
 module.exports = (data) => {
   // add other screens to settings
   //
+  const h = hash()
   return html`
     <div class="grid-container">
         <aside style="display: block;
@@ -37,11 +38,9 @@ module.exports = (data) => {
     border-radius: .25rem;
     padding: 0;">
     <li class="usa-sidenav__item">
-    <a href="" class="usa-current">Change Password</a>
+    <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
   </li><li class="usa-sidenav__item">
-    <a href="">Parent link</a>
-  </li><li class="usa-sidenav__item">
-    <a href="">Parent link</a>
+    <a href="#subscription" class="${h === 'subscription' ? 'usa-current' : ''}">Subscription</a>
   </li>
   </ul>
     </aside>
@@ -74,8 +73,10 @@ function changePasswordInterface(data){
               <fieldset class="usa-fieldset">
                 ${updatedPassword ? html`Successfully updated password` : html``}
                 ${ea.mismatchPasswords && errorBanner('Bad Passwords', 'Passwords did not match')}
+                ${ea.wrongPassword && errorBanner('Incorrect password', 'Current password was incorrect')}
                 ${ea.samePassword && errorBanner('Same Password', 'Must use a new password')}
                 <legend class="usa-legend">Change password</legend>
+                ${errorableInput(ef.currentPassword, 'Password is required', 'currentPassword', 'Current Password', 'password')}
                 ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
                 ${errorableInput(ef.repeatPassword, 'Must repeat password', 'passwordRepeat', 'Repeat Password', 'password')}
               </fieldset>

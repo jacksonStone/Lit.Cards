@@ -1,5 +1,5 @@
 const { $ } = require('./$')
-function setFocusTo(selector) {
+function setFocusTo (selector) {
   const node = $(selector)
   node && node.focus()
 }

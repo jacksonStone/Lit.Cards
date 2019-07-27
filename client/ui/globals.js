@@ -3,6 +3,7 @@ const { render } = require('lit-html/lit-html')
 const { generateId } = require('../../shared/id-generator')
 const persistentDataChanges = require('./watchers/persistent-data-changes')
 const userInput = require('./watchers/user-input')
+const urlHashWatcher = require('./watchers/url-hash-watcher')
 const appHeader = require('./shared-components/app-header')
 const { initDebug, deactivateDebug } = require('./debug-global')
 const defaultErrorObject = {
@@ -63,30 +64,32 @@ function initLC () {
      * @param NO_UPDATE: Prevents setData from trying to re-render
      */
     setData: (key, value, NO_UPDATE) => {
-      const paths = key.split('.')
-      let parent = lc.data
-      for (let i = 0; i < paths.length; i++) {
-        const currentPath = paths[i]
-        if (i === paths.length - 1) {
-          parent[currentPath] = value
-          break
-        } else {
-          parent = parent[currentPath] = (parent[currentPath] || {})
+      if (key) {
+        const paths = key.split('.')
+        let parent = lc.data
+        for (let i = 0; i < paths.length; i++) {
+          const currentPath = paths[i]
+          if (i === paths.length - 1) {
+            parent[currentPath] = value
+            break
+          } else {
+            parent = parent[currentPath] = (parent[currentPath] || {})
+          }
         }
-      }
-      if (lc._debugging) {
-        lc.recordedSetData = lc.recordedSetData || []
-        try {
-          throw new Error('Fake error')
-        } catch (e) {
-          const stack = e.stack
-          recordedStack = stack.split('Error: Fake error').join('').split('\n    at ')
-          recordedStack = recordedStack.slice(2)
-          recordedStack.forEach((entry, index) => {
-            const webpackFluff = 'webpack:///'
-            recordedStack[index] = entry.split(webpackFluff).join('')
-          })
-          lc.recordedSetData.push({key, value, NO_UPDATE, stack: recordedStack})
+        if (lc._debugging) {
+          lc.recordedSetData = lc.recordedSetData || []
+          try {
+            throw new Error('Fake error')
+          } catch (e) {
+            const stack = e.stack
+            let recordedStack = stack.split('Error: Fake error').join('').split('\n    at ')
+            recordedStack = recordedStack.slice(2)
+            recordedStack.forEach((entry, index) => {
+              const webpackFluff = 'webpack:///'
+              recordedStack[index] = entry.split(webpackFluff).join('')
+            })
+            lc.recordedSetData.push({ key, value, NO_UPDATE, stack: recordedStack })
+          }
         }
       }
       if (!lc.data._willRerender && !NO_UPDATE) {
@@ -131,6 +134,7 @@ if (lc._debugging === undefined && process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV !== 'test') {
   persistentDataChanges()
   userInput()
+  urlHashWatcher()
 }
 
 function renderPage (pageContentFunc) {

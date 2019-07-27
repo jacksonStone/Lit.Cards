@@ -1,13 +1,13 @@
 
 function unauthorized (res, msg) {
-  if(msg) {
+  if (msg) {
     return res.status(401).send(msg)
   }
   res.sendStatus(401)
 }
 
 function invalidRequest (res, msg) {
-  if(msg) {
+  if (msg) {
     return res.status(400).send(msg)
   }
   res.sendStatus(400)

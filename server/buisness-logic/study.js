@@ -17,7 +17,7 @@ async function getSessionByDeck (userId, deckId) {
 async function getSessions (userId) {
   return StudySession.getStudySessions(userId)
 }
-async function editSessionState(userId, id, sessionChanges) {
+async function editSessionState (userId, id, sessionChanges) {
   const safeChanges = {}
   if (sessionChanges.currentCard !== undefined) {
     safeChanges.currentCard = sessionChanges.currentCard

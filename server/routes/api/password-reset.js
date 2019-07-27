@@ -37,9 +37,13 @@ router.post('/change', async (req, res) => {
   }
   const body = req.body
   const newPassword = body && body.newPassword;
-  if (!newPassword) return code.invalidRequest(res)
-  const cookieOrError = await changePassword(req.user, newPassword)
+  const currentPassword = body && body.currentPassword;
+  if (!newPassword || !currentPassword) return code.invalidRequest(res)
+  const cookieOrError = await changePassword(req.user, newPassword, currentPassword)
   if (cookieOrError === 'same password') {
+    return code.invalidRequest(res, cookieOrError)
+  }
+  if (cookieOrError === 'wrong password') {
     return code.invalidRequest(res, cookieOrError)
   }
   addCookie(res, cookieOrError);

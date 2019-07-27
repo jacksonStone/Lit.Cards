@@ -2,14 +2,14 @@ const { $ } = require('./$')
 const pell = require('pell')
 const elementId = 'editor'
 const MAX_FONT_SIZE = 5
-const createDOMPurify = require('dompurify');
+const createDOMPurify = require('dompurify')
 const allowedTags = require('shared/allowedHTMLTags')
-const santizationConfig = {ALLOWED_TAGS: allowedTags}
+const santizationConfig = { ALLOWED_TAGS: allowedTags }
 
 let sanitizer
-function sanitizeHTML(text) {
-  if(process.env.NODE_ENV !== 'test') {
-    sanitizer = sanitizer || createDOMPurify(window);
+function sanitizeHTML (text) {
+  if (process.env.NODE_ENV !== 'test') {
+    sanitizer = sanitizer || createDOMPurify(window)
     return sanitizer.sanitize(text, santizationConfig)
   }
   return text
@@ -23,26 +23,26 @@ function initEditor (startingContent, onChange) {
     onChange: onChange
   })
   editor.content.innerHTML = startingContent
-  //IE - This is not supported for IE
-  editorElement.addEventListener("paste", function(e) {
+  // IE - This is not supported for IE
+  editorElement.addEventListener('paste', function (e) {
     // cancel paste
-    e.preventDefault();
+    e.preventDefault()
 
     // get text representation of clipboard
-    var formattedHTML = (e.originalEvent || e).clipboardData.getData('text/html');
+    var formattedHTML = (e.originalEvent || e).clipboardData.getData('text/html')
     const documentFragment = document.createRange().createContextualFragment(formattedHTML)
     const chidlens = documentFragment.querySelectorAll('[style]')
-    if(chidlens && chidlens.length) {
+    if (chidlens && chidlens.length) {
       chidlens.forEach(chidlen => {
         chidlen.removeAttribute('style')
       })
     }
-    var div = document.createElement('div');
-    div.appendChild( documentFragment.cloneNode(true) );
+    var div = document.createElement('div')
+    div.appendChild(documentFragment.cloneNode(true))
     const htmlContent = sanitizeHTML(div.innerHTML)
     // insert text manually
-    document.execCommand("insertHTML", false, htmlContent);
-  });
+    document.execCommand('insertHTML', false, htmlContent)
+  })
 }
 
 function setEditorData (content) {
@@ -72,44 +72,43 @@ function scrollToTopOfEditor () {
   const editorContent = getEditorContent()
   editorContent.scrollTop = 0
 }
-function getTextNodeHeight(textNode) {
-  let height = 0;
+function getTextNodeHeight (textNode) {
+  let height = 0
   if (window.document.createRange) {
-    const range = window.document.createRange();
-    range.selectNodeContents(textNode);
+    const range = window.document.createRange()
+    range.selectNodeContents(textNode)
     if (range.getBoundingClientRect) {
-      var rect = range.getBoundingClientRect();
+      var rect = range.getBoundingClientRect()
       if (rect) {
-        height = rect.bottom - rect.top;
+        height = rect.bottom - rect.top
       }
     }
   }
-  return height;
+  return height
 }
-const emptySpaceBeforeIncrease = 0.65;
-function childrenHaveTooMuchSpace() {
-
-  const WYSIWYG = getEditorContent();
-  const children = WYSIWYG.childNodes;
+const emptySpaceBeforeIncrease = 0.65
+function childrenHaveTooMuchSpace () {
+  const WYSIWYG = getEditorContent()
+  const children = WYSIWYG.childNodes
   const fullHeight = WYSIWYG.scrollHeight
   const clientHeight = WYSIWYG.clientHeight
-  if(fullHeight > clientHeight) {
+  if (fullHeight > clientHeight) {
     // We overflow
-    return false;
+    return false
   }
 
-  let height = 0;
-  if(children && children.length) {
-    for(let i = 0; i < children.length; i++) {
+  let height = 0
+  if (children && children.length) {
+    for (let i = 0; i < children.length; i++) {
       const child = children[i]
       if (child.clientHeight) {
-        height += child.clientHeight;
-      } else if(child.nodeName === '#text') {
-        height += getTextNodeHeight(child);
+        height += child.clientHeight
+      } else if (child.nodeName === '#text') {
+        height += getTextNodeHeight(child)
       }
     }
   }
-  if(height < clientHeight * (1 - emptySpaceBeforeIncrease)) {
+  if (height < clientHeight * (1 - emptySpaceBeforeIncrease)) {
     return true
   }
   return false
