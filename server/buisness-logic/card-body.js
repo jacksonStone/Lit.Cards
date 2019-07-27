@@ -2,6 +2,10 @@ const { CardBody } = require('../database')
 const { Card } = require('../database')
 const { Deck } = require('../database')
 const sanitizeHTML = require('sanitize-html')
+const allowedTags = require('../../shared/allowedHTMLTags')
+const sanitizeOptions = {
+  allowedTags
+}
 async function getCardBody (userId, deck, card) {
   return CardBody.getCardBody(userId, deck, card)
 }
@@ -16,10 +20,10 @@ async function deleteAllCardBodies (userId, deck) {
 }
 function sanitizeCardContent (changes) {
   if (changes.front) {
-    changes.front = sanitizeHTML(changes.front)
+    changes.front = sanitizeHTML(changes.front, sanitizeOptions)
   }
   if (changes.back) {
-    changes.back = sanitizeHTML(changes.back)
+    changes.back = sanitizeHTML(changes.back, sanitizeOptions)
   }
 }
 async function editCardBody (userId, deck, card, changes) {

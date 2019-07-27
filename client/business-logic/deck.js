@@ -2,7 +2,7 @@ const { deck: deckPage } = require('../routes/navigation/pages')
 const { getParam } = require('abstract/url')
 const { getDeck, createDeck, deleteDeck, renameDeck } = require('../routes/api/decks')
 const { reject } = require('utils')
-const { setEditorData, getFontSize, getTextOnly } = require('abstract/editor')
+const { setEditorData, getFontSize, getTextOnly, childrenHaveTooMuchSpace } = require('abstract/editor')
 const { getCardBody } = require('./card-bodies')
 const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
 const { runNextRender } = require('abstract/rendering-meta')
@@ -62,40 +62,48 @@ function setPersistentForCardBody (key, value) {
   window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
   window.lc.setPersistent(changeKey, value)
 }
+function decreaseFontSizeIfOverflowing (oldFontSize = 1, frontOrBack) {
+  let newFontSize = getFontSize(oldFontSize)
+  if (newFontSize === oldFontSize) {
+    return
+  }
+  setPersistentForCardBody(frontOrBack, newFontSize)
+  //We may need to bump size multiple times
+  runNextRender(() => {
+    //We may need to decrease size multiple times
+    decreaseFontSizeIfOverflowing(newFontSize, frontOrBack)
+  });
+}
+
+function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack) {
+  if(oldFontSize <= 1) {
+    return
+  }
+  if(!childrenHaveTooMuchSpace()) {
+    return
+  }
+  const newFontSize = oldFontSize - 1
+  setPersistentForCardBody(frontOrBack, newFontSize)
+
+  runNextRender(() => {
+    //We may need to bump size multiple times
+    increaseFontIfLotsOfSpace(newFontSize, frontOrBack)
+  })
+}
 function updateFontSizeIfNecessary (oldCardBody, newText) {
   if (!oldCardBody) return
-  const ratioOfWatermarkBeforeDownsize = 1.3
   if (showingAnswer()) {
-    if (getTextOnly(newText).length === 0) {
-      return setPersistentForCardBody('backFontSize', 1)
+    const deletedAChar = oldCardBody.back && (oldCardBody.back.length > newText.length)
+    if (deletedAChar) {
+      return increaseFontIfLotsOfSpace(oldCardBody.backFontSize, 'backFontSize')
     }
-
-    if (oldCardBody.backWatermark &&
-      (oldCardBody.backWatermark / newText.length > ratioOfWatermarkBeforeDownsize) &&
-      oldCardBody.backFontSize > 1) {
-      // Reset watermark
-      setPersistentForCardBody('frontWatermark', newText.length)
-      return setPersistentForCardBody('backFontSize', oldCardBody.backFontSize - 1)
-    }
-    const newFontSize = getFontSize(oldCardBody.backFontSize || 1)
-    if (newFontSize !== oldCardBody.backFontSize) {
-      setPersistentForCardBody('backFontSize', newFontSize)
-    }
+    decreaseFontSizeIfOverflowing(oldCardBody.backFontSize, 'backFontSize')
   } else {
-    if (getTextOnly(newText).length === 0) {
-      return setPersistentForCardBody('frontFontSize', 1)
+    const deletedAChar = oldCardBody.front && (oldCardBody.front.length > newText.length)
+    if (deletedAChar) {
+      return increaseFontIfLotsOfSpace(oldCardBody.frontFontSize, 'frontFontSize')
     }
-    if (oldCardBody.frontWatermark &&
-      oldCardBody.frontWatermark / newText.length > ratioOfWatermarkBeforeDownsize &&
-      oldCardBody.frontFontSize > 1) {
-      // Reset watermark
-      setPersistentForCardBody('frontWatermark', newText.length)
-      return setPersistentForCardBody('frontFontSize', oldCardBody.frontFontSize - 1)
-    }
-    const newFontSize = getFontSize(oldCardBody.frontFontSize || 1)
-    if (newFontSize !== oldCardBody.frontFontSize) {
-      setPersistentForCardBody('frontFontSize', newFontSize)
-    }
+    decreaseFontSizeIfOverflowing(oldCardBody.frontFontSize, 'frontFontSize')
   }
 }
 function getPresentFontSize () {
