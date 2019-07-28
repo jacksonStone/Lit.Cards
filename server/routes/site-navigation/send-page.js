@@ -16,7 +16,7 @@ function sendPage (res, details, user) {
     }
   }
   res.set('Content-Type', 'text/html');
-  res.send(new Buffer(renderedPage));
+  res.send(Buffer.from(renderedPage));
 }
 
 module.exports = {
