@@ -147,7 +147,7 @@ function updateStudyState (state) {
     }
   }
   window.lc.setPersistent('session.currentCard', newCurrentCard)
-  updateCardBody(newCard.id)
+  updateCardBody(newCard.id, undefined, cards)
   focusOnFlipButton()
 }
 // If a card is added to a deck during the studying process

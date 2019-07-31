@@ -21,7 +21,7 @@ const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, acc
   let firstCardId = (cards && cards.length && cards[studySession.currentCard || 0].id) || undefined
   let sessionOrderedCards = sortCardsBySession(cards, studySession)
   let visibleCards = trimCardsToOnesAwaitingAnswers(sessionOrderedCards, studySession)
-  let cardBody = await getCardBody(firstCardId, deckId)
+  let cardBody = await getCardBody(firstCardId, deckId, visibleCards)
   if (!cards || !cardBody) {
     return homePage()
   }

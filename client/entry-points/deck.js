@@ -19,7 +19,7 @@ const { getDeck, handleEditorTextChange, getCardMapping, refreshEditor } = requi
   const activeCard = getParam('card')
   // TODO::Could do this in one pass, sever can figure out first card
   let firstCardId = activeCard || (cards && cards.length && cards[0].id) || undefined
-  let cardBody = await getCardBody(firstCardId)
+  let cardBody = await getCardBody(firstCardId, undefined, cards)
   if (!cards || !cardBody) {
     const newId = window.lc.generateNewId()
     firstCardId = newId

@@ -147,7 +147,7 @@ function nextCard () {
   index++
   const newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
-  updateCardBody(newCard.id)
+  updateCardBody(newCard.id, cards)
 }
 
 function removeCard () {
@@ -161,7 +161,7 @@ function removeCard () {
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
-  updateCardBody(newCard.id)
+  updateCardBody(newCard.id, cards)
 }
 
 function previousCard () {
@@ -170,7 +170,7 @@ function previousCard () {
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
   window.lc.setData('activeCardId', newCard.id)
-  updateCardBody(newCard.id)
+  updateCardBody(newCard.id, cards)
 }
 
 function flipCard () {
@@ -236,11 +236,11 @@ function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
 }
 
-async function updateCardBody (id) {
+async function updateCardBody (id, cards) {
   _flipToQuestionSide()
   const currentCardBody = window.lc.getData('cardBody.' + id)
   if (!currentCardBody) {
-    const cardBody = await getCardBody(id)
+    const cardBody = await getCardBody(id, undefined, cards)
     window.lc.setData('cardBody.' + id, cardBody)
   }
   refreshEditor()
@@ -258,7 +258,7 @@ function _getCurrentCardBody () {
 }
 function getTextToShowForCard () {
   const cardBody = _getCurrentCardBody()
-  if (!cardBody) return ''
+  if (cardBody === undefined) return false
   const showingAnswer = window.lc.getData('showingAnswer')
   if (showingAnswer) {
     // Show answer

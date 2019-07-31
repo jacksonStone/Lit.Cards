@@ -9,11 +9,13 @@ router.get('/', async (req, res) => {
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   const cardBody = await getCardBody(req.userId, deck, card)
-  if (cardBody && cardBody.length) {
-    res.send(cardBody[0])
-    return
-  }
-  return code.invalidRequest(res)
+  setTimeout(()=>{
+    if (cardBody && cardBody.length) {
+      res.send(cardBody[0])
+      return
+    }
+    return code.invalidRequest(res)
+  }, 1000)
 })
 router.post('/edit', async (req, res) => {
   const deck = req.body.deck

@@ -14,31 +14,65 @@ function getDefaultDeck (deck) {
   }
   return deck
 }
-exports.getCardBody = async (card, deck) => {
+exports.getCardBody = async (card, deck, visibleCards) => {
   if (!card) {
     return
   }
-  deck = getDefaultDeck(deck)
-  if (!cachedCardBodies[`${deck}:${card}`]) {
-    try {
-      let cardData = await getCardBody(deck, card)
-      const cardDataAsJSON = JSON.parse(cardData)
-      if (cardDataAsJSON) {
-        // Decompress images
-        if (cardDataAsJSON.frontHasImage) {
-          cardDataAsJSON.frontImage = decompress(cardDataAsJSON.frontImage)
-        }
-        if (cardDataAsJSON.backHasImage) {
-          cardDataAsJSON.backImage = decompress(cardDataAsJSON.backImage)
-        }
+  let cardsToFetch = [card];
+  if (visibleCards) {
+    let indexOfCard = visibleCards.findIndex(entry => {
+      return entry.id === card
+    });
+    indexesToFetch = [
+      (indexOfCard + 1) % visibleCards.length,
+      (indexOfCard + 2) % visibleCards.length,
+      (indexOfCard - 1) % visibleCards.length,
+    ]
+    for(let i = 0; i < indexesToFetch.length; i++) {
+      const index = indexesToFetch[i]
+      if(visibleCards[index]) {
+        cardsToFetch.push(visibleCards[index].id)
       }
-      cachedCardBodies[`${deck}:${card}`] = cardDataAsJSON
-    } catch (e) {
-      return
     }
   }
-  return JSON.parse(JSON.stringify(cachedCardBodies[`${deck}:${card}`]))
+  deck = getDefaultDeck(deck)
+  let firstCardBody
+  //don't wait on other fetches
+  return new Promise(async (resolve, reject) => {
+    for(let i = 0; i < cardsToFetch.length; i++) {
+      let card = cardsToFetch[i];
+      try {
+        if (!cachedCardBodies[`${deck}:${card}`]) {
+
+          let cardData = await getCardBody(deck, card)
+          const cardDataAsJSON = JSON.parse(cardData)
+          if (cardDataAsJSON) {
+            // Decompress images
+            if (cardDataAsJSON.frontHasImage) {
+              cardDataAsJSON.frontImage = decompress(cardDataAsJSON.frontImage)
+            }
+            if (cardDataAsJSON.backHasImage) {
+              cardDataAsJSON.backImage = decompress(cardDataAsJSON.backImage)
+            }
+          }
+          cachedCardBodies[`${deck}:${card}`] = cardDataAsJSON
+          if(!firstCardBody) {
+            firstCardBody = cardDataAsJSON;
+            resolve(JSON.parse(JSON.stringify(firstCardBody)))
+          }
+        } else { //No cache
+          if(!firstCardBody) {
+            firstCardBody = cachedCardBodies[`${deck}:${card}`]
+            resolve(JSON.parse(JSON.stringify(firstCardBody)))
+          }
+        }
+      } catch (e) {
+        return reject(e)
+      }
+    }
+  })
 }
+
 exports.getCardBodyForEmptyState = (newId) => {
   const emptyValue = { id: newId, isNew: true, front: '', back: '' }
   // Record we made this on the fly
