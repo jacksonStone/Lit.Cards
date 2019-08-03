@@ -24,9 +24,10 @@ exports.getCardBody = async (card, deck, visibleCards) => {
       return entry.id === card
     });
     indexesToFetch = [
-      (indexOfCard + 1) % visibleCards.length,
-      (indexOfCard + 2) % visibleCards.length,
-      (indexOfCard - 1) % visibleCards.length,
+      // (indexOfCard + 1) % visibleCards.length,
+      // (indexOfCard - 1) % visibleCards.length,
+      // (indexOfCard + 2) % visibleCards.length,
+      // (indexOfCard - 2) % visibleCards.length,
     ]
     for(let i = 0; i < indexesToFetch.length; i++) {
       const index = indexesToFetch[i]

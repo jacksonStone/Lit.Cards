@@ -116,6 +116,9 @@ function getPresentFontSize () {
 }
 
 function handleEditorTextChange (newText) {
+  if(window.lc.getData('_cardBodyLoading')) {
+    return;
+  }
   const oldCardBody = JSON.parse(JSON.stringify(_getCurrentCardBody()))
   runNextRender(() => {
     updateFontSizeIfNecessary(oldCardBody, newText)
@@ -240,17 +243,21 @@ async function updateCardBody (id, cards) {
   _flipToQuestionSide()
   const currentCardBody = window.lc.getData('cardBody.' + id)
   if (!currentCardBody) {
+    refreshEditor('loading...')
+    window.lc.setData('_cardBodyLoading', true, false)
     const cardBody = await getCardBody(id, undefined, cards)
     window.lc.setData('cardBody.' + id, cardBody)
+    window.lc.setData('_cardBodyLoading', false)
+
   }
   refreshEditor()
 }
 // Re-renders the card area
-function refreshEditor () {
+function refreshEditor (data) {
   if (hasImage()) {
     renderPreviewImageWithRawData(getImageData())
   }
-  _updateEditorData()
+  _updateEditorData(data)
 }
 function _getCurrentCardBody () {
   const id = _getCurrentCardId()
@@ -267,8 +274,8 @@ function getTextToShowForCard () {
   return cardBody.front
 }
 
-function _updateEditorData () {
-  setEditorData(getTextToShowForCard())
+function _updateEditorData (data) {
+  setEditorData(data || getTextToShowForCard())
 }
 function _getCurrentCardId () {
   return window.lc.getData('activeCardId')

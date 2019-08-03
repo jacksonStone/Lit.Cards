@@ -10,6 +10,10 @@ const spaceAction = () => {
 const newAction = () => {
   simulateKey('KeyS')
 }
+
+const cardLoading = () => {
+  return window.lc.getData('_cardBodyLoading')
+}
 const removeImageAction = () => {
   removeImage()
 }
@@ -73,7 +77,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
-                    ${(getSession().none && !tooFewCardsToDeleteOne()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
+                    ${(getSession().none && !tooFewCardsToDeleteOne() && !cardLoading()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         style="
                                box-shadow: none;
