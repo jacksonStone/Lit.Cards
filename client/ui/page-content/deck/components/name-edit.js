@@ -4,7 +4,7 @@ function getName () {
   return window.lc.getData('deck.name')
 }
 function setName (e) {
-  const value = getValueFromInput(e)
+  let value = getValueFromInput(e)
   return window.lc.setPersistent('deck.name', value)
 }
 module.exports = function () {
@@ -15,6 +15,7 @@ module.exports = function () {
     <input 
         class="usa-input" 
         id="deck-name" 
+        maxlength="45"
         name="deck-name"
         @change=${setName}
         type="text" 

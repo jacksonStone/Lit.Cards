@@ -65,9 +65,10 @@ function deckPreview (deck, sessionMapping) {
             ">${formatDate(deck.date)}</span>
   
           <div style="
-          margin-top: 40px;
+          margin-top: 20px;
           text-align: center;
           font-size: 20px;
+          overflow-wrap: break-word;
           ">${deck.name}</div>
         </div>
         <button

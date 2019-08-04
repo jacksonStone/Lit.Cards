@@ -14,7 +14,7 @@ function getName () {
 module.exports = () => {
   return html`<ul class="site-sidenav usa-sidenav">
   <li class="usa-sidenav__item" >
-    <div style="margin:10px; border-top: none; border-left: none; border-right: none;">Studying: ${getName()}</div>
+    <div style="margin:10px; border-top: none; border-left: none; border-right: none; overflow-wrap: break-word">Studying: ${getName()}</div>
   </li>
   <li class="usa-sidenav__item" >
     <a href="/site/me"><i class="far fa-arrow-alt-circle-left"></i>&nbsp;&nbsp;Decks</a>
