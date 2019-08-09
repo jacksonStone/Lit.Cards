@@ -50,14 +50,6 @@ function initLC () {
     resetErrors: () => {
       lc.setData('errors', clone(defaultErrorObject), true)
     },
-    addDataListEntry (obj, data) {
-      const objs = lc.data[obj]
-      if (!objs) {
-        lc.data[obj] = [data]
-      } else {
-        objs.push(data)
-      }
-    },
     /**
      * @param key:  can be in  form "foo.bar"
      * @param value: Current value to set the data

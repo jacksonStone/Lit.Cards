@@ -8,20 +8,20 @@ const { defaultDarkMode } = require('abstract/darkmode')
 const { fetchUser } = require('logic/user')
 const { getCardBody, getCardBodyForEmptyState } = require('logic/card-bodies')
 const { getStudySession } = require('logic/study')
-const { getDeck, handleEditorTextChange, getCardMapping, refreshEditor, getCardsForEmptyState } = require('logic/deck')
-// TODO::Consider pulling this from a URL
+const { intToChar } = require('shared/char-encoding')
+const { getDeck, handleEditorTextChange, refreshEditor, getCardsForEmptyState } = require('logic/deck')
 
 ;(async () => {
   defaultDarkMode()
   let [user, deck, studySession] = await Promise.all([fetchUser(), getDeck(), getStudySession()])
-  const cards = deck.cards ? deck.cards.split("").map((char) => ({id: char})) : [];
+  const cards = deck.cards || '';
   // For when you navigate from study to edit
-  const activeCard = getParam('card')
-  // TODO::Could do this in one pass, sever can figure out first card
-  let firstCardId = activeCard || (cards && cards.length && cards[0].id) || undefined
+  const rawParam = getParam('card')
+  const activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined;
+  let firstCardId = activeCard || (cards && cards.length && cards[0])
   let cardBody = await getCardBody(firstCardId, undefined, cards)
   if (!cards || !cardBody) {
-    const newId = window.lc.generateNewId()
+    const newId = intToChar(5000);
     firstCardId = newId
     cardBody = getCardBodyForEmptyState(newId)
     cards = getCardsForEmptyState(newId)

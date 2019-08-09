@@ -6,7 +6,7 @@ const { defaultDarkMode } = require('abstract/darkmode')
 const { runNextRender } = require('abstract/rendering-meta')
 const { fetchUser } = require('logic/user')
 const { getCardBody } = require('logic/card-bodies')
-const { getDeck, getCardMapping } = require('logic/deck')
+const { getDeck } = require('logic/deck')
 const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } = require('logic/study')
 
 ;(async () => {
@@ -14,11 +14,11 @@ const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, acc
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   const deckId = studySession.deck
   let [deck] = await Promise.all([getDeck(deckId)])
-  const cards = deck.cards ? deck.cards.split("").map((char) => ({id: char})) : [];
+  const cards = deck.cards || '';
   if (studySession) {
     studySession = accountForNewCards(studySession, cards)
   }
-  let firstCardId = (cards && cards.length && cards[studySession.currentCard || 0].id) || undefined
+  let firstCardId = (cards && cards.length && cards[studySession.currentCard || 0]) || undefined
   let sessionOrderedCards = sortCardsBySession(cards, studySession)
   let visibleCards = trimCardsToOnesAwaitingAnswers(sessionOrderedCards, studySession)
   let cardBody = await getCardBody(firstCardId, deckId, visibleCards)

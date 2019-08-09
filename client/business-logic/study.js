@@ -130,7 +130,7 @@ function updateStudyState (state) {
   index++
   const newCard = cards[(index % cards.length)]
   // TODO::Push changes to current card here to persistent store
-  window.lc.setData('activeCardId', newCard.id)
+  window.lc.setData('activeCardId', newCard)
   window.lc.setData('showingAnswer', false)
   window.lc.setData('orderedCards', newVisibleCards)
   if (!newVisibleCards.length) {
@@ -141,13 +141,13 @@ function updateStudyState (state) {
   let newCurrentCard
   const originalCardOrder = window.lc.getData('originalCardOrder')
   for (let i = 0; i < originalCardOrder.length; i++) {
-    if (originalCardOrder[i].id === newCard.id) {
+    if (originalCardOrder[i] === newCard) {
       newCurrentCard = i
       break
     }
   }
   window.lc.setPersistent('session.currentCard', newCurrentCard)
-  updateCardBody(newCard.id, undefined, cards)
+  updateCardBody(newCard, undefined, cards)
   focusOnFlipButton()
 }
 // If a card is added to a deck during the studying process
@@ -204,18 +204,13 @@ exports.getNumberWrong = () => {
 function getActiveCardIndexInStudySession () {
   const activeId = window.lc.getData('activeCardId')
   const cards = getSessionOrderedCardsFromState()
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i]
-    if (card.id === activeId) {
-      return i
-    }
-  }
+  return cards.indexOf(activeId);
 }
 function getCurrentCardIndex () {
   const currentId = window.lc.getData('activeCardId')
   const cards = window.lc.getData('orderedCards')
   for (let i = 0; i < cards.length; i++) {
-    if (cards[i].id === currentId) {
+    if (cards[i] === currentId) {
       return i
     }
   }

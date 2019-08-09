@@ -7,6 +7,7 @@ const { getCardBody } = require('./card-bodies')
 const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
 const { runNextRender } = require('abstract/rendering-meta')
 const { compress } = require('shared/compress')
+const { intToChar } = require('shared/char-encoding')
 
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
@@ -138,8 +139,8 @@ function handleEditorTextChange (newText) {
 
 function getCardsForEmptyState(newId) {
   // Record we made this on the fly
-  window.lc.setPersistent(`deck.cards`, String.fromCharCode(0))
-  return [{id: String.fromCharCode(0)}]
+  window.lc.setPersistent(`deck.cards`, newId)
+  return newId
 }
 
 
@@ -157,8 +158,8 @@ function nextCard () {
   const cards = window.lc.getData('orderedCards')
   index++
   const newCard = cards[(index % cards.length)]
-  window.lc.setData('activeCardId', newCard.id)
-  updateCardBody(newCard.id, cards)
+  window.lc.setData('activeCardId', newCard)
+  updateCardBody(newCard, cards)
 }
 
 function removeCard () {
@@ -171,8 +172,8 @@ function removeCard () {
   window.lc.setDeleted('cardBody', id)
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
-  window.lc.setData('activeCardId', newCard.id)
-  updateCardBody(newCard.id, cards)
+  window.lc.setData('activeCardId', newCard)
+  updateCardBody(newCard, cards)
 }
 
 function previousCard () {
@@ -180,8 +181,8 @@ function previousCard () {
   const cards = window.lc.getData('orderedCards')
   index--
   const newCard = cards[((index + cards.length) % cards.length)]
-  window.lc.setData('activeCardId', newCard.id)
-  updateCardBody(newCard.id, cards)
+  window.lc.setData('activeCardId', newCard)
+  updateCardBody(newCard, cards)
 }
 
 function flipCard () {
@@ -220,25 +221,17 @@ function hasImage () {
 function showingAnswer () {
   return window.lc.getData('showingAnswer') || false
 }
-function getCardMapping (cards) {
-  const mapping = {}
-  for (let i = 0; i < cards.length; i++) {
-    mapping[cards[i].id] = cards[i]
-  }
-  return mapping
-}
 
 function addNewCard () {
-  const newId = window.lc.generateNewId()
-  // Cardbodies handle card creation/deletion
-  // const changeKeyCard = `card.${newId}`
-  const card = { id: newId, isNew: true }
-  // window.lc.setPersistent(changeKeyCard, card)
+  const deck = window.lc.getData('deck')
+  //Avoid conflicts
+  const nextId = (deck.nextId || 0) + 5000
+  const newId = intToChar(nextId);
 
   const changeKeyCardBody = `cardBody.${newId}`
   const cardBody = { id: newId, isNew: true, front: '', back: '' }
   window.lc.setPersistent(changeKeyCardBody, cardBody)
-  window.lc.addDataListEntry('orderedCards', card)
+  window.lc.setData('orderedCards', (deck.cards || '') + newId)
   window.lc.setData('activeCardId', newId)
   _flipToQuestionSide()
   refreshEditor()
@@ -293,7 +286,7 @@ function _getCurrentCardIndex () {
   const cards = window.lc.getData('orderedCards')
   let currentIndex
   for (let i = 0; i < cards.length; i++) {
-    if (cards[i].id === currentId) {
+    if (cards[i] === currentId) {
       currentIndex = i
       break
     }
@@ -317,7 +310,6 @@ module.exports = {
   handleImageUpload,
   hasImage,
   getImageData,
-  getCardMapping,
   removeCard,
   refreshEditor,
   getTextToShowForCard,

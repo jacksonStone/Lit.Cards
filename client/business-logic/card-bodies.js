@@ -20,19 +20,17 @@ exports.getCardBody = async (card, deck, visibleCards) => {
   }
   let cardsToFetch = [card];
   if (visibleCards) {
-    let indexOfCard = visibleCards.findIndex(entry => {
-      return entry.id === card
-    });
+    let indexOfCard = visibleCards.indexOf(card);
     indexesToFetch = [
-      // (indexOfCard + 1) % visibleCards.length,
-      // (indexOfCard - 1) % visibleCards.length,
-      // (indexOfCard + 2) % visibleCards.length,
-      // (indexOfCard - 2) % visibleCards.length,
+      (indexOfCard + 1) % visibleCards.length,
+      (indexOfCard - 1) % visibleCards.length,
+      (indexOfCard + 2) % visibleCards.length,
+      (indexOfCard - 2) % visibleCards.length,
     ]
     for(let i = 0; i < indexesToFetch.length; i++) {
       const index = indexesToFetch[i]
       if(visibleCards[index]) {
-        cardsToFetch.push(visibleCards[index].id)
+        cardsToFetch.push(visibleCards[index])
       }
     }
   }

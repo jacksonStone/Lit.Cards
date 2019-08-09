@@ -5,7 +5,7 @@ module.exports = (currentCardId, cards) => {
   if (!cards) return
 
   // Humans are 1-based
-  const index = cards.findIndex(card => currentCardId === card.id) + 1
+  const index = cards.indexOf(currentCardId) + 1
 
   return html`<div
 style="text-align: center;">
