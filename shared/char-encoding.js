@@ -5,6 +5,9 @@ function listToStr (list) {
   }
   return String.fromCharCode(...list)
 }
+function intToChar(int) {
+  return String.fromCharCode(int)
+}
 // About 1/6th the speed as the above, but
 // can handle any size list AFAIK
 function _listToStr2 (list) {
@@ -24,5 +27,6 @@ function strToList (str) {
 
 module.exports = {
   listToStr,
-  strToList
+  strToList,
+  intToChar
 }

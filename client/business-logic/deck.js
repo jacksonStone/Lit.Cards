@@ -135,6 +135,14 @@ function handleEditorTextChange (newText) {
   setPersistentForCardBody('front', newText)
 }
 
+
+function getCardsForEmptyState(newId) {
+  // Record we made this on the fly
+  window.lc.setPersistent(`deck.cards`, String.fromCharCode(0))
+  return [{id: String.fromCharCode(0)}]
+}
+
+
 function getImageData () {
   if (!hasImage()) return ''
   const cardBody = _getCurrentCardBody()
@@ -314,5 +322,6 @@ module.exports = {
   refreshEditor,
   getTextToShowForCard,
   handleEditorTextChange,
-  getPresentFontSize
+  getPresentFontSize,
+  getCardsForEmptyState
 }

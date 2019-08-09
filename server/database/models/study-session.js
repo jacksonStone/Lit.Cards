@@ -47,8 +47,9 @@ async function createStudySession (userId, deckId, startingState) {
       defaultState.push('_')
     }
     studyState = defaultState.join('')
-    currentCard = Math.floor(Math.random() * deck.cardCount)
-    ordering = getRandomOrderingStr(deck.cardCount)
+    const count = deck.cards ? deck.cards.length : 0
+    currentCard = Math.floor(Math.random() * count)
+    ordering = getRandomOrderingStr(count)
   } else {
     studyState = startingState.studyState
     currentCard = getStartingCardFromSkips(startingState.ordering, studyState)

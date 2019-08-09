@@ -3,9 +3,9 @@ const router = express.Router()
 const { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
 const code = require('../../node-abstractions/response-codes')
 
-router.get('/', async (req, res) => {
-  const deck = req.query.deck
-  const card = req.query.card
+router.post('/', async (req, res) => {
+  const deck = req.body.deck
+  const card = req.body.card
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   const cardBody = await getCardBody(req.userId, deck, card)
@@ -38,7 +38,7 @@ router.post('/add', async (req, res) => {
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   const newId = await addCardBody(req.userId, deck, changes)
-  return res.send(newId)
+  res.send(newId)
 })
 router.post('/delete', async (req, res) => {
   const deck = req.body.deck

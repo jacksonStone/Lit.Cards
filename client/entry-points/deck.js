@@ -6,15 +6,15 @@ const { runNextRender } = require('abstract/rendering-meta')
 const { getParam } = require('abstract/url')
 const { defaultDarkMode } = require('abstract/darkmode')
 const { fetchUser } = require('logic/user')
-const { getCards, getCardsForEmptyState } = require('logic/cards')
 const { getCardBody, getCardBodyForEmptyState } = require('logic/card-bodies')
 const { getStudySession } = require('logic/study')
-const { getDeck, handleEditorTextChange, getCardMapping, refreshEditor } = require('logic/deck')
+const { getDeck, handleEditorTextChange, getCardMapping, refreshEditor, getCardsForEmptyState } = require('logic/deck')
 // TODO::Consider pulling this from a URL
 
 ;(async () => {
   defaultDarkMode()
-  let [user, cards, deck, studySession] = await Promise.all([fetchUser(), getCards(), getDeck(), getStudySession()])
+  let [user, deck, studySession] = await Promise.all([fetchUser(), getDeck(), getStudySession()])
+  const cards = deck.cards ? deck.cards.split("").map((char) => ({id: char})) : [];
   // For when you navigate from study to edit
   const activeCard = getParam('card')
   // TODO::Could do this in one pass, sever can figure out first card
@@ -32,7 +32,6 @@ const { getDeck, handleEditorTextChange, getCardMapping, refreshEditor } = requi
   window.lc.setData('user', user)
   window.lc.setData('session', studySession)
   window.lc.setData('showingAnswer', false)
-  window.lc.setData('card', getCardMapping(cards))
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
   runNextRender(() => {
     initEditor(cardBody.front, handleEditorTextChange)

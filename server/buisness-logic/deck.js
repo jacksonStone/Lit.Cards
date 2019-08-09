@@ -1,6 +1,5 @@
 const { Deck } = require('../database')
 const { deleteSessionByDeck } = require('./study')
-const { deleteAllCardsFromDeck } = require('./card')
 const { deleteAllCardBodies } = require('./card-body')
 
 async function addDeck (userId, name) {
@@ -10,7 +9,6 @@ async function addDeck (userId, name) {
 async function deleteDeck (userId, id) {
   await deleteSessionByDeck(userId, id)
   await deleteAllCardBodies(userId, id)
-  await deleteAllCardsFromDeck(userId, id)
   return Deck.deleteDeck(userId, id)
 }
 async function renameDeck (userId, id, name) {

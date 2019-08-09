@@ -5,7 +5,6 @@ const { initKeyCommands } = require('../ui/page-content/study-session/key-comman
 const { defaultDarkMode } = require('abstract/darkmode')
 const { runNextRender } = require('abstract/rendering-meta')
 const { fetchUser } = require('logic/user')
-const { getCards } = require('logic/cards')
 const { getCardBody } = require('logic/card-bodies')
 const { getDeck, getCardMapping } = require('logic/deck')
 const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } = require('logic/study')
@@ -14,7 +13,8 @@ const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, acc
   defaultDarkMode()
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   const deckId = studySession.deck
-  let [deck, cards] = await Promise.all([getDeck(deckId), getCards(deckId)])
+  let [deck] = await Promise.all([getDeck(deckId)])
+  const cards = deck.cards ? deck.cards.split("").map((char) => ({id: char})) : [];
   if (studySession) {
     studySession = accountForNewCards(studySession, cards)
   }
@@ -32,7 +32,6 @@ const { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, acc
   window.lc.setData('activeCardId', firstCardId)
   window.lc.setData('user', user)
   window.lc.setData('showingAnswer', false)
-  window.lc.setData('card', getCardMapping(cards))
   window.lc.setData('originalCardOrder', cards)
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
   runNextRender(initKeyCommands)
