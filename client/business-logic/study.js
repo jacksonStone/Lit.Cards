@@ -4,7 +4,7 @@ const { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
 const { strToList } = require('shared/char-encoding')
 const { updateCardBody, flipCard } = require('./deck')
 const { setFocusTo } = require('abstract/focus')
-const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessions, deleteStudySession, editStudySessionState } = require('../routes/api/study')
+const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessionsAndBorrowedDecks, deleteStudySession, editStudySessionState } = require('../routes/api/study')
 // const { reject } = require('utils')
 const NOT_ANSWERED = '_'
 const RIGHT = 'R'
@@ -82,8 +82,8 @@ const deleteCurrentSessionAndGoHome = exports.deleteCurrentSession = async () =>
   await deleteStudySession(session.id)
   home()
 }
-exports.getStudySessions = async () => {
-  return JSON.parse(await getStudySessions())
+exports.getStudySessionsAndBorrowedDecks = async () => {
+  return JSON.parse(await getStudySessionsAndBorrowedDecks())
 }
 const createStudySessionAndNavigate = exports.createStudySession = async (deck, startingState) => {
   const newSession = JSON.parse(await createStudySession(deck, startingState))

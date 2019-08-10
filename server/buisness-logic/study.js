@@ -1,4 +1,4 @@
-const { StudySession } = require('../database')
+const { StudySession, Deck } = require('../database')
 async function createSession (userId, deck, startingState) {
   return StudySession.createStudySession(userId, deck, startingState)
 }
@@ -14,8 +14,18 @@ async function getSession (userId, id) {
 async function getSessionByDeck (userId, deckId) {
   return StudySession.getStudySessionByDeckId(userId, deckId)
 }
-async function getSessions (userId) {
-  return StudySession.getStudySessions(userId)
+async function getSessionsAndBorrowedDecks (userId) {
+  const sessions = await StudySession.getStudySessions(userId)
+  if(!sessions || !sessions.length) {
+    return {sessions: [], borrowedDecks: []};
+  }
+  const decksToFetch = sessions.filter(session => session.borrowed).map(session => session.deck);
+  if(!decksToFetch || !decksToFetch.length) {
+    return {sessions, borrowedDecks: []};
+  }
+
+  const borrowedDecks = await Deck.getByIdsWithCondition(decksToFetch, {public: true});
+  return {sessions, borrowedDecks};
 }
 async function editSessionState (userId, id, sessionChanges) {
   const safeChanges = {}
@@ -38,5 +48,5 @@ module.exports = {
   getSessionByDeck,
   deleteSessionByDeck,
   getSession,
-  getSessions
+  getSessionsAndBorrowedDecks
 }

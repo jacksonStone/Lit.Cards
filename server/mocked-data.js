@@ -23,7 +23,8 @@ let fakeData = {
   }],
   studySession: [
     // Current card is the index of the card in the initial ordered deck
-    { userId: 'jackson@someemail.com', studyState: '___', currentCard: 0, ordering: listToStr([2, 1, 0]), deck: 'foo', id: 'fee' }
+    { userId: 'jackson@someemail.com', studyState: '___', currentCard: 0, ordering: listToStr([2, 1, 0]), deck: 'foo', id: 'fee' },
+    { userId: 'jackson@someemail.com', studyState: '___', currentCard: 0, ordering: listToStr([2, 1, 3, 0]), deck: 'asd', id: 'gee', borrowed: true }
   ],
   cardBody: [
     fakeCardBody,
@@ -42,7 +43,7 @@ let fakeData = {
     { userId: 'jackson@someemail.com', name: 'THIRD study session',  date: Date.now(), id: 'fii' },
     { userId: 'jackson@someemail.com', name: 'Fourth study session', date: Date.now(), id: 'fum' },
 
-    { userId: 'jackson@someemail2.com', name: 'Publically Available deck', cards: listToStr([0,1,2,3]), nextId:4, date: Date.now(), id: 'asd' }
+    { userId: 'jackson@someemail2.com', name: 'Publically Available deck', cards: listToStr([0,1,2,3]), nextId:4, date: Date.now(), id: 'asd', public: true }
   ]
 }
 

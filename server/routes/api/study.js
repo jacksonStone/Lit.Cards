@@ -6,7 +6,7 @@ const {
   editSessionState,
   getSession,
   getSessionByDeck,
-  getSessions
+  getSessionsAndBorrowedDecks
 } = require('../../buisness-logic/study')
 const code = require('../../node-abstractions/response-codes')
 
@@ -32,8 +32,8 @@ router.post('/edit', async (req, res) => {
 
 router.get('/me', async (req, res) => {
   if (!req.userId) return code.unauthorized(res)
-  const sessions = await getSessions(req.userId)
-  res.send(sessions)
+  const sessionsAndDecks = await getSessionsAndBorrowedDecks(req.userId)
+  res.send(sessionsAndDecks)
 })
 router.get('/:id', async (req, res) => {
   if (!req.userId || !req.params.id) return code.unauthorized(res)

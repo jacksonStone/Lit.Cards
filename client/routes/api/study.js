@@ -1,6 +1,6 @@
 const { api } = require('./api-request')
 
-exports.getStudySessions = () => {
+exports.getStudySessionsAndBorrowedDecks = () => {
   return api('study/me')
 }
 exports.getStudySession = (id) => {

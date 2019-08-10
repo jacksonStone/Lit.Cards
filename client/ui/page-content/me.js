@@ -40,14 +40,61 @@ function getStudyBtn (deck, sessionMapping) {
                 Continue Studying
             </button>`
 }
-function deckPreview (deck, sessionMapping) {
+function deckPreview (deck, sessionMapping, forSession) {
   if (deck.addDeck) {
     return addDeckCard()
+  }
+  const deckCount = deck.cards && deck.cards.length || 0
+  if(deck.borrowed) {
+    return html`
+    <div class="mobile-lg:grid-col-4">
+           <div style="position:relative">
+           ${makeBackgroundCards(0, 0, deckCount)}
+           
+        <div class=" deck-card-outline"
+        style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              "
+        >
+            <span style="
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+            ">${formatDate(deck.date)}</span>
+  
+          <div style="
+          margin-top: 20px;
+          text-align: center;
+          font-size: 20px;
+          overflow-wrap: break-word;
+          ">${deck.name}</div>
+        </div>
+            <div 
+            style="position: absolute;
+              top: 120px;
+              left: 0;
+              padding: 10px; font-size: 10px"
+            >Author: <br/>${deck.userId}</div>
+            <div style="position: absolute; top:  175px; right: 60px;">
+                ${getStudyBtn(deck, sessionMapping)}
+            </div>
+            
+        </div>
+        <div class="spacing" style="text-align: right;">
+    </div>
+                
+            
+                
+        </div>
+    `
   }
   return html`
     <div class="mobile-lg:grid-col-4">
            <div style="position:relative">
-           ${makeBackgroundCards(0, 0, deck.cardCount)}
+           ${makeBackgroundCards(0, 0, deckCount)}
            
         <div class=" deck-card-outline"
         style="
@@ -71,7 +118,8 @@ function deckPreview (deck, sessionMapping) {
           overflow-wrap: break-word;
           ">${deck.name}</div>
         </div>
-        <button
+        ${forSession ? html``: html`
+            <button
             @click=${() => { deleteDeckBtn(deck.id) }} 
             class="usa-button usa-button--unstyled remove-button" >
                 <i class="far fa-times-circle" aria-hidden="true"></i>
@@ -84,10 +132,10 @@ function deckPreview (deck, sessionMapping) {
               padding: 10px;"
             class="usa-button usa-button--unstyled" @click=${() => { navigateToDeckPage(deck.id) }}
             >Edit</button>
-            <div style="position: absolute; top:  175px; right: 60px;">
-                ${getStudyBtn(deck, sessionMapping)}
-            </div>
-            
+        `}
+        <div style="position: absolute; top:  175px; right: 60px;">
+          ${getStudyBtn(deck, sessionMapping)}
+        </div>
         </div>
         <div class="spacing" style="text-align: right;">
 </div>
@@ -135,8 +183,8 @@ function makeBackgroundCards (startingTop, startingLeft, cardCount) {
   return cards
 }
 
-function deckRow (decks, studySessionsByDeck) {
-  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck) })}</div>`
+function deckRow (decks, studySessionsByDeck, session) {
+  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck, session) })}</div>`
 }
 
 function deckRows (allDecks, studySessionsByDeck) {
@@ -147,10 +195,28 @@ function deckRows (allDecks, studySessionsByDeck) {
   }
   return rows
 }
+function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
+  let studySessions = decks.filter(deck => !!studySessionsByDeck[deck.id]);
+  studySessions = studySessions.concat(borrowedDecks.filter(deck => {
+      const hasSession = !!studySessionsByDeck[deck.id]
+      if (hasSession) {
+        deck.borrowed = true;
+        return hasSession
+      }
+      return false;
+  }));
+  const rows = []
+  for (let i = 0; i < studySessions.length; i = i + numPerRow) {
+    rows.push(deckRow(studySessions.slice(i, i + numPerRow), studySessionsByDeck, true))
+  }
+  return rows
+}
 
 module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
+        <h1>Active Study Sessions</h1>
+        ${data.studySessions && studySessionRows(data.decks, data.borrowedDecks, data.studySessionsByDeck)}
         <h1>Your Decks</h1>
         ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
     </div> 

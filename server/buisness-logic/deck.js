@@ -14,7 +14,6 @@ async function deleteDeck (userId, id) {
 async function renameDeck (userId, id, name) {
   return Deck.renameDeck(userId, id, name)
 }
-
 async function getDecks (userId) {
   const decks = await Deck.getDecks(userId)
   for (let deck of decks) {

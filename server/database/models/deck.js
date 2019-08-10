@@ -20,6 +20,17 @@ async function renameDeck (userId, deck, name) {
 async function editDeck ({ userId, id }, changes) {
   await db.editRecord(tableName, { userId, id }, changes)
 }
+//TODO:: Consider making this an Or join
+async function getByIdsWithCondition(ids, condition) {
+  const resultingQueries = await Promise.all(ids.map(id => {
+    return db.getRecord(tableName, {id, ...condition}, 1)
+  }))
+  const resultsWithValues = resultingQueries.filter(result => (result && result.length));
+  //Flatten queries
+  return resultsWithValues.map(result => {
+    return result[0];
+  })
+}
 async function deleteCard (userId, deck, card) {
   const deckRecord = await getDeck(userId, deck)
   if (!deckRecord) {
@@ -59,5 +70,6 @@ module.exports = {
   deleteCard,
   renameDeck,
   editDeck,
+  getByIdsWithCondition,
   createDeck
 }
