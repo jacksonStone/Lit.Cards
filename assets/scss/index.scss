@@ -240,8 +240,14 @@ aside .usa-sidenav {
   border: 2px solid rgba(0,0,0,.1);
   background: white;
 }
+.fancy-line {
+  border-top: 1px solid #d5d8df;
+}
 .darkmode {
   color: #555;
+  .fancy-line {
+    border-top: 1px solid #555;
+  }
   #overlay {
     background-color: rgba(0,0,0,.8);
   }

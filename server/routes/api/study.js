@@ -35,6 +35,8 @@ router.get('/me', async (req, res) => {
   const sessionsAndDecks = await getSessionsAndBorrowedDecks(req.userId)
   res.send(sessionsAndDecks)
 })
+
+// TODO:: Make a local session for folks to study
 router.get('/:id', async (req, res) => {
   if (!req.userId || !req.params.id) return code.unauthorized(res)
   const session = await getSession(req.userId, req.params.id)

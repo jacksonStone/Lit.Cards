@@ -11,6 +11,10 @@ async function getCardBody (userId, deck, card) {
   return CardBody.getCardBody(userId, deck, card)
 }
 async function deleteCardBody (userId, deck, card) {
+  const cardBody = await getCardBody(userId, deck, card)
+  if (cardBody && cardBody.length && cardBody[0].public) {
+    return
+  }
   // TODO:: Wrap this in a transaction or something
   await Deck.deleteCard(userId, deck, card)
   return CardBody.deleteCardBody(userId, deck, card)

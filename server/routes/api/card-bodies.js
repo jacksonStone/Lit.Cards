@@ -3,11 +3,11 @@ const router = express.Router()
 const { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
 const code = require('../../node-abstractions/response-codes')
 
+//PUBLIC ROUTE
 router.post('/', async (req, res) => {
   const deck = req.body.deck
   const card = req.body.card
   if (!deck) return code.invalidRequest(res)
-  if (!req.userId) return code.unauthorized(res)
   const cardBody = await getCardBody(req.userId, deck, card)
   if (cardBody && cardBody.length) {
     res.send(cardBody[0])
@@ -19,7 +19,15 @@ router.post('/edit', async (req, res) => {
   const deck = req.body.deck
   const card = req.body.card
   const changes = req.body.changes
-  delete changes._changeId
+  delete changes._changeId;
+  //They cannot update public this way
+  delete changes.public;
+  //They cannot alter the deck a card is associated with
+  delete changes.deck;
+  //They cannot alter the id of a card
+  delete changes.id;
+  //They cannot alter the user of a card
+  delete changes.userId;
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   const cardBody = await getCardBody(req.userId, deck, card)

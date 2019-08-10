@@ -7,16 +7,21 @@ async function getDecks (userId) {
   const results = await db.getRecord(tableName, { userId })
   return results || []
 }
-async function getDeck (userId, deck) {
-  const results = await db.getRecord(tableName, { userId, id: deck })
+async function getDeck (userId, deck, requireUserIdMatch = false) {
+  const query = { id: deck };
+  if(requireUserIdMatch) {
+    query.userId = userId;
+  }
+  const results = await db.getRecord(tableName, query)
   if (results && results.length) {
-    return results[0]
+    const firstResult = results[0];
+    if (firstResult.userId === userId || firstResult.public) {
+      return firstResult
+    }
   }
   return { none: true }
 }
-async function renameDeck (userId, deck, name) {
-  return db.editRecord(tableName, { userId, id: deck }, { name })
-}
+
 async function editDeck ({ userId, id }, changes) {
   await db.editRecord(tableName, { userId, id }, changes)
 }
@@ -68,7 +73,6 @@ module.exports = {
   getDeck,
   deleteDeck,
   deleteCard,
-  renameDeck,
   editDeck,
   getByIdsWithCondition,
   createDeck

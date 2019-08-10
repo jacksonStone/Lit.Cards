@@ -74,9 +74,9 @@ function deckPreview (deck, sessionMapping, forSession) {
         </div>
             <div 
             style="position: absolute;
-              top: 120px;
+              top: 110px;
               left: 0;
-              padding: 10px; font-size: 10px"
+              padding: 10px; font-size: 14px"
             >Author: <br/>${deck.userId}</div>
             <div style="position: absolute; top:  175px; right: 60px;">
                 ${getStudyBtn(deck, sessionMapping)}
@@ -118,14 +118,14 @@ function deckPreview (deck, sessionMapping, forSession) {
           overflow-wrap: break-word;
           ">${deck.name}</div>
         </div>
-        ${forSession ? html``: html`
+        ${(forSession || deck.public) ? ((deck.public ) ? html`<div class="remove-button">Public deck</div>` : html``): html`
             <button
-            @click=${() => { deleteDeckBtn(deck.id) }} 
+            @click=${() => { deleteDeckBtn(deck.id) }}
             class="usa-button usa-button--unstyled remove-button" >
                 <i class="far fa-times-circle" aria-hidden="true"></i>
                 <span style="display:none;">Remove this deck</span>
             </button>
-            <button 
+            <button
             style="position: absolute;
               top: 125px;
               left: 5px;
@@ -215,16 +215,15 @@ function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
 module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
-        <h1>Active Study Sessions</h1>
+        ${(data.studySessions && data.studySessions.length) ? html`<h1>Active Study Sessions</h1>
         ${data.studySessions && studySessionRows(data.decks, data.borrowedDecks, data.studySessionsByDeck)}
+         <div class="fancy-line" style="margin-top:80px"></div>`: html``}
         <h1>Your Decks</h1>
         ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
     </div> 
     ${darkmodeCheckbox()}
-    
 `
   /**
-   * <div class="fancy-line" style="border-top: 1px solid #d5d8df; margin-top:80px"></div>
    <h1>Others Decks</h1>
    ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
    */

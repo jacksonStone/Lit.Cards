@@ -32,10 +32,10 @@ let fakeData = {
     { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 3', back: 'This is the back of card 3', id: intToChar(2) },
     { userId: 'jackson@someemail.com', deck: 'foo', front: 'This is the front of card 4', back: 'This is the back of card 4', id: intToChar(3) },
 
-    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 2', back: 'This is the back of card 2', id: intToChar(0) },
-    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 3', back: 'This is the back of card 3', id: intToChar(1) },
-    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 4', back: 'This is the back of card 4', id: intToChar(2) },
-    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 1', back: 'This is the back of card 1', id: intToChar(3) }
+    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 2 - Public!', back: 'This is the back of card 2 - Public!', id: intToChar(0), public: true },
+    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 3 - Public!', back: 'This is the back of card 3 - Public!', id: intToChar(1), public: true },
+    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 4 - Public!', back: 'This is the back of card 4 - Public!', id: intToChar(2), public: true },
+    { userId: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 1 - Public!', back: 'This is the back of card 1 - Public!', id: intToChar(3), public: true }
   ],
   deck: [
     { userId: 'jackson@someemail.com', name: 'This is my deck about biology - for another biology class', date: Date.now(), cards: listToStr([0,1,2,3]), nextId:4, id: 'foo' },

@@ -1,6 +1,6 @@
 const { deck: deckPage } = require('../routes/navigation/pages')
 const { getParam } = require('abstract/url')
-const { getDeck, createDeck, deleteDeck, renameDeck } = require('../routes/api/decks')
+const { getDeck, createDeck, deleteDeck, renameDeck, makePublic } = require('../routes/api/decks')
 const { reject } = require('utils')
 const { setEditorData, getFontSize, childrenHaveTooMuchSpace } = require('abstract/editor')
 const { getCardBody } = require('./card-bodies')
@@ -11,6 +11,14 @@ const { intToChar } = require('shared/char-encoding')
 
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
+}
+
+async function makeDeckPublic (deckId) {
+  deckId = deckId || getParam('deck')
+  if (confirm('Once made public you will not be able to delete the deck or the cards, though you can still add and edit cards.')) {
+    window.lc.setData(`deck.public`, true);
+    await makePublic(deckId)
+  }
 }
 const getDeckLogic = async (deckId) => {
   deckId = deckId || getParam('deck')
@@ -165,13 +173,18 @@ function nextCard () {
 function removeCard () {
   let index = _getCurrentCardIndex()
   let id = _getCurrentCardId()
-  const cards = window.lc.getData('orderedCards')
-  cards.splice(index, 1)
+  let cards = window.lc.getData('orderedCards')
+  cards = cards.slice(0, index).concat(cards.slice(index + 1))
   // Card bodies handle "card" creation/deletion
   // window.lc.setDeleted('card', id)
+  window.lc.setData('deck.cards', cards);
+  window.lc.setData('orderedCards', cards);
   window.lc.setDeleted('cardBody', id)
   index--
-  const newCard = cards[((index + cards.length) % cards.length)]
+  if(index === -1) {
+    index = 0
+  }
+  const newCard = cards[index]
   window.lc.setData('activeCardId', newCard)
   updateCardBody(newCard, cards)
 }
@@ -300,6 +313,7 @@ module.exports = {
   updateDeckName: updateDeckNameLogic,
   deleteDeck: deleteDeckLogic,
   createDeck: createDeckLogic,
+  makeDeckPublic,
   removeImage,
   pickImage,
   flipCard,

@@ -17,6 +17,10 @@ const cardLoading = () => {
 const removeImageAction = () => {
   removeImage()
 }
+const deckIsPublic = () => {
+  const deck = window.lc.getData('deck');
+  return deck && deck.public;
+}
 //TODO::Move to one place
 function isMac () {
   return window.navigator.platform.indexOf('Mac') !== -1
@@ -44,7 +48,7 @@ function tooFewCardsToDeleteOne () {
 }
 function alertCantRemove () {
   // maybedo::Improve this
-  window.alert('You cannot delete any cards while they are being studied or if it\'s the last card')
+  window.alert('You cannot delete any cards while they are being studied, if it\'s the last card, or if the deck has been made public')
 }
 
 module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
@@ -77,7 +81,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:10px">
                     <div class="grid-col-3" style="text-align: left">
-                    ${(getSession().none && !tooFewCardsToDeleteOne() && !cardLoading()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
+                    ${(getSession().none && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         style="
                                box-shadow: none;
