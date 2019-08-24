@@ -1,27 +1,33 @@
-letdb = require('../external-connections/fake-database-connector')
-lettableName = 'studyHistory'
-let_ = require('lodash')
-let{ userExists } = require('./user')
+let db = require('../external-connections/fake-database-connector')
+let tableName = 'studyHistory'
+let _ = require('lodash')
+let { userExists } = require('./user')
 
 async function getStudyHistory (userId) {
-  letresults = await db.getRecord(tableName, { userId })
-  console.log(results)
+  let results = await db.getRecord(tableName, { userId })
   if(!results || !results.length) {
     return { userId, studied: JSON.stringify([]) }
   }
   return results[0];
 }
 
+async function editStudyHistory(studyHistory, history) {
+  return db.editRecord(tableName, { userId: studyHistory.userId }, studyHistory);
+}
+
 async function upsertStudyHistory(studyHistory, history) {
+  const studyHistoryRecords = await db.getRecord(tableName, { userId: studyHistory.userId })
+
   //If we have a length of one, was a new array that had first item appended
-  if(history.length === 1) {
+  if(studyHistoryRecords.length === 0) {
     await db.setRecord(tableName, studyHistory);
   } else {
-    await db.editRecord(tableName, studyHistory.userId, studyHistory);
+    await editStudyHistory(studyHistory, history)
   }
 }
 
 module.exports = {
   getStudyHistory,
-  upsertStudyHistory
+  upsertStudyHistory,
+  editStudyHistory
 }

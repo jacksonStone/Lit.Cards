@@ -44,6 +44,9 @@ let fakeData = {
     { userId: 'jackson@someemail.com', name: 'Fourth study session', date: Date.now(), id: 'fum' },
 
     { userId: 'jackson@someemail2.com', name: 'Publically Available deck', cards: listToStr([0,1,2,3]), nextId:4, date: Date.now(), id: 'asd', public: true }
+  ],
+  studyHistory: [
+    // { userId: 'jackson@someemail.com', studied: JSON.stringify(['foo', 'asd']) }
   ]
 }
 

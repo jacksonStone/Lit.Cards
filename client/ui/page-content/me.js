@@ -195,6 +195,14 @@ function deckRows (allDecks, studySessionsByDeck) {
   }
   return rows
 }
+function studyHistoryRows (allDecks, studySessionsByDeck) {
+  allDecks = [...allDecks]
+  const rows = []
+  for (let i = 0; i < allDecks.length; i = i + numPerRow) {
+    rows.push(deckRow(allDecks.slice(i, i + numPerRow), studySessionsByDeck))
+  }
+  return rows
+}
 function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
   let studySessions = decks.filter(deck => !!studySessionsByDeck[deck.id]);
   studySessions = studySessions.concat(borrowedDecks.filter(deck => {
@@ -218,9 +226,16 @@ module.exports = (data = {}) => {
         ${(data.studySessions && data.studySessions.length) ? html`<h1>Active Study Sessions</h1>
         ${data.studySessions && studySessionRows(data.decks, data.borrowedDecks, data.studySessionsByDeck)}
          <div class="fancy-line" style="margin-top:80px"></div>`: html``}
+        
         <h1>Your Decks</h1>
         ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
-    </div> 
+        
+        ${(data.studyHistory && data.studyHistory.length) ? html`
+        <div class="fancy-line" style="margin-top:80px"></div>
+        <h1>Recently Studied</h1> 
+        ${studyHistoryRows(data.studyHistory, {})}` : html``}
+        
+     </div> 
     ${darkmodeCheckbox()}
 `
   /**

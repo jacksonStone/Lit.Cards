@@ -1,4 +1,4 @@
-let{ getStudyhistory } = require('../routes/api/study-history')
+let { getStudyhistory } = require('../routes/api/study-history')
 
 async function fetchStudyHistory () {
   let deckHistory = await getStudyhistory()

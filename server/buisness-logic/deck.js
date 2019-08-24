@@ -34,7 +34,6 @@ async function getDeck (userId, deckId) {
 async function makeDeckPublic (userId, deckId) {
   const deck = Deck.getDeck(userId, deckId, true);
   if (deck.none) {
-    console.log('None found')
     return;
   }
   await Promise.all([

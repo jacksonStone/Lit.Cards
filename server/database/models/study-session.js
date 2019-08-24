@@ -35,8 +35,6 @@ async function createStudySession (userId, deckId, startingState) {
     // Person already has a session for that deck
     return
   }
-  const currentUser = await userExists(userId)
-  if (!currentUser) return
 
   let currentCard
   let studyState
@@ -55,10 +53,14 @@ async function createStudySession (userId, deckId, startingState) {
     currentCard = getStartingCardFromSkips(startingState.ordering, studyState)
     ordering = startingState.ordering
   }
-
   const id = generateId()
   const dateMade = Date.now()
-  return db.setRecord(tableName, { userId, currentCard, ordering, deck: deckId, id, date: dateMade, studyState })
+  const newStudySession = { userId, currentCard, ordering, deck: deckId, id, date: dateMade, studyState }
+  if(deck.userId !== userId) {
+    // So that we know to fetch these when loading their "me" page
+    newStudySession.borrowed = true;
+  }
+  return db.setRecord(tableName, newStudySession)
 }
 
 function getStartingCardFromSkips (ordering, studyState) {

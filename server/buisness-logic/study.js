@@ -1,8 +1,12 @@
 const { StudySession, Deck } = require('../database')
+const { pushStudyHistory, removeFromStudyHistory } = require('./study-history')
 async function createSession (userId, deck, startingState) {
+  await removeFromStudyHistory(userId, deck);
   return StudySession.createStudySession(userId, deck, startingState)
 }
 async function deleteSession (userId, id) {
+  let session = await getSession(userId, id);
+  await pushStudyHistory(userId, session.deck);
   return StudySession.deleteStudySession(userId, id)
 }
 async function deleteSessionByDeck (userId, deckId) {
