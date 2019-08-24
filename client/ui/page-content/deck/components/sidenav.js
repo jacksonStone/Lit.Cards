@@ -32,6 +32,7 @@ function copySharableLink () {
   textArea.select()
   document.execCommand("copy");
   textArea.remove();
+  alert('Copied sharable link!');
 }
 module.exports = () => {
   return html`<ul class="site-sidenav usa-sidenav">
