@@ -32,14 +32,14 @@ async function getDeck (userId, deckId) {
 }
 
 async function makeDeckPublic (userId, deckId) {
-  let deck = Deck.getDeck(userId, deckId, true);
+  let deck = Deck.getDeck(userId, deckId, true)
   if (deck.none) {
-    return;
+    return
   }
   await Promise.all([
     Deck.editDeck({ userId, id: deckId }, { public: true }),
     CardBody.editCardBodies(userId, deckId, { public: true })
-  ]);
+  ])
 }
 
 module.exports = {

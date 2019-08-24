@@ -204,7 +204,7 @@ exports.getNumberWrong = () => {
 function getActiveCardIndexInStudySession () {
   let activeId = window.lc.getData('activeCardId')
   let cards = getSessionOrderedCardsFromState()
-  return cards.indexOf(activeId);
+  return cards.indexOf(activeId)
 }
 function getCurrentCardIndex () {
   let currentId = window.lc.getData('activeCardId')

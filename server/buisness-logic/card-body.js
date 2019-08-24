@@ -39,14 +39,14 @@ async function addCardBody (userId, deck, changes) {
   delete changes.id
   // TODO:: Wrap this in a transaction or something
   let deckRecord = await Deck.getDeck(userId, deck)
-  let nextId = deckRecord.nextId;
+  let nextId = deckRecord.nextId
   let idAsChar = intToChar(nextId)
 
   await CardBody.addCardBody(userId, deck, idAsChar, changes)
   let cards = deckRecord.cards
   cards += idAsChar
   await Deck.editDeck(deckRecord, { cards, nextId: nextId + 1 })
-  return idAsChar;
+  return idAsChar
 }
 module.exports = {
   getCardBody,

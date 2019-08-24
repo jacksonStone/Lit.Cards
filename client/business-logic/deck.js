@@ -15,8 +15,8 @@ function navigateToDeckPage (deckId) {
 
 async function makeDeckPublic (deckId) {
   deckId = deckId || getParam('deck')
-  if (confirm('Once made public you will not be able to delete the deck or the cards, though you can still add and edit cards.')) {
-    window.lc.setData(`deck.public`, true);
+  if (window.confirm('Once made public you will not be able to delete the deck or the cards, though you can still add and edit cards.')) {
+    window.lc.setData(`deck.public`, true)
     await makePublic(deckId)
   }
 }
@@ -125,8 +125,8 @@ function getPresentFontSize () {
 }
 
 function handleEditorTextChange (newText) {
-  if(window.lc.getData('_cardBodyLoading')) {
-    return;
+  if (window.lc.getData('_cardBodyLoading')) {
+    return
   }
   let oldCardBody = JSON.parse(JSON.stringify(_getCurrentCardBody()))
   runNextRender(() => {
@@ -144,13 +144,11 @@ function handleEditorTextChange (newText) {
   setPersistentForCardBody('front', newText)
 }
 
-
-function getCardsForEmptyState(newId) {
+function getCardsForEmptyState (newId) {
   // Record we made this on the fly
   window.lc.setPersistent(`deck.cards`, newId)
   return newId
 }
-
 
 function getImageData () {
   if (!hasImage()) return ''
@@ -177,11 +175,11 @@ function removeCard () {
   cards = cards.slice(0, index).concat(cards.slice(index + 1))
   // Card bodies handle "card" creation/deletion
   // window.lc.setDeleted('card', id)
-  window.lc.setData('deck.cards', cards);
-  window.lc.setData('orderedCards', cards);
+  window.lc.setData('deck.cards', cards)
+  window.lc.setData('orderedCards', cards)
   window.lc.setDeleted('cardBody', id)
   index--
-  if(index === -1) {
+  if (index === -1) {
     index = 0
   }
   let newCard = cards[index]
@@ -237,9 +235,9 @@ function showingAnswer () {
 
 function addNewCard () {
   let deck = window.lc.getData('deck')
-  //Avoid conflicts
+  // Avoid conflicts
   let nextId = (deck.nextId || 0) + 5000
-  let newId = intToChar(nextId);
+  let newId = intToChar(nextId)
 
   let changeKeyCardBody = `cardBody.${newId}`
   let cardBody = { id: newId, isNew: true, front: '', back: '' }
@@ -262,7 +260,6 @@ async function updateCardBody (id, cards) {
     let cardBody = await getCardBody(id, undefined, cards)
     window.lc.setData('cardBody.' + id, cardBody)
     window.lc.setData('_cardBodyLoading', false)
-
   }
   refreshEditor()
 }

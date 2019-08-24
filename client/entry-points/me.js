@@ -12,14 +12,19 @@ renderPage(content)
 ;(async () => {
   // Pull from userInfo
   defaultDarkMode()
-  let [user, decks, studySessionsAndDecks, studyHistory] = await Promise.all([fetchUser(), getDecks(), getStudySessionsAndBorrowedDecks(),fetchStudyHistory() ])
+  let [user, decks, studySessionsAndDecks, studyHistory] = await Promise.all([
+    fetchUser(),
+    getDecks(),
+    getStudySessionsAndBorrowedDecks(),
+    fetchStudyHistory()
+  ])
   if (!user.verifiedEmail && getParam('verification')) {
     await verifyEmail()
     window.lc.setData('justVerifiedEmail', true)
     user.verifiedEmail = true
   }
-  let studySessions = studySessionsAndDecks.sessions;
-  let borrowedDecks = studySessionsAndDecks.borrowedDecks;
+  let studySessions = studySessionsAndDecks.sessions
+  let borrowedDecks = studySessionsAndDecks.borrowedDecks
   // Pull from userInfo
   window.lc.setData('user', user)
   window.lc.setData('decks', decks)

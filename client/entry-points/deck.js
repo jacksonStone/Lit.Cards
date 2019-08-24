@@ -14,14 +14,14 @@ let { getDeck, handleEditorTextChange, refreshEditor, getCardsForEmptyState } = 
 ;(async () => {
   defaultDarkMode()
   let [user, deck, studySession] = await Promise.all([fetchUser(), getDeck(), getStudySession()])
-  let cards = deck.cards || '';
+  let cards = deck.cards || ''
   // For when you navigate from study to edit
   let rawParam = getParam('card')
-  let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined;
+  let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
   let firstCardId = activeCard || (cards && cards.length && cards[0])
   let cardBody = await getCardBody(firstCardId, undefined, cards)
   if (!cards || !cardBody) {
-    let newId = intToChar(5000);
+    let newId = intToChar(5000)
     firstCardId = newId
     cardBody = getCardBodyForEmptyState(newId)
     cards = getCardsForEmptyState(newId)

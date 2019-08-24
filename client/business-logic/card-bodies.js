@@ -18,31 +18,30 @@ exports.getCardBody = async (card, deck, visibleCards) => {
   if (!card) {
     return
   }
-  let cardsToFetch = [card];
+  let cardsToFetch = [card]
   if (visibleCards) {
-    let indexOfCard = visibleCards.indexOf(card);
-    indexesToFetch = [
+    let indexOfCard = visibleCards.indexOf(card)
+    let indexesToFetch = [
       (indexOfCard + 1) % visibleCards.length,
       (indexOfCard - 1) % visibleCards.length,
       (indexOfCard + 2) % visibleCards.length,
-      (indexOfCard - 2) % visibleCards.length,
+      (indexOfCard - 2) % visibleCards.length
     ]
-    for(let i = 0; i < indexesToFetch.length; i++) {
+    for (let i = 0; i < indexesToFetch.length; i++) {
       let index = indexesToFetch[i]
-      if(visibleCards[index]) {
+      if (visibleCards[index]) {
         cardsToFetch.push(visibleCards[index])
       }
     }
   }
   deck = getDefaultDeck(deck)
   let firstCardBody
-  //don't wait on other fetches
+  // don't wait on other fetches
   return new Promise(async (resolve, reject) => {
-    for(let i = 0; i < cardsToFetch.length; i++) {
-      let card = cardsToFetch[i];
+    for (let i = 0; i < cardsToFetch.length; i++) {
+      let card = cardsToFetch[i]
       try {
         if (!cachedCardBodies[`${deck}:${card}`]) {
-
           let cardData = await getCardBody(deck, card)
           let cardDataAsJSON = JSON.parse(cardData)
           if (cardDataAsJSON) {
@@ -55,12 +54,12 @@ exports.getCardBody = async (card, deck, visibleCards) => {
             }
           }
           cachedCardBodies[`${deck}:${card}`] = cardDataAsJSON
-          if(!firstCardBody) {
-            firstCardBody = cardDataAsJSON;
+          if (!firstCardBody) {
+            firstCardBody = cardDataAsJSON
             resolve(JSON.parse(JSON.stringify(firstCardBody)))
           }
-        } else { //No cache
-          if(!firstCardBody) {
+        } else { // No cache
+          if (!firstCardBody) {
             firstCardBody = cachedCardBodies[`${deck}:${card}`]
             resolve(JSON.parse(JSON.stringify(firstCardBody)))
           }

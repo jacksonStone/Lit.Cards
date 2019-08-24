@@ -14,7 +14,7 @@ let { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accou
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   let deckId = studySession.deck
   let [deck] = await Promise.all([getDeck(deckId)])
-  let cards = deck.cards || '';
+  let cards = deck.cards || ''
   if (studySession) {
     studySession = accountForNewCards(studySession, cards)
   }

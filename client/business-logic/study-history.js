@@ -5,7 +5,7 @@ async function fetchStudyHistory () {
   try {
     deckHistory = JSON.parse(deckHistory)
   } catch (e) {
-    return [];
+    return []
   }
   return deckHistory
 }
