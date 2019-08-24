@@ -1,21 +1,21 @@
-const express = require('express')
-const router = express.Router()
-const { signup, verifyEmail, sendVerificationEmail } = require('../../buisness-logic/authentication/signup')
-const { getLoginCookie } = require('../../buisness-logic/authentication/login')
-const { addCookie } = require('../../node-abstractions/cookie')
-const code = require('../../node-abstractions/response-codes')
-const { emailIsValid } = require('../../../shared/email-address-validation')
+let express = require('express')
+let router = express.Router()
+let { signup, verifyEmail, sendVerificationEmail } = require('../../buisness-logic/authentication/signup')
+let { getLoginCookie } = require('../../buisness-logic/authentication/login')
+let { addCookie } = require('../../node-abstractions/cookie')
+let code = require('../../node-abstractions/response-codes')
+let { emailIsValid } = require('../../../shared/email-address-validation')
 
 router.post('/', async (req, res) => {
   if (!req.body) return code.unauthorized(res)
-  const userId = req.body.userId
-  const password = req.body.password
+  let userId = req.body.userId
+  let password = req.body.password
   if (!userId || !password || !emailIsValid(userId)) return code.unauthorized(res)
-  const newUser = await signup(userId, password)
+  let newUser = await signup(userId, password)
   if (!newUser) {
     return code.invalidRequest(res)
   }
-  const cookie = getLoginCookie(newUser)
+  let cookie = getLoginCookie(newUser)
   addCookie(res, cookie)
   return code.ok(res)
 })
@@ -23,8 +23,8 @@ router.post('/', async (req, res) => {
 router.post('/verify-email', async (req, res) => {
   if (!req.body) return code.unauthorized(res)
   if (!req.userId) return code.unauthorized(res)
-  const emailVerificationKey = req.body.emailVerificationKey
-  const errorIfAny = await verifyEmail(req.userId, emailVerificationKey)
+  let emailVerificationKey = req.body.emailVerificationKey
+  let errorIfAny = await verifyEmail(req.userId, emailVerificationKey)
   if (errorIfAny) {
     return code.unauthorized(res, errorIfAny)
   }

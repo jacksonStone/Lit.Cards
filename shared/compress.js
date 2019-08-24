@@ -10,9 +10,9 @@
 // with modifications by Jackson  Stone
 // private property
 /* eslint-disable */
-const f = String.fromCharCode
-const ownProp = Object.prototype.hasOwnProperty
-const LZString = {
+let f = String.fromCharCode
+let ownProp = Object.prototype.hasOwnProperty
+let LZString = {
   jcompress: function (inputObj) {
     return LZString.compress(JSON.stringify(inputObj))
   },

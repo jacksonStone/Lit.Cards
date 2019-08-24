@@ -1,14 +1,14 @@
-const { Deck } = require('../database')
-const { CardBody } = require('../database')
-const { deleteSessionByDeck } = require('./study')
-const { deleteAllCardBodies } = require('./card-body')
+let { Deck } = require('../database')
+let { CardBody } = require('../database')
+let { deleteSessionByDeck } = require('./study')
+let { deleteAllCardBodies } = require('./card-body')
 
 async function addDeck (userId, name) {
   return Deck.createDeck(userId, name)
 }
 
 async function deleteDeck (userId, id) {
-  const deck = await Deck.getDeck(userId, id, true)
+  let deck = await Deck.getDeck(userId, id, true)
   // Do not allow deletion of public decks
   if (deck && deck.length && deck[0].public) {
     return
@@ -21,7 +21,7 @@ async function renameDeck (userId, id, name) {
   return Deck.editDeck(userId, id, { name })
 }
 async function getDecks (userId) {
-  const decks = await Deck.getDecks(userId)
+  let decks = await Deck.getDecks(userId)
   for (let deck of decks) {
     delete deck.userId
   }
@@ -32,7 +32,7 @@ async function getDeck (userId, deckId) {
 }
 
 async function makeDeckPublic (userId, deckId) {
-  const deck = Deck.getDeck(userId, deckId, true);
+  let deck = Deck.getDeck(userId, deckId, true);
   if (deck.none) {
     return;
   }

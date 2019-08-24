@@ -1,9 +1,9 @@
-const { html } = require('lit')
-const editor = require('./card-editor')
-const cardEditStack = require('./side-numbers')
-const sidenav = require('./sidenav')
-const nameEdit = require('./name-edit')
-const darkmodeCheckbox = require('component/darkmode-checkbox')
+let { html } = require('lit')
+let editor = require('./card-editor')
+let cardEditStack = require('./side-numbers')
+let sidenav = require('./sidenav')
+let nameEdit = require('./name-edit')
+let darkmodeCheckbox = require('component/darkmode-checkbox')
 
 module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => html`
   <div class="grid-container">

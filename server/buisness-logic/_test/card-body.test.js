@@ -1,10 +1,10 @@
-const { sanitizeCardContent } = require('../card-body')
+let { sanitizeCardContent } = require('../card-body')
 test.only('Sanitizes card data', () => {
-  const unsafeHTML = `
+  let unsafeHTML = `
   <p>foo</p>
   <script>alert('gotcha!')</script>
   `
-  const changes = {
+  let changes = {
     front: unsafeHTML,
     back: unsafeHTML
   }

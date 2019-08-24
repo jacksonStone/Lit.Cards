@@ -1,4 +1,4 @@
-const { User } = require('../../database')
+let { User } = require('../../database')
 
 async function userDetails (userId) {
   return User.getSafeUser(userId)

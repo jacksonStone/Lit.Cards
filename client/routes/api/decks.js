@@ -1,4 +1,4 @@
-const { api } = require('./api-request')
+let { api } = require('./api-request')
 
 exports.getDecks = () => {
   return api('decks/me')

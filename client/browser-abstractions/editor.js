@@ -1,10 +1,10 @@
-const { $ } = require('./$')
-const pell = require('pell')
-const elementId = 'editor'
-const MAX_FONT_SIZE = 5
-const createDOMPurify = require('dompurify')
-const allowedTags = require('shared/allowedHTMLTags')
-const santizationConfig = { ALLOWED_TAGS: allowedTags }
+let { $ } = require('./$')
+let pell = require('pell')
+let elementId = 'editor'
+let MAX_FONT_SIZE = 5
+let createDOMPurify = require('dompurify')
+let allowedTags = require('shared/allowedHTMLTags')
+let santizationConfig = { ALLOWED_TAGS: allowedTags }
 
 let sanitizer
 function sanitizeHTML (text) {
@@ -16,8 +16,8 @@ function sanitizeHTML (text) {
 }
 
 function initEditor (startingContent, onChange) {
-  const editorElement = document.getElementById(elementId)
-  const editor = pell.init({
+  let editorElement = document.getElementById(elementId)
+  let editor = pell.init({
     element: document.getElementById(elementId),
     actions: ['bold', 'italic', 'olist', 'ulist'],
     onChange: onChange
@@ -30,8 +30,8 @@ function initEditor (startingContent, onChange) {
 
     // get text representation of clipboard
     var formattedHTML = (e.originalEvent || e).clipboardData.getData('text/html')
-    const documentFragment = document.createRange().createContextualFragment(formattedHTML)
-    const chidlens = documentFragment.querySelectorAll('[style]')
+    let documentFragment = document.createRange().createContextualFragment(formattedHTML)
+    let chidlens = documentFragment.querySelectorAll('[style]')
     if (chidlens && chidlens.length) {
       chidlens.forEach(chidlen => {
         chidlen.removeAttribute('style')
@@ -39,14 +39,14 @@ function initEditor (startingContent, onChange) {
     }
     var div = document.createElement('div')
     div.appendChild(documentFragment.cloneNode(true))
-    const htmlContent = sanitizeHTML(div.innerHTML)
+    let htmlContent = sanitizeHTML(div.innerHTML)
     // insert text manually
     document.execCommand('insertHTML', false, htmlContent)
   })
 }
 
 function setEditorData (content) {
-  const editor = document.getElementById(elementId)
+  let editor = document.getElementById(elementId)
   // If we are on the study page for example
   if (!editor || !editor.content) return
   editor.content.innerHTML = content
@@ -55,7 +55,7 @@ function setEditorData (content) {
 function getFontSize (currentFontSize) {
   if (currentFontSize >= MAX_FONT_SIZE) return MAX_FONT_SIZE
 
-  const contentOverflows = doesContentOverflow()
+  let contentOverflows = doesContentOverflow()
 
   if (!contentOverflows) {
     return currentFontSize
@@ -69,13 +69,13 @@ function getEditorContent () {
   return $('.pell-content')
 }
 function scrollToTopOfEditor () {
-  const editorContent = getEditorContent()
+  let editorContent = getEditorContent()
   editorContent.scrollTop = 0
 }
 function getTextNodeHeight (textNode) {
   let height = 0
   if (window.document.createRange) {
-    const range = window.document.createRange()
+    let range = window.document.createRange()
     range.selectNodeContents(textNode)
     if (range.getBoundingClientRect) {
       var rect = range.getBoundingClientRect()
@@ -86,12 +86,12 @@ function getTextNodeHeight (textNode) {
   }
   return height
 }
-const emptySpaceBeforeIncrease = 0.65
+let emptySpaceBeforeIncrease = 0.65
 function childrenHaveTooMuchSpace () {
-  const WYSIWYG = getEditorContent()
-  const children = WYSIWYG.childNodes
-  const fullHeight = WYSIWYG.scrollHeight
-  const clientHeight = WYSIWYG.clientHeight
+  let WYSIWYG = getEditorContent()
+  let children = WYSIWYG.childNodes
+  let fullHeight = WYSIWYG.scrollHeight
+  let clientHeight = WYSIWYG.clientHeight
   if (fullHeight > clientHeight) {
     // We overflow
     return false
@@ -100,7 +100,7 @@ function childrenHaveTooMuchSpace () {
   let height = 0
   if (children && children.length) {
     for (let i = 0; i < children.length; i++) {
-      const child = children[i]
+      let child = children[i]
       if (child.clientHeight) {
         height += child.clientHeight
       } else if (child.nodeName === '#text') {
@@ -115,14 +115,14 @@ function childrenHaveTooMuchSpace () {
 }
 
 function doesContentOverflow () {
-  const WYSIWYG = getEditorContent()
-  const fullHeight = WYSIWYG.scrollHeight
-  const clientHeight = WYSIWYG.clientHeight
+  let WYSIWYG = getEditorContent()
+  let fullHeight = WYSIWYG.scrollHeight
+  let clientHeight = WYSIWYG.clientHeight
   return fullHeight > clientHeight
 }
 
 function getTextOnly (content) {
-  const wrapper = document.createElement('div')
+  let wrapper = document.createElement('div')
   wrapper.innerHTML = content
   return wrapper.innerText
 }

@@ -1,13 +1,13 @@
-const { deck: deckPage } = require('../routes/navigation/pages')
-const { getParam } = require('abstract/url')
-const { getDeck, createDeck, deleteDeck, renameDeck, makePublic } = require('../routes/api/decks')
-const { reject } = require('utils')
-const { setEditorData, getFontSize, childrenHaveTooMuchSpace } = require('abstract/editor')
-const { getCardBody } = require('./card-bodies')
-const { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
-const { runNextRender } = require('abstract/rendering-meta')
-const { compress } = require('shared/compress')
-const { intToChar } = require('shared/char-encoding')
+let { deck: deckPage } = require('../routes/navigation/pages')
+let { getParam } = require('abstract/url')
+let { getDeck, createDeck, deleteDeck, renameDeck, makePublic } = require('../routes/api/decks')
+let { reject } = require('utils')
+let { setEditorData, getFontSize, childrenHaveTooMuchSpace } = require('abstract/editor')
+let { getCardBody } = require('./card-bodies')
+let { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
+let { runNextRender } = require('abstract/rendering-meta')
+let { compress } = require('shared/compress')
+let { intToChar } = require('shared/char-encoding')
 
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
@@ -20,37 +20,37 @@ async function makeDeckPublic (deckId) {
     await makePublic(deckId)
   }
 }
-const getDeckLogic = async (deckId) => {
+let getDeckLogic = async (deckId) => {
   deckId = deckId || getParam('deck')
   return JSON.parse(await getDeck(deckId))
 }
-const createDeckLogic = async (name) => {
-  const newDeck = JSON.parse(await createDeck(name))
+let createDeckLogic = async (name) => {
+  let newDeck = JSON.parse(await createDeck(name))
   navigateToDeckPage(newDeck.id)
 }
 
-const deleteDeckLogic = async (id) => {
+let deleteDeckLogic = async (id) => {
   await deleteDeck(id)
-  const decks = window.lc.getData('decks')
-  const decksWithoutDeleted = reject(decks, { id })
+  let decks = window.lc.getData('decks')
+  let decksWithoutDeleted = reject(decks, { id })
   window.lc.setData('decks', decksWithoutDeleted)
 }
 
-const updateDeckNameLogic = async (name, deckId) => {
+let updateDeckNameLogic = async (name, deckId) => {
   deckId = deckId || getParam('deck')
   return renameDeck(deckId, name)
 }
 
 async function handleImageUpload (e) {
-  const imageData = await getFileData(e)
+  let imageData = await getFileData(e)
   let imagePreview
   if (showingAnswer()) {
-    const [largeImage] = await getImageAtDifferentSize(imageData)
+    let [largeImage] = await getImageAtDifferentSize(imageData)
     setPersistentForCardBody('backHasImage', true)
     setPersistentForCardBodyCompressed('backImage', largeImage)
     imagePreview = largeImage
   } else {
-    const [largeImage] = await getImageAtDifferentSize(imageData)
+    let [largeImage] = await getImageAtDifferentSize(imageData)
     setPersistentForCardBody('frontHasImage', true)
     setPersistentForCardBodyCompressed('frontImage', largeImage)
     imagePreview = largeImage
@@ -59,15 +59,15 @@ async function handleImageUpload (e) {
   refreshEditor()
 }
 function setPersistentForCardBodyCompressed (key, value) {
-  const cardId = _getCurrentCardId()
-  const changeKey = `cardBody.${cardId}.${key}`
+  let cardId = _getCurrentCardId()
+  let changeKey = `cardBody.${cardId}.${key}`
   window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
   window.lc.setPersistentOnly(changeKey, compress(value))
   window.lc.setData(changeKey, value)
 }
 function setPersistentForCardBody (key, value) {
-  const cardId = _getCurrentCardId()
-  const changeKey = `cardBody.${cardId}.${key}`
+  let cardId = _getCurrentCardId()
+  let changeKey = `cardBody.${cardId}.${key}`
   window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
   window.lc.setPersistent(changeKey, value)
 }
@@ -91,7 +91,7 @@ function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack) {
   if (!childrenHaveTooMuchSpace()) {
     return
   }
-  const newFontSize = oldFontSize - 1
+  let newFontSize = oldFontSize - 1
   setPersistentForCardBody(frontOrBack, newFontSize)
 
   runNextRender(() => {
@@ -102,13 +102,13 @@ function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack) {
 function updateFontSizeIfNecessary (oldCardBody, newText) {
   if (!oldCardBody) return
   if (showingAnswer()) {
-    const deletedAChar = oldCardBody.back && (oldCardBody.back.length > newText.length)
+    let deletedAChar = oldCardBody.back && (oldCardBody.back.length > newText.length)
     if (deletedAChar) {
       return increaseFontIfLotsOfSpace(oldCardBody.backFontSize, 'backFontSize')
     }
     decreaseFontSizeIfOverflowing(oldCardBody.backFontSize, 'backFontSize')
   } else {
-    const deletedAChar = oldCardBody.front && (oldCardBody.front.length > newText.length)
+    let deletedAChar = oldCardBody.front && (oldCardBody.front.length > newText.length)
     if (deletedAChar) {
       return increaseFontIfLotsOfSpace(oldCardBody.frontFontSize, 'frontFontSize')
     }
@@ -116,7 +116,7 @@ function updateFontSizeIfNecessary (oldCardBody, newText) {
   }
 }
 function getPresentFontSize () {
-  const cardBody = _getCurrentCardBody()
+  let cardBody = _getCurrentCardBody()
   if (!cardBody) return 1
   if (showingAnswer()) {
     return cardBody.backFontSize
@@ -128,7 +128,7 @@ function handleEditorTextChange (newText) {
   if(window.lc.getData('_cardBodyLoading')) {
     return;
   }
-  const oldCardBody = JSON.parse(JSON.stringify(_getCurrentCardBody()))
+  let oldCardBody = JSON.parse(JSON.stringify(_getCurrentCardBody()))
   runNextRender(() => {
     updateFontSizeIfNecessary(oldCardBody, newText)
   })
@@ -154,7 +154,7 @@ function getCardsForEmptyState(newId) {
 
 function getImageData () {
   if (!hasImage()) return ''
-  const cardBody = _getCurrentCardBody()
+  let cardBody = _getCurrentCardBody()
   if (showingAnswer()) {
     return cardBody.backImage
   }
@@ -163,9 +163,9 @@ function getImageData () {
 
 function nextCard () {
   let index = _getCurrentCardIndex()
-  const cards = window.lc.getData('orderedCards')
+  let cards = window.lc.getData('orderedCards')
   index++
-  const newCard = cards[(index % cards.length)]
+  let newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard)
   updateCardBody(newCard, cards)
 }
@@ -184,22 +184,22 @@ function removeCard () {
   if(index === -1) {
     index = 0
   }
-  const newCard = cards[index]
+  let newCard = cards[index]
   window.lc.setData('activeCardId', newCard)
   updateCardBody(newCard, cards)
 }
 
 function previousCard () {
   let index = _getCurrentCardIndex()
-  const cards = window.lc.getData('orderedCards')
+  let cards = window.lc.getData('orderedCards')
   index--
-  const newCard = cards[((index + cards.length) % cards.length)]
+  let newCard = cards[((index + cards.length) % cards.length)]
   window.lc.setData('activeCardId', newCard)
   updateCardBody(newCard, cards)
 }
 
 function flipCard () {
-  const showingAnswer = window.lc.getData('showingAnswer')
+  let showingAnswer = window.lc.getData('showingAnswer')
   window.lc.setData('showingAnswer', !showingAnswer)
   refreshEditor()
 }
@@ -236,13 +236,13 @@ function showingAnswer () {
 }
 
 function addNewCard () {
-  const deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck')
   //Avoid conflicts
-  const nextId = (deck.nextId || 0) + 5000
-  const newId = intToChar(nextId);
+  let nextId = (deck.nextId || 0) + 5000
+  let newId = intToChar(nextId);
 
-  const changeKeyCardBody = `cardBody.${newId}`
-  const cardBody = { id: newId, isNew: true, front: '', back: '' }
+  let changeKeyCardBody = `cardBody.${newId}`
+  let cardBody = { id: newId, isNew: true, front: '', back: '' }
   window.lc.setPersistent(changeKeyCardBody, cardBody)
   window.lc.setData('orderedCards', (deck.cards || '') + newId)
   window.lc.setData('activeCardId', newId)
@@ -255,11 +255,11 @@ function _flipToQuestionSide () {
 
 async function updateCardBody (id, cards) {
   _flipToQuestionSide()
-  const currentCardBody = window.lc.getData('cardBody.' + id)
+  let currentCardBody = window.lc.getData('cardBody.' + id)
   if (!currentCardBody) {
     refreshEditor('loading...')
     window.lc.setData('_cardBodyLoading', true, false)
-    const cardBody = await getCardBody(id, undefined, cards)
+    let cardBody = await getCardBody(id, undefined, cards)
     window.lc.setData('cardBody.' + id, cardBody)
     window.lc.setData('_cardBodyLoading', false)
 
@@ -274,13 +274,13 @@ function refreshEditor (data) {
   _updateEditorData(data)
 }
 function _getCurrentCardBody () {
-  const id = _getCurrentCardId()
+  let id = _getCurrentCardId()
   return window.lc.getData(`cardBody.${id}`)
 }
 function getTextToShowForCard () {
-  const cardBody = _getCurrentCardBody()
+  let cardBody = _getCurrentCardBody()
   if (cardBody === undefined) return false
-  const showingAnswer = window.lc.getData('showingAnswer')
+  let showingAnswer = window.lc.getData('showingAnswer')
   if (showingAnswer) {
     // Show answer
     return cardBody.back
@@ -295,8 +295,8 @@ function _getCurrentCardId () {
   return window.lc.getData('activeCardId')
 }
 function _getCurrentCardIndex () {
-  const currentId = _getCurrentCardId()
-  const cards = window.lc.getData('orderedCards')
+  let currentId = _getCurrentCardId()
+  let cards = window.lc.getData('orderedCards')
   let currentIndex
   for (let i = 0; i < cards.length; i++) {
     if (cards[i] === currentId) {

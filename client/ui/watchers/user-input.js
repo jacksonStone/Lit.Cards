@@ -1,5 +1,5 @@
 //TODO:: Maybe have this live in one place
-const propName = '_focusingOnText'
+let propName = '_focusingOnText'
 
 function focusingOnTextInput () {
   if (window.document.activeElement === window.document.body) {
@@ -16,8 +16,8 @@ function isTextField (activeElement) {
 }
 
 function listenToTextSelection () {
-    const wasFocusingOnText = window.lc.getData(propName)
-    const isFocusingOnText = focusingOnTextInput()
+    let wasFocusingOnText = window.lc.getData(propName)
+    let isFocusingOnText = focusingOnTextInput()
     if(isFocusingOnText === wasFocusingOnText) {
       return
     }

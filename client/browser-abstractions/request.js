@@ -1,7 +1,7 @@
 function request (url, body) {
-  const method = body ? 'POST' : 'GET'
+  let method = body ? 'POST' : 'GET'
   return new Promise((resolve, reject) => {
-    const xhr = new window.XMLHttpRequest()
+    let xhr = new window.XMLHttpRequest()
     xhr.open(method, url)
     xhr.onload = () => resolve(xhr.responseText)
     xhr.onerror = () => reject(xhr.statusText)

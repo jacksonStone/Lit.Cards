@@ -1,5 +1,5 @@
-const { listenForKey, resetAllKeyBindings, listenForCMDKey } = require('abstract/keyboard')
-const {
+let { listenForKey, resetAllKeyBindings, listenForCMDKey } = require('abstract/keyboard')
+let {
   pickImage,
   flipCard,
   previousCard,

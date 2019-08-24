@@ -1,5 +1,5 @@
-const { $ } = require('./$')
-const { get, set } = require('./browser-storage')
+let { $ } = require('./$')
+let { get, set } = require('./browser-storage')
 function _setDarkMode (shouldBeDark) {
   if (shouldBeDark) {
     $('html').className = 'darkmode'

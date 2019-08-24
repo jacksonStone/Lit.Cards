@@ -1,15 +1,15 @@
-const { study: studyPage, home } = require('../routes/navigation/pages')
-const { getParam } = require('../browser-abstractions/url')
-const { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
-const { strToList } = require('shared/char-encoding')
-const { updateCardBody, flipCard } = require('./deck')
-const { setFocusTo } = require('abstract/focus')
-const { createStudySession, getStudySession, getStudySessionForDeck, getStudySessionsAndBorrowedDecks, deleteStudySession, editStudySessionState } = require('../routes/api/study')
-// const { reject } = require('utils')
-const NOT_ANSWERED = '_'
-const RIGHT = 'R'
-const WRONG = 'W'
-const SKIP = 'S' // Not in this study run
+let { study: studyPage, home } = require('../routes/navigation/pages')
+let { getParam } = require('../browser-abstractions/url')
+let { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
+let { strToList } = require('shared/char-encoding')
+let { updateCardBody, flipCard } = require('./deck')
+let { setFocusTo } = require('abstract/focus')
+let { createStudySession, getStudySession, getStudySessionForDeck, getStudySessionsAndBorrowedDecks, deleteStudySession, editStudySessionState } = require('../routes/api/study')
+// let { reject } = require('utils')
+let NOT_ANSWERED = '_'
+let RIGHT = 'R'
+let WRONG = 'W'
+let SKIP = 'S' // Not in this study run
 
 function navigateToStudySession (id) {
   return studyPage({ id })
@@ -44,16 +44,16 @@ exports.navigateToStudySession = navigateToStudySession
 exports.getStudySession = async (id) => {
   id = id || getParam('id')
   if (id) {
-    const result = JSON.parse(await getStudySession(id))
+    let result = JSON.parse(await getStudySession(id))
     if (result.none) return
     return result
   }
-  const deckId = getParam('deck')
+  let deckId = getParam('deck')
   if (deckId) {
-    const result = JSON.parse(await getStudySessionForDeck(deckId))
+    let result = JSON.parse(await getStudySessionForDeck(deckId))
     if (result.none && getParam('upsert')) {
       // Clicked the study button on an edit page
-      const newSession = JSON.parse(await createStudySession(deckId))
+      let newSession = JSON.parse(await createStudySession(deckId))
       return newSession
     }
     return result
@@ -67,7 +67,7 @@ exports.deleteSession = async (id) => {
   }
 }
 exports.editStudySessionState = async (session) => {
-  const sessionInState = getSessionFromState()
+  let sessionInState = getSessionFromState()
   let id = sessionInState && sessionInState.id
   if (!id) return
   await editStudySessionState(id, session)
@@ -77,32 +77,32 @@ exports.deleteCurrentSessionWithConfirmation = async () => {
     await deleteCurrentSessionAndGoHome()
   }
 }
-const deleteCurrentSessionAndGoHome = exports.deleteCurrentSession = async () => {
-  const session = getSessionFromState()
+let deleteCurrentSessionAndGoHome = exports.deleteCurrentSession = async () => {
+  let session = getSessionFromState()
   await deleteStudySession(session.id)
   home()
 }
 exports.getStudySessionsAndBorrowedDecks = async () => {
   return JSON.parse(await getStudySessionsAndBorrowedDecks())
 }
-const createStudySessionAndNavigate = exports.createStudySession = async (deck, startingState) => {
-  const newSession = JSON.parse(await createStudySession(deck, startingState))
+let createStudySessionAndNavigate = exports.createStudySession = async (deck, startingState) => {
+  let newSession = JSON.parse(await createStudySession(deck, startingState))
   navigateToStudySession(newSession.id)
 }
 exports.sortCardsBySession = (cards, session) => {
-  const ordering = strToList(session.ordering)
-  const shuffledCards = []
+  let ordering = strToList(session.ordering)
+  let shuffledCards = []
   for (let i = 0; i < cards.length; i++) {
     shuffledCards.push(cards[ordering[i]])
   }
   return shuffledCards
 }
-const trimCardsToOnesAwaitingAnswers = exports.trimCardsToOnesAwaitingAnswers = (cards, session) => {
+let trimCardsToOnesAwaitingAnswers = exports.trimCardsToOnesAwaitingAnswers = (cards, session) => {
   if (!cards || !cards.length) return cards
-  const state = session.studyState
-  const unansweredCards = []
+  let state = session.studyState
+  let unansweredCards = []
   for (let i = 0; i < state.length; i++) {
-    const cardState = state[i]
+    let cardState = state[i]
     if (cardState === NOT_ANSWERED) {
       unansweredCards.push(cards[i])
     }
@@ -121,14 +121,14 @@ function getSessionOrderedCardsFromState () {
 }
 function updateStudyState (state) {
   window.lc.setPersistent('session.studyState', state)
-  const session = getSessionFromState()
-  const allOrderedCards = getSessionOrderedCardsFromState()
-  const newVisibleCards = trimCardsToOnesAwaitingAnswers(allOrderedCards, session)
+  let session = getSessionFromState()
+  let allOrderedCards = getSessionOrderedCardsFromState()
+  let newVisibleCards = trimCardsToOnesAwaitingAnswers(allOrderedCards, session)
   let index = getCurrentCardIndex()
-  const cards = getVisibleCardsFromState()
+  let cards = getVisibleCardsFromState()
 
   index++
-  const newCard = cards[(index % cards.length)]
+  let newCard = cards[(index % cards.length)]
   // TODO::Push changes to current card here to persistent store
   window.lc.setData('activeCardId', newCard)
   window.lc.setData('showingAnswer', false)
@@ -139,7 +139,7 @@ function updateStudyState (state) {
   }
   // Grab next card based on index in original deck order
   let newCurrentCard
-  const originalCardOrder = window.lc.getData('originalCardOrder')
+  let originalCardOrder = window.lc.getData('originalCardOrder')
   for (let i = 0; i < originalCardOrder.length; i++) {
     if (originalCardOrder[i] === newCard) {
       newCurrentCard = i
@@ -153,8 +153,8 @@ function updateStudyState (state) {
 // If a card is added to a deck during the studying process
 exports.accountForNewCards = (session, cards) => {
   let count = 0
-  const startingLength = session.studyState.length
-  const targetLength = cards.length
+  let startingLength = session.studyState.length
+  let targetLength = cards.length
   while (session.studyState.length < targetLength) {
     session.studyState += '_'
     session.ordering += String.fromCharCode(startingLength + count)
@@ -165,27 +165,27 @@ exports.accountForNewCards = (session, cards) => {
   return session
 }
 exports.resetSession = async () => {
-  const session = getSessionFromState()
+  let session = getSessionFromState()
   await deleteStudySession(session.id)
-  const deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck')
   await createStudySessionAndNavigate(deck.id)
   // navigate
 }
 exports.studyWrongAnswers = async () => {
-  const session = getSessionFromState()
+  let session = getSessionFromState()
   await deleteStudySession(session.id)
-  const deck = window.lc.getData('deck')
-  const studyState = convertRightToSkipsAndWrongsToUnanswered(session.studyState)
+  let deck = window.lc.getData('deck')
+  let studyState = convertRightToSkipsAndWrongsToUnanswered(session.studyState)
 
   await createStudySessionAndNavigate(deck.id, { studyState, ordering: session.ordering })
 }
 function convertRightToSkipsAndWrongsToUnanswered (state) {
-  const rightsToSkips = state.split(RIGHT).join(SKIP)
+  let rightsToSkips = state.split(RIGHT).join(SKIP)
   return rightsToSkips.split(WRONG).join(NOT_ANSWERED)
 }
 exports.getNumberRight = () => {
-  const session = getSessionFromState()
-  const state = session.studyState
+  let session = getSessionFromState()
+  let state = session.studyState
   let count = 0
   for (let i = 0; i < state.length; i++) {
     if (state[i] === RIGHT) count++
@@ -193,8 +193,8 @@ exports.getNumberRight = () => {
   return count
 }
 exports.getNumberWrong = () => {
-  const session = getSessionFromState()
-  const state = session.studyState
+  let session = getSessionFromState()
+  let state = session.studyState
   let count = 0
   for (let i = 0; i < state.length; i++) {
     if (state[i] === WRONG) count++
@@ -202,35 +202,35 @@ exports.getNumberWrong = () => {
   return count
 }
 function getActiveCardIndexInStudySession () {
-  const activeId = window.lc.getData('activeCardId')
-  const cards = getSessionOrderedCardsFromState()
+  let activeId = window.lc.getData('activeCardId')
+  let cards = getSessionOrderedCardsFromState()
   return cards.indexOf(activeId);
 }
 function getCurrentCardIndex () {
-  const currentId = window.lc.getData('activeCardId')
-  const cards = window.lc.getData('orderedCards')
+  let currentId = window.lc.getData('activeCardId')
+  let cards = window.lc.getData('orderedCards')
   for (let i = 0; i < cards.length; i++) {
     if (cards[i] === currentId) {
       return i
     }
   }
 }
-const markRight = exports.markRight = () => {
-  const cardIndex = getActiveCardIndexInStudySession()
-  const state = getSessionFromState().studyState
-  const asArray = state.split('')
+let markRight = exports.markRight = () => {
+  let cardIndex = getActiveCardIndexInStudySession()
+  let state = getSessionFromState().studyState
+  let asArray = state.split('')
   asArray[cardIndex] = RIGHT
-  const newState = asArray.join('')
+  let newState = asArray.join('')
   updateStudyState(newState)
 }
-const markWrong = exports.markWrong = () => {
+let markWrong = exports.markWrong = () => {
   // Get session state, modify card to wrong, then go to the next card that works
   // Push changed to session state to "persistent changes"
   // If it's the last card, show menu of if they want to study wrong ones or stop
-  const cardIndex = getActiveCardIndexInStudySession()
-  const state = getSessionFromState().studyState
-  const asArray = state.split('')
+  let cardIndex = getActiveCardIndexInStudySession()
+  let state = getSessionFromState().studyState
+  let asArray = state.split('')
   asArray[cardIndex] = WRONG
-  const newState = asArray.join('')
+  let newState = asArray.join('')
   updateStudyState(newState)
 }

@@ -1,12 +1,12 @@
-const { html } = require('lit')
-const { getValueFromCheckbox } = require('abstract/events')
-const { recordAndSetDarkMode } = require('abstract/darkmode')
-const isDarkMode = () => {
-  const user = window.lc.getData('user')
+let { html } = require('lit')
+let { getValueFromCheckbox } = require('abstract/events')
+let { recordAndSetDarkMode } = require('abstract/darkmode')
+let isDarkMode = () => {
+  let user = window.lc.getData('user')
   return user && user.darkMode
 }
-const setDarkMode = (e) => {
-  const value = getValueFromCheckbox(e)
+let setDarkMode = (e) => {
+  let value = getValueFromCheckbox(e)
   recordAndSetDarkMode(value)
   window.lc.setPersistent('user.darkMode', value, false)
 }

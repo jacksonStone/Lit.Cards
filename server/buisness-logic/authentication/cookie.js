@@ -1,17 +1,17 @@
-const authUtils = require('./utils')
-const experation = 1000 * 60 * 60 * 24 * 30
-const authCookieName = 'auth'
-const {UNSAFE_USER} = require('../users/userDetails')
+let authUtils = require('./utils')
+let experation = 1000 * 60 * 60 * 24 * 30
+let authCookieName = 'auth'
+let {UNSAFE_USER} = require('../users/userDetails')
 
 // Expects cookie to be JSON and already de
 function checkCookieExperation (deCookieContent) {
   if (!deCookieContent) return false
-  const body = JSON.parse(deCookieContent)
+  let body = JSON.parse(deCookieContent)
 
   if (!body.created) return false
   // See if expired
-  const born = body.created
-  const present = Date.now()
+  let born = body.created
+  let present = Date.now()
   if ((present - born) < experation) {
     return body
   }
@@ -20,14 +20,14 @@ function checkCookieExperation (deCookieContent) {
 
 async function validateUserCookie (cookies) {
   if (!cookies || !cookies.auth) return
-  const authCookie = cookies.auth
-  const decryptedCookie = authUtils.decrypt(authCookie)
-  const youngCookie = checkCookieExperation(decryptedCookie)
+  let authCookie = cookies.auth
+  let decryptedCookie = authUtils.decrypt(authCookie)
+  let youngCookie = checkCookieExperation(decryptedCookie)
   if (!youngCookie) {
     return
   }
-  const userId = youngCookie.userId
-  const user = await UNSAFE_USER(userId)
+  let userId = youngCookie.userId
+  let user = await UNSAFE_USER(userId)
   if (!user) {
     return
   }
@@ -37,7 +37,7 @@ async function validateUserCookie (cookies) {
 }
 
 function createUserCookie (userId, session) {
-  const now = Date.now()
+  let now = Date.now()
   var userCookie = {
     userId: userId,
     created: now,

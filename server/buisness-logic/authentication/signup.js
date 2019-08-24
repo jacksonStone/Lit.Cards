@@ -1,21 +1,21 @@
-const authUtils = require('./utils')
-const { User } = require('../../database')
-const { sendMail } = require('../../node-abstractions/email')
-const baseURL = process.env.SITE_DOMAIN_ROOT
-const routeToVerifyEmail = '/site/me?verification='
+let authUtils = require('./utils')
+let { User } = require('../../database')
+let { sendMail } = require('../../node-abstractions/email')
+let baseURL = process.env.SITE_DOMAIN_ROOT
+let routeToVerifyEmail = '/site/me?verification='
 
 async function signup (userId, plainTextPassword) {
-  const existingUser = await User.getUser(userId)
+  let existingUser = await User.getUser(userId)
   if (existingUser) return
 
-  const salt = authUtils.getSalt()
-  const password = authUtils.hashValues(plainTextPassword, salt)
-  const user = await User.createUser(userId, salt, password)
+  let salt = authUtils.getSalt()
+  let password = authUtils.hashValues(plainTextPassword, salt)
+  let user = await User.createUser(userId, salt, password)
   sendVerificationEmail(user);
   return user
 }
 async function sendVerificationEmail(user) {
-  const userId = user.userId
+  let userId = user.userId
   sendMail(
     userId,
     'Email Verification',
@@ -25,7 +25,7 @@ async function sendVerificationEmail(user) {
 }
 
 async function verifyEmail(userId, verificationKey) {
-  const user = await User.getUser(userId)
+  let user = await User.getUser(userId)
   if (user.verifiedEmail) {
     return 'Already verified';
   }

@@ -1,5 +1,5 @@
 // TODO:: Move all this to watchers
-const textFocusedPropName = '_focusingOnText'
+let textFocusedPropName = '_focusingOnText'
 let keyBindings = {}
 let globalBindings = {}
 let cmdKeyBindings = {}
@@ -59,7 +59,7 @@ function isMultipleKeys (e) {
 }
 
 function _handleKeyDown (e) {
-  const keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
+  let keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
   if (e[keyForCMD]) {
     if (cmdKeyBindings[e.code]) {
       if (!keysToStillLetThrough[(e.code)]) {

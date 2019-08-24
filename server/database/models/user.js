@@ -1,23 +1,23 @@
-const db = require('../external-connections/fake-database-connector')
-const tableName = 'user'
-const _ = require('lodash')
-const { randomString } = require('../../node-abstractions/random')
+let db = require('../external-connections/fake-database-connector')
+let tableName = 'user'
+let _ = require('lodash')
+let { randomString } = require('../../node-abstractions/random')
 
 async function getUser (userId) {
-  const results = await db.getRecord(tableName, { userId: userId })
+  let results = await db.getRecord(tableName, { userId: userId })
   if (results && results.length) return results[0]
 }
 async function getSafeUser (userId) {
-  const user = await getUser(userId)
+  let user = await getUser(userId)
   return trimAllButSafeParameters(user)
 }
 
 async function userExists (userId) {
-  const user = await getUser(userId)
+  let user = await getUser(userId)
   return !!user
 }
 // Guilty until proven innocent!
-const safeParameters = [
+let safeParameters = [
   'userId',
   'darkMode',
   'verifiedEmail'
@@ -33,9 +33,9 @@ function trimAllButSafeParameters (user) {
 }
 
 async function createUser (userId, salt, password) {
-  const results = await db.getRecord(tableName, { userId })
+  let results = await db.getRecord(tableName, { userId })
   if (results.length) return
-  const emailVerificationKey = await randomString(20, 'hex')
+  let emailVerificationKey = await randomString(20, 'hex')
   return db.setRecord(tableName, { userId, salt, password, validSession: 0, emailVerificationKey, verifiedEmail: false })
 }
 

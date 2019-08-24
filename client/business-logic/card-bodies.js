@@ -1,12 +1,12 @@
-const { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../routes/api/card-bodies')
-const { getParam } = require('../browser-abstractions/url')
-const { decompress } = require('shared/compress')
-const cachedCardBodies = {}
+let { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../routes/api/card-bodies')
+let { getParam } = require('../browser-abstractions/url')
+let { decompress } = require('shared/compress')
+let cachedCardBodies = {}
 function getDefaultDeck (deck) {
   if (!deck) {
     deck = getParam('deck')
     if (!deck) {
-      const dataDeck = window.lc.getData('deck')
+      let dataDeck = window.lc.getData('deck')
       if (dataDeck && dataDeck.id) {
         deck = dataDeck.id
       }
@@ -28,7 +28,7 @@ exports.getCardBody = async (card, deck, visibleCards) => {
       (indexOfCard - 2) % visibleCards.length,
     ]
     for(let i = 0; i < indexesToFetch.length; i++) {
-      const index = indexesToFetch[i]
+      let index = indexesToFetch[i]
       if(visibleCards[index]) {
         cardsToFetch.push(visibleCards[index])
       }
@@ -44,7 +44,7 @@ exports.getCardBody = async (card, deck, visibleCards) => {
         if (!cachedCardBodies[`${deck}:${card}`]) {
 
           let cardData = await getCardBody(deck, card)
-          const cardDataAsJSON = JSON.parse(cardData)
+          let cardDataAsJSON = JSON.parse(cardData)
           if (cardDataAsJSON) {
             // Decompress images
             if (cardDataAsJSON.frontHasImage) {
@@ -73,15 +73,15 @@ exports.getCardBody = async (card, deck, visibleCards) => {
 }
 
 exports.getCardBodyForEmptyState = (newId) => {
-  const emptyValue = { id: newId, isNew: true, front: '', back: '' }
+  let emptyValue = { id: newId, isNew: true, front: '', back: '' }
   // Record we made this on the fly
   window.lc.setPersistent(`cardBody.${newId}`, emptyValue)
   return emptyValue
 }
 
 exports.persistCardBodyChange = (cardBody, key, value) => {
-  const changeCardBodyId = getCardBodyChangeId(cardBody)
-  const changePath = `${changeCardBodyId}.${key}`
+  let changeCardBodyId = getCardBodyChangeId(cardBody)
+  let changePath = `${changeCardBodyId}.${key}`
   window.lc.setPersistent(changePath, value)
 }
 function getCardBodyChangeId (cardBody) {

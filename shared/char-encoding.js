@@ -18,7 +18,7 @@ function _listToStr2 (list) {
   return str
 }
 function strToList (str) {
-  const list = []
+  let list = []
   for (let i = 0; i < str.length; i++) {
     list.push(str.charCodeAt(i))
   }

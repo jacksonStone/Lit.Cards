@@ -1,4 +1,4 @@
-const { jcompress, jdecompress } = require('shared/compress')
+let { jcompress, jdecompress } = require('shared/compress')
 
 function get (key) {
   return window.localStorage.getItem(key)
@@ -7,17 +7,17 @@ function set (key, value) {
   return window.localStorage.setItem(key, value)
 }
 function storeAllState () {
-  const data = window.lc.data
-  const path = window.location.pathname
+  let data = window.lc.data
+  let path = window.location.pathname
   set('_latestState', jcompress({ data, path }))
 }
 function retrieveStateStored () {
-  const result = get('_latestState')
+  let result = get('_latestState')
   if (!result) {
     window.alert('nothing stored')
     return
   }
-  const { data, path } = jdecompress(result)
+  let { data, path } = jdecompress(result)
   if (path !== window.location.pathname || !path) {
     window.alert('No data for this page')
     return

@@ -1,10 +1,10 @@
-const { html } = require('lit')
-const { navigateToDeckPage, createDeck, deleteDeck } = require('../../business-logic/deck')
-const { createStudySession, navigateToStudySession } = require('../../business-logic/study')
-const darkmodeCheckbox = require('component/darkmode-checkbox')
+let { html } = require('lit')
+let { navigateToDeckPage, createDeck, deleteDeck } = require('../../business-logic/deck')
+let { createStudySession, navigateToStudySession } = require('../../business-logic/study')
+let darkmodeCheckbox = require('component/darkmode-checkbox')
 
 // Keep numPerRow in sync with col-n below
-const numPerRow = 3
+let numPerRow = 3
 function addDeckCard () {
   return html`<div class="mobile-lg:grid-col-4">
         <button class="usa-button deck-card-outline deck-selection"
@@ -26,7 +26,7 @@ function deleteDeckBtn (id) {
   }
 }
 function getStudyBtn (deck, sessionMapping) {
-  const session = sessionMapping[deck.id]
+  let session = sessionMapping[deck.id]
   if (!session) {
     return html`<button
             @click=${() => { createStudySession(deck.id) }}
@@ -44,7 +44,7 @@ function deckPreview (deck, sessionMapping, forSession) {
   if (deck.addDeck) {
     return addDeckCard()
   }
-  const deckCount = deck.cards && deck.cards.length || 0
+  let deckCount = deck.cards && deck.cards.length || 0
   if(deck.borrowed) {
     return html`
     <div class="mobile-lg:grid-col-4">
@@ -145,7 +145,7 @@ function deckPreview (deck, sessionMapping, forSession) {
     </div>
 `
 }
-const _memo = {}
+let _memo = {}
 function formatDate (date) {
   if (!_memo[date]) {
     _memo[date] = new Intl.DateTimeFormat().format(new Date(date))
@@ -165,9 +165,9 @@ function calculateNumOfBackgroundCards (cardCount) {
 }
 
 function makeBackgroundCards (startingTop, startingLeft, cardCount) {
-  const pixelGap = 2
-  const cards = []
-  const numOfBackgroundCards = calculateNumOfBackgroundCards(cardCount)
+  let pixelGap = 2
+  let cards = []
+  let numOfBackgroundCards = calculateNumOfBackgroundCards(cardCount)
   let curTop = startingTop + (pixelGap * numOfBackgroundCards)
   let curLeft = startingLeft + (pixelGap * numOfBackgroundCards)
   for (let i = 0; i < numOfBackgroundCards; i++) {
@@ -189,7 +189,7 @@ function deckRow (decks, studySessionsByDeck, session) {
 
 function deckRows (allDecks, studySessionsByDeck) {
   allDecks = [...allDecks, { addDeck: true }]
-  const rows = []
+  let rows = []
   for (let i = 0; i < allDecks.length; i = i + numPerRow) {
     rows.push(deckRow(allDecks.slice(i, i + numPerRow), studySessionsByDeck))
   }
@@ -197,7 +197,7 @@ function deckRows (allDecks, studySessionsByDeck) {
 }
 function studyHistoryRows (allDecks, studySessionsByDeck) {
   allDecks = [...allDecks]
-  const rows = []
+  let rows = []
   for (let i = 0; i < allDecks.length; i = i + numPerRow) {
     rows.push(deckRow(allDecks.slice(i, i + numPerRow), studySessionsByDeck))
   }
@@ -206,14 +206,14 @@ function studyHistoryRows (allDecks, studySessionsByDeck) {
 function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
   let studySessions = decks.filter(deck => !!studySessionsByDeck[deck.id]);
   studySessions = studySessions.concat(borrowedDecks.filter(deck => {
-      const hasSession = !!studySessionsByDeck[deck.id]
+      let hasSession = !!studySessionsByDeck[deck.id]
       if (hasSession) {
         deck.borrowed = true;
         return hasSession
       }
       return false;
   }));
-  const rows = []
+  let rows = []
   for (let i = 0; i < studySessions.length; i = i + numPerRow) {
     rows.push(deckRow(studySessions.slice(i, i + numPerRow), studySessionsByDeck, true))
   }

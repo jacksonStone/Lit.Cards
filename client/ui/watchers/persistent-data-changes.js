@@ -1,7 +1,7 @@
-const { updateDeckName } = require('logic/deck')
-const { editCardBody, addCardBody, deleteCardBody } = require('logic/card-bodies')
-const { editStudySessionState } = require('logic/study')
-const { updateDarkMode } = require('logic/user')
+let { updateDeckName } = require('logic/deck')
+let { editCardBody, addCardBody, deleteCardBody } = require('logic/card-bodies')
+let { editStudySessionState } = require('logic/study')
+let { updateDarkMode } = require('logic/user')
 function listenToSaveableChanges () {
   let runningAlready = false
   setInterval(() => {
@@ -19,7 +19,7 @@ function listenToSaveableChanges () {
 }
 
 async function _handleChanges () {
-  const changes = window.lc.getPersistentChanges()
+  let changes = window.lc.getPersistentChanges()
   if (changes.deck) {
     if (changes.deck.name) {
       handleNameChange(changes)
@@ -39,7 +39,7 @@ async function _handleChanges () {
 
 let currentlySavingName
 async function handleNameChange (changes) {
-  const deck = changes.deck
+  let deck = changes.deck
   let originalName = deck.name
   if (currentlySavingName) {
     return
@@ -60,21 +60,21 @@ async function handleNameChange (changes) {
   })
 }
 
-const cardsBeingEdited = {}
-const cardsBeingAdded = {}
-const cardsBeingDeleted = {}
-const addedCardsTempIdToTrueId = {}
+let cardsBeingEdited = {}
+let cardsBeingAdded = {}
+let cardsBeingDeleted = {}
+let addedCardsTempIdToTrueId = {}
 async function handleCardBodyChange (changes) {
-  const cardsWithChanges = Object.keys(changes.cardBody)
+  let cardsWithChanges = Object.keys(changes.cardBody)
   for (let i = 0; i < cardsWithChanges.length; i++) {
-    const cardId = cardsWithChanges[i]
-    const cardBody = changes.cardBody[cardId]
-    const changeId = cardBody._changeId
+    let cardId = cardsWithChanges[i]
+    let cardBody = changes.cardBody[cardId]
+    let changeId = cardBody._changeId
     if (!cardBody.isNew && !cardBody.deleted) {
       // Is an edit
       if (cardsBeingEdited[cardId]) continue
       cardsBeingEdited[cardId] = true
-      const idToSend = addedCardsTempIdToTrueId[cardId] || cardId
+      let idToSend = addedCardsTempIdToTrueId[cardId] || cardId
       editCardBody(idToSend, cardBody).then(() => {
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]
@@ -157,9 +157,9 @@ async function handleSessionStateChanges(changes) {
 
 let savingDarkMode = false
 async function handleUserChange(changes) {
-  const user = changes.user
+  let user = changes.user
   if(user.darkMode !== undefined) {
-    const startingValue = user.darkMode
+    let startingValue = user.darkMode
     savingDarkMode = true
     updateDarkMode(user.darkMode).then(() => {
       if(startingValue === changes.user.darkMode) {

@@ -1,9 +1,9 @@
-const uuidV4 = require('uuid/v4')
-const crypto = require('crypto')
-const HASHING_FUNCTION_NAME = 'sha256'
-const ENCRYPTION_FUNCTION_NAME = 'aes-128-cbc'
-const ENCRYPTION_PASSWORD = process.env.SIMPLE_NOTE_ENCRYPTION.slice(0, 16)
-const HMAC_KEY = process.env.SIMPLE_NOTE_HMAC_KEY.slice(0, 16)
+let uuidV4 = require('uuid/v4')
+let crypto = require('crypto')
+let HASHING_FUNCTION_NAME = 'sha256'
+let ENCRYPTION_FUNCTION_NAME = 'aes-128-cbc'
+let ENCRYPTION_PASSWORD = process.env.SIMPLE_NOTE_ENCRYPTION.slice(0, 16)
+let HMAC_KEY = process.env.SIMPLE_NOTE_HMAC_KEY.slice(0, 16)
 
 if (!ENCRYPTION_PASSWORD) throw new Error('Must have SIMPLE_NOTE_ENCRYPTION env value')
 if (!HMAC_KEY) throw new Error('Must have SIMPLE_NOTE_HMAC_KEY env value')
@@ -17,23 +17,23 @@ function getHMAC (encryptedText, nonce) {
 }
 
 function hashValues (val1, val2) {
-  const hashFunction = crypto.createHash(HASHING_FUNCTION_NAME)
+  let hashFunction = crypto.createHash(HASHING_FUNCTION_NAME)
   return hashFunction.update(val1 + val2).digest('base64')
 }
 
 function getNonce () {
-  const iv = Buffer.from(crypto.randomBytes(16))
+  let iv = Buffer.from(crypto.randomBytes(16))
   return iv.toString('hex').slice(0, 16)
 }
 
 function encrypt (text) {
-  const nonce = getNonce()
-  const cipher = crypto.createCipheriv(ENCRYPTION_FUNCTION_NAME, ENCRYPTION_PASSWORD, nonce)
+  let nonce = getNonce()
+  let cipher = crypto.createCipheriv(ENCRYPTION_FUNCTION_NAME, ENCRYPTION_PASSWORD, nonce)
   cipher.setEncoding('hex')
   cipher.write(text)
   cipher.end()
-  const crypted = cipher.read()
-  const hmac = getHMAC(crypted, nonce)
+  let crypted = cipher.read()
+  let hmac = getHMAC(crypted, nonce)
   return [nonce, crypted, hmac].join(':')
 }
 
@@ -42,10 +42,10 @@ function decrypt (text) {
     return false
   }
   try {
-    const parts = text.split(':')
-    const nonce = parts[0]
-    const encryptedText = parts[1]
-    const decipher = crypto.createDecipheriv(ENCRYPTION_FUNCTION_NAME, ENCRYPTION_PASSWORD, nonce)
+    let parts = text.split(':')
+    let nonce = parts[0]
+    let encryptedText = parts[1]
+    let decipher = crypto.createDecipheriv(ENCRYPTION_FUNCTION_NAME, ENCRYPTION_PASSWORD, nonce)
     let dec = decipher.update(encryptedText, 'hex', 'utf8')
     dec += decipher.final('utf8')
     return dec
@@ -55,12 +55,12 @@ function decrypt (text) {
 }
 
 function verifyBodyWithHMAC (encryptionBody) {
-  const parts = encryptionBody.split(':')
+  let parts = encryptionBody.split(':')
   if (parts.length < 3) return false
-  const nonce = parts[0]
-  const encryptedText = parts[1]
-  const hmac = parts[2]
-  const newHMAC = getHMAC(encryptedText, nonce)
+  let nonce = parts[0]
+  let encryptedText = parts[1]
+  let hmac = parts[2]
+  let newHMAC = getHMAC(encryptedText, nonce)
   return hmac === newHMAC
 }
 

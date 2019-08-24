@@ -1,3 +1,3 @@
-const { renderPage } = require('../ui/globals')
-const content = require('../ui/page-content/login')
+let { renderPage } = require('../ui/globals')
+let content = require('../ui/page-content/login')
 renderPage(content)

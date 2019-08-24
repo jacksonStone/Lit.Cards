@@ -1,5 +1,5 @@
-const { listToStr, intToChar } = require('../shared/char-encoding')
-const fakeCardBody = require('./fake-card-body.json')
+let { listToStr, intToChar } = require('../shared/char-encoding')
+let fakeCardBody = require('./fake-card-body.json')
 
 fakeCardBody.id = intToChar(0);
 // password: somePassword

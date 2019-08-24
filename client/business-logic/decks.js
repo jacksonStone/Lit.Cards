@@ -1,6 +1,6 @@
-const { getDecks, createDeck } = require('../routes/api/decks')
-const { decks } = require('../routes/navigation/pages')
-const { getParam } = require('../browser-abstractions/url')
+let { getDecks, createDeck } = require('../routes/api/decks')
+let { decks } = require('../routes/navigation/pages')
+let { getParam } = require('../browser-abstractions/url')
 
 exports.getDecks = async () => {
   return JSON.parse(await getDecks())

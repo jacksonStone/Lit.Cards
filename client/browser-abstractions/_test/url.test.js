@@ -1,4 +1,4 @@
-const {
+let {
   getParam,
   onPage
 } = require('../url')

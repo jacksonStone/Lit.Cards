@@ -1,11 +1,11 @@
 
-const { html } = require('lit')
-const { nextCard, previousCard } = require('logic/deck')
+let { html } = require('lit')
+let { nextCard, previousCard } = require('logic/deck')
 module.exports = (currentCardId, cards) => {
   if (!cards) return
 
   // Humans are 1-based
-  const index = cards.indexOf(currentCardId) + 1
+  let index = cards.indexOf(currentCardId) + 1
 
   return html`<div
 style="text-align: center;">

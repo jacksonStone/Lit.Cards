@@ -1,5 +1,5 @@
-const { html } = require('lit')
-const { getValueFromInput } = require('../../../../browser-abstractions/events')
+let { html } = require('lit')
+let { getValueFromInput } = require('../../../../browser-abstractions/events')
 function getName () {
   return window.lc.getData('deck.name')
 }

@@ -1,4 +1,4 @@
-const { html } = require('lit')
+let { html } = require('lit')
 
 module.exports = (error, errorText, name, label, type = 'text') => {
   if (error) {

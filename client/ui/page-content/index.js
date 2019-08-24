@@ -1,5 +1,5 @@
-const { html } = require('lit')
-const cardEditor = require('./deck/components/card-editor')
+let { html } = require('lit')
+let cardEditor = require('./deck/components/card-editor')
 module.exports = () => html`
 <div class="grid-container">
 <div class="usa-prose">

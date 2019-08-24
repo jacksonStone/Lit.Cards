@@ -1,4 +1,4 @@
-const { html } = require('lit')
+let { html } = require('lit')
 module.exports = (action) => {
   return html`
 <button class="usa-button usa-button--outline flip-card"

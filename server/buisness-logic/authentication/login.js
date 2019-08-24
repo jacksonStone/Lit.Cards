@@ -1,11 +1,11 @@
-const authUtils = require('./utils')
-const cookieUtils = require('./cookie')
-const { User } = require('../../database')
+let authUtils = require('./utils')
+let cookieUtils = require('./cookie')
+let { User } = require('../../database')
 
 async function verify (userId, plainTextPassword) {
-  const user = await User.getUser(userId)
+  let user = await User.getUser(userId)
   if (!user) return false
-  const hashResult = authUtils.hashValues(plainTextPassword, user.salt)
+  let hashResult = authUtils.hashValues(plainTextPassword, user.salt)
   return hashResult === user.password
 }
 

@@ -1,6 +1,6 @@
-const { listenForKeyGlobal, resetKeyGlobal } = require('../browser-abstractions/keyboard')
-const { storeAllState, retrieveStateStored } = require('../browser-abstractions/browser-storage')
-const { api } = require('api/api-request')
+let { listenForKeyGlobal, resetKeyGlobal } = require('../browser-abstractions/keyboard')
+let { storeAllState, retrieveStateStored } = require('../browser-abstractions/browser-storage')
+let { api } = require('api/api-request')
 function initDebug (rerender) {
   window.lc._debugging = true
   rerender && window.lc._rerender()

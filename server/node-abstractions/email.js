@@ -1,5 +1,5 @@
-const nodeMailer = require('nodemailer')
-const isTest = process.env.NODE_ENV === 'test'
+let nodeMailer = require('nodemailer')
+let isTest = process.env.NODE_ENV === 'test'
 let transporter
 let testEmails
 let resetTestEmails

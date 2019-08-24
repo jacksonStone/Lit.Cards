@@ -1,5 +1,5 @@
-const { html } = require('lit')
-const { getNumberWrong, resetSession, deleteCurrentSession, studyWrongAnswers } = require('../../../../business-logic/study')
+let { html } = require('lit')
+let { getNumberWrong, resetSession, deleteCurrentSession, studyWrongAnswers } = require('../../../../business-logic/study')
 
 module.exports = () => {
   if (getNumberWrong()) {
@@ -16,9 +16,9 @@ function oneClick (clickHandler) {
     clickHandler()
   }
 }
-const resetSessionBtn = oneClick(resetSession)
-const deleteCurrentSessionBtn = oneClick(deleteCurrentSession)
-const restudyWrongBtn = oneClick(studyWrongAnswers)
+let resetSessionBtn = oneClick(resetSession)
+let deleteCurrentSessionBtn = oneClick(deleteCurrentSession)
+let restudyWrongBtn = oneClick(studyWrongAnswers)
 
 function noneWrong () {
   return html`

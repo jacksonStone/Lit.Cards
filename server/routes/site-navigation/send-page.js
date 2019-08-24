@@ -1,10 +1,10 @@
-const path = require('path')
-const pagePath = path.resolve(__dirname, '../../../assets/html/template.html')
-const defaultPage = require('fs').readFileSync(pagePath, 'utf8')
-const TOKEN_MARKER = '__'
-const pageSplit = defaultPage.split(TOKEN_MARKER)
+let path = require('path')
+let pagePath = path.resolve(__dirname, '../../../assets/html/template.html')
+let defaultPage = require('fs').readFileSync(pagePath, 'utf8')
+let TOKEN_MARKER = '__'
+let pageSplit = defaultPage.split(TOKEN_MARKER)
 function sendPage (res, details, user) {
-  const darkMode = details.darkModeable && user && user.darkMode;
+  let darkMode = details.darkModeable && user && user.darkMode;
   details.darkMode = darkMode ? 'class="darkmode"' : ''
   let renderedPage = ''
   for(let i = 0; i < pageSplit.length; i++) {

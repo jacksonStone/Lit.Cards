@@ -1,24 +1,24 @@
-const { html } = require('lit')
-const { simulateKey } = require('abstract/keyboard')
-const { removeCard, removeImage } = require('logic/deck')
-const { popupComponent, showPopup } = require('./card-image-popup')
-const focusingOnTextProp = '_focusingOnText'
+let { html } = require('lit')
+let { simulateKey } = require('abstract/keyboard')
+let { removeCard, removeImage } = require('logic/deck')
+let { popupComponent, showPopup } = require('./card-image-popup')
+let focusingOnTextProp = '_focusingOnText'
 
-const spaceAction = () => {
+let spaceAction = () => {
   simulateKey('Space')
 }
-const newAction = () => {
+let newAction = () => {
   simulateKey('KeyS')
 }
 
-const cardLoading = () => {
+let cardLoading = () => {
   return window.lc.getData('_cardBodyLoading')
 }
-const removeImageAction = () => {
+let removeImageAction = () => {
   removeImage()
 }
-const deckIsPublic = () => {
-  const deck = window.lc.getData('deck');
+let deckIsPublic = () => {
+  let deck = window.lc.getData('deck');
   return deck && deck.public;
 }
 //TODO::Move to one place
@@ -42,7 +42,7 @@ function getSession () {
   return window.lc.getData('session')
 }
 function tooFewCardsToDeleteOne () {
-  const cards = window.lc.getData('orderedCards')
+  let cards = window.lc.getData('orderedCards')
   if (!cards || !cards.length || cards.length === 1) return true
   return false
 }

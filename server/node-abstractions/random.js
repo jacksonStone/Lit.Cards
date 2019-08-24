@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+let crypto = require('crypto')
 
 function randomString (bytes, encoding = 'base64') {
   return new Promise((resolve) => {

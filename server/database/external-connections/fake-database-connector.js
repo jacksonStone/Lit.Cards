@@ -1,11 +1,11 @@
-const _ = require('lodash')
+let _ = require('lodash')
 let fakeDatabaseConnector = require('../../mocked-data')
-const fakeDataBackup = _.cloneDeep(fakeDatabaseConnector)
+let fakeDataBackup = _.cloneDeep(fakeDatabaseConnector)
 
 async function getRecord (table, conditions, limit) {
-  const tableData = fakeDatabaseConnector[table]
+  let tableData = fakeDatabaseConnector[table]
   if (!tableData) return
-  const results = _.map(
+  let results = _.map(
     _.filter(tableData, dbEntry => {
       let match = true
       _.each(conditions, (conditionValue, conditionKey) => {
@@ -26,24 +26,24 @@ async function getRecord (table, conditions, limit) {
 }
 
 async function setRecord (table, values) {
-  const tableData = fakeDatabaseConnector[table]
+  let tableData = fakeDatabaseConnector[table]
   if (!tableData) return
   tableData.push(values)
   return values
 }
 
 async function unsetRecord (table, values) {
-  const tableData = fakeDatabaseConnector[table]
+  let tableData = fakeDatabaseConnector[table]
   if (!tableData) return
   fakeDatabaseConnector[table] = _.reject(tableData, values)
 }
 
 async function editRecord (table, filter, values) {
-  const tableData = fakeDatabaseConnector[table]
+  let tableData = fakeDatabaseConnector[table]
   if (!tableData) return
-  const entries = _.filter(tableData, filter)
+  let entries = _.filter(tableData, filter)
   for (let i = 0; i < entries.length; i++) {
-    const entry = entries[i]
+    let entry = entries[i]
     Object.assign(entry, values)
   }
 }

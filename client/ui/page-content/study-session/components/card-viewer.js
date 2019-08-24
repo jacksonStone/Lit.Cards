@@ -1,17 +1,17 @@
-const { html } = require('lit')
-const { simulateKey } = require('abstract/keyboard')
-const { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
-const { getTextToShowForCard, refreshEditor } = require('logic/deck')
-const { runNextRender } = require('abstract/rendering-meta')
-const { showingAnswerKeyBindings, showingQuestionKeyBindings } = require('../key-commands')
-const { unsafeHTML } = require('lit-html/directives/unsafe-html')
-const spaceAction = () => {
+let { html } = require('lit')
+let { simulateKey } = require('abstract/keyboard')
+let { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
+let { getTextToShowForCard, refreshEditor } = require('logic/deck')
+let { runNextRender } = require('abstract/rendering-meta')
+let { showingAnswerKeyBindings, showingQuestionKeyBindings } = require('../key-commands')
+let { unsafeHTML } = require('lit-html/directives/unsafe-html')
+let spaceAction = () => {
   simulateKey('Space')
 }
-const rightAction = () => {
+let rightAction = () => {
   simulateKey('ArrowRight')
 }
-const leftAction = () => {
+let leftAction = () => {
   simulateKey('ArrowLeft')
 }
 module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
@@ -21,7 +21,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
     showingQuestionKeyBindings()
   }
   runNextRender(refreshEditor)
-  const getTextForCard = getTextToShowForCard();
+  let getTextForCard = getTextToShowForCard();
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
     ${getTextForCard === false ? html`<div style="height: 300px">Loading...</div>`: html` ${popupComponent()}

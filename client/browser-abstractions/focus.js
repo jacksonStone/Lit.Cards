@@ -1,6 +1,6 @@
-const { $ } = require('./$')
+let { $ } = require('./$')
 function setFocusTo (selector) {
-  const node = $(selector)
+  let node = $(selector)
   node && node.focus()
 }
 module.exports.setFocusTo = setFocusTo

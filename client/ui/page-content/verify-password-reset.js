@@ -1,15 +1,15 @@
-const { html } = require('lit')
-const { grabFormData } = require('../../browser-abstractions/grab-form')
-const { verifyPasswordReset } = require('../../business-logic/login')
-const errorableInput = require('../shared-components/errorable-input')
-const errorBanner = require('../shared-components/error-banner')
+let { html } = require('lit')
+let { grabFormData } = require('../../browser-abstractions/grab-form')
+let { verifyPasswordReset } = require('../../business-logic/login')
+let errorableInput = require('../shared-components/errorable-input')
+let errorBanner = require('../shared-components/error-banner')
 function confrimNewBtn (event) {
   event.preventDefault()
-  const verifyData = grabFormData('#verify')
+  let verifyData = grabFormData('#verify')
   return verifyPasswordReset(verifyData.password, verifyData['password-repeat'])
 }
 module.exports = (data) => {
-  const { fields: ef, abstract: ea } = data.errors
+  let { fields: ef, abstract: ea } = data.errors
   return html`
     <div class="grid-container">
     <div class="grid-row">

@@ -1,14 +1,14 @@
-const express = require('express')
-const router = express.Router()
-const { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
-const code = require('../../node-abstractions/response-codes')
+let express = require('express')
+let router = express.Router()
+let { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
+let code = require('../../node-abstractions/response-codes')
 
 //PUBLIC ROUTE
 router.post('/', async (req, res) => {
-  const deck = req.body.deck
-  const card = req.body.card
+  let deck = req.body.deck
+  let card = req.body.card
   if (!deck) return code.invalidRequest(res)
-  const cardBody = await getCardBody(req.userId, deck, card)
+  let cardBody = await getCardBody(req.userId, deck, card)
   if (cardBody && cardBody.length) {
     res.send(cardBody[0])
     return
@@ -16,9 +16,9 @@ router.post('/', async (req, res) => {
   return code.invalidRequest(res)
 })
 router.post('/edit', async (req, res) => {
-  const deck = req.body.deck
-  const card = req.body.card
-  const changes = req.body.changes
+  let deck = req.body.deck
+  let card = req.body.card
+  let changes = req.body.changes
   delete changes._changeId;
   //They cannot update public this way
   delete changes.public;
@@ -30,7 +30,7 @@ router.post('/edit', async (req, res) => {
   delete changes.userId;
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
-  const cardBody = await getCardBody(req.userId, deck, card)
+  let cardBody = await getCardBody(req.userId, deck, card)
   if (!cardBody) {
     return code.invalidRequest(res)
   }
@@ -38,19 +38,19 @@ router.post('/edit', async (req, res) => {
   return code.ok(res)
 })
 router.post('/add', async (req, res) => {
-  const deck = req.body.deck
-  const changes = req.body.changes
+  let deck = req.body.deck
+  let changes = req.body.changes
   delete changes._changeId
   delete changes.isNew
   // Add a card here toos
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
-  const newId = await addCardBody(req.userId, deck, changes)
+  let newId = await addCardBody(req.userId, deck, changes)
   res.send(newId)
 })
 router.post('/delete', async (req, res) => {
-  const deck = req.body.deck
-  const card = req.body.card
+  let deck = req.body.deck
+  let card = req.body.card
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
   await deleteCardBody(req.userId, deck, card)

@@ -1,9 +1,9 @@
-const { listenForKey, resetAllKeyBindings, resetKey } = require('../../../browser-abstractions/keyboard')
-const {
+let { listenForKey, resetAllKeyBindings, resetKey } = require('../../../browser-abstractions/keyboard')
+let {
   previousCard,
   nextCard
 } = require('logic/deck')
-const {
+let {
   flipCard,
   markWrong,
   markRight,

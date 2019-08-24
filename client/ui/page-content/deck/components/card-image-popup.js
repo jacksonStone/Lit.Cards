@@ -1,23 +1,23 @@
-const { html } = require('lit')
-const { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
-const { addImageDataToImage } = require('abstract/file-upload')
+let { html } = require('lit')
+let { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
+let { addImageDataToImage } = require('abstract/file-upload')
 // TODO::Consider reworking deps here
-const { getImageData } = require('logic/deck')
-const { runNextRender } = require('abstract/rendering-meta')
+let { getImageData } = require('logic/deck')
+let { runNextRender } = require('abstract/rendering-meta')
 
-const _hidePopup = (e) => {
+let _hidePopup = (e) => {
   e.preventDefault()
   restoreArchivedKeyBindings()
   window.lc.setData('showingPopup', false)
 }
 
-const showPopup = () => {
+let showPopup = () => {
   archiveCurrentKeyBindings()
   listenForKey('Escape', _hidePopup)
   window.lc.setData('showingPopup', true)
 }
 
-const popupComponent = () => {
+let popupComponent = () => {
   if (!window.lc.getData('showingPopup')) {
     return null
   }

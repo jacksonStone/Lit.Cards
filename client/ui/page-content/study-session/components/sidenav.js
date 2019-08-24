@@ -1,8 +1,8 @@
-const { html } = require('lit-html/lit-html')
-const { deleteCurrentSessionWithConfirmation } = require('logic/study')
+let { html } = require('lit-html/lit-html')
+let { deleteCurrentSessionWithConfirmation } = require('logic/study')
 
 function getDeckId () {
-  const deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck')
   return deck && deck.id
 }
 function getActiveCardId () {

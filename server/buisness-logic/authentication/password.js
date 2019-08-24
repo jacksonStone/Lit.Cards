@@ -1,30 +1,30 @@
-const { User } = require('../../database')
-const { now } = require('../../node-abstractions/time')
-const { randomString } = require('../../node-abstractions/random')
-const { sendMail } = require('../../node-abstractions/email')
-const { getLoginCookie } = require('./login')
-const authUtils = require('./utils');
-const millisInADay = 1000 * 60 * 60 * 24;
-const routeToVerifyReset = '/site/verify?token='
-const baseURL = process.env.SITE_DOMAIN_ROOT
+let { User } = require('../../database')
+let { now } = require('../../node-abstractions/time')
+let { randomString } = require('../../node-abstractions/random')
+let { sendMail } = require('../../node-abstractions/email')
+let { getLoginCookie } = require('./login')
+let authUtils = require('./utils');
+let millisInADay = 1000 * 60 * 60 * 24;
+let routeToVerifyReset = '/site/verify?token='
+let baseURL = process.env.SITE_DOMAIN_ROOT
 
 function generateRandomReset() {
   return randomString(20, 'hex')
 }
 function hashRandomReset(user, token) {
-  const salt = user.salt;
+  let salt = user.salt;
   return authUtils.hashValues(token, salt)
 }
 
 // Return the same thing for success or failure so they don't know nothin'!
 async function passwordReset (userId) {
-  const user = await User.getUser(userId)
+  let user = await User.getUser(userId)
   if (!user) {
     return
   }
-  const resetToken = await generateRandomReset()
-  const hashedResetToken = hashRandomReset(user, resetToken)
-  const changes = { resetToken: hashedResetToken, resetTokenExpiration: now() + millisInADay * 3}
+  let resetToken = await generateRandomReset()
+  let hashedResetToken = hashRandomReset(user, resetToken)
+  let changes = { resetToken: hashedResetToken, resetTokenExpiration: now() + millisInADay * 3}
   await User.editUser(user.userId, changes)
   sendMail(
     userId,
@@ -43,7 +43,7 @@ function validatePasswordResetVerify(user, unhashedResetToken) {
   if (!user.resetToken || user.resetTokenExpiration < now()) {
     return false
   }
-  const hashedResetToken = hashRandomReset(user, unhashedResetToken)
+  let hashedResetToken = hashRandomReset(user, unhashedResetToken)
   if (user.resetToken !== hashedResetToken) {
     return false
   }
@@ -52,7 +52,7 @@ function validatePasswordResetVerify(user, unhashedResetToken) {
 
 // Resets the user's password, and logs them in, invalidating all other sessions
 async function passwordResetVerify (userId, unhashedResetToken, newPassword) {
-  const user = await User.getUser(userId)
+  let user = await User.getUser(userId)
   if(!validatePasswordResetVerify(user, unhashedResetToken, newPassword)) {
     return 'unauthorized';
   }
@@ -60,7 +60,7 @@ async function passwordResetVerify (userId, unhashedResetToken, newPassword) {
 }
 // For password resets
 async function changePasswordWithoutNeedingCurrentPassword(user, newPassword) {
-  const newPasswordHash = authUtils.hashValues(newPassword, user.salt)
+  let newPasswordHash = authUtils.hashValues(newPassword, user.salt)
   if (newPasswordHash === user.password) {
     return 'same password';
   }
@@ -68,14 +68,14 @@ async function changePasswordWithoutNeedingCurrentPassword(user, newPassword) {
 }
 //Returns a cookie if successful
 async function changePassword(user, newPassword, currentPassword) {
-  const currentPasswordAttemptHash = authUtils.hashValues(currentPassword, user.salt)
+  let currentPasswordAttemptHash = authUtils.hashValues(currentPassword, user.salt)
   if (currentPasswordAttemptHash !== user.password) {
     return 'wrong password';
   }
   if (newPassword === currentPassword) {
     return 'same password';
   }
-  const newPasswordHash = authUtils.hashValues(newPassword, user.salt)
+  let newPasswordHash = authUtils.hashValues(newPassword, user.salt)
   return _updatePassword(newPasswordHash, user)
 }
 
@@ -88,10 +88,10 @@ async function _updatePassword(passwordHash, user) {
   } else {
     validSession = 1;
   }
-  const changes = { password: passwordHash, validSession, resetToken: undefined, resetTokenExpiration: 0 }
+  let changes = { password: passwordHash, validSession, resetToken: undefined, resetTokenExpiration: 0 }
   await User.editUser(user.userId, changes)
-  const newUser = Object.assign({}, user, changes)
-  const cookie = getLoginCookie(newUser)
+  let newUser = Object.assign({}, user, changes)
+  let cookie = getLoginCookie(newUser)
   return cookie
 }
 

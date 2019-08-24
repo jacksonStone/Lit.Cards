@@ -1,18 +1,18 @@
-const path = require('path')
-const loginUtils = require('./buisness-logic/authentication/login')
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-const ROOT = path.join(__dirname, '../')
-const express = require('express')
-const app = express()
-const routes = require('./routes')
-const ONE_YEAR = 1000 * 60 * 60 * 24 * 365
+let path = require('path')
+let loginUtils = require('./buisness-logic/authentication/login')
+let cookieParser = require('cookie-parser')
+let bodyParser = require('body-parser')
+let ROOT = path.join(__dirname, '../')
+let express = require('express')
+let app = express()
+let routes = require('./routes')
+let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
 app.use(cookieParser())
 app.use(bodyParser.json({limit:'5mb', extended: true}))
 
 //User middleware
 app.use(async (req, res, next) => {
-  const user = await loginUtils.getUser(req.cookies)
+  let user = await loginUtils.getUser(req.cookies)
   if (user) {
     req.userId = user.userId
     req.user = user

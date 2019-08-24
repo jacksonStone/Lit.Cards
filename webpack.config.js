@@ -1,12 +1,12 @@
-const path = require('path')
-const fs = require('fs')
-const entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
+let path = require('path')
+let fs = require('fs')
+let entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
   return file.match(/.*\.js$/);
 });
-const prodMode = process.env.NODE_ENV === 'production'
+let prodMode = process.env.NODE_ENV === 'production'
 entryForWebpack = {}
 entries.forEach(entry => {
-  const entryName = entry.split('.')[0]
+  let entryName = entry.split('.')[0]
   entryForWebpack[entryName] ='./client/entry-points/' + entry
 })
 module.exports = {

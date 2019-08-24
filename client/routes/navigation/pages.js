@@ -1,7 +1,7 @@
-const { redirect } = require('../../browser-abstractions/redirect')
+let { redirect } = require('../../browser-abstractions/redirect')
 function setUpRoute (route) {
   route = '/site/' + route
-  const routeFunction = function (params) {
+  let routeFunction = function (params) {
     redirect(route + convertJSONToURLParams(params))
   }
   // is for testing
@@ -13,11 +13,11 @@ function setUpRoute (route) {
 
 function convertJSONToURLParams (params) {
   if (!params) return ''
-  const keys = Object.keys(params)
+  let keys = Object.keys(params)
   let paramString = '?'
   for (let i = 0; i < keys.length; i++) {
-    const key = keys[i]
-    const value = params[key]
+    let key = keys[i]
+    let value = params[key]
     paramString += key + '=' + value
     if (i !== keys.length - 1) {
       paramString += '&'

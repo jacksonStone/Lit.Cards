@@ -16,7 +16,7 @@ async function editStudyHistory(studyHistory, history) {
 }
 
 async function upsertStudyHistory(studyHistory, history) {
-  const studyHistoryRecords = await db.getRecord(tableName, { userId: studyHistory.userId })
+  let studyHistoryRecords = await db.getRecord(tableName, { userId: studyHistory.userId })
 
   //If we have a length of one, was a new array that had first item appended
   if(studyHistoryRecords.length === 0) {

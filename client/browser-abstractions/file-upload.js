@@ -4,9 +4,9 @@ function getFileFromFileUploadEvent (e) {
 
 function getFileData (e) {
   return new Promise((resolve, reject) => {
-    const file = getFileFromFileUploadEvent(e)
-    const reader = new window.FileReader()
-    const timeoutId = window.setTimeout(() => {
+    let file = getFileFromFileUploadEvent(e)
+    let reader = new window.FileReader()
+    let timeoutId = window.setTimeout(() => {
       // TODO::Try to handle this in a way that gets surfaced to the user
       console.error('FAILED TO PROCESS FILE')
       reject(new Error('Failed to process file'))
@@ -20,15 +20,15 @@ function getFileData (e) {
 }
 
 async function getImageAtDifferentSize (imageData, ...sizes) {
-  const defaultSize = 600
+  let defaultSize = 600
   sizes = !sizes.length ? [[defaultSize, defaultSize]] : sizes
   return new Promise((resolve) => {
-    const img = document.createElement('img')
-    const canvasElement = document.createElement('canvas')
+    let img = document.createElement('img')
+    let canvasElement = document.createElement('canvas')
     img.src = imageData
     img.onload = () => {
-      const ctx = canvasElement.getContext('2d')
-      const results = []
+      let ctx = canvasElement.getContext('2d')
+      let results = []
       for (let i = 0; i < sizes.length; i++) {
         let [MAX_WIDTH, MAX_HEIGHT] = sizes[i]
         let width = img.width
@@ -61,7 +61,7 @@ function renderPreviewImageWithRawData (data, targetId = 'image-spot') {
     .setAttribute('style', `background-image:url(${data}); `)
 }
 function addImageDataToImage (data, targetId) {
-  const output = document.getElementById(targetId)
+  let output = document.getElementById(targetId)
   output.setAttribute('src', data)
 }
 

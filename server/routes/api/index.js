@@ -1,5 +1,5 @@
-const express = require('express')
-const router = express.Router()
+let express = require('express')
+let router = express.Router()
 router.use('/', require('./debug'))
 router.use('/login', require('./login'))
 router.use('/logout', require('./logout'))

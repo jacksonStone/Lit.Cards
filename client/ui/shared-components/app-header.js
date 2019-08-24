@@ -1,9 +1,9 @@
 
-const { html } = require('lit')
-const { onPage } = require('abstract/url')
-const { navigateToLoginPage, logout } = require('logic/login')
-const { navigateToSettingsPage } = require('logic/settings')
-const { resendEmailVerification } = require('logic/login')
+let { html } = require('lit')
+let { onPage } = require('abstract/url')
+let { navigateToLoginPage, logout } = require('logic/login')
+let { navigateToSettingsPage } = require('logic/settings')
+let { resendEmailVerification } = require('logic/login')
 
 module.exports = (userInfo) => html`
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
@@ -30,7 +30,7 @@ module.exports = (userInfo) => html`
 </header>`
 
 function waitingOnEmailVerification() {
-  const user = window.lc.getData('user')
+  let user = window.lc.getData('user')
   if (!user || user.verifiedEmail) {
     return false
   }

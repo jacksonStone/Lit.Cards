@@ -1,8 +1,8 @@
-const { hash } = require('abstract/url');
+let { hash } = require('abstract/url');
 let lastSeenHash = hash()
 function listenForHashChange () {
   window.onhashchange = () => {
-    const currentHash = hash()
+    let currentHash = hash()
     if(currentHash !== lastSeenHash) {
       //We just want a re-render to get queued up
       lastSeenHash = currentHash

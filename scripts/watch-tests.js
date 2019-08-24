@@ -1,6 +1,6 @@
-const watch = require('watch')
-const path = require('path')
-const root = path.resolve(__dirname, '../')
+let watch = require('watch')
+let path = require('path')
+let root = path.resolve(__dirname, '../')
 let running = false
 let needToRun = false
 function runTests() {

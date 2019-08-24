@@ -1,9 +1,9 @@
 function speedTestFunction (callback, name = 'untilted', repeats = 1) {
   let sum = 0
   for (let i = 0; i < repeats; i++) {
-    const start = Date.now()
+    let start = Date.now()
     callback()
-    const end = Date.now()
+    let end = Date.now()
     sum += (end - start)
   }
   console.info(`${name} took on average: ${(sum / repeats)} milliseconds`)

@@ -1,5 +1,5 @@
 // Allows for easy date.now overrides
-const isTest = process.env.NODE_ENV === 'test'
+let isTest = process.env.NODE_ENV === 'test'
 let testNow
 
 module.exports.now = () => {

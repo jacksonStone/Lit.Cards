@@ -1,34 +1,34 @@
-const getPageParams = () => {
-  const params = window.location.search
+let getPageParams = () => {
+  let params = window.location.search
   if (!params || params.length < 2) return {}
-  const withoutQuestionMark = params.substring(1)
-  const paramPairs = withoutQuestionMark.split('&')
-  const paramsObj = {}
+  let withoutQuestionMark = params.substring(1)
+  let paramPairs = withoutQuestionMark.split('&')
+  let paramsObj = {}
   for (let i = 0; i < paramPairs.length; i++) {
-    const paramPair = paramPairs[i]
-    const paramPairParts = paramPair.split('=')
+    let paramPair = paramPairs[i]
+    let paramPairParts = paramPair.split('=')
     paramsObj[paramPairParts[0]] = paramPairParts[1]
   }
   return paramsObj
 }
 
-const getParam = (param) => {
+let getParam = (param) => {
   return getPageParams()[param]
 }
 
-const getPage = () => {
-  const current = window.location.href
+let getPage = () => {
+  let current = window.location.href
   if (current.indexOf('/site/') === -1) {
     return 'home'
   }
   return current.substring(current.indexOf('/site/'))
 }
-const onPage = (pageName) => {
+let onPage = (pageName) => {
   return getPage().indexOf('/site/' + pageName) !== -1
 }
 
-const hash = () => {
-  const hash = window.location.hash
+let hash = () => {
+  let hash = window.location.hash
   if (!hash) return ''
   return hash.substring(1)
 }

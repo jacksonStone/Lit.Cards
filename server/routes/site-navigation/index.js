@@ -1,9 +1,9 @@
 var express = require('express')
 var router = express.Router()
-const _ = require('lodash');
-const { sendPage } = require('./send-page');
+let _ = require('lodash');
+let { sendPage } = require('./send-page');
 
-const makePageRoute = (path, details, auth) => {
+let makePageRoute = (path, details, auth) => {
   router.get(path, async (req, res) => {
     if(auth) {
       if (!req.userId) return res.redirect('/')
@@ -12,7 +12,7 @@ const makePageRoute = (path, details, auth) => {
   })
 }
 
-const pages = {
+let pages = {
   '/': {
     darkModeable: false,
     title: 'Lit.Cards',
@@ -73,7 +73,7 @@ const pages = {
 
 _.each(pages, (details, path) => {
   // Auth: true - default
-  const auth = details.auth === undefined ? true : details.auth
+  let auth = details.auth === undefined ? true : details.auth
   makePageRoute(path, details, auth)
 })
 

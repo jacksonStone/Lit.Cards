@@ -1,10 +1,10 @@
-const loginTest = require('../login')
-const { signup: signupTest } = require('../signup')
-const { resetData } = require('../../../database/external-connections/fake-database-connector')
-const { resetTestEmails } = require('../../../node-abstractions/email')
-const assert = require('assert')
-const userId = 'user10'
-const password = 'somePassword'
+let loginTest = require('../login')
+let { signup: signupTest } = require('../signup')
+let { resetData } = require('../../../database/external-connections/fake-database-connector')
+let { resetTestEmails } = require('../../../node-abstractions/email')
+let assert = require('assert')
+let userId = 'user10'
+let password = 'somePassword'
 
 describe('Login validates correctly', () => {
   beforeEach(async () => {
@@ -15,7 +15,7 @@ describe('Login validates correctly', () => {
     resetData('user')
   })
   it('correct password', async () => {
-    const result = await loginTest.verify(userId, password)
+    let result = await loginTest.verify(userId, password)
     assert.strictEqual(result, true, 'Provided correct creds')
   })
 })

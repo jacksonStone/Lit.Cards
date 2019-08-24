@@ -1,17 +1,17 @@
-const { CardBody } = require('../database')
-// const { Card } = require('../database')
-const { Deck } = require('../database')
-const sanitizeHTML = require('sanitize-html')
-const allowedTags = require('../../shared/allowedHTMLTags')
-const { intToChar } = require('../../shared/char-encoding')
-const sanitizeOptions = {
+let { CardBody } = require('../database')
+// let { Card } = require('../database')
+let { Deck } = require('../database')
+let sanitizeHTML = require('sanitize-html')
+let allowedTags = require('../../shared/allowedHTMLTags')
+let { intToChar } = require('../../shared/char-encoding')
+let sanitizeOptions = {
   allowedTags
 }
 async function getCardBody (userId, deck, card) {
   return CardBody.getCardBody(userId, deck, card)
 }
 async function deleteCardBody (userId, deck, card) {
-  const cardBody = await getCardBody(userId, deck, card)
+  let cardBody = await getCardBody(userId, deck, card)
   if (cardBody && cardBody.length && cardBody[0].public) {
     return
   }
@@ -38,9 +38,9 @@ async function addCardBody (userId, deck, changes) {
   sanitizeCardContent(changes)
   delete changes.id
   // TODO:: Wrap this in a transaction or something
-  const deckRecord = await Deck.getDeck(userId, deck)
-  const nextId = deckRecord.nextId;
-  const idAsChar = intToChar(nextId)
+  let deckRecord = await Deck.getDeck(userId, deck)
+  let nextId = deckRecord.nextId;
+  let idAsChar = intToChar(nextId)
 
   await CardBody.addCardBody(userId, deck, idAsChar, changes)
   let cards = deckRecord.cards

@@ -1,4 +1,4 @@
-const { api } = require('./api-request')
+let { api } = require('./api-request')
 
 exports.getStudySessionsAndBorrowedDecks = () => {
   return api('study/me')

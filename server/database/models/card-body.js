@@ -1,5 +1,5 @@
-const db = require('../external-connections/fake-database-connector')
-const tableName = 'cardBody'
+let db = require('../external-connections/fake-database-connector')
+let tableName = 'cardBody'
 
 async function getCardBody (userId, deck, card) {
   let results
@@ -30,7 +30,7 @@ async function editCardBodies(userId, deck, changes) {
   return db.editRecord(tableName, { userId, deck }, changes)
 }
 async function deleteCardBodies (userId, deck) {
-  const results = await getCardBodies(userId, deck)
+  let results = await getCardBodies(userId, deck)
   if (results && results.length) {
     for (let res of results) {
       await db.unsetRecord(tableName, { id: res.id, deck, userId })

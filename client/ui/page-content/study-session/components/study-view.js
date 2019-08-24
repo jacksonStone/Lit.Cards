@@ -1,10 +1,10 @@
-const { html } = require('lit')
-const viewer = require('./card-viewer')
-const cardStack = require('./right-wrong')
-const sidenav = require('./sidenav')
-const nextSteps = require('./end-of-session')
-const { storeAllState, retrieveStateStored } = require('abstract/browser-storage')
-const darkmodeCheckbox = require('component/darkmode-checkbox')
+let { html } = require('lit')
+let viewer = require('./card-viewer')
+let cardStack = require('./right-wrong')
+let sidenav = require('./sidenav')
+let nextSteps = require('./end-of-session')
+let { storeAllState, retrieveStateStored } = require('abstract/browser-storage')
+let darkmodeCheckbox = require('component/darkmode-checkbox')
 module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => html`
 <div class="grid-container">
     <div class="grid-row">

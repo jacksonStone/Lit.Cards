@@ -1,15 +1,15 @@
-const { html } = require('lit')
-const { grabFormData } = require('../../browser-abstractions/grab-form')
-const { hash } = require('abstract/url')
-const { navigateToSignupPage } = require('../../business-logic/login')
-const errorableInput = require('../shared-components/errorable-input')
-const errorBanner = require('../shared-components/error-banner')
-const { changePassword } = require('../../business-logic/login')
-const darkmodeCheckbox = require('component/darkmode-checkbox')
+let { html } = require('lit')
+let { grabFormData } = require('../../browser-abstractions/grab-form')
+let { hash } = require('abstract/url')
+let { navigateToSignupPage } = require('../../business-logic/login')
+let errorableInput = require('../shared-components/errorable-input')
+let errorBanner = require('../shared-components/error-banner')
+let { changePassword } = require('../../business-logic/login')
+let darkmodeCheckbox = require('component/darkmode-checkbox')
 
-const changePasswordBtn = (event) => {
+let changePasswordBtn = (event) => {
   event.preventDefault()
-  const values = grabFormData('#password-change')
+  let values = grabFormData('#password-change')
   changePassword(values.currentPassword, values.password, values.passwordRepeat)
 }
 
@@ -22,7 +22,7 @@ function passwordField(error, label='Password', name='password') {
 module.exports = (data) => {
   // add other screens to settings
   //
-  const h = hash()
+  let h = hash()
   return html`
     <div class="grid-container">
         <aside style="display: block;
@@ -60,7 +60,7 @@ module.exports = (data) => {
 }
 
 function getContents(data) {
-  const currentHash = hash()
+  let currentHash = hash()
   if (!currentHash) {
     return changePasswordInterface(data)
   }
@@ -70,8 +70,8 @@ function getContents(data) {
 }
 
 function changePasswordInterface(data){
-  const { fields: ef, abstract: ea } = data.errors
-  const updatedPassword = window.lc.getData('updatedPassword')
+  let { fields: ef, abstract: ea } = data.errors
+  let updatedPassword = window.lc.getData('updatedPassword')
   return html` <form class="usa-form" id="password-change">
               <fieldset class="usa-fieldset">
                 ${updatedPassword ? html`Successfully updated password` : html``}

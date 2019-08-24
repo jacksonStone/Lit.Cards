@@ -1,6 +1,6 @@
 module.exports.reject = (list, condition) => {
   return list.map(entry => {
-    const keys = Object.keys(condition)
+    let keys = Object.keys(condition)
     for (let key of keys) {
       if (entry[key] !== condition[key]) {
         return entry
@@ -9,7 +9,7 @@ module.exports.reject = (list, condition) => {
   }).filter(entry => entry !== undefined)
 }
 module.exports.keyBy = (list, key) => {
-  const mapped = {}
+  let mapped = {}
   list.forEach(entry => {
     mapped[entry[key]] = entry
   })

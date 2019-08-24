@@ -1,20 +1,20 @@
-const db = require('../external-connections/fake-database-connector')
-const tableName = 'deck'
-const { userExists } = require('./user')
-const { generateId } = require('../../../shared/id-generator')
-const { intToChar } = require('../../../shared/char-encoding')
+let db = require('../external-connections/fake-database-connector')
+let tableName = 'deck'
+let { userExists } = require('./user')
+let { generateId } = require('../../../shared/id-generator')
+let { intToChar } = require('../../../shared/char-encoding')
 async function getDecks (userId) {
-  const results = await db.getRecord(tableName, { userId })
+  let results = await db.getRecord(tableName, { userId })
   return results || []
 }
 async function getDeck (userId, deck, requireUserIdMatch = false) {
-  const query = { id: deck };
+  let query = { id: deck };
   if(requireUserIdMatch) {
     query.userId = userId;
   }
-  const results = await db.getRecord(tableName, query)
+  let results = await db.getRecord(tableName, query)
   if (results && results.length) {
-    const firstResult = results[0];
+    let firstResult = results[0];
     if (firstResult.userId === userId || firstResult.public) {
       return firstResult
     }
@@ -27,17 +27,17 @@ async function editDeck ({ userId, id }, changes) {
 }
 //TODO:: Consider making this an Or join
 async function getByIdsWithCondition(ids, condition) {
-  const resultingQueries = await Promise.all(ids.map(id => {
+  let resultingQueries = await Promise.all(ids.map(id => {
     return db.getRecord(tableName, {id, ...condition}, 1)
   }))
-  const resultsWithValues = resultingQueries.filter(result => (result && result.length));
+  let resultsWithValues = resultingQueries.filter(result => (result && result.length));
   //Flatten queries
   return resultsWithValues.map(result => {
     return result[0];
   })
 }
 async function deleteCard (userId, deck, card) {
-  const deckRecord = await getDeck(userId, deck)
+  let deckRecord = await getDeck(userId, deck)
   if (!deckRecord) {
     return
   }
@@ -52,18 +52,18 @@ async function deleteCard (userId, deck, card) {
 async function createDeck (userId, name) {
   if (!userId || !name) return
   // Required
-  const currentUser = await userExists(userId)
+  let currentUser = await userExists(userId)
   if (!currentUser) return
-  const id = generateId()
-  const dateMade = Date.now()
-  const cardCount = 0
+  let id = generateId()
+  let dateMade = Date.now()
+  let cardCount = 0
   return db.setRecord(tableName, { userId, name, id, date: dateMade, cardCount })
 }
 
 async function deleteDeck (userId, id) {
   if (!userId || !id) return
   // Required
-  const currentUser = await userExists(userId)
+  let currentUser = await userExists(userId)
   if (!currentUser) return
   return db.unsetRecord(tableName, { userId, id })
 }

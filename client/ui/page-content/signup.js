@@ -1,15 +1,15 @@
-const { html } = require('lit')
-const { grabFormData } = require('../../browser-abstractions/grab-form')
-const { signup } = require('../../business-logic/login')
-const errorableInput = require('../shared-components/errorable-input')
-const errorBanner = require('../shared-components/error-banner')
+let { html } = require('lit')
+let { grabFormData } = require('../../browser-abstractions/grab-form')
+let { signup } = require('../../business-logic/login')
+let errorableInput = require('../shared-components/errorable-input')
+let errorBanner = require('../shared-components/error-banner')
 function signupBtn (event) {
   event.preventDefault()
-  const signupData = grabFormData('#signup')
+  let signupData = grabFormData('#signup')
   return signup(signupData.email, signupData.password, signupData['password-repeat'])
 }
 module.exports = (data) => {
-  const { fields: ef, abstract: ea } = data.errors
+  let { fields: ef, abstract: ea } = data.errors
   return html`
     <div class="grid-container">
     <div class="grid-row">

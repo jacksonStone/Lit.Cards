@@ -1,12 +1,12 @@
-const { $ } = require('./$')
+let { $ } = require('./$')
 exports.grabFormData = function (selector) {
-  const formNode = $(selector)
+  let formNode = $(selector)
   if (!formNode) {
     throw new Error('Bad form selector give')
   }
-  const formData = new window.FormData($(selector))
-  const entries = formData.entries()
-  const data = {}
+  let formData = new window.FormData($(selector))
+  let entries = formData.entries()
+  let data = {}
   for (let pair of entries) {
     data[pair[0]] = pair[1]
   }

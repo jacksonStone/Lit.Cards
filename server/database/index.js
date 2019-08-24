@@ -1,2 +1,2 @@
-const models = require('./models')
+let models = require('./models')
 module.exports = models

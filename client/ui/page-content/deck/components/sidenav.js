@@ -1,31 +1,31 @@
-const { html } = require('lit-html/lit-html')
-const { deleteSession: deleteSessionInServerAndState } = require('logic/study')
-const { makeDeckPublic: makePublicInServerAndState } = require('logic/deck')
+let { html } = require('lit-html/lit-html')
+let { deleteSession: deleteSessionInServerAndState } = require('logic/study')
+let { makeDeckPublic: makePublicInServerAndState } = require('logic/deck')
 function getDeckId () {
-  const deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck')
   return deck && deck.id
 }
 function deckIsPublic () {
-  const deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck')
   return deck && deck.public;
 }
 function getSessionId () {
-  const session = window.lc.getData('session')
+  let session = window.lc.getData('session')
   return session && session.id
 }
 function deleteSession () {
-  const id = getSessionId()
+  let id = getSessionId()
   deleteSessionInServerAndState(id)
 }
 function makePublic () {
-  const id = getDeckId()
+  let id = getDeckId()
   if (!id) return;
   makePublicInServerAndState(id)
 }
 function copySharableLink () {
   // TODO::Probably better in abstract
-  const link = window.location.origin + `/site/me/study?deck=${getDeckId()}&upsert=true`;
-  const textArea = document.createElement("textarea");
+  let link = window.location.origin + `/site/me/study?deck=${getDeckId()}&upsert=true`;
+  let textArea = document.createElement("textarea");
   textArea.value = link;
   document.body.appendChild(textArea);
   textArea.focus()

@@ -1,10 +1,10 @@
-const { signup: signupTest } = require('../signup')
-const { verify } = require('../login')
-const assert = require('assert')
-const { resetData } = require('../../../database/external-connections/fake-database-connector')
-const { resetTestEmails } = require('../../../node-abstractions/email')
-const userId = 'user11'
-const plainTextPassword = 'somePassword'
+let { signup: signupTest } = require('../signup')
+let { verify } = require('../login')
+let assert = require('assert')
+let { resetData } = require('../../../database/external-connections/fake-database-connector')
+let { resetTestEmails } = require('../../../node-abstractions/email')
+let userId = 'user11'
+let plainTextPassword = 'somePassword'
 
 describe('User signup', () => {
   afterEach(() => {
@@ -12,10 +12,10 @@ describe('User signup', () => {
     resetTestEmails()
   })
   it('Populates user correctly', async () => {
-    const result = await signupTest(userId, plainTextPassword)
+    let result = await signupTest(userId, plainTextPassword)
     assert.notStrictEqual(result.password, plainTextPassword, 'Hashed password')
     assert.ok(result.salt, 'Has salt')
-    const correctPasswordHash = await verify(result.userId, plainTextPassword)
+    let correctPasswordHash = await verify(result.userId, plainTextPassword)
     assert.strictEqual(correctPasswordHash, true, 'Provided correct creds')
     //Added a valid session tracker
     assert(result.validSession !== undefined)
@@ -23,7 +23,7 @@ describe('User signup', () => {
   })
   it('Does not create duplicate user', async () => {
     await signupTest('user10', plainTextPassword)
-    const result = await signupTest('user10', plainTextPassword)
+    let result = await signupTest('user10', plainTextPassword)
     assert.strictEqual(result, undefined, 'did not create duplicate user')
   })
 })

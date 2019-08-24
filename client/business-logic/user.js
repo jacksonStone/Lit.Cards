@@ -1,10 +1,10 @@
-const { getUserDetails, setDarkMode } = require('../routes/api/user-details')
-const { recordAndSetDarkMode } = require('../browser-abstractions/darkmode')
+let { getUserDetails, setDarkMode } = require('../routes/api/user-details')
+let { recordAndSetDarkMode } = require('../browser-abstractions/darkmode')
 let userDetails
 
 async function fetchUser () {
   if (userDetails) return userDetails
-  const userDetailsUnformatted = await getUserDetails()
+  let userDetailsUnformatted = await getUserDetails()
   try {
     userDetails = JSON.parse(userDetailsUnformatted)
   } catch (e) {
