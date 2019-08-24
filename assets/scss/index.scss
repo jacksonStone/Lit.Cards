@@ -58,6 +58,13 @@ body {
   color: $bad-color
   //color: red
 }
+.public-deck-marker {
+  font-size: 16px;
+  position: absolute;
+  top:25px;
+  left: 62%;
+  color: $primary-color
+}
 .study-button {
   font-size: 14px;
 }
@@ -70,16 +77,25 @@ body {
   .remove-button {
     left: 71%
   }
+  .public-deck-marker {
+    left: 60%
+  }
 }
 @media (max-width: 550px) {
   .remove-button {
     left: 67%
+  }
+  .public-deck-marker {
+    left: 56%
   }
 }
 //Mobile view!
 @media (max-width: 480px) {
   .remove-button {
     left: 73%;
+  }
+  .public-deck-marker {
+    left: 63%;
   }
 }
 .remove-button:hover{
@@ -236,6 +252,9 @@ body {
   font-size: 44px;
   box-shadow: none;
 }
+.darkmode-checkbox-container {
+  background:white;
+}
 aside .usa-sidenav {
   border: 2px solid rgba(0,0,0,.1);
   background: white;
@@ -247,6 +266,9 @@ aside .usa-sidenav {
   color: #555;
   .fancy-line {
     border-top: 1px solid #555;
+  }
+  .darkmode-checkbox-container {
+    background: black;
   }
   #overlay {
     background-color: rgba(0,0,0,.8);

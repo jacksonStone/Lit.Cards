@@ -118,7 +118,7 @@ function deckPreview (deck, sessionMapping, forSession) {
           overflow-wrap: break-word;
           ">${deck.name}</div>
         </div>
-        ${(forSession || deck.public) ? ((deck.public ) ? html`<div class="remove-button">Public deck</div>` : html``): html`
+        ${(forSession || deck.public) ? ((deck.public ) ? html`<div class="public-deck-marker">Public</div>` : html``): html`
             <button
             @click=${() => { deleteDeckBtn(deck.id) }}
             class="usa-button usa-button--unstyled remove-button" >
