@@ -145,6 +145,103 @@ function deckPreview (deck, sessionMapping, forSession) {
     </div>
 `
 }
+
+function recentlyStudiedPreview (deck) {
+  let deckCount = deck.cards && deck.cards.length || 0
+  const borrowed = window.lc.getData('user.userId') !== deck.userId;
+  if(borrowed) {
+    return html`
+    <div class="mobile-lg:grid-col-4">
+           <div style="position:relative">
+           ${makeBackgroundCards(0, 0, deckCount)}
+           
+        <div class=" deck-card-outline"
+        style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              "
+        >
+            <span style="
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+            ">${formatDate(deck.date)}</span>
+  
+          <div style="
+          margin-top: 20px;
+          text-align: center;
+          font-size: 20px;
+          overflow-wrap: break-word;
+          ">${deck.name}</div>
+        </div>
+            <div 
+            style="position: absolute;
+              top: 110px;
+              left: 0;
+              padding: 10px; font-size: 14px"
+            >Author: <br/>${deck.userId}</div>
+            <div style="position: absolute; top:  175px; right: 60px;">
+                <button
+            @click=${() => { createStudySession(deck.id) }}
+            class="usa-button continue-studying">
+                Study Again
+            </button>
+            </div>
+            
+        </div>
+        <div class="spacing" style="text-align: right;">
+    </div>
+                
+            
+                
+        </div>
+    `
+  }
+  return html`
+    <div class="mobile-lg:grid-col-4">
+           <div style="position:relative">
+           ${makeBackgroundCards(0, 0, deckCount)}
+           
+        <div class=" deck-card-outline"
+        style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              "
+        >
+            <span style="
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+            ">${formatDate(deck.date)}</span>
+  
+          <div style="
+          margin-top: 20px;
+          text-align: center;
+          font-size: 20px;
+          overflow-wrap: break-word;
+          ">${deck.name}</div>
+        </div>
+        ${(deck.public ) ? html`<div class="public-deck-marker">Public</div>` : html``}
+        <div style="position: absolute; top:  175px; right: 60px;">
+                          <button
+            @click=${() => { createStudySession(deck.id) }}
+            class="usa-button continue-studying">
+                Study Again
+            </button>
+        </div>
+        </div>
+        <div class="spacing" style="text-align: right;">
+</div>
+            
+        
+            
+    </div>
+`
+}
 let _memo = {}
 function formatDate (date) {
   if (!_memo[date]) {
@@ -187,6 +284,10 @@ function deckRow (decks, studySessionsByDeck, session) {
   return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck, session) })}</div>`
 }
 
+function recentlyStudiedRow (decks) {
+  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return recentlyStudiedPreview(deck) })}</div>`
+}
+
 function deckRows (allDecks, studySessionsByDeck) {
   allDecks = [...allDecks, { addDeck: true }]
   let rows = []
@@ -195,11 +296,11 @@ function deckRows (allDecks, studySessionsByDeck) {
   }
   return rows
 }
-function studyHistoryRows (allDecks, studySessionsByDeck) {
+function studyHistoryRows (allDecks) {
   allDecks = [...allDecks]
   let rows = []
   for (let i = 0; i < allDecks.length; i = i + numPerRow) {
-    rows.push(deckRow(allDecks.slice(i, i + numPerRow), studySessionsByDeck))
+    rows.push(recentlyStudiedRow(allDecks.slice(i, i + numPerRow)))
   }
   return rows
 }
@@ -233,7 +334,7 @@ module.exports = (data = {}) => {
         ${(data.studyHistory && data.studyHistory.length) ? html`
         <div class="fancy-line" style="margin-top:80px"></div>
         <h1>Recently Studied</h1> 
-        ${studyHistoryRows(data.studyHistory, {})}` : html``}
+        ${studyHistoryRows(data.studyHistory)}` : html``}
         
      </div> 
     ${darkmodeCheckbox()}
