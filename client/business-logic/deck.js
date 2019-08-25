@@ -32,8 +32,11 @@ let createDeckLogic = async (name) => {
 let deleteDeckLogic = async (id) => {
   await deleteDeck(id)
   let decks = window.lc.getData('decks')
+  let studyHistory = window.lc.getData('studyHistory')
   let decksWithoutDeleted = reject(decks, { id })
+  let studyHistoryWithoutDeleted = reject(studyHistory || [], {id});
   window.lc.setData('decks', decksWithoutDeleted)
+  window.lc.setData('studyHistory', studyHistoryWithoutDeleted)
 }
 
 let updateDeckNameLogic = async (name, deckId) => {

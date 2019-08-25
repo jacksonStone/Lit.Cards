@@ -1,6 +1,5 @@
 let db = require('../external-connections/fake-database-connector')
 let tableName = 'cardBody'
-
 async function getCardBody (userId, deck, card) {
   let results
   if (card) {

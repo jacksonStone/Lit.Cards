@@ -20,12 +20,7 @@ let { getDeck, handleEditorTextChange, refreshEditor, getCardsForEmptyState } = 
   let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
   let firstCardId = activeCard || (cards && cards.length && cards[0])
   let cardBody = await getCardBody(firstCardId, undefined, cards)
-  if (!cards || !cardBody) {
-    let newId = intToChar(5000)
-    firstCardId = newId
-    cardBody = getCardBodyForEmptyState(newId)
-    cards = getCardsForEmptyState(newId)
-  }
+  //WE WANT TO CREATE FIRST CARD ON THE SERVER
   window.lc.setData('orderedCards', cards)
   window.lc.setData('deck', deck)
   window.lc.setData('activeCardId', firstCardId)

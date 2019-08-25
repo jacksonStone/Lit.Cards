@@ -7,6 +7,7 @@ let { intToChar } = require('../../shared/char-encoding')
 let sanitizeOptions = {
   allowedTags
 }
+
 async function getCardBody (userId, deck, card) {
   return CardBody.getCardBody(userId, deck, card)
 }
@@ -34,7 +35,7 @@ async function editCardBody (userId, deck, card, changes) {
   sanitizeCardContent(changes)
   return CardBody.editCardBody(userId, deck, card, changes)
 }
-async function addCardBody (userId, deck, changes) {
+async function addCardBody (userId, deck, changes = {front: '', back: ''}) {
   sanitizeCardContent(changes)
   delete changes.id
   // TODO:: Wrap this in a transaction or something

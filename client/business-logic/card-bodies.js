@@ -45,6 +45,9 @@ exports.getCardBody = async (card, deck, visibleCards) => {
           let cardData = await getCardBody(deck, card)
           let cardDataAsJSON = JSON.parse(cardData)
           if (cardDataAsJSON) {
+            cardDataAsJSON.front = cardDataAsJSON.front || '';
+            cardDataAsJSON.back = cardDataAsJSON.back || '';
+
             // Decompress images
             if (cardDataAsJSON.frontHasImage) {
               cardDataAsJSON.frontImage = decompress(cardDataAsJSON.frontImage)

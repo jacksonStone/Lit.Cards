@@ -23,7 +23,9 @@ async function getDeck (userId, deck, requireUserIdMatch = false) {
 }
 
 async function editDeck ({ userId, id }, changes) {
-  await db.editRecord(tableName, { userId, id }, changes)
+
+  const recordsEdited = await db.editRecord(tableName, { userId, id }, changes)
+  return recordsEdited
 }
 //TODO:: Consider making this an Or join
 async function getByIdsWithCondition(ids, condition) {
@@ -51,13 +53,11 @@ async function deleteCard (userId, deck, card) {
 }
 async function createDeck (userId, name) {
   if (!userId || !name) return
-  // Required
-  let currentUser = await userExists(userId)
-  if (!currentUser) return
   let id = generateId()
   let dateMade = Date.now()
-  let cardCount = 0
-  return db.setRecord(tableName, { userId, name, id, date: dateMade, cardCount })
+  let cardCount = 1
+  let cards = intToChar(0);
+  return db.setRecord(tableName, { userId, name, id, date: dateMade, cardCount, cards })
 }
 
 async function deleteDeck (userId, id) {

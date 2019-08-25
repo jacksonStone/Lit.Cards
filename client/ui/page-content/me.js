@@ -8,11 +8,7 @@ let numPerRow = 3
 function addDeckCard () {
   return html`<div class="mobile-lg:grid-col-4">
         <button class="usa-button deck-card-outline deck-selection"
-        style="
-              position: absolute;
-              top: 0;
-              left: 0;
-              "
+        style=""
          @click=${() => { createDeck('Untitled') }}
         >
   
@@ -335,7 +331,7 @@ module.exports = (data = {}) => {
         <div class="fancy-line" style="margin-top:80px"></div>
         <h1>Recently Studied</h1> 
         ${studyHistoryRows(data.studyHistory)}` : html``}
-        
+        <div style="margin-top:130px;"></divstyle>
      </div> 
     ${darkmodeCheckbox()}
 `
