@@ -168,6 +168,7 @@ function nextCard () {
   index++
   let newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard)
+  debugger;
   updateCardBody(newCard, cards)
 }
 
@@ -239,14 +240,16 @@ function showingAnswer () {
 function addNewCard () {
   let deck = window.lc.getData('deck')
   // Avoid conflicts
-  let nextId = (deck.nextId || 0) + 5000
+  let nextId = (deck.nextId || 0)
+  window.lc.setData('deck.nextId', nextId+1)
   let newId = intToChar(nextId)
-
   let changeKeyCardBody = `cardBody.${newId}`
   let cardBody = { id: newId, isNew: true, front: '', back: '' }
-  window.lc.setPersistent(changeKeyCardBody, cardBody)
-  window.lc.setData('orderedCards', (deck.cards || '') + newId)
+  let updatedCards = (deck.cards || '') + newId
+  window.lc.setData('deck.cards', updatedCards);
+  window.lc.setData('orderedCards', updatedCards)
   window.lc.setData('activeCardId', newId)
+  window.lc.setPersistent(changeKeyCardBody, cardBody)
   _flipToQuestionSide()
   refreshEditor()
 }
@@ -263,6 +266,7 @@ async function updateCardBody (id, cards) {
     let cardBody = await getCardBody(id, undefined, cards)
     window.lc.setData('cardBody.' + id, cardBody)
     window.lc.setData('_cardBodyLoading', false)
+    debugger;
   }
   refreshEditor()
 }
