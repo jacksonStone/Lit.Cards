@@ -1,6 +1,8 @@
 let { html } = require('lit')
-let { navigateToDeckPage, createDeck, deleteDeck } = require('../../business-logic/deck')
-let { createStudySession, navigateToStudySession } = require('../../business-logic/study')
+let { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck')
+let { createStudySession, navigateToStudySession } = require('logic/study')
+let { grabFormData } = require('abstract/grab-form')
+
 let darkmodeCheckbox = require('component/darkmode-checkbox')
 
 // Keep numPerRow in sync with col-n below
@@ -317,6 +319,12 @@ function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
   return rows
 }
 
+// This should wait till there are decks to be found. Otherwise what's the point
+// function searchBtn() {
+//   event.preventDefault()
+//   let values = grabFormData('#search-public-decks')
+// }
+
 module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
@@ -336,7 +344,17 @@ module.exports = (data = {}) => {
     ${darkmodeCheckbox()}
 `
   /**
-   <h1>Others Decks</h1>
-   ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
+   * This should wait till there are public decks to search for
+   <div class="fancy-line" style="margin-top:80px"></div>
+   <h1>Search Public Decks</h1>
+   <form class="usa-form" id="search-public-decks">
+   <fieldset class="usa-fieldset">
+   <label class="usa-label" for="search">Deck Name</label>
+   <input class="usa-input" id="search" name="search" type="text" required aria-required="true">
+   <button @click=${searchBtn} class="usa-button">Search</button>
+   </fieldset>
+   </form>
+   ${studyHistoryRows(data.searchResults || [])}
+   <div style="margin-top:130px;"></divstyle>
    */
 }
