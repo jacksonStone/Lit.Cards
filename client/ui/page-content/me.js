@@ -4,6 +4,7 @@ let { createStudySession, navigateToStudySession } = require('logic/study')
 let { grabFormData } = require('abstract/grab-form')
 
 let darkmodeCheckbox = require('component/darkmode-checkbox')
+let checkboxHolder = require('component/checkbox-holder')
 
 // Keep numPerRow in sync with col-n below
 let numPerRow = 3
@@ -341,7 +342,7 @@ module.exports = (data = {}) => {
         ${studyHistoryRows(data.studyHistory)}` : html``}
         <div style="margin-top:130px;"></divstyle>
      </div> 
-    ${darkmodeCheckbox()}
+    ${checkboxHolder([darkmodeCheckbox()])}
 `
   /**
    * This should wait till there are public decks to search for

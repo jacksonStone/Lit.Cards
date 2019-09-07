@@ -6,7 +6,7 @@ let errorableInput = require('../shared-components/errorable-input')
 let errorBanner = require('../shared-components/error-banner')
 let { changePassword } = require('../../business-logic/login')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
-
+let checkboxHolder = require('component/checkbox-holder')
 let changePasswordBtn = (event) => {
   event.preventDefault()
   let values = grabFormData('#password-change')
@@ -55,7 +55,7 @@ module.exports = (data) => {
     </div>
     </div>
     
-    ${darkmodeCheckbox()}
+    ${checkboxHolder([darkmodeCheckbox()])}
 `
 }
 
