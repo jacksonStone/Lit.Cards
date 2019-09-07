@@ -112,6 +112,10 @@ body {
   height:400px;
   width:auto;
 }
+.card-viewer-outline {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 2px;
+}
 .has-image-editor {
   // TODO:: Make this less brittle
   height:133px;
@@ -122,9 +126,7 @@ body {
   background-position:center center;
   background-repeat:no-repeat;
   width:100%;
-  border: 1px solid rgba(10, 10, 10, 0.1);
-  border-bottom: none;
-  border-radius:2px;
+  border: none;
 }
 .image-spot-without-image {
   height: 0;
@@ -162,10 +164,8 @@ body {
   padding: 12px 40px;
   height: 41px;
 }
-.border {
-  border: 1px solid rgba(10, 10, 10, 0.1);
-  padding: 5px;
-  border-radius:2px;
+.pell {
+  border: none;
 }
 .previewCard {
   max-width: 120px;
@@ -252,6 +252,9 @@ body {
   font-size: 44px;
   box-shadow: none;
 }
+.prev-next:hover {
+  box-shadow: none;
+}
 .darkmode-checkbox-container {
   background:white;
 }
@@ -262,8 +265,18 @@ aside .usa-sidenav {
 .fancy-line {
   border-top: 1px solid #d5d8df;
 }
+.study-side-nav {
+  opacity: 0.8;
+}
 .darkmode {
   color: #555;
+  .study-side-nav {
+    opacity: 0.5;
+  }
+  .card-viewer-outline {
+    border: 1px solid rgb(80, 80, 80);
+
+  }
   .fancy-line {
     border-top: 1px solid #555;
   }
@@ -282,10 +295,10 @@ aside .usa-sidenav {
     border: 2px solid $good-color-dark;
     color: #777;
   }
-  .usa-checkbox__input:checked+.usa-checkbox__label:before, .usa-checkbox__input:checked:disabled+.usa-checkbox__label:before {
+  .usa-checkbox__input+.usa-checkbox__label:before, .usa-checkbox__input:checked:disabled+.usa-checkbox__label:before {
     opacity: .6;
   }
-  .usa-checkbox__input:checked+.usa-checkbox__label:before, .usa-radio__input:checked+.usa-radio__label:before {
+  .usa-checkbox__input+.usa-checkbox__label:before, .usa-radio__input:checked+.usa-radio__label:before {
     background-color: transparent;
   }
   .usa-input  {
@@ -307,9 +320,6 @@ aside .usa-sidenav {
   .pell-actionbar {
     background-color: black;
     border-bottom: 1px solid rgb(80, 80, 80);
-  }
-  .pell {
-    border: 1px solid rgb(80, 80, 80);
   }
   .negative-button-no-outline {
     color:$bad-color-dark;

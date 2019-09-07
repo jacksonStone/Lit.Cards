@@ -4,8 +4,18 @@ let { onPage } = require('abstract/url')
 let { navigateToLoginPage, logout } = require('logic/login')
 let { navigateToSettingsPage } = require('logic/settings')
 let { resendEmailVerification } = require('logic/login')
-
-module.exports = (userInfo) => html`
+let shouldHideNavigation = () => {
+  const user = window.lc.getData('user') || {};
+  //TODO:: Swap true for on study page
+  if (user.hideNavigation && window.location.href.indexOf('/me/study') !== -1) {
+    return true;
+  }
+}
+module.exports = (userInfo) => {
+  if(shouldHideNavigation()) {
+    return html`<div style="margin-top: 108px;"></div>`;
+  }
+  return html`
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
     <header class="usa-header usa-header--extended" role="banner">
     <div class="usa-nav-container">
@@ -28,6 +38,7 @@ module.exports = (userInfo) => html`
         <div style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
     </div>
 </header>`
+}
 
 function waitingOnEmailVerification() {
   let user = window.lc.getData('user')

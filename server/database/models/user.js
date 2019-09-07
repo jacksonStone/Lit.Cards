@@ -2,6 +2,22 @@ let db = require('../external-connections/fake-database-connector')
 let tableName = 'user'
 let _ = require('lodash')
 let { randomString } = require('../../node-abstractions/random')
+//Guilty until proven innocent!
+let safeParametersToDynamicallyChange = [
+  'hideProgress',
+  'hideNavigation',
+  'darkMode'
+];
+// Guilty until proven innocent!
+let safeParametersToReturn = [
+  'userId',
+  'verifiedEmail',
+  // All props that a user can dynamically change
+  // should be safe to return to the user
+  ...safeParametersToDynamicallyChange
+]
+
+
 
 async function getUser (userId) {
   let results = await db.getRecord(tableName, { userId: userId })
@@ -16,20 +32,29 @@ async function userExists (userId) {
   let user = await getUser(userId)
   return !!user
 }
-// Guilty until proven innocent!
-let safeParameters = [
-  'userId',
-  'darkMode',
-  'verifiedEmail'
-]
+
+
+async function updateSafe(userId, changes) {
+  const keys = Object.keys(changes);
+  const keyLength = keys.length;
+  const safeChanges = {};
+  for (let i = 0; i < keyLength; i++) {
+    if (safeParametersToDynamicallyChange.indexOf(keys[i]) !== -1) {
+      safeChanges[keys[i]] = changes[keys[i]];
+    }
+  }
+  return db.editRecord(tableName, { userId }, safeChanges)
+}
+
 function trimAllButSafeParameters (user) {
   if (!user) return user
+  const safeUser = {};
   _.each(user, (value, prop) => {
-    if(safeParameters.indexOf(prop) === -1) {
-      delete user[prop]
+    if(safeParametersToReturn.indexOf(prop) !== -1) {
+      safeUser[prop] = user[prop];
     }
   })
-  return user
+  return safeUser
 }
 
 async function createUser (userId, salt, password) {
@@ -50,6 +75,7 @@ async function updateDarkModeValue(userId, darkmodeValue) {
 module.exports = {
   getUser,
   editUser,
+  updateSafe,
   createUser,
   userExists,
   getSafeUser,

@@ -1,7 +1,7 @@
 let { updateDeckName } = require('logic/deck')
 let { editCardBody, addCardBody, deleteCardBody } = require('logic/card-bodies')
 let { editStudySessionState } = require('logic/study')
-let { updateDarkMode } = require('logic/user')
+let { updateDarkMode, updateHideProgress, updateHideNavigation } = require('logic/user')
 function listenToSaveableChanges () {
   let runningAlready = false
   setInterval(() => {
@@ -15,7 +15,7 @@ function listenToSaveableChanges () {
     }).catch(() => {
       runningAlready = false
     })
-  }, 1000)
+  }, 500)
 }
 
 async function _handleChanges () {
@@ -156,6 +156,9 @@ async function handleSessionStateChanges(changes) {
 }
 
 let savingDarkMode = false
+let savingHideProgress = false
+let savingHideNavigation = false
+//TODO:: Consider deduping code
 async function handleUserChange(changes) {
   let user = changes.user
   if(user.darkMode !== undefined) {
@@ -171,6 +174,36 @@ async function handleUserChange(changes) {
       }
     }).catch(() => {
       savingDarkMode = false
+    })
+  }
+  if(user.hideProgress !== undefined) {
+    let startingValue = user.hideProgress
+    savingHideProgress = true
+    updateHideProgress(user.hideProgress).then(() => {
+      if(startingValue === changes.user.hideProgress) {
+        delete changes.user.hideProgress
+      }
+      savingHideProgress = false
+      if(Object.keys(changes.user).length === 0) {
+        delete changes.user
+      }
+    }).catch(() => {
+      savingHideProgress = false
+    })
+  }
+  if(user.hideNavigation !== undefined) {
+    let startingValue = user.hideNavigation
+    savingHideNavigation = true
+    updateHideNavigation(user.hideNavigation).then(() => {
+      if(startingValue === changes.user.hideNavigation) {
+        delete changes.user.hideNavigation
+      }
+      savingHideNavigation = false
+      if(Object.keys(changes.user).length === 0) {
+        delete changes.user
+      }
+    }).catch(() => {
+      savingHideNavigation = false
     })
   }
 }

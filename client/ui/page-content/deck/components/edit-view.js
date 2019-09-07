@@ -4,6 +4,7 @@ let cardEditStack = require('./side-numbers')
 let sidenav = require('./sidenav')
 let nameEdit = require('./name-edit')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
+let checkboxHolder = require('component/checkbox-holder')
 
 module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => html`
   <div class="grid-container">
@@ -22,5 +23,5 @@ module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) =>
             </div>
         </div>
 </div>
-${darkmodeCheckbox()}
+${checkboxHolder([darkmodeCheckbox()])}
 `

@@ -24,7 +24,8 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
   let getTextForCard = getTextToShowForCard();
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
-    ${getTextForCard === false ? html`<div style="height: 300px">Loading...</div>`: html` ${popupComponent()}
+    <div class="card-viewer-outline">
+        ${getTextForCard === false ? html`<div style="height: 300px">Loading...</div>`: html` ${popupComponent()}
               <div alt="preview-of-crad-image" 
                 class="${hasImage ? 'image-spot-with-image' : 'image-spot-without-image'}" 
                 id="image-spot" class="usa-button usa-button--outline"
@@ -32,8 +33,9 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
             <div id="editor" class="pell ${hasImage ? 'has-image-editor study-card-with-image' : 'size-' + currentfontSize + ' study-card-no-image'}">
                 <div id="card-content" class="pell-content">${unsafeHTML(getTextForCard)} </div>
             </div>`}
+    </div>
             <div style="text-align: center">
-                <div class="grid-row" style="margin-top:10px">
+                <div class="grid-row" style="margin-top:30px">
                     <div class="grid-col-3" style="text-align: left">
                     ${showingAnswer ? html`<button class="usa-button usa-button--outline negative-button-no-outline mark-wrong"
                         @click=${leftAction}

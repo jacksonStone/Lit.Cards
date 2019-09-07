@@ -168,7 +168,6 @@ function nextCard () {
   index++
   let newCard = cards[(index % cards.length)]
   window.lc.setData('activeCardId', newCard)
-  debugger;
   updateCardBody(newCard, cards)
 }
 
@@ -266,7 +265,6 @@ async function updateCardBody (id, cards) {
     let cardBody = await getCardBody(id, undefined, cards)
     window.lc.setData('cardBody.' + id, cardBody)
     window.lc.setData('_cardBodyLoading', false)
-    debugger;
   }
   refreshEditor()
 }

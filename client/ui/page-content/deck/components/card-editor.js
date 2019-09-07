@@ -55,6 +55,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}
+                  <div class="card-viewer-outline">
               <div alt="preview-of-crad-image" 
                 class="${hasImage ? 'image-spot-with-image' : 'image-spot-without-image'}" 
                 id="image-spot" class="usa-button usa-button--outline"
@@ -78,8 +79,9 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                 ` : html``}
               </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : 'size-' + currentfontSize}"></div>
+            </div>
             <div style="text-align: center">
-            <div class="grid-row" style="margin-top:10px">
+            <div class="grid-row" style="margin-top:30px">
                     <div class="grid-col-3" style="text-align: left">
                     ${(getSession().none && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
