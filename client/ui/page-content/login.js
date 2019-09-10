@@ -56,8 +56,8 @@ module.exports = (data) => {
                 ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
                 ${passwordField(ef.password)}
               </fieldset>
-              <button @click=${loginBtn} class="usa-button">Login</button>
-              <button @click=${signupBtn} class="usa-button usa-button--outline">Signup</button>
+              <button @click=${loginBtn} id="login-button" class="usa-button">Login</button>
+              <button @click=${signupBtn} id="signup-button" class="usa-button usa-button--outline">Signup</button>
             </form>
         </div>
         <div class="grid-col-4"></div>

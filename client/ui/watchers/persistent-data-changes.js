@@ -15,7 +15,7 @@ function listenToSaveableChanges () {
     }).catch(() => {
       runningAlready = false
     })
-  }, 500)
+  }, 100);
 }
 
 async function _handleChanges () {
@@ -23,7 +23,6 @@ async function _handleChanges () {
   if (changes.deck) {
     if (changes.deck.name) {
       handleNameChange(changes)
-      // delete changes.deck.name
     }
   }
   if (changes.cardBody) {
@@ -60,21 +59,22 @@ async function handleNameChange (changes) {
   })
 }
 
-let cardsBeingEdited = {}
-let cardsBeingAdded = {}
-let cardsBeingDeleted = {}
-let addedCardsTempIdToTrueId = {}
+let cardsBeingChanged = {}
 async function handleCardBodyChange (changes) {
   let cardsWithChanges = Object.keys(changes.cardBody)
   for (let i = 0; i < cardsWithChanges.length; i++) {
     let cardId = cardsWithChanges[i]
     let cardBody = changes.cardBody[cardId]
     let changeId = cardBody._changeId
+    //Ensure we do not step on our own toes
+    if(cardsBeingChanged[cardId]) {
+      continue;
+    } else {
+      cardsBeingChanged[cardId] = true;
+    }
     if (!cardBody.isNew && !cardBody.deleted) {
       // Is an edit
-      if (cardsBeingEdited[cardId]) continue
-      cardsBeingEdited[cardId] = true
-      let idToSend = addedCardsTempIdToTrueId[cardId] || cardId
+      let idToSend = cardId
       editCardBody(idToSend, cardBody).then(() => {
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]
@@ -82,18 +82,13 @@ async function handleCardBodyChange (changes) {
             delete changes.cardBody
           }
         }
-        delete cardsBeingEdited[cardId]
+        delete cardsBeingChanged[cardId]
       }).catch(() => {
-        // delete cardsBeingEdited[cardId]
+        delete cardsBeingChanged[cardId]
         // TODO:: Think of what to do here
       })
     } else if (cardBody.isNew && !cardBody.deleted) {
-      if (cardsBeingAdded[cardId]) {
-        continue
-      }
-      cardsBeingAdded[cardId] = true
       addCardBody(cardBody).then((newId) => {
-        addedCardsTempIdToTrueId[cardId] = newId
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]
           if (Object.keys(changes.cardBody).length === 0) {
@@ -102,27 +97,31 @@ async function handleCardBodyChange (changes) {
         } else {
           delete changes.cardBody[cardId].isNew
         }
-        delete cardsBeingAdded[cardId]
+        delete cardsBeingChanged[cardId]
       }).catch(() => {
-        // delete cardsBeingAdded[cardId]
+        delete cardsBeingChanged[cardId]
         // TODO:: Think of what to do here
       })
     } else if(cardBody.deleted) {
-      if (cardsBeingDeleted[cardId]) {
-        continue
-      }
       cardsBeingDeleted[cardId] = true
       deleteCardBody(cardId).then(()=>{
-        delete changes.cardBody[cardId]
-        delete cardsBeingDeleted[cardId]
+        if (changeId === cardBody._changeId) {
+          delete changes.cardBody[cardId]
+          if (Object.keys(changes.cardBody).length === 0) {
+            delete changes.cardBody
+          }
+        } else {
+          delete changes.cardBody[cardId].deleted
+        }
+        delete cardsBeingChanged[cardId]
       }).catch(()=>{
-        delete changes.cardBody[cardId]
+        delete cardsBeingChanged[cardId]
+        // TODO:: Think of what to do here
       })
 
     }
   }
 }
-module.exports = listenToSaveableChanges
 
 let savingSession = false
 async function handleSessionStateChanges(changes) {
@@ -207,3 +206,5 @@ async function handleUserChange(changes) {
     })
   }
 }
+
+module.exports = listenToSaveableChanges

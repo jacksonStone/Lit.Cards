@@ -10,7 +10,7 @@ let checkboxHolder = require('component/checkbox-holder')
 let numPerRow = 3
 function addDeckCard () {
   return html`<div class="mobile-lg:grid-col-4">
-        <button class="usa-button deck-card-outline deck-selection"
+        <button id="add-deck-card" class="usa-button deck-card-outline deck-selection"
         style=""
          @click=${() => { createDeck('Untitled') }}
         >

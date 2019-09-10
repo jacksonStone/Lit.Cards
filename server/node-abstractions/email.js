@@ -1,5 +1,5 @@
 let nodeMailer = require('nodemailer')
-let isTest = process.env.NODE_ENV === 'test'
+let isTest = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development'
 let transporter
 let testEmails
 let resetTestEmails
@@ -18,7 +18,12 @@ if (!isTest) {
   resetTestEmails = () => {
     testEmails = []
   }
-  getTestEmails = () => {
+  getTestEmails = (userId) => {
+    if(userId) {
+      return testEmails.filter(email => {
+        return email.to === userId;
+      })
+    }
     return testEmails
   }
   transporter = {

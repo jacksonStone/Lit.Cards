@@ -85,6 +85,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     <div class="grid-col-3" style="text-align: left">
                     ${(getSession().none && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
+                        id="remove-card-button-active"
                         style="
                                box-shadow: none;
                                width:100%;
@@ -94,6 +95,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     </i>&nbsp;&nbsp;card</div>
                     </button>` : html`<button class="usa-button usa-button--outline disabled-button-no-outline"
                         @click=${alertCantRemove}
+                        id="remove-card-button-inactive"
                         style="
                              box-shadow: none;
                              width:100%;
@@ -104,7 +106,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     </button>`}  
                     </div>
                     <div class="grid-col-6">
-                     <button class="usa-button usa-button--primary flip-card"
+                     <button id="filp-card" class="usa-button usa-button--primary flip-card"
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip
@@ -114,6 +116,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
                     <button class="usa-button usa-button--outline affermative-button-no-outline add-card"
+                        id="add-card"
                         @click=${newAction}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>

@@ -58,8 +58,15 @@ function resetData (table) {
   }
   fakeDatabaseConnector = _.cloneDeep(fakeDataBackup)
 }
-function getAllData() {
-  return fakeDatabaseConnector
+function getAllData(userId) {
+  if(!userId) {
+    return fakeDatabaseConnector
+  }
+  const userView = {};
+  _.each(fakeDatabaseConnector, (table, tableName) => {
+    userView[tableName] = _.filter(table, { userId });
+  })
+  return userView;
 }
 
 module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord, getAllData }

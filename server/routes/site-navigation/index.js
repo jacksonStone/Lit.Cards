@@ -44,6 +44,7 @@ let pages = {
     title: 'Lit: Sign Up',
     darkModeable: false,
     page: 'signup',
+    entryFile: 'signup.js',
     auth: false
   },
   // url to visit: /site/me for example

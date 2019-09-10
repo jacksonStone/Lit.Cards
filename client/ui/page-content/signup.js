@@ -25,7 +25,7 @@ module.exports = (data) => {
                 ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
                 ${errorableInput(ef.repeatPassword, 'Must repeat password', 'password-repeat', 'Repeat Password', 'password')}
               </fieldset>
-              <button @click=${signupBtn} class="usa-button">Signup</button>
+              <button @click=${signupBtn} id="signup-button" class="usa-button">Signup</button>
             </form>
         </div>
         <div class="grid-col-4"></div>

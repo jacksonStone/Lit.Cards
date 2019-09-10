@@ -35,7 +35,7 @@ module.exports = (userInfo) => {
             </div>
         </div>
         </nav>
-        <div style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
+        <div id="email-verification-bar" style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
     </div>
 </header>`
 }
@@ -55,7 +55,7 @@ function emailVerificationLink() {
     }, 2000)
     return html`<div style="font-size: 12px; padding: 8px;
     text-align: center;
-    background: #b5ee85;"
+    background: #b5ee85;" id="email-verified"
     >Email verified!</div>`
   }
   if(window.lc.getData('resentEmailConfirmation')) {

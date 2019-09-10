@@ -7,7 +7,7 @@ let { getCardBody } = require('./card-bodies')
 let { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
 let { runNextRender } = require('abstract/rendering-meta')
 let { compress } = require('shared/compress')
-let { intToChar } = require('shared/char-encoding')
+let { intToChar, charToInt } = require('shared/char-encoding')
 
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
@@ -176,11 +176,9 @@ function removeCard () {
   let id = _getCurrentCardId()
   let cards = window.lc.getData('orderedCards')
   cards = cards.slice(0, index).concat(cards.slice(index + 1))
-  // Card bodies handle "card" creation/deletion
-  // window.lc.setDeleted('card', id)
   window.lc.setData('deck.cards', cards)
   window.lc.setData('orderedCards', cards)
-  window.lc.setDeleted('cardBody', id)
+  setPersistentForCardBody('deleted', true)
   index--
   if (index === -1) {
     index = 0
@@ -238,10 +236,8 @@ function showingAnswer () {
 
 function addNewCard () {
   let deck = window.lc.getData('deck')
-  // Avoid conflicts
-  let nextId = (deck.nextId || 0)
-  window.lc.setData('deck.nextId', nextId+1)
-  let newId = intToChar(nextId)
+  let newIdAsInt = charToInt(deck.cards[deck.cards.length - 1]) + 1;
+  let newId = intToChar(newIdAsInt)
   let changeKeyCardBody = `cardBody.${newId}`
   let cardBody = { id: newId, isNew: true, front: '', back: '' }
   let updatedCards = (deck.cards || '') + newId

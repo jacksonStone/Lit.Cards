@@ -3,7 +3,7 @@ let { CardBody } = require('../database')
 let { Deck } = require('../database')
 let sanitizeHTML = require('sanitize-html')
 let allowedTags = require('../../shared/allowedHTMLTags')
-let { intToChar } = require('../../shared/char-encoding')
+let { intToChar, charToInt } = require('../../shared/char-encoding')
 let sanitizeOptions = {
   allowedTags
 }
@@ -40,13 +40,13 @@ async function addCardBody (userId, deck, changes = {front: '', back: ''}) {
   delete changes.id
   // TODO:: Wrap this in a transaction or something
   let deckRecord = await Deck.getDeck(userId, deck)
-  let nextId = deckRecord.nextId
-  let idAsChar = intToChar(nextId)
-
+  let lastIdAsChar = deckRecord.cards ? deckRecord.cards[deckRecord.cards.length - 1] : intToChar(0);
+  let nextIdAsInt = charToInt(lastIdAsChar) + 1;
+  let idAsChar = intToChar(nextIdAsInt)
   await CardBody.addCardBody(userId, deck, idAsChar, changes)
   let cards = deckRecord.cards
   cards += idAsChar
-  await Deck.editDeck(deckRecord, { cards, nextId: nextId + 1 })
+  await Deck.editDeck(deckRecord, { cards })
   return idAsChar
 }
 module.exports = {
