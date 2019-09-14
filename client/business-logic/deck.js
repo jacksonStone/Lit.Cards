@@ -239,7 +239,7 @@ function addNewCard () {
   let newIdAsInt = charToInt(deck.cards[deck.cards.length - 1]) + 1;
   let newId = intToChar(newIdAsInt)
   let changeKeyCardBody = `cardBody.${newId}`
-  let cardBody = { id: newId, isNew: true, front: '', back: '' }
+  let cardBody = { id: newId, isNew: true, front: '', back: '', deleted: false, _changeId: Math.random() }
   let updatedCards = (deck.cards || '') + newId
   window.lc.setData('deck.cards', updatedCards);
   window.lc.setData('orderedCards', updatedCards)

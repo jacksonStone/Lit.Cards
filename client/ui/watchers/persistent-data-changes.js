@@ -103,7 +103,7 @@ async function handleCardBodyChange (changes) {
         // TODO:: Think of what to do here
       })
     } else if(cardBody.deleted) {
-      cardsBeingDeleted[cardId] = true
+      cardsBeingChanged[cardId] = true
       deleteCardBody(cardId).then(()=>{
         if (changeId === cardBody._changeId) {
           delete changes.cardBody[cardId]

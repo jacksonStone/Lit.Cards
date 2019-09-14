@@ -1,6 +1,6 @@
 let express = require('express')
 let router = express.Router()
-let { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
+let { getCardBody, editCardBody, upsertCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
 let code = require('../../node-abstractions/response-codes')
 
 //PUBLIC ROUTE
@@ -42,10 +42,11 @@ router.post('/add', async (req, res) => {
   let changes = req.body.changes
   delete changes._changeId
   delete changes.isNew
+  delete changes.deleted
   // Add a card here toos
   if (!deck) return code.invalidRequest(res)
   if (!req.userId) return code.unauthorized(res)
-  let newId = await addCardBody(req.userId, deck, changes)
+  let newId = await upsertCardBody(req.userId, deck, changes)
   res.send(newId)
 })
 router.post('/delete', async (req, res) => {
