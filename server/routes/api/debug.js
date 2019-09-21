@@ -7,7 +7,6 @@ router.get('/debug', async (req, res) => {
   if(process.env.NODE_ENV !== 'development') return code.unauthorized(res)
   const allData = await getAllData();
   allData.emails = getTestEmails();
-  console.log(allData.emails);
   return res.json(allData);
 })
 router.post('/debug', async (req, res) => {

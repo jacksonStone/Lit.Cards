@@ -34,7 +34,7 @@ let deleteDeckLogic = async (id) => {
   let decks = window.lc.getData('decks')
   let studyHistory = window.lc.getData('studyHistory')
   let decksWithoutDeleted = reject(decks, { id })
-  let studyHistoryWithoutDeleted = reject(studyHistory || [], {id});
+  let studyHistoryWithoutDeleted = reject(studyHistory || [], { id })
   window.lc.setData('decks', decksWithoutDeleted)
   window.lc.setData('studyHistory', studyHistoryWithoutDeleted)
 }
@@ -173,7 +173,6 @@ function nextCard () {
 
 function removeCard () {
   let index = _getCurrentCardIndex()
-  let id = _getCurrentCardId()
   let cards = window.lc.getData('orderedCards')
   cards = cards.slice(0, index).concat(cards.slice(index + 1))
   window.lc.setData('deck.cards', cards)
@@ -212,10 +211,10 @@ function removeImage () {
   if (!hasImage()) return
   if (showingAnswer()) {
     setPersistentForCardBody('backHasImage', false)
-    setPersistentForCardBody('backImage', undefined)
+    setPersistentForCardBody('backImage', '')
   } else {
     setPersistentForCardBody('frontHasImage', false)
-    setPersistentForCardBody('frontImage', undefined)
+    setPersistentForCardBody('frontImage', '')
   }
   refreshEditor()
 }
@@ -236,12 +235,12 @@ function showingAnswer () {
 
 function addNewCard () {
   let deck = window.lc.getData('deck')
-  let newIdAsInt = charToInt(deck.cards[deck.cards.length - 1]) + 1;
+  let newIdAsInt = charToInt(deck.cards[deck.cards.length - 1]) + 1
   let newId = intToChar(newIdAsInt)
   let changeKeyCardBody = `cardBody.${newId}`
   let cardBody = { id: newId, isNew: true, front: '', back: '', deleted: false, _changeId: Math.random() }
   let updatedCards = (deck.cards || '') + newId
-  window.lc.setData('deck.cards', updatedCards);
+  window.lc.setData('deck.cards', updatedCards)
   window.lc.setData('orderedCards', updatedCards)
   window.lc.setData('activeCardId', newId)
   window.lc.setPersistent(changeKeyCardBody, cardBody)

@@ -75,7 +75,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
               `}
               <div style="position:absolute; left: 50%;">
                 ${showingAnswer ? html`
-                   <div class="label-pill">ANSWER</div>
+                   <div class="label-pill" id="answer-pill">ANSWER</div>
                 ` : html``}
               </div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor' : 'size-' + currentfontSize}"></div>
@@ -106,7 +106,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                     </button>`}  
                     </div>
                     <div class="grid-col-6">
-                     <button id="filp-card" class="usa-button usa-button--primary flip-card"
+                     <button id="flip-card" class="usa-button usa-button--primary flip-card"
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip

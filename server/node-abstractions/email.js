@@ -19,9 +19,9 @@ if (!isTest) {
     testEmails = []
   }
   getTestEmails = (userId) => {
-    if(userId) {
+    if (userId) {
       return testEmails.filter(email => {
-        return email.to === userId;
+        return email.to === userId
       })
     }
     return testEmails
@@ -46,7 +46,6 @@ async function sendMail (to, subject, text, html) {
       html
     })
 
-    // console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   } catch (e) {
     console.error(e)

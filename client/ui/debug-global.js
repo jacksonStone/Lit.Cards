@@ -17,13 +17,13 @@ function deactivateDebug () {
 }
 async function getServerDBState (userId) {
   let state
-  if(userId) {
-    state = JSON.parse(await api('debug', {userId}));
+  if (userId) {
+    state = JSON.parse(await api('debug', { userId }))
   } else {
-    state = JSON.parse(await api('debug'));
+    state = JSON.parse(await api('debug'))
   }
   console.info(state)
-  return state;
+  return state
 }
 async function resetServerDBState () {
   console.info(JSON.parse(await api('debug-reset')))

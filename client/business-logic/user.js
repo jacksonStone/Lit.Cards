@@ -25,15 +25,15 @@ function fetchUserNoCache () {
 function updateDarkMode (darkMode) {
   return setDarkMode(darkMode)
 }
-function updateHideProgress(value) {
-  return updateMiscUserConfig('hideProgress', value);
+function updateHideProgress (value) {
+  return updateMiscUserConfig('hideProgress', value)
 }
-function updateHideNavigation(value) {
-  return updateMiscUserConfig('hideNavigation', value);
+function updateHideNavigation (value) {
+  return updateMiscUserConfig('hideNavigation', value)
 }
 
-function updateMiscUserConfig(key, value) {
-  return setMiscDetails({[key]: value});
+function updateMiscUserConfig (key, value) {
+  return setMiscDetails({ [key]: value })
 }
 function user () {
   return userDetails
