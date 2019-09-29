@@ -16,6 +16,10 @@ async function getDeck (userId, deck, requireUserIdMatch = false) {
   if (results && results.length) {
     let firstResult = results[0];
     if (firstResult.userId === userId || firstResult.public) {
+      if(firstResult.userId !== userId) {
+        //We don't want to make emails public
+        delete firstResult.userId;
+      }
       return firstResult
     }
   }
@@ -51,13 +55,13 @@ async function deleteCard (userId, deck, card) {
   }
   await editDeck(deckRecord, { cards: newCards })
 }
-async function createDeck (userId, name) {
-  if (!userId || !name) return
+async function createDeck (userId, name, displayName) {
+  if (!userId || !name || !displayName) return
   let id = generateId()
   let dateMade = Date.now()
   let cardCount = 1
   let cards = intToChar(0);
-  return db.setRecord(tableName, { userId, name, id, date: dateMade, cardCount, cards })
+  return db.setRecord(tableName, { userId, displayName, name, id, date: dateMade, cardCount, cards })
 }
 
 async function deleteDeck (userId, id) {

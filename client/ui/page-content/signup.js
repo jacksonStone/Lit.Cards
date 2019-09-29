@@ -6,7 +6,7 @@ let errorBanner = require('../shared-components/error-banner')
 function signupBtn (event) {
   event.preventDefault()
   let signupData = grabFormData('#signup')
-  return signup(signupData.email, signupData.password, signupData['password-repeat'])
+  return signup(signupData.email, signupData.password, signupData['password-repeat'], signupData['display-name'])
 }
 module.exports = (data) => {
   let { fields: ef, abstract: ea } = data.errors
@@ -22,6 +22,7 @@ module.exports = (data) => {
                 ${ea.usernameTaken && errorBanner('Bad  Email', 'Email already taken')}
                 ${ea.badEmail && errorBanner('Bad  Email', 'Email is formatted incorrectly')}
                 ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
+                ${errorableInput(ef.displayName, 'Display name required', 'display-name', 'Display Name', 'text', 30)}
                 ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
                 ${errorableInput(ef.repeatPassword, 'Must repeat password', 'password-repeat', 'Repeat Password', 'password')}
               </fieldset>

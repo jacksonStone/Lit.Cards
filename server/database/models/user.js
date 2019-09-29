@@ -6,7 +6,8 @@ let { randomString } = require('../../node-abstractions/random')
 let safeParametersToDynamicallyChange = [
   'hideProgress',
   'hideNavigation',
-  'darkMode'
+  'darkMode',
+  'displayName'
 ];
 // Guilty until proven innocent!
 let safeParametersToReturn = [
@@ -57,11 +58,11 @@ function trimAllButSafeParameters (user) {
   return safeUser
 }
 
-async function createUser (userId, salt, password) {
+async function createUser (userId, salt, password, displayName) {
   let results = await db.getRecord(tableName, { userId })
   if (results.length) return
   let emailVerificationKey = await randomString(20, 'hex')
-  return db.setRecord(tableName, { userId, salt, password, validSession: 0, emailVerificationKey, verifiedEmail: false })
+  return db.setRecord(tableName, { userId, salt, password, displayName, validSession: 0, emailVerificationKey, verifiedEmail: false })
 }
 
 function editUser(userId, changes) {

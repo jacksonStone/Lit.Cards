@@ -6,8 +6,8 @@ exports.login = (userId, password) => {
 exports.logout = () => {
   return api('logout')
 }
-exports.signup = (userId, password) => {
-  return api('signup', { userId, password })
+exports.signup = (userId, password, displayName) => {
+  return api('signup', { userId, password, displayName })
 }
 exports.verifyEmail = (emailVerificationKey) => {
   return api('signup/verify-email', { emailVerificationKey })

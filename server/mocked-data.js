@@ -13,6 +13,7 @@ let fakeData = {
     hideProgress: false,
     validSession: 0,
     verifiedEmail: true,
+    displayName:'Jackson',
     emailVerificationKey: undefined
   },{
     userId: 'jackson@someemail2.com',
@@ -21,6 +22,7 @@ let fakeData = {
     darkMode: true,
     validSession: 0,
     verifiedEmail: true,
+    displayName:'Jackson2',
     emailVerificationKey: undefined
   }],
   studySession: [
@@ -45,7 +47,7 @@ let fakeData = {
     { userId: 'jackson@someemail.com', name: 'THIRD study session',  date: Date.now(), id: 'fii' },
     { userId: 'jackson@someemail.com', name: 'Fourth study session', date: Date.now(), id: 'fum' },
 
-    { userId: 'jackson@someemail2.com', name: 'Publically Available deck', cards: listToStr([0,1,2,3]), date: Date.now(), id: 'asd', public: true }
+    { userId: 'jackson@someemail2.com', displayName:'Jackson2', name: 'Publically Available deck', cards: listToStr([0,1,2,3]), date: Date.now(), id: 'asd', public: true }
   ],
   studyHistory: [
     // { userId: 'jackson@someemail.com', studied: JSON.stringify(['foo', 'asd']) }

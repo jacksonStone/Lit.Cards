@@ -47,7 +47,7 @@ module.exports = () => {
         <a href="#" @click=${deleteSession}><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session</a>
     </li>
   ` : html`<li class="usa-sidenav__item" >
-    <a href="/site/me/study?deck=${getDeckId()}&upsert=true"><i class="far fa-images"></i>&nbsp;&nbsp;Study</a>
+    <a id="no-study-session-creation-button" href="/site/me/study?deck=${getDeckId()}&upsert=true"><i class="far fa-images"></i>&nbsp;&nbsp;Study</a>
   </li>`}
   ${deckIsPublic() ? html`<li class="usa-sidenav__item" >
     <a href="#" @click="${copySharableLink}"><i class="far fa-paper-plane"></i>&nbsp;&nbsp;Copy sharable link</a>

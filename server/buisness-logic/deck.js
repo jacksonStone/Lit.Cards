@@ -1,12 +1,14 @@
 let { Deck } = require('../database')
 let { CardBody } = require('../database')
+let { User } = require('../database')
 let { deleteSessionByDeck } = require('./study')
 let { deleteAllCardBodies } = require('./card-body')
 let { removeFromStudyHistory } = require('./study-history')
 
 async function addDeck (userId, name) {
   // make a transaction
-  const newDeck = await Deck.createDeck(userId, name)
+  const user = await User.getUser(userId);
+  const newDeck = await Deck.createDeck(userId, name, user.displayName)
   await CardBody.addCardBody(userId, newDeck.id, newDeck.cards)
   return newDeck
 }

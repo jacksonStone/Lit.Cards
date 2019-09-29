@@ -9,7 +9,13 @@ let sanitizeOptions = {
 }
 
 async function getCardBody (userId, deck, card) {
-  return CardBody.getCardBody(userId, deck, card)
+  let cardBodies = CardBody.getCardBody(userId, deck, card)
+  if(cardBodies && cardBodies.length) {
+    cardBodies.forEach(cardBody => {
+      delete cardBody.userId;
+    })
+  }
+  return cardBodies;
 }
 async function deleteCardBody (userId, deck, card) {
   let cardBody = await getCardBody(userId, deck, card)

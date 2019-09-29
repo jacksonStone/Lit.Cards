@@ -76,7 +76,7 @@ function deckPreview (deck, sessionMapping, forSession) {
               top: 110px;
               left: 0;
               padding: 10px; font-size: 14px"
-            >Author: <br/>${deck.userId}</div>
+            >Author: <br/>${deck.displayName}</div>
             <div style="position: absolute; top:  175px; right: 60px;">
                 ${getStudyBtn(deck, sessionMapping)}
             </div>
@@ -180,7 +180,7 @@ function recentlyStudiedPreview (deck) {
               top: 110px;
               left: 0;
               padding: 10px; font-size: 14px"
-            >Author: <br/>${deck.userId}</div>
+            >Author: <br/>${deck.displayName}</div>
             <div style="position: absolute; top:  175px; right: 60px;">
                 <button
             @click=${() => { createStudySession(deck.id) }}

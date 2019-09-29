@@ -4,13 +4,13 @@ let { sendMail } = require('../../node-abstractions/email')
 let baseURL = process.env.SITE_DOMAIN_ROOT
 let routeToVerifyEmail = '/site/me?verification='
 
-async function signup (userId, plainTextPassword) {
+async function signup (userId, plainTextPassword, displayName) {
   let existingUser = await User.getUser(userId)
   if (existingUser) return
 
   let salt = authUtils.getSalt()
   let password = authUtils.hashValues(plainTextPassword, salt)
-  let user = await User.createUser(userId, salt, password)
+  let user = await User.createUser(userId, salt, password, displayName)
   sendVerificationEmail(user);
   return user
 }

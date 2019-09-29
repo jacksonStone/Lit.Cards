@@ -37,7 +37,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
             <div style="text-align: center">
                 <div class="grid-row" style="margin-top:30px">
                     <div class="grid-col-3" style="text-align: left">
-                    ${showingAnswer ? html`<button class="usa-button usa-button--outline negative-button-no-outline mark-wrong"
+                    ${showingAnswer ? html`<button class="usa-button usa-button--outline negative-button-no-outline mark-wrong" id="wrong-button"
                         @click=${leftAction}
                         style="
                                box-shadow: none;
@@ -51,7 +51,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                     </button>` : html``}
                     </div>
                     <div class="grid-col-6">
-                     <button id="flip-button" class="usa-button usa-button--primary flip-card"
+                     <button id="flip-card-study" class="usa-button usa-button--primary flip-card"
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip
@@ -60,7 +60,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
 
-                    ${showingAnswer ? html`<button class="usa-button usa-button--outline affermative-button-no-outline mark-right"
+                    ${showingAnswer ? html`<button class="usa-button usa-button--outline affermative-button-no-outline mark-right" id="right-button"
                         @click=${rightAction}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-thumbs-up" aria-hidden="true"><span class="sr-only">Mark Correct</span>

@@ -10,8 +10,9 @@ router.post('/', async (req, res) => {
   if (!req.body) return code.unauthorized(res)
   let userId = req.body.userId
   let password = req.body.password
-  if (!userId || !password || !emailIsValid(userId)) return code.unauthorized(res)
-  let newUser = await signup(userId, password)
+  let displayName = req.body.displayName
+  if (!userId || !password || !emailIsValid(userId) || !displayName) return code.unauthorized(res)
+  let newUser = await signup(userId, password, displayName)
   if (!newUser) {
     return code.invalidRequest(res)
   }

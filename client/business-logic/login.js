@@ -75,11 +75,11 @@ exports.navigateToSignupPage = async () => {
   return signupPage()
 }
 
-exports.signup = async (userId, password, repeatPassword) => {
+exports.signup = async (userId, password, repeatPassword, displayName) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
 
-  if (!userId || !password || !repeatPassword) {
+  if (!userId || !password || !repeatPassword || !displayName) {
     if (!userId) {
       recordError('fields.userId', 'empty')
     }
@@ -88,6 +88,9 @@ exports.signup = async (userId, password, repeatPassword) => {
     }
     if (!repeatPassword) {
       recordError('fields.repeatPassword', 'empty')
+    }
+    if (!displayName) {
+      recordError('fields.displayName', 'empty')
     }
     return
   }
@@ -100,7 +103,7 @@ exports.signup = async (userId, password, repeatPassword) => {
     return
   }
 
-  let result = await signup(userId, password)
+  let result = await signup(userId, password, displayName)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()
