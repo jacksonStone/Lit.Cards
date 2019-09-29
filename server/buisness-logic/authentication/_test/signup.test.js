@@ -3,7 +3,7 @@ let { verify } = require('../login')
 let assert = require('assert')
 let { resetData } = require('../../../database/external-connections/fake-database-connector')
 let { resetTestEmails } = require('../../../node-abstractions/email')
-let userId = 'user11'
+let userEmail = 'user11'
 let plainTextPassword = 'somePassword'
 
 describe('User signup', () => {
@@ -12,10 +12,10 @@ describe('User signup', () => {
     resetTestEmails()
   })
   it('Populates user correctly', async () => {
-    let result = await signupTest(userId, plainTextPassword)
+    let result = await signupTest(userEmail, plainTextPassword)
     assert.notStrictEqual(result.password, plainTextPassword, 'Hashed password')
     assert.ok(result.salt, 'Has salt')
-    let correctPasswordHash = await verify(result.userId, plainTextPassword)
+    let correctPasswordHash = await verify(result.userEmail, plainTextPassword)
     assert.strictEqual(correctPasswordHash, true, 'Provided correct creds')
     //Added a valid session tracker
     assert(result.validSession !== undefined)

@@ -14,7 +14,7 @@ app.use(bodyParser.json({limit:'5mb', extended: true}))
 app.use(async (req, res, next) => {
   let user = await loginUtils.getUser(req.cookies)
   if (user) {
-    req.userId = user.userId
+    req.userEmail = user.userEmail
     req.user = user
   }
   next()
@@ -22,7 +22,7 @@ app.use(async (req, res, next) => {
 
 //Home page
 app.get('/', function (req, res) {
-  if (req.userId) {
+  if (req.userEmail) {
     return res.redirect('/site/me')
   }
   return routes.siteNavigation.returnIndexPage(req, res)

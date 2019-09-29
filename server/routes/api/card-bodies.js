@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
   let deck = req.body.deck
   let card = req.body.card
   if (!deck) return code.invalidRequest(res)
-  let cardBody = await getCardBody(req.userId, deck, card)
+  let cardBody = await getCardBody(req.userEmail, deck, card)
   if (cardBody && cardBody.length) {
     res.send(cardBody[0])
     return
@@ -27,14 +27,14 @@ router.post('/edit', async (req, res) => {
   //They cannot alter the id of a card
   delete changes.id;
   //They cannot alter the user of a card
-  delete changes.userId;
+  delete changes.userEmail;
   if (!deck) return code.invalidRequest(res)
-  if (!req.userId) return code.unauthorized(res)
-  let cardBody = await getCardBody(req.userId, deck, card)
+  if (!req.userEmail) return code.unauthorized(res)
+  let cardBody = await getCardBody(req.userEmail, deck, card)
   if (!cardBody) {
     return code.invalidRequest(res)
   }
-  await editCardBody(req.userId, deck, card, changes)
+  await editCardBody(req.userEmail, deck, card, changes)
   return code.ok(res)
 })
 router.post('/add', async (req, res) => {
@@ -45,16 +45,16 @@ router.post('/add', async (req, res) => {
   delete changes.deleted
   // Add a card here toos
   if (!deck) return code.invalidRequest(res)
-  if (!req.userId) return code.unauthorized(res)
-  let newId = await upsertCardBody(req.userId, deck, changes)
+  if (!req.userEmail) return code.unauthorized(res)
+  let newId = await upsertCardBody(req.userEmail, deck, changes)
   res.send(newId)
 })
 router.post('/delete', async (req, res) => {
   let deck = req.body.deck
   let card = req.body.card
   if (!deck) return code.invalidRequest(res)
-  if (!req.userId) return code.unauthorized(res)
-  await deleteCardBody(req.userId, deck, card)
+  if (!req.userEmail) return code.unauthorized(res)
+  await deleteCardBody(req.userEmail, deck, card)
   return code.ok(res)
 })
 

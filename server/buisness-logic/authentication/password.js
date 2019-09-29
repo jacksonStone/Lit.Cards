@@ -17,20 +17,20 @@ function hashRandomReset(user, token) {
 }
 
 // Return the same thing for success or failure so they don't know nothin'!
-async function passwordReset (userId) {
-  let user = await User.getUser(userId)
+async function passwordReset (userEmail) {
+  let user = await User.getUser(userEmail)
   if (!user) {
     return
   }
   let resetToken = await generateRandomReset()
   let hashedResetToken = hashRandomReset(user, resetToken)
   let changes = { resetToken: hashedResetToken, resetTokenExpiration: now() + millisInADay * 3}
-  await User.editUser(user.userId, changes)
+  await User.editUser(user.userEmail, changes)
   sendMail(
-    userId,
+    userEmail,
     'Password Reset',
-    `To reset password please navigate to this link: ${baseURL + routeToVerifyReset + resetToken}&user=${userId}`,
-    `To reset password please navigate to this link: ${baseURL + routeToVerifyReset + resetToken}&user=${userId}`
+    `To reset password please navigate to this link: ${baseURL + routeToVerifyReset + resetToken}&user=${userEmail}`,
+    `To reset password please navigate to this link: ${baseURL + routeToVerifyReset + resetToken}&user=${userEmail}`
   )
   return;
 }
@@ -51,8 +51,8 @@ function validatePasswordResetVerify(user, unhashedResetToken) {
 }
 
 // Resets the user's password, and logs them in, invalidating all other sessions
-async function passwordResetVerify (userId, unhashedResetToken, newPassword) {
-  let user = await User.getUser(userId)
+async function passwordResetVerify (userEmail, unhashedResetToken, newPassword) {
+  let user = await User.getUser(userEmail)
   if(!validatePasswordResetVerify(user, unhashedResetToken, newPassword)) {
     return 'unauthorized';
   }
@@ -89,7 +89,7 @@ async function _updatePassword(passwordHash, user) {
     validSession = 1;
   }
   let changes = { password: passwordHash, validSession, resetToken: undefined, resetTokenExpiration: 0 }
-  await User.editUser(user.userId, changes)
+  await User.editUser(user.userEmail, changes)
   let newUser = Object.assign({}, user, changes)
   let cookie = getLoginCookie(newUser)
   return cookie

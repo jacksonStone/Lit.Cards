@@ -8,11 +8,11 @@ let { emailIsValid } = require('../../../shared/email-address-validation')
 
 router.post('/', async (req, res) => {
   if (!req.body) return code.unauthorized(res)
-  let userId = req.body.userId
+  let userEmail = req.body.userEmail
   let password = req.body.password
   let displayName = req.body.displayName
-  if (!userId || !password || !emailIsValid(userId) || !displayName) return code.unauthorized(res)
-  let newUser = await signup(userId, password, displayName)
+  if (!userEmail || !password || !emailIsValid(userEmail) || !displayName) return code.unauthorized(res)
+  let newUser = await signup(userEmail, password, displayName)
   if (!newUser) {
     return code.invalidRequest(res)
   }
@@ -23,9 +23,9 @@ router.post('/', async (req, res) => {
 
 router.post('/verify-email', async (req, res) => {
   if (!req.body) return code.unauthorized(res)
-  if (!req.userId) return code.unauthorized(res)
+  if (!req.userEmail) return code.unauthorized(res)
   let emailVerificationKey = req.body.emailVerificationKey
-  let errorIfAny = await verifyEmail(req.userId, emailVerificationKey)
+  let errorIfAny = await verifyEmail(req.userEmail, emailVerificationKey)
   if (errorIfAny) {
     return code.unauthorized(res, errorIfAny)
   }
@@ -33,7 +33,7 @@ router.post('/verify-email', async (req, res) => {
 })
 
 router.get('/resend-verification-email', async (req, res) => {
-  if (!req.userId) return code.unauthorized(res)
+  if (!req.userEmail) return code.unauthorized(res)
   if (req.user.verifiedEmail) {
     return code.unauthorized(res)
   }

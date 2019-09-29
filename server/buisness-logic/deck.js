@@ -5,48 +5,48 @@ let { deleteSessionByDeck } = require('./study')
 let { deleteAllCardBodies } = require('./card-body')
 let { removeFromStudyHistory } = require('./study-history')
 
-async function addDeck (userId, name) {
+async function addDeck (userEmail, name) {
   // make a transaction
-  const user = await User.getUser(userId);
-  const newDeck = await Deck.createDeck(userId, name, user.displayName)
-  await CardBody.addCardBody(userId, newDeck.id, newDeck.cards)
+  const user = await User.getUser(userEmail);
+  const newDeck = await Deck.createDeck(userEmail, name, user.displayName)
+  await CardBody.addCardBody(userEmail, newDeck.id, newDeck.cards)
   return newDeck
 }
 
-async function deleteDeck (userId, id) {
-  let deck = await Deck.getDeck(userId, id, true)
+async function deleteDeck (userEmail, id) {
+  let deck = await Deck.getDeck(userEmail, id, true)
   // Do not allow deletion of public decks
   if (deck && deck.length && deck[0].public) {
     return
   }
   // make a transaction
-  await removeFromStudyHistory(userId, id)
-  await deleteSessionByDeck(userId, id)
-  await deleteAllCardBodies(userId, id)
-  return Deck.deleteDeck(userId, id)
+  await removeFromStudyHistory(userEmail, id)
+  await deleteSessionByDeck(userEmail, id)
+  await deleteAllCardBodies(userEmail, id)
+  return Deck.deleteDeck(userEmail, id)
 }
-async function renameDeck (userId, id, name) {
-  return Deck.editDeck({ userId, id }, { name })
+async function renameDeck (userEmail, id, name) {
+  return Deck.editDeck({ userEmail, id }, { name })
 }
-async function getDecks (userId) {
-  let decks = await Deck.getDecks(userId)
+async function getDecks (userEmail) {
+  let decks = await Deck.getDecks(userEmail)
   for (let deck of decks) {
-    delete deck.userId
+    delete deck.userEmail
   }
   return decks
 }
-async function getDeck (userId, deckId) {
-  return Deck.getDeck(userId, deckId)
+async function getDeck (userEmail, deckId) {
+  return Deck.getDeck(userEmail, deckId)
 }
 
-async function makeDeckPublic (userId, deckId) {
-  let deck = Deck.getDeck(userId, deckId, true)
+async function makeDeckPublic (userEmail, deckId) {
+  let deck = Deck.getDeck(userEmail, deckId, true)
   if (deck.none) {
     return
   }
   await Promise.all([
-    Deck.editDeck({ userId, id: deckId }, { public: true }),
-    CardBody.editCardBodies(userId, deckId, { public: true })
+    Deck.editDeck({ userEmail, id: deckId }, { public: true }),
+    CardBody.editCardBodies(userEmail, deckId, { public: true })
   ])
 }
 

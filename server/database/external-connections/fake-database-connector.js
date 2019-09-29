@@ -58,13 +58,13 @@ function resetData (table) {
   }
   fakeDatabaseConnector = _.cloneDeep(fakeDataBackup)
 }
-function getAllData(userId) {
-  if(!userId) {
+function getAllData(userEmail) {
+  if(!userEmail) {
     return fakeDatabaseConnector
   }
   const userView = {};
   _.each(fakeDatabaseConnector, (table, tableName) => {
-    userView[tableName] = _.filter(table, { userId });
+    userView[tableName] = _.filter(table, { userEmail });
   })
   return userView;
 }

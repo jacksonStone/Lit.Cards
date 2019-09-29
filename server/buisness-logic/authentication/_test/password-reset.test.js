@@ -7,7 +7,7 @@ let { setTime, resetTime } = require('../../../node-abstractions/time')
 let { resetTestEmails, getTestEmails } = require('../../../node-abstractions/email')
 let assert = require('assert')
 
-let userId = 'user10'
+let userEmail = 'user10'
 let password = 'somePassword'
 let pathToToken = 'verify?token=';
 
@@ -26,7 +26,7 @@ async function waitForEmail() {
 }
 describe('Login validates correctly', () => {
   beforeEach(async () => {
-    await signupTest(userId, password)
+    await signupTest(userEmail, password)
     resetTestEmails()
     setTime(fakeCurrent)
   })
@@ -36,19 +36,19 @@ describe('Login validates correctly', () => {
     resetTestEmails()
   })
   it('resets password', async () => {
-    let res = await passwordReset(userId)
-    let updatedUser = await User.getUser(userId);
+    let res = await passwordReset(userEmail)
+    let updatedUser = await User.getUser(userEmail);
     assert(updatedUser.resetTokenExpiration === fakeCurrent + millisInADay * 3)
     await waitForEmail()
     let testEmail = getTestEmails()[0];
-    assert(testEmail.to === updatedUser.userId)
+    assert(testEmail.to === updatedUser.userEmail)
     // verify that the hashed reset token in the DB IS NOT sent
     assert(testEmail.text.indexOf(updatedUser.resetToken) === -1)
     assert(testEmail.html.indexOf(updatedUser.resetToken) === -1)
   })
   it('passwordResetVerify', async () => {
-    await passwordReset(userId)
-    let updatedUser = await User.getUser(userId);
+    await passwordReset(userEmail)
+    let updatedUser = await User.getUser(userEmail);
     await waitForEmail();
     let testEmail = getTestEmails()[0];
     let text = testEmail.text
@@ -64,15 +64,15 @@ describe('Login validates correctly', () => {
     //Cannot login with old password
     assert(!await verify(userIdInEmail, password));
 
-    let withNewPass = await User.getUser(userId);
+    let withNewPass = await User.getUser(userEmail);
     assert(withNewPass.validSession === 1)
     assert(withNewPass.resetToken === undefined)
     assert(withNewPass.resetTokenExpiration === 0)
 
   })
   it('passwordResetVerify - same password', async () => {
-    await passwordReset(userId)
-    let updatedUser = await User.getUser(userId);
+    await passwordReset(userEmail)
+    let updatedUser = await User.getUser(userEmail);
     await waitForEmail();
     let testEmail = getTestEmails()[0];
     let text = testEmail.text
@@ -82,8 +82,8 @@ describe('Login validates correctly', () => {
     assert(error === 'same password')
   })
   it('passwordResetVerify - Bad token', async () => {
-    await passwordReset(userId)
-    let updatedUser = await User.getUser(userId);
+    await passwordReset(userEmail)
+    let updatedUser = await User.getUser(userEmail);
     await waitForEmail();
     let testEmail = getTestEmails()[0];
     let text = testEmail.text
@@ -94,27 +94,27 @@ describe('Login validates correctly', () => {
     assert(error === 'unauthorized')
   })
   it('changePassword - same password', async () => {
-    let user = await User.getUser(userId);
+    let user = await User.getUser(userEmail);
     let error = await changePassword(user, password, password)
     // Attempt to change passwords
     assert(error === 'same password')
   })
   it('changePassword - wrong password with same password', async () => {
-    let user = await User.getUser(userId);
+    let user = await User.getUser(userEmail);
     let error = await changePassword(user, password, password + '1')
     // Attempt to change passwords
     assert(error === 'wrong password')
   })
   it('changePassword - wrong password', async () => {
-    let user = await User.getUser(userId);
+    let user = await User.getUser(userEmail);
     let error = await changePassword(user, 'fooey', password + '1')
     // Attempt to change passwords
     assert(error === 'wrong password')
   })
   it('changePassword', async () => {
-    let user = await User.getUser(userId);
+    let user = await User.getUser(userEmail);
     await changePassword(user, 'foo', password)
-    let newLoginWorks = await verify(user.userId, 'foo')
+    let newLoginWorks = await verify(user.userEmail, 'foo')
     assert(newLoginWorks)
   })
 })

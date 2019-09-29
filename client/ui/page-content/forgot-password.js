@@ -25,7 +25,7 @@ module.exports = (data) => {
             ${(!requestSent) ? html`<form class="usa-form" id="forgot-password">
               <fieldset class="usa-fieldset">
                 <legend class="usa-legend">Forgot Password</legend>
-                ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
+                ${errorableInput(ef.userEmail, 'Valid email is required', 'email', 'Email')}
               </fieldset>
               <button @click=${resetBtn} class="usa-button">Email password reset</button>
             </form>` : html`<h4>Request sent. Follow the link emailed to that address.</h4>`}

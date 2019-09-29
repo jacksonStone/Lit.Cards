@@ -6,32 +6,32 @@ let { getDeck } = require('./deck')
 let shuffle = require('../../../shared/shuffle')
 let { strToList } = require('../../../shared/char-encoding')
 let { generateId } = require('../../../shared/id-generator')
-async function getStudySessions (userId) {
-  let results = await db.getRecord(tableName, { userId })
+async function getStudySessions (userEmail) {
+  let results = await db.getRecord(tableName, { userEmail })
   return results || []
 }
-async function getStudySession (userId, sessionId) {
-  let results = await db.getRecord(tableName, { userId, id: sessionId })
+async function getStudySession (userEmail, sessionId) {
+  let results = await db.getRecord(tableName, { userEmail, id: sessionId })
   if (results && results.length) {
     return results[0]
   }
   return { none: true }
 }
 
-async function getStudySessionByDeckId (userId, deck) {
-  let results = await db.getRecord(tableName, { userId, deck })
+async function getStudySessionByDeckId (userEmail, deck) {
+  let results = await db.getRecord(tableName, { userEmail, deck })
   if (results && results.length) {
     return results[0]
   }
   return { none: true }
 }
 
-async function createStudySession (userId, deckId, startingState) {
-  if (!userId || !deckId) return
-  let deck = await getDeck(userId, deckId)
+async function createStudySession (userEmail, deckId, startingState) {
+  if (!userEmail || !deckId) return
+  let deck = await getDeck(userEmail, deckId)
   // Required
   if (deck.none) return
-  if (!(await getStudySessionByDeckId(userId, deckId)).none) {
+  if (!(await getStudySessionByDeckId(userEmail, deckId)).none) {
     // Person already has a session for that deck
     return
   }
@@ -55,8 +55,8 @@ async function createStudySession (userId, deckId, startingState) {
   }
   let id = generateId()
   let dateMade = Date.now()
-  let newStudySession = { userId, currentCard, ordering, deck: deckId, id, date: dateMade, studyState }
-  if(deck.userId !== userId) {
+  let newStudySession = { userEmail, currentCard, ordering, deck: deckId, id, date: dateMade, studyState }
+  if(deck.userEmail !== userEmail) {
     // So that we know to fetch these when loading their "me" page
     newStudySession.borrowed = true;
   }
@@ -82,23 +82,23 @@ function getRandomOrderingStr (len) {
   }
   return shuffledList.join('')
 }
-async function deleteStudySession (userId, id) {
-  if (!userId || !id) return
-  return db.unsetRecord(tableName, { userId, id })
+async function deleteStudySession (userEmail, id) {
+  if (!userEmail || !id) return
+  return db.unsetRecord(tableName, { userEmail, id })
 }
 
-async function editStudySessionState(userId, id, sessionChanges) {
-  let session = await getStudySession(userId, id)
+async function editStudySessionState(userEmail, id, sessionChanges) {
+  let session = await getStudySession(userEmail, id)
   if (session.none) return
-  return db.editRecord(tableName, { userId, id }, sessionChanges)
+  return db.editRecord(tableName, { userEmail, id }, sessionChanges)
 }
 
-async function deleteStudySessionByDeck (userId, deck) {
-  if (!userId || !deck) return
+async function deleteStudySessionByDeck (userEmail, deck) {
+  if (!userEmail || !deck) return
   // Required
-  let currentUser = await userExists(userId)
+  let currentUser = await userExists(userEmail)
   if (!currentUser) return
-  return db.unsetRecord(tableName, { userId, deck })
+  return db.unsetRecord(tableName, { userEmail, deck })
 }
 
 module.exports = {

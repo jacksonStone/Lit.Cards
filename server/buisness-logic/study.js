@@ -1,25 +1,25 @@
 let { StudySession, Deck } = require('../database')
 let { pushStudyHistory, removeFromStudyHistory } = require('./study-history')
-async function createSession (userId, deck, startingState) {
-  await removeFromStudyHistory(userId, deck)
-  return StudySession.createStudySession(userId, deck, startingState)
+async function createSession (userEmail, deck, startingState) {
+  await removeFromStudyHistory(userEmail, deck)
+  return StudySession.createStudySession(userEmail, deck, startingState)
 }
-async function deleteSession (userId, id) {
-  let session = await getSession(userId, id)
-  await pushStudyHistory(userId, session.deck)
-  return StudySession.deleteStudySession(userId, id)
+async function deleteSession (userEmail, id) {
+  let session = await getSession(userEmail, id)
+  await pushStudyHistory(userEmail, session.deck)
+  return StudySession.deleteStudySession(userEmail, id)
 }
-async function deleteSessionByDeck (userId, deckId) {
-  return StudySession.deleteStudySessionByDeck(userId, deckId)
+async function deleteSessionByDeck (userEmail, deckId) {
+  return StudySession.deleteStudySessionByDeck(userEmail, deckId)
 }
-async function getSession (userId, id) {
-  return StudySession.getStudySession(userId, id)
+async function getSession (userEmail, id) {
+  return StudySession.getStudySession(userEmail, id)
 }
-async function getSessionByDeck (userId, deckId) {
-  return StudySession.getStudySessionByDeckId(userId, deckId)
+async function getSessionByDeck (userEmail, deckId) {
+  return StudySession.getStudySessionByDeckId(userEmail, deckId)
 }
-async function getSessionsAndBorrowedDecks (userId) {
-  let sessions = await StudySession.getStudySessions(userId)
+async function getSessionsAndBorrowedDecks (userEmail) {
+  let sessions = await StudySession.getStudySessions(userEmail)
   if (!sessions || !sessions.length) {
     return { sessions: [], borrowedDecks: [] }
   }
@@ -31,7 +31,7 @@ async function getSessionsAndBorrowedDecks (userId) {
   let borrowedDecks = await Deck.getByIdsWithCondition(decksToFetch, { public: true })
   return { sessions, borrowedDecks }
 }
-async function editSessionState (userId, id, sessionChanges) {
+async function editSessionState (userEmail, id, sessionChanges) {
   let safeChanges = {}
   if (sessionChanges.currentCard !== undefined) {
     safeChanges.currentCard = sessionChanges.currentCard
@@ -42,7 +42,7 @@ async function editSessionState (userId, id, sessionChanges) {
   if (sessionChanges.ordering !== undefined) {
     safeChanges.ordering = sessionChanges.ordering
   }
-  return StudySession.editStudySessionState(userId, id, sessionChanges)
+  return StudySession.editStudySessionState(userEmail, id, sessionChanges)
 }
 
 module.exports = {

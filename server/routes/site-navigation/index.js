@@ -6,7 +6,7 @@ let { sendPage } = require('./send-page');
 let makePageRoute = (path, details, auth) => {
   router.get(path, async (req, res) => {
     if(auth) {
-      if (!req.userId) return res.redirect('/')
+      if (!req.userEmail) return res.redirect('/')
     }
     return sendPage(res, details, req.user)
   })

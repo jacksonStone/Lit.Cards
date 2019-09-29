@@ -26,8 +26,8 @@ async function validateUserCookie (cookies) {
   if (!youngCookie) {
     return
   }
-  let userId = youngCookie.userId
-  let user = await UNSAFE_USER(userId)
+  let userEmail = youngCookie.userEmail
+  let user = await UNSAFE_USER(userEmail)
   if (!user) {
     return
   }
@@ -36,10 +36,10 @@ async function validateUserCookie (cookies) {
   }
 }
 
-function createUserCookie (userId, session) {
+function createUserCookie (userEmail, session) {
   let now = Date.now()
   var userCookie = {
-    userId: userId,
+    userEmail: userEmail,
     created: now,
     session
   }

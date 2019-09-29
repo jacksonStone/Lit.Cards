@@ -6,8 +6,8 @@ let{
 let code = require('../../node-abstractions/response-codes')
 
 router.get('/me', async (req, res) => {
-  if (!req.userId) return code.unauthorized(res)
-  let recentlyStudiedDecks = await getDeckDetailsFromStudyHistory(req.userId)
+  if (!req.userEmail) return code.unauthorized(res)
+  let recentlyStudiedDecks = await getDeckDetailsFromStudyHistory(req.userEmail)
   res.send(recentlyStudiedDecks)
 })
 

@@ -53,7 +53,7 @@ module.exports = (data) => {
               <fieldset class="usa-fieldset">
                 ${ea.loginFailed && errorBanner('Bad login', 'Perhaps it is your next guess!')}
                 <legend class="usa-legend">Login</legend>
-                ${errorableInput(ef.userId, 'Valid email is required', 'email', 'Email')}
+                ${errorableInput(ef.userEmail, 'Valid email is required', 'email', 'Email')}
                 ${passwordField(ef.password)}
               </fieldset>
               <button @click=${loginBtn} id="login-button" class="usa-button">Login</button>

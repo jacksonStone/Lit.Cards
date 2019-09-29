@@ -11,9 +11,9 @@ router.get('/debug', async (req, res) => {
 })
 router.post('/debug', async (req, res) => {
   if(process.env.NODE_ENV !== 'development') return code.unauthorized(res)
-  const userId = req.body.userId;
-  const allData = await getAllData(userId);
-  allData.emails = getTestEmails(userId);
+  const userEmail = req.body.userEmail;
+  const allData = await getAllData(userEmail);
+  allData.emails = getTestEmails(userEmail);
   return res.json(allData);
 })
 router.get('/debug-reset', async (req, res) => {

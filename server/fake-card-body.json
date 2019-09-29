@@ -1,5 +1,5 @@
 {
-  "userId": "jackson@someemail.com",
+  "userEmail": "jackson@someemail.com",
   "deck": "foo",
   "id": "fe",
   "front": "This is the front of card 1",

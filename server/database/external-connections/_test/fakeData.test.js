@@ -3,9 +3,9 @@ let fakeDataTest = require('../fake-database-connector')
 let _ = require('lodash')
 let testData = {
   fakeTable: [
-    { userId: 'user10' },
-    { userId: 'user11', example: 'foo' },
-    { userId: 'user11.5', example: 'foo' }
+    { userEmail: 'user10' },
+    { userEmail: 'user11', example: 'foo' },
+    { userEmail: 'user11.5', example: 'foo' }
   ],
   fakeTable2: [
     { userId2: 'user12' },
@@ -41,16 +41,16 @@ describe('Verify get record', () => {
     let records = await fakeDataTest.getRecord(table)
 
     assert.strictEqual(records.length, testData[table].length)
-    assert.strictEqual(records[0].userId, 'user10')
+    assert.strictEqual(records[0].userEmail, 'user10')
   })
   it('getRecord, condition', async () => {
-    let records = await fakeDataTest.getRecord('fakeTable', { userId: 'user11', example: 'foo' })
+    let records = await fakeDataTest.getRecord('fakeTable', { userEmail: 'user11', example: 'foo' })
     assert.strictEqual(records.length, 1)
-    assert.strictEqual(records[0].userId, 'user11')
+    assert.strictEqual(records[0].userEmail, 'user11')
 
     let records0 = await fakeDataTest.getRecord('fakeTable', { example: 'foo' })
     assert.strictEqual(records0.length, 2)
-    assert.strictEqual(records0[0].userId, 'user11')
-    assert.strictEqual(records0[1].userId, 'user11.5')
+    assert.strictEqual(records0[0].userEmail, 'user11')
+    assert.strictEqual(records0[1].userEmail, 'user11.5')
   })
 })

@@ -2,17 +2,17 @@ let { getDeck } = require('../database/models/deck')
 let { getStudyHistory, upsertStudyHistory, editStudyHistory } = require('../database/models/study-history')
 let HISTORY_LIMIT = 6
 
-async function getDeckDetailsFromStudyHistory (userId) {
-  let studyHistory = await getStudyHistory(userId)
+async function getDeckDetailsFromStudyHistory (userEmail) {
+  let studyHistory = await getStudyHistory(userEmail)
   let history = JSON.parse(studyHistory.studied)
   let decks = await Promise.all(history.map(deckId => {
-    return getDeck(userId, deckId)
+    return getDeck(userEmail, deckId)
   }))
   return decks
 }
 
-async function removeFromStudyHistory (userId, deck) {
-  let studyHistory = await getStudyHistory(userId)
+async function removeFromStudyHistory (userEmail, deck) {
+  let studyHistory = await getStudyHistory(userEmail)
   let history = JSON.parse(studyHistory.studied)
   let existingIndex = history.findIndex(entry => entry === deck)
   if (existingIndex !== -1) {
@@ -23,8 +23,8 @@ async function removeFromStudyHistory (userId, deck) {
   }
 }
 
-async function pushStudyHistory (userId, deck) {
-  let studyHistory = await getStudyHistory(userId)
+async function pushStudyHistory (userEmail, deck) {
+  let studyHistory = await getStudyHistory(userEmail)
   let history = JSON.parse(studyHistory.studied)
   let existingIndex = history.findIndex(entry => entry === deck)
   if (existingIndex !== -1) {

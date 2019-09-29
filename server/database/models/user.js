@@ -11,7 +11,7 @@ let safeParametersToDynamicallyChange = [
 ];
 // Guilty until proven innocent!
 let safeParametersToReturn = [
-  'userId',
+  'userEmail',
   'verifiedEmail',
   // All props that a user can dynamically change
   // should be safe to return to the user
@@ -20,22 +20,22 @@ let safeParametersToReturn = [
 
 
 
-async function getUser (userId) {
-  let results = await db.getRecord(tableName, { userId: userId })
+async function getUser (userEmail) {
+  let results = await db.getRecord(tableName, { userEmail: userEmail })
   if (results && results.length) return results[0]
 }
-async function getSafeUser (userId) {
-  let user = await getUser(userId)
+async function getSafeUser (userEmail) {
+  let user = await getUser(userEmail)
   return trimAllButSafeParameters(user)
 }
 
-async function userExists (userId) {
-  let user = await getUser(userId)
+async function userExists (userEmail) {
+  let user = await getUser(userEmail)
   return !!user
 }
 
 
-async function updateSafe(userId, changes) {
+async function updateSafe(userEmail, changes) {
   const keys = Object.keys(changes);
   const keyLength = keys.length;
   const safeChanges = {};
@@ -44,7 +44,7 @@ async function updateSafe(userId, changes) {
       safeChanges[keys[i]] = changes[keys[i]];
     }
   }
-  return db.editRecord(tableName, { userId }, safeChanges)
+  return db.editRecord(tableName, { userEmail }, safeChanges)
 }
 
 function trimAllButSafeParameters (user) {
@@ -58,19 +58,19 @@ function trimAllButSafeParameters (user) {
   return safeUser
 }
 
-async function createUser (userId, salt, password, displayName) {
-  let results = await db.getRecord(tableName, { userId })
+async function createUser (userEmail, salt, password, displayName) {
+  let results = await db.getRecord(tableName, { userEmail })
   if (results.length) return
   let emailVerificationKey = await randomString(20, 'hex')
-  return db.setRecord(tableName, { userId, salt, password, displayName, validSession: 0, emailVerificationKey, verifiedEmail: false })
+  return db.setRecord(tableName, { userEmail, salt, password, displayName, validSession: 0, emailVerificationKey, verifiedEmail: false })
 }
 
-function editUser(userId, changes) {
-  return db.editRecord(tableName, { userId }, changes)
+function editUser(userEmail, changes) {
+  return db.editRecord(tableName, { userEmail }, changes)
 }
 
-async function updateDarkModeValue(userId, darkmodeValue) {
-  return db.editRecord(tableName, { userId }, { darkMode: darkmodeValue })
+async function updateDarkModeValue(userEmail, darkmodeValue) {
+  return db.editRecord(tableName, { userEmail }, { darkMode: darkmodeValue })
 }
 
 module.exports = {

@@ -18,10 +18,10 @@ if (!isTest) {
   resetTestEmails = () => {
     testEmails = []
   }
-  getTestEmails = (userId) => {
-    if (userId) {
+  getTestEmails = (userEmail) => {
+    if (userEmail) {
       return testEmails.filter(email => {
-        return email.to === userId
+        return email.to === userEmail
       })
     }
     return testEmails

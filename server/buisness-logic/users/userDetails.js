@@ -1,17 +1,17 @@
 let { User } = require('../../database')
 
-async function userDetails (userId) {
-  return User.getSafeUser(userId)
+async function userDetails (userEmail) {
+  return User.getSafeUser(userEmail)
 }
-async function UNSAFE_USER (userId) {
-  return User.getUser(userId)
+async function UNSAFE_USER (userEmail) {
+  return User.getUser(userEmail)
 }
-async function setDarkmode (userId, darkmodeValue) {
-  return User.updateSafe(userId,  { darkMode: darkmodeValue })
+async function setDarkmode (userEmail, darkmodeValue) {
+  return User.updateSafe(userEmail,  { darkMode: darkmodeValue })
 }
 
-async function setMisc(userId, changes) {
-  return User.updateSafe(userId, changes)
+async function setMisc(userEmail, changes) {
+  return User.updateSafe(userEmail, changes)
 }
 
 exports.getUserDetails = userDetails

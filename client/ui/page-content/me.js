@@ -147,7 +147,7 @@ function deckPreview (deck, sessionMapping, forSession) {
 
 function recentlyStudiedPreview (deck) {
   let deckCount = deck.cards && deck.cards.length || 0
-  const borrowed = window.lc.getData('user.userId') !== deck.userId;
+  const borrowed = window.lc.getData('user.userEmail') !== deck.userEmail;
   if(borrowed) {
     return html`
     <div class="mobile-lg:grid-col-4">

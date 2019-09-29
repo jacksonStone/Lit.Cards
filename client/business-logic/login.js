@@ -6,19 +6,19 @@ let { getParam } = require('abstract/url')
 let { emailIsValid } = require('shared/email-address-validation')
 let { login: loginPage, signup: signupPage } = require('../routes/navigation/pages')
 
-exports.login = async (userId, password) => {
+exports.login = async (userEmail, password) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
-  if (!userId || !password) {
-    if (!userId) {
-      recordError('fields.userId', 'empty')
+  if (!userEmail || !password) {
+    if (!userEmail) {
+      recordError('fields.userEmail', 'empty')
     }
     if (!password) {
       recordError('fields.password', 'empty')
     }
     return
   }
-  let result = await login(userId, password)
+  let result = await login(userEmail, password)
   await fetchUserNoCache()
   if (code.ok(result)) {
     pages.home()
@@ -27,18 +27,18 @@ exports.login = async (userId, password) => {
   recordError('abstract.loginFailed', true)
 }
 
-exports.resetPassword = async (userId) => {
+exports.resetPassword = async (userEmail) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
-  if (!userId) {
-    recordError('fields.userId', 'empty')
+  if (!userEmail) {
+    recordError('fields.userEmail', 'empty')
     return
   }
-  if (!emailIsValid(userId)) {
+  if (!emailIsValid(userEmail)) {
     recordError('abstract.badEmail', true)
     return
   }
-  return resetPassword(userId)
+  return resetPassword(userEmail)
 }
 
 exports.verifyPasswordReset = async (password, repeatPassword) => {
@@ -75,13 +75,13 @@ exports.navigateToSignupPage = async () => {
   return signupPage()
 }
 
-exports.signup = async (userId, password, repeatPassword, displayName) => {
+exports.signup = async (userEmail, password, repeatPassword, displayName) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
 
-  if (!userId || !password || !repeatPassword || !displayName) {
-    if (!userId) {
-      recordError('fields.userId', 'empty')
+  if (!userEmail || !password || !repeatPassword || !displayName) {
+    if (!userEmail) {
+      recordError('fields.userEmail', 'empty')
     }
     if (!password) {
       recordError('fields.password', 'empty')
@@ -98,12 +98,12 @@ exports.signup = async (userId, password, repeatPassword, displayName) => {
     recordError('abstract.mismatchPasswords', true)
     return
   }
-  if (!emailIsValid(userId)) {
+  if (!emailIsValid(userEmail)) {
     recordError('abstract.badEmail', true)
     return
   }
 
-  let result = await signup(userId, password, displayName)
+  let result = await signup(userEmail, password, displayName)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()

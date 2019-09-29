@@ -15,10 +15,10 @@ function deactivateDebug () {
   resetKeyGlobal('KeyR')
   resetKeyGlobal('KeyS')
 }
-async function getServerDBState (userId) {
+async function getServerDBState (userEmail) {
   let state
-  if (userId) {
-    state = JSON.parse(await api('debug', { userId }))
+  if (userEmail) {
+    state = JSON.parse(await api('debug', { userEmail }))
   } else {
     state = JSON.parse(await api('debug'))
   }

@@ -7,20 +7,20 @@ let { redirect } = require('../../node-abstractions/redirect')
 let { emailIsValid } = require('../../../shared/email-address-validation')
 
 router.post('/', async (req, res) => {
-  let userId = req.body && req.body.userId
-  if (!userId || !emailIsValid(userId)) return code.invalidRequest(res)
-  await passwordReset(userId)
+  let userEmail = req.body && req.body.userEmail
+  if (!userEmail || !emailIsValid(userEmail)) return code.invalidRequest(res)
+  await passwordReset(userEmail)
   return code.ok(res)
 })
 
 router.post('/verify', async (req, res) => {
   let body = req.body;
   let verificationToken = body && body.token;
-  let userId = body && body.id;
+  let userEmail = body && body.id;
   let newPassword = body && body.newPassword;
 
-  if (!verificationToken || !userId || !newPassword) return code.invalidRequest(res)
-  let cookieOrError = await passwordResetVerify(userId, verificationToken, newPassword)
+  if (!verificationToken || !userEmail || !newPassword) return code.invalidRequest(res)
+  let cookieOrError = await passwordResetVerify(userEmail, verificationToken, newPassword)
   if(cookieOrError === 'unauthorized') {
     return code.unauthorized(res)
   }

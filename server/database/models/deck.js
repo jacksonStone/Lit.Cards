@@ -3,22 +3,22 @@ let tableName = 'deck'
 let { userExists } = require('./user')
 let { generateId } = require('../../../shared/id-generator')
 let { intToChar } = require('../../../shared/char-encoding')
-async function getDecks (userId) {
-  let results = await db.getRecord(tableName, { userId })
+async function getDecks (userEmail) {
+  let results = await db.getRecord(tableName, { userEmail })
   return results || []
 }
-async function getDeck (userId, deck, requireUserIdMatch = false) {
+async function getDeck (userEmail, deck, requireUserIdMatch = false) {
   let query = { id: deck };
   if(requireUserIdMatch) {
-    query.userId = userId;
+    query.userEmail = userEmail;
   }
   let results = await db.getRecord(tableName, query)
   if (results && results.length) {
     let firstResult = results[0];
-    if (firstResult.userId === userId || firstResult.public) {
-      if(firstResult.userId !== userId) {
+    if (firstResult.userEmail === userEmail || firstResult.public) {
+      if(firstResult.userEmail !== userEmail) {
         //We don't want to make emails public
-        delete firstResult.userId;
+        delete firstResult.userEmail;
       }
       return firstResult
     }
@@ -26,9 +26,9 @@ async function getDeck (userId, deck, requireUserIdMatch = false) {
   return { none: true }
 }
 
-async function editDeck ({ userId, id }, changes) {
+async function editDeck ({ userEmail, id }, changes) {
 
-  const recordsEdited = await db.editRecord(tableName, { userId, id }, changes)
+  const recordsEdited = await db.editRecord(tableName, { userEmail, id }, changes)
   return recordsEdited
 }
 //TODO:: Consider making this an Or join
@@ -42,8 +42,8 @@ async function getByIdsWithCondition(ids, condition) {
     return result[0];
   })
 }
-async function deleteCard (userId, deck, card) {
-  let deckRecord = await getDeck(userId, deck)
+async function deleteCard (userEmail, deck, card) {
+  let deckRecord = await getDeck(userEmail, deck)
   if (!deckRecord) {
     return
   }
@@ -55,21 +55,21 @@ async function deleteCard (userId, deck, card) {
   }
   await editDeck(deckRecord, { cards: newCards })
 }
-async function createDeck (userId, name, displayName) {
-  if (!userId || !name || !displayName) return
+async function createDeck (userEmail, name, displayName) {
+  if (!userEmail || !name || !displayName) return
   let id = generateId()
   let dateMade = Date.now()
   let cardCount = 1
   let cards = intToChar(0);
-  return db.setRecord(tableName, { userId, displayName, name, id, date: dateMade, cardCount, cards })
+  return db.setRecord(tableName, { userEmail, displayName, name, id, date: dateMade, cardCount, cards })
 }
 
-async function deleteDeck (userId, id) {
-  if (!userId || !id) return
+async function deleteDeck (userEmail, id) {
+  if (!userEmail || !id) return
   // Required
-  let currentUser = await userExists(userId)
+  let currentUser = await userExists(userEmail)
   if (!currentUser) return
-  return db.unsetRecord(tableName, { userId, id })
+  return db.unsetRecord(tableName, { userEmail, id })
 }
 
 module.exports = {

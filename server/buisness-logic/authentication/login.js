@@ -2,15 +2,15 @@ let authUtils = require('./utils')
 let cookieUtils = require('./cookie')
 let { User } = require('../../database')
 
-async function verify (userId, plainTextPassword) {
-  let user = await User.getUser(userId)
+async function verify (userEmail, plainTextPassword) {
+  let user = await User.getUser(userEmail)
   if (!user) return false
   let hashResult = authUtils.hashValues(plainTextPassword, user.salt)
   return hashResult === user.password
 }
 
 function getLoginCookie (user) {
-  return cookieUtils.createUserCookie(user.userId, user.validSession || 0)
+  return cookieUtils.createUserCookie(user.userEmail, user.validSession || 0)
 }
 
 async function getUser (cookies) {
