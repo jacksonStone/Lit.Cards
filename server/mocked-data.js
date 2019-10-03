@@ -6,15 +6,29 @@ fakeCardBody.id = intToChar(0);
 let fakeData = {
   user: [{
     userEmail: 'jackson@someemail.com',
+    displayName:'Jackson',
+
+    //Auth stuff
     password: 'X0VIy9vshnkFZVZO8tLB4Uod5JDREmf1eIh9qIP6KR0=',
     salt: '8b73210c-8004-45b0-88eb-768ced89fc57',
+    validSession: 0,
+
+    //User settings
     darkMode: true,
     hideNavigation: false,
     hideProgress: false,
-    validSession: 0,
+
+    //Email verification
     verifiedEmail: true,
-    displayName:'Jackson',
-    emailVerificationKey: undefined
+    emailVerificationKey: undefined,
+
+    createdAt: Date.now(), //TODO::Maybe have a free trial?
+
+    //Fields for subscription info
+    activeSubscription: false,
+    lastCheckedSubscription: Date.now() - 1000,
+    stripe_subscriptionId: undefined,
+    stripe_customerId: undefined,
   },{
     userEmail: 'jackson@someemail2.com',
     password: 'X0VIy9vshnkFZVZO8tLB4Uod5JDREmf1eIh9qIP6KR0=',
