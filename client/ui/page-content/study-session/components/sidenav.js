@@ -23,7 +23,7 @@ module.exports = () => {
     <a href="/site/me/deck?deck=${getDeckId()}&card=${window.encodeURIComponent(getActiveCardId())}"><i class="far fa-edit"></i>&nbsp;&nbsp;Edit</a>
   </li>
     <li class="usa-sidenav__item" >
-    <a href="#" @click=${() => { deleteCurrentSessionWithConfirmation() }}><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session</a>
+    <a href="#" id="end-session-link" @click=${() => { deleteCurrentSessionWithConfirmation() }}><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session</a>
   </li>
   </ul>`
 }

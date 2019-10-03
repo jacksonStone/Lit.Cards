@@ -1,3 +1,4 @@
+require('./validate-envs');
 let path = require('path')
 let loginUtils = require('./buisness-logic/authentication/login')
 let cookieParser = require('cookie-parser')

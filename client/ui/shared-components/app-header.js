@@ -1,6 +1,6 @@
 
 let { html } = require('lit')
-let { onPage } = require('abstract/url')
+let { onExactPage, onPage } = require('abstract/url')
 let { navigateToLoginPage, logout } = require('logic/login')
 let { navigateToSettingsPage } = require('logic/settings')
 let { resendEmailVerification } = require('logic/login')
@@ -16,28 +16,19 @@ module.exports = (userInfo) => {
     return html`<div style="margin-top: 108px;"></div>`;
   }
   return html`
-    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-    <header class="usa-header usa-header--extended" role="banner">
-    <div class="usa-nav-container">
-        <div class="usa-navbar">
-            <div class="usa-logo" id="basic-logo">
-                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home">Lit.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
+    <div class="grid-container">
+            <div class="navbar-custom"  style="height: 110px">
+             <div class="usa-logo" id="basic-logo" style="float:left">
+                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">Lit.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
+            </div>  
+            <div style="float:right; margin-top:40px;">
+                ${getNavOptions(userInfo)}
             </div>
-            <button class="usa-menu-btn">Menu</button>
-        </div>      
-       
-        <nav role="navigation" class="usa-nav">
-         <button class="usa-nav__close">Close</button>
+    
+            </div>
+            <div id="email-verification-bar" style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
 
-        <div class="usa-nav__inner">
-            <div class="usa-nav__secondary" style="bottom: 1.5rem; right: 1rem; text-align: right">
-             ${getNavOptions(userInfo)}
-            </div>
-        </div>
-        </nav>
-        <div id="email-verification-bar" style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
-    </div>
-</header>`
+     </div>`
 }
 
 function waitingOnEmailVerification() {
@@ -49,6 +40,9 @@ function waitingOnEmailVerification() {
 }
 
 function emailVerificationLink() {
+  if(!onExactPage('me/settings') && !onExactPage('me')) {
+    return html``;
+  }
   if(justVerifiedEmail()) {
     setTimeout(()=> {
       window.lc.setData('justVerifiedEmail', false)
@@ -95,13 +89,13 @@ function loginPageHeader () {
 
 function notLoggedInHeader () {
   return html`
-             <button class="usa-button" @click=${navigateToLoginPage}>Login</button>
+             <button class="usa-button" id="login-button" @click=${navigateToLoginPage}>Login</button>
             `
 }
 function loggedInHeader (userInfo) {
   return html`
-             <button class="usa-button usa-button--unstyled" @click=${settings} style="margin-right: 10px">Account Settings</button>
-             <button class="usa-button usa-button--outline" @click=${logout}>Logout</button>
+             <a href="#" class="usa-button usa-button--unstyled" id="settings-page-link" @click=${settings} style="margin-right: 10px">Account Settings</a>
+             <a href="#" class="usa-button usa-button--outline" id="logout-link" @click=${logout}>Logout</a>
             `
 }
 function settings() {

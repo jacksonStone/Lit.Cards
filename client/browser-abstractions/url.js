@@ -26,6 +26,17 @@ let getPage = () => {
 let onPage = (pageName) => {
   return getPage().indexOf('/site/' + pageName) !== -1
 }
+let onExactPage = (pageName) => {
+  let pageURL = getPage();
+  if(pageURL.indexOf('?') !== -1) {
+    pageURL = pageURL.substring(0, pageURL.indexOf('?'));
+  } else
+  if(pageURL.indexOf('#') !== -1) {
+    pageURL = pageURL.substring(0, pageURL.indexOf('#'));
+  }
+  pageURL = pageURL.substring('/site/'.length)
+  return pageURL === pageName;
+}
 
 let hash = () => {
   let hash = window.location.hash
@@ -35,5 +46,6 @@ let hash = () => {
 module.exports = {
   hash,
   getParam,
-  onPage
+  onPage,
+  onExactPage
 }

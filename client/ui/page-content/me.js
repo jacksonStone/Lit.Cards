@@ -129,7 +129,7 @@ function deckPreview (deck, sessionMapping, forSession) {
               top: 125px;
               left: 5px;
               padding: 10px;"
-            class="usa-button usa-button--unstyled" @click=${() => { navigateToDeckPage(deck.id) }}
+            class="usa-button usa-button--unstyled deck-edit-button" @click=${() => { navigateToDeckPage(deck.id) }}
             >Edit</button>
         `}
         <div style="position: absolute; top:  175px; right: 60px;">
@@ -147,7 +147,7 @@ function deckPreview (deck, sessionMapping, forSession) {
 
 function recentlyStudiedPreview (deck) {
   let deckCount = deck.cards && deck.cards.length || 0
-  const borrowed = window.lc.getData('user.userEmail') !== deck.userEmail;
+  const borrowed = deck.borrowed;
   if(borrowed) {
     return html`
     <div class="mobile-lg:grid-col-4">

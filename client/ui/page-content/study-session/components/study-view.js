@@ -9,7 +9,6 @@ let { hideSideNav, hideProgress } = require('component/focus-mode-checkboxes')
 let checkboxHolder = require('component/checkbox-holder')
 let getUser = () => {
   const user = window.lc.getData('user');
-  debugger;
   return user || {};
 }
 module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => html`

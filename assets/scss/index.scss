@@ -58,6 +58,10 @@ body {
   color: $bad-color
   //color: red
 }
+.navbar-custom {
+  padding-bottom: 10px;
+  border-bottom: solid #d5d8df 1px;
+}
 .public-deck-marker {
   font-size: 16px;
   position: absolute;
@@ -268,10 +272,19 @@ aside .usa-sidenav {
 .study-side-nav {
   opacity: 0.8;
 }
+.usa-logo {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.46397rem;
+  line-height: 1.12707;
+}
 .darkmode {
   color: #555;
   .study-side-nav {
     opacity: 0.7;
+  }
+  .navbar-custom {
+    border-bottom: solid #555 1px;
   }
   .card-viewer-outline {
     border: 1px solid rgb(80, 80, 80);

@@ -34,6 +34,7 @@ function copySharableLink () {
   textArea.remove();
   alert('Copied sharable link!');
 }
+//SHAREABLE LINK IS USED IN TEST SCRIPTS
 module.exports = () => {
   return html`<ul class="site-sidenav usa-sidenav">
   <li class="usa-sidenav__item" >
@@ -50,9 +51,9 @@ module.exports = () => {
     <a id="no-study-session-creation-button" href="/site/me/study?deck=${getDeckId()}&upsert=true"><i class="far fa-images"></i>&nbsp;&nbsp;Study</a>
   </li>`}
   ${deckIsPublic() ? html`<li class="usa-sidenav__item" >
-    <a href="#" @click="${copySharableLink}"><i class="far fa-paper-plane"></i>&nbsp;&nbsp;Copy sharable link</a>
+    <a id="copy-sharable-link" href="#" @click="${copySharableLink}"><i class="far fa-paper-plane"></i>&nbsp;&nbsp;Copy sharable link</a>
   </li>` : html`<li class="usa-sidenav__item" >
-    <a href="#" @click=${makePublic}><i class="far fa-share-square"></i>&nbsp;&nbsp;Make deck public</a>
+    <a id="share-deck-button" href="#" @click=${makePublic}><i class="far fa-share-square"></i>&nbsp;&nbsp;Make deck public</a>
   </li>`}
   </ul>`
 }

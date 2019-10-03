@@ -7,6 +7,9 @@ async function fetchStudyHistory () {
   } catch (e) {
     return []
   }
+  if(deckHistory.none) {
+    return [];
+  }
   return deckHistory
 }
 
