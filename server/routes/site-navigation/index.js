@@ -63,6 +63,7 @@ let pages = {
   '/me/settings': {
     title: 'Lit: Settings',
     entryFile: 'settings.js',
+    additionalFiles: `<script src=https://js.stripe.com/v3/></script>`,
     darkModeable: true,
   },
   '/me/study': {

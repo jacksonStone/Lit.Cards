@@ -6,6 +6,8 @@ let errorableInput = require('../shared-components/errorable-input')
 let errorBanner = require('../shared-components/error-banner')
 let { changePassword } = require('../../business-logic/login')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
+let { runNextRender } = require('abstract/rendering-meta')
+let { $ } = require('abstract/$');
 let checkboxHolder = require('component/checkbox-holder')
 let changePasswordBtn = (event) => {
   event.preventDefault()
@@ -86,6 +88,39 @@ function changePasswordInterface(data){
               <button @click=${changePasswordBtn} class="usa-button continue-studying">Update Password</button>
             </form>`;
 }
+let stripe;
+async function stripRenderer() {
+  if (stripe) return true;
+  while (!window.Stripe) {
+    await new Promise(resolve => setTimeout(resolve, 20));
+  }
+  console.log(STRIPE_PUBLIC_KEY)
+  stripe = Stripe(STRIPE_PUBLIC_KEY);
+  let elements = stripe.elements();
+  let style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  let card = elements.create('card', {style: style});
+
+  card.mount('#stripe-stuff');
+}
+
 function subscriptionSettingsInterface(data) {
-  return html`<h1>TODO</h1>`
+  runNextRender(stripRenderer);
+  return html`
+    <h1>Subscription Details</h1>
+<div id="stripe-stuff"></div>`
 }

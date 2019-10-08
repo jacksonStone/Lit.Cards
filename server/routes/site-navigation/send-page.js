@@ -8,11 +8,12 @@ function sendPage (res, details, user) {
   details.darkMode = darkMode ? 'class="darkmode"' : ''
   let renderedPage = ''
   for(let i = 0; i < pageSplit.length; i++) {
+    const placeHolder = pageSplit[i];
     if (i%2 === 1) {
       //Is token
-      renderedPage += details[pageSplit[i]]
+      renderedPage += details[placeHolder]
     } else {
-      renderedPage += pageSplit[i]
+      renderedPage += placeHolder
     }
   }
   res.set('Content-Type', 'text/html');

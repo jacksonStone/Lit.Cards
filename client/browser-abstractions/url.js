@@ -27,15 +27,15 @@ let onPage = (pageName) => {
   return getPage().indexOf('/site/' + pageName) !== -1
 }
 let onExactPage = (pageName) => {
-  let pageURL = getPage();
-  if(pageURL.indexOf('?') !== -1) {
-    pageURL = pageURL.substring(0, pageURL.indexOf('?'));
+  let pageURL = getPage()
+  if (pageURL.indexOf('?') !== -1) {
+    pageURL = pageURL.substring(0, pageURL.indexOf('?'))
   } else
-  if(pageURL.indexOf('#') !== -1) {
-    pageURL = pageURL.substring(0, pageURL.indexOf('#'));
+  if (pageURL.indexOf('#') !== -1) {
+    pageURL = pageURL.substring(0, pageURL.indexOf('#'))
   }
   pageURL = pageURL.substring('/site/'.length)
-  return pageURL === pageName;
+  return pageURL === pageName
 }
 
 let hash = () => {

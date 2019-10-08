@@ -7,7 +7,7 @@ let { removeFromStudyHistory } = require('./study-history')
 
 async function addDeck (userEmail, name) {
   // make a transaction
-  const user = await User.getUser(userEmail);
+  const user = await User.getUser(userEmail)
   const newDeck = await Deck.createDeck(userEmail, name, user.displayName)
   await CardBody.addCardBody(userEmail, newDeck.id, newDeck.cards)
   return newDeck

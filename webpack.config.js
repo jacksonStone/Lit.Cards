@@ -1,5 +1,6 @@
 let path = require('path')
 let fs = require('fs')
+let webpack = require('webpack')
 let entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
   return file.match(/.*\.js$/);
 });
@@ -29,5 +30,10 @@ module.exports = {
       'abstract': path.join(__dirname, 'client/browser-abstractions'),
       'shared': path.join(__dirname, 'shared')
     }
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.STRIPE_PUBLIC_KEY)
+    })
+  ],
 }
