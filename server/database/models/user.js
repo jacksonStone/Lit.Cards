@@ -13,6 +13,7 @@ let safeParametersToDynamicallyChange = [
 let safeParametersToReturn = [
   'userEmail',
   'verifiedEmail',
+  'activeSubscription',
   // All props that a user can dynamically change
   // should be safe to return to the user
   ...safeParametersToDynamicallyChange
