@@ -82,9 +82,9 @@ function changePasswordInterface(data){
                 ${ea.wrongPassword && errorBanner('Incorrect password', 'Current password was incorrect')}
                 ${ea.samePassword && errorBanner('Same Password', 'Must use a new password')}
                 <legend class="usa-legend">Change password</legend>
-                ${errorableInput(ef.currentPassword, 'Password is required', 'currentPassword', 'Current Password', 'password')}
-                ${errorableInput(ef.password, 'Password is required', 'password', 'Password', 'password')}
-                ${errorableInput(ef.repeatPassword, 'Must repeat password', 'passwordRepeat', 'Repeat Password', 'password')}
+                ${errorableInput(ef.currentPassword, 'Password is required', 'currentPassword', 'Current password', 'password')}
+                ${errorableInput(ef.password, 'Password is required', 'password', 'New password', 'password')}
+                ${errorableInput(ef.repeatPassword, 'Must repeat password', 'passwordRepeat', 'Repeat new password', 'password')}
               </fieldset>
               <button @click=${changePasswordBtn} class="usa-button continue-studying">Update Password</button>
             </form>`;

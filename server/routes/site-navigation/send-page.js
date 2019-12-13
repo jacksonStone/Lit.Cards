@@ -11,7 +11,7 @@ function sendPage (res, details, user) {
     const placeHolder = pageSplit[i];
     if (i%2 === 1) {
       //Is token
-      renderedPage += details[placeHolder]
+      renderedPage += (details[placeHolder] === undefined ? '' : details[placeHolder]);
     } else {
       renderedPage += placeHolder
     }

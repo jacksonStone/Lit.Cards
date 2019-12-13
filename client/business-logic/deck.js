@@ -45,6 +45,11 @@ let updateDeckNameLogic = async (name, deckId) => {
 }
 
 async function handleImageUpload (e) {
+  //Since image uploads can take a while - make sure we know we are
+  //in the process of uploading a little early here for
+  //reliable testing
+  //TODO:: Maybe clean this up
+  window.lc.setFileUploading(true);
   let imageData = await getFileData(e)
   let imagePreview
   if (showingAnswer()) {
@@ -58,6 +63,7 @@ async function handleImageUpload (e) {
     setPersistentForCardBodyCompressed('frontImage', largeImage)
     imagePreview = largeImage
   }
+  window.lc.setFileUploading(false);
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
   refreshEditor()
 }

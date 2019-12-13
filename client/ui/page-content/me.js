@@ -340,8 +340,8 @@ module.exports = (data = {}) => {
         <div class="fancy-line" style="margin-top:80px"></div>
         <h1>Recently Studied</h1> 
         ${studyHistoryRows(data.studyHistory)}` : html``}
-        <div style="margin-top:130px;"></divstyle>
-     </div> 
+        <div style="margin-top:130px;"></div>
+     </div>
     ${checkboxHolder([darkmodeCheckbox()])}
 `
   /**

@@ -22,7 +22,6 @@ async function getServerDBState (userEmail) {
   } else {
     state = JSON.parse(await api('debug'))
   }
-  console.info(state)
   return state
 }
 async function resetServerDBState () {

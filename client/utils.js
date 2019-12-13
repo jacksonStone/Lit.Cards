@@ -15,3 +15,9 @@ module.exports.keyBy = (list, key) => {
   })
   return mapped
 }
+module.exports.each = (obj, callback) => {
+  const keys = Object.keys(obj);
+  keys.forEach(key => {
+    callback(obj[key], key);
+  });
+}

@@ -66,16 +66,12 @@ function _handleKeyDown (e) {
         e.preventDefault()
       }
       return cmdKeyBindings[e.code](e)
-    // } else if (focusingOnTextInput() && keyBindings[e.code]) {
-    //   e.preventDefault()
-    //   return keyBindings[e.code](e)
     }
   }
   // Let all other hotkeys through as normal
   if (isMultipleKeys(e)) {
     return
   }
-  // console.info(e.code)
   if (keyBindings[e.code] && !dataSaysTextIsFocused()) {
     if (!keysToStillLetThrough[(e.code)]) {
       e.preventDefault()

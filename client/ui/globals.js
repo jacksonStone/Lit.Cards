@@ -6,6 +6,7 @@ let userInput = require('./watchers/user-input')
 let urlHashWatcher = require('./watchers/url-hash-watcher')
 let appHeader = require('./shared-components/app-header')
 let { initDebug, deactivateDebug } = require('./debug-global')
+let { each } = require('utils')
 let defaultErrorObject = {
   fields: {},
   abstract: {}
@@ -37,11 +38,22 @@ function initLC () {
       // Do not clone this
       return currentPiece
     },
+    setSaving: (saving) => {
+      lc.data.saving = saving;
+    },
+    setFileUploading: (uploading) => {
+      lc.data.fileUploading = uploading;
+    },
     hasPersistentChanges: () => {
       return !!Object.keys(lc.data.changes).length
     },
     getPersistentChanges: () => {
       return lc.data.changes
+    },
+    flushPersistentChanges: () => {
+      each(lc.data.changes, (_, key) => {
+        delete lc.data.changes[key];
+      })
     },
     _willRerender: false,
     recordError: (path, error) => {

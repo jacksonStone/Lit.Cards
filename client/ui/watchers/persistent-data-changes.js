@@ -9,202 +9,98 @@ function listenToSaveableChanges () {
       return
     }
     runningAlready = true
+
     // TODO:: Maybe do something more intelligent here
     _handleChanges().then(() => {
       runningAlready = false
     }).catch(() => {
       runningAlready = false
     })
-  }, 100);
+  }, 20);
+}
+async function _handleChanges () {
+  window.lc.transaction_debug = window.lc.transaction_debug || {};
+  let changeObj = window.lc.getPersistentChanges()
+  let transaction = JSON.parse(JSON.stringify(changeObj));
+  window.lc.setSaving(true);
+  window.lc.flushPersistentChanges()
+  await handleTransaction(transaction);
+  window.lc.setSaving(false);
 }
 
-async function _handleChanges () {
-  let changes = window.lc.getPersistentChanges()
-  if (changes.deck) {
-    if (changes.deck.name) {
-      handleNameChange(changes)
+async function handleTransaction(transaction) {
+  const promises = [];
+  if (transaction.deck) {
+    if (transaction.deck.name) {
+      promises.push(handleNameChange(transaction));
     }
   }
-  if (changes.cardBody) {
-    handleCardBodyChange(changes)
+  if (transaction.cardBody) {
+    promises.push(handleCardBodyChange(transaction))
   }
-  if(changes.session) {
-    handleSessionStateChanges(changes)
+  if(transaction.session) {
+    promises.push(handleSessionStateChanges(transaction))
   }
-  if(changes.user) {
-    handleUserChange(changes)
+  if(transaction.user) {
+    promises.push(handleUserChange(transaction))
   }
+  await Promise.all(promises);
 }
-
-let currentlySavingName
+//TODO:: Do something better
+function alertIt(e) {
+  console.error(e);
+}
 async function handleNameChange (changes) {
   let deck = changes.deck
-  let originalName = deck.name
-  if (currentlySavingName) {
-    return
-  }
-  currentlySavingName = true
-  updateDeckName(deck.name).then(() => {
-    currentlySavingName = false
-    if (deck.name === originalName) {
-      // Did not make changes while waiting
-      // Remove the fact that we have changes here
-      delete deck.name
-      if (Object.keys(deck).length === 0) {
-        delete changes.deck
-      }
-    }
-  }).catch(() => {
-    // TODO:: Think of something to do here
-  })
+  return updateDeckName(deck.name).catch(alertIt);
 }
 
-let cardsBeingChanged = {}
 async function handleCardBodyChange (changes) {
+  let promises = [];
   let cardsWithChanges = Object.keys(changes.cardBody)
   for (let i = 0; i < cardsWithChanges.length; i++) {
     let cardId = cardsWithChanges[i]
     let cardBody = changes.cardBody[cardId]
-    let changeId = cardBody._changeId
     //Ensure we do not step on our own toes
-    if(cardsBeingChanged[cardId]) {
-      continue;
-    } else {
-      cardsBeingChanged[cardId] = true;
-    }
+  
     if (!cardBody.isNew && !cardBody.deleted) {
       // Is an edit
       let idToSend = cardId
-      editCardBody(idToSend, cardBody).then(() => {
-        if (changeId === cardBody._changeId) {
-          delete changes.cardBody[cardId]
-          if (Object.keys(changes.cardBody).length === 0) {
-            delete changes.cardBody
-          }
-        }
-        delete cardsBeingChanged[cardId]
-      }).catch(() => {
-        delete cardsBeingChanged[cardId]
-        // TODO:: Think of what to do here
-      })
+      let edit = editCardBody(idToSend, cardBody).catch(alertIt)
+      promises.push(edit);
     } else if (cardBody.isNew && !cardBody.deleted) {
-      addCardBody(cardBody).then((newId) => {
-        if (changeId === cardBody._changeId) {
-          delete changes.cardBody[cardId]
-          if (Object.keys(changes.cardBody).length === 0) {
-            delete changes.cardBody
-          }
-        } else {
-          delete changes.cardBody[cardId].isNew
-        }
-        delete cardsBeingChanged[cardId]
-      }).catch(() => {
-        delete cardsBeingChanged[cardId]
-        // TODO:: Think of what to do here
-      })
+      let add = addCardBody(cardBody).catch(alertIt)
+      promises.push(add);
     } else if(cardBody.deleted) {
-      cardsBeingChanged[cardId] = true
-      deleteCardBody(cardId).then(()=>{
-        if (changeId === cardBody._changeId) {
-          delete changes.cardBody[cardId]
-          if (Object.keys(changes.cardBody).length === 0) {
-            delete changes.cardBody
-          }
-        } else {
-          delete changes.cardBody[cardId].deleted
-        }
-        delete cardsBeingChanged[cardId]
-      }).catch(()=>{
-        delete cardsBeingChanged[cardId]
-        // TODO:: Think of what to do here
-      })
-
+      let del = deleteCardBody(cardId).catch(alertIt)
+      promises.push(del);
     }
   }
+  return Promise.all(promises);
 }
 
-let savingSession = false
 async function handleSessionStateChanges(changes) {
-  if(savingSession) {
-    return
-  }
-  savingSession = true
-  let currentlySavingState = changes.session.studyState
-  let currentlySavingCurrent = changes.session.currentCard
-  let currentlySavingOrdering = changes.session.ordering
-  editStudySessionState(changes.session).then(()=>{
-    if(currentlySavingState === changes.session.studyState) {
-      //All caught up
-      delete changes.session.studyState
-    }
-    if(currentlySavingOrdering === changes.session.ordering) {
-      //All caught up
-      delete changes.session.ordering
-    }
-    if(currentlySavingCurrent === changes.session.currentCard) {
-      //All caught up
-      delete changes.session.currentCard
-    }
-    if(!Object.keys(changes.session).length) {
-      delete changes.session
-    }
-    savingSession = false
-  }).catch(()=>{
-    savingSession = false
-  })
+  return editStudySessionState(changes.session).catch(alertIt)
 }
 
-let savingDarkMode = false
-let savingHideProgress = false
-let savingHideNavigation = false
-//TODO:: Consider deduping code
+
 async function handleUserChange(changes) {
   let user = changes.user
+  let promises = [];
   if(user.darkMode !== undefined) {
-    let startingValue = user.darkMode
     savingDarkMode = true
-    updateDarkMode(user.darkMode).then(() => {
-      if(startingValue === changes.user.darkMode) {
-        delete changes.user.darkMode
-      }
-      savingDarkMode = false
-      if(Object.keys(changes.user).length === 0) {
-        delete changes.user
-      }
-    }).catch(() => {
-      savingDarkMode = false
-    })
+    let dark = updateDarkMode(user.darkMode).catch(alertIt);
+    promises.push(dark);
   }
   if(user.hideProgress !== undefined) {
-    let startingValue = user.hideProgress
-    savingHideProgress = true
-    updateHideProgress(user.hideProgress).then(() => {
-      if(startingValue === changes.user.hideProgress) {
-        delete changes.user.hideProgress
-      }
-      savingHideProgress = false
-      if(Object.keys(changes.user).length === 0) {
-        delete changes.user
-      }
-    }).catch(() => {
-      savingHideProgress = false
-    })
+    let hideProgress = updateHideProgress(user.hideProgress).catch(alertIt);
+    promises.push(hideProgress);
   }
   if(user.hideNavigation !== undefined) {
-    let startingValue = user.hideNavigation
-    savingHideNavigation = true
-    updateHideNavigation(user.hideNavigation).then(() => {
-      if(startingValue === changes.user.hideNavigation) {
-        delete changes.user.hideNavigation
-      }
-      savingHideNavigation = false
-      if(Object.keys(changes.user).length === 0) {
-        delete changes.user
-      }
-    }).catch(() => {
-      savingHideNavigation = false
-    })
+    let hideNav = updateHideNavigation(user.hideNavigation).catch(alertIt)
+    promises.push(hideNav);
   }
+  return Promise.all(promises);
 }
 
 module.exports = listenToSaveableChanges
