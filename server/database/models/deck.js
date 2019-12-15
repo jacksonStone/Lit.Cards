@@ -59,9 +59,8 @@ async function createDeck (userEmail, name, displayName) {
   if (!userEmail || !name || !displayName) return
   let id = generateId()
   let dateMade = Date.now()
-  let cardCount = 1
   let cards = intToChar(0);
-  return db.setRecord(tableName, { userEmail, displayName, name, id, date: dateMade, cardCount, cards })
+  return db.setRecord(tableName, { userEmail, displayName, name, id, date: dateMade, cards })
 }
 
 async function deleteDeck (userEmail, id) {

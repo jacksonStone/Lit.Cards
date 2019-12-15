@@ -40,12 +40,11 @@ async function createStudySession (userEmail, deckId, startingState) {
   let studyState
   let ordering
   if (!startingState) {
-    let defaultState = []
-    for (let i = 0; i < deck.cardCount; i++) {
-      defaultState.push('_')
-    }
-    studyState = defaultState.join('')
+    studyState = '';
     let count = deck.cards ? deck.cards.length : 0
+    for (let i = 0; i < count; i++) {
+      studyState += '_'
+    }
     currentCard = Math.floor(Math.random() * count)
     ordering = getRandomOrderingStr(count)
   } else {
@@ -77,10 +76,11 @@ function getStartingCardFromSkips (ordering, studyState) {
 
 function getRandomOrderingStr (len) {
   let shuffledList = shuffle(_.range(len))
+  let ordering = '';
   for (let i = 0; i < shuffledList.length; i++) {
-    shuffledList[i] = String.fromCharCode(shuffledList[i])
+    ordering += String.fromCharCode(shuffledList[i])
   }
-  return shuffledList.join('')
+  return ordering;
 }
 async function deleteStudySession (userEmail, id) {
   if (!userEmail || !id) return

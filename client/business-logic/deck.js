@@ -1,6 +1,6 @@
 let { deck: deckPage } = require('../routes/navigation/pages')
 let { getParam } = require('abstract/url')
-let { getDeck, createDeck, deleteDeck, renameDeck, makePublic } = require('../routes/api/decks')
+let { getDeck, createDeck, deleteDeck, makePublic } = require('../routes/api/decks')
 let { reject } = require('utils')
 let { setEditorData, getFontSize, childrenHaveTooMuchSpace } = require('abstract/editor')
 let { getCardBody } = require('./card-bodies')
@@ -39,17 +39,12 @@ let deleteDeckLogic = async (id) => {
   window.lc.setData('studyHistory', studyHistoryWithoutDeleted)
 }
 
-let updateDeckNameLogic = async (name, deckId) => {
-  deckId = deckId || getParam('deck')
-  return renameDeck(deckId, name)
-}
-
 async function handleImageUpload (e) {
-  //Since image uploads can take a while - make sure we know we are
-  //in the process of uploading a little early here for
-  //reliable testing
-  //TODO:: Maybe clean this up
-  window.lc.setFileUploading(true);
+  // Since image uploads can take a while - make sure we know we are
+  // in the process of uploading a little early here for
+  // reliable testing
+  // TODO:: Maybe clean this up
+  window.lc.setFileUploading(true)
   let imageData = await getFileData(e)
   let imagePreview
   if (showingAnswer()) {
@@ -63,21 +58,20 @@ async function handleImageUpload (e) {
     setPersistentForCardBodyCompressed('frontImage', largeImage)
     imagePreview = largeImage
   }
-  window.lc.setFileUploading(false);
+  window.lc.setFileUploading(false)
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
   refreshEditor()
 }
 function setPersistentForCardBodyCompressed (key, value) {
   let cardId = _getCurrentCardId()
   let changeKey = `cardBody.${cardId}.${key}`
-  window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
   window.lc.setPersistentOnly(changeKey, compress(value))
   window.lc.setData(changeKey, value)
 }
 function setPersistentForCardBody (key, value) {
   let cardId = _getCurrentCardId()
   let changeKey = `cardBody.${cardId}.${key}`
-  window.lc.setPersistentOnly(`cardBody.${cardId}._changeId`, Math.random())
+  window.lc.setPersistentOnly(`cardBody.${cardId}.deck`, window.lc.getData('deck').id)
   window.lc.setPersistent(changeKey, value)
 }
 function decreaseFontSizeIfOverflowing (oldFontSize = 1, frontOrBack) {
@@ -244,7 +238,7 @@ function addNewCard () {
   let newIdAsInt = charToInt(deck.cards[deck.cards.length - 1]) + 1
   let newId = intToChar(newIdAsInt)
   let changeKeyCardBody = `cardBody.${newId}`
-  let cardBody = { id: newId, isNew: true, front: '', back: '', deleted: false, _changeId: Math.random() }
+  let cardBody = { id: newId, isNew: true, front: '', back: '', deleted: false, deck: deck.id }
   let updatedCards = (deck.cards || '') + newId
   window.lc.setData('deck.cards', updatedCards)
   window.lc.setData('orderedCards', updatedCards)
@@ -313,7 +307,6 @@ function _getCurrentCardIndex () {
 module.exports = {
   navigateToDeckPage,
   getDeck: getDeckLogic,
-  updateDeckName: updateDeckNameLogic,
   deleteDeck: deleteDeckLogic,
   createDeck: createDeckLogic,
   makeDeckPublic,

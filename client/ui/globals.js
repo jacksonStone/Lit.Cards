@@ -39,10 +39,10 @@ function initLC () {
       return currentPiece
     },
     setSaving: (saving) => {
-      lc.data.saving = saving;
+      lc.data.saving = saving
     },
     setFileUploading: (uploading) => {
-      lc.data.fileUploading = uploading;
+      lc.data.fileUploading = uploading
     },
     hasPersistentChanges: () => {
       return !!Object.keys(lc.data.changes).length
@@ -52,7 +52,7 @@ function initLC () {
     },
     flushPersistentChanges: () => {
       each(lc.data.changes, (_, key) => {
-        delete lc.data.changes[key];
+        delete lc.data.changes[key]
       })
     },
     _willRerender: false,

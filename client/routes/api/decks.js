@@ -17,6 +17,3 @@ exports.makePublic = (id) => {
 exports.deleteDeck = (id) => {
   return api('decks/delete', { id })
 }
-exports.renameDeck = (id, name) => {
-  return api('decks/rename', { id, name })
-}

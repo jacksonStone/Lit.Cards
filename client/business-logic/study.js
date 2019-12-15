@@ -4,7 +4,7 @@ let { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
 let { strToList } = require('shared/char-encoding')
 let { updateCardBody, flipCard } = require('./deck')
 let { setFocusTo } = require('abstract/focus')
-let { createStudySession, getStudySession, getStudySessionForDeck, getStudySessionsAndBorrowedDecks, deleteStudySession, editStudySessionState } = require('../routes/api/study')
+let { createStudySession, getStudySession, getStudySessionForDeck, getStudySessionsAndBorrowedDecks, deleteStudySession } = require('../routes/api/study')
 // let { reject } = require('utils')
 let NOT_ANSWERED = '_'
 let RIGHT = 'R'
@@ -66,12 +66,6 @@ exports.deleteSession = async (id) => {
     window.lc.setData('session', { none: true })
   }
 }
-exports.editStudySessionState = async (session) => {
-  let sessionInState = getSessionFromState()
-  let id = sessionInState && sessionInState.id
-  if (!id) return
-  await editStudySessionState(id, session)
-}
 exports.deleteCurrentSessionWithConfirmation = async () => {
   if (window.confirm('Are you sure you want to lose your study progress?')) {
     await deleteCurrentSessionAndGoHome()
@@ -122,6 +116,8 @@ function getSessionOrderedCardsFromState () {
 function updateStudyState (state) {
   window.lc.setPersistent('session.studyState', state)
   let session = getSessionFromState()
+  window.lc.setPersistent('session.id', session.id)
+
   let allOrderedCards = getSessionOrderedCardsFromState()
   let newVisibleCards = trimCardsToOnesAwaitingAnswers(allOrderedCards, session)
   let index = getCurrentCardIndex()
@@ -160,6 +156,7 @@ exports.accountForNewCards = (session, cards) => {
     session.ordering += String.fromCharCode(startingLength + count)
     window.lc.setPersistent('session.studyState', session.studyState)
     window.lc.setPersistent('session.ordering', session.ordering)
+    window.lc.setPersistent('session.id', session.id)
     count++
   }
   return session

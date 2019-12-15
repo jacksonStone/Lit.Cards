@@ -16,13 +16,6 @@ router.post('/delete', async (req, res) => {
   await deleteDeck(req.userEmail, req.body.id)
   return code.ok(res)
 })
-router.post('/rename', async (req, res) => {
-  if (!req.body || !req.body.id) return code.invalidRequest(res)
-  if (!req.userEmail) return code.unauthorized(res)
-  if (!req.body.name) return code.ok(res)
-  await renameDeck(req.userEmail, req.body.id, req.body.name)
-  return code.ok(res)
-})
 
 router.post('/make-public', async (req, res) => {
   if (!req.body || !req.body.id) return code.invalidRequest(res)

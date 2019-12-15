@@ -23,12 +23,6 @@ router.post('/delete', async (req, res) => {
   await deleteSession(req.userEmail, req.body.id)
   return code.ok(res)
 })
-router.post('/edit', async (req, res) => {
-  if (!req.body || !req.body.id || !req.body.session) return code.invalidRequest(res)
-  if (!req.userEmail) return code.unauthorized(res)
-  await editSessionState(req.userEmail, req.body.id, req.body.session)
-  return code.ok(res)
-})
 
 router.get('/me', async (req, res) => {
   if (!req.userEmail) return code.unauthorized(res)

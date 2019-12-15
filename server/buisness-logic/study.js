@@ -31,8 +31,14 @@ async function getSessionsAndBorrowedDecks (userEmail) {
   let borrowedDecks = await Deck.getByIdsWithCondition(decksToFetch, { public: true })
   return { sessions, borrowedDecks }
 }
-async function editSessionState (userEmail, id, sessionChanges) {
+async function editSessionState (userEmail, sessionChanges) {
   let safeChanges = {}
+  let id = sessionChanges.id
+  delete sessionChanges.id
+  if (!id) {
+    console.log('No id in session', sessionChanges)
+    return
+  }
   if (sessionChanges.currentCard !== undefined) {
     safeChanges.currentCard = sessionChanges.currentCard
   }

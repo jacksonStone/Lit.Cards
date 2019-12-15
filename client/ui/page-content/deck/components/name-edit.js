@@ -5,7 +5,8 @@ function getName () {
 }
 function setName (e) {
   let value = getValueFromInput(e)
-  return window.lc.setPersistent('deck.name', value)
+  window.lc.setPersistent('deck.name', value)
+  window.lc.setPersistent('deck.id', getParam('deck'))
 }
 module.exports = function () {
   return html`

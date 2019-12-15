@@ -23,7 +23,7 @@ async function deleteCardBody (userEmail, deck, card) {
     return
   }
   // TODO:: Wrap this in a transaction or something
-  // And make card deletion from dec atomic
+  // And make card deletion from deck atomic
   await Deck.deleteCard(userEmail, deck, card)
   return CardBody.deleteCardBody(userEmail, deck, card)
 }
@@ -38,7 +38,16 @@ function sanitizeCardContent (changes) {
     changes.back = sanitizeHTML(changes.back, sanitizeOptions)
   }
 }
+let protectedDeckFields = [
+  'public',
+  'deck',
+  'id',
+  'userEmail'
+]
 async function editCardBody (userEmail, deck, card, changes) {
+  for (let i = 0; i < protectedDeckFields.length; i++) {
+    delete changes[protectedDeckFields[i]]
+  }
   sanitizeCardContent(changes)
   return CardBody.editCardBody(userEmail, deck, card, changes)
 }

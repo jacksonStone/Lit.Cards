@@ -1,4 +1,4 @@
-let { getCardBody, editCardBody, addCardBody, deleteCardBody } = require('../routes/api/card-bodies')
+let { getCardBody } = require('../routes/api/card-bodies')
 let { getParam } = require('../browser-abstractions/url')
 let { decompress } = require('shared/compress')
 let cachedCardBodies = {}
@@ -75,7 +75,7 @@ exports.getCardBody = async (card, deck, visibleCards) => {
 }
 
 exports.getCardBodyForEmptyState = (newId) => {
-  let emptyValue = { id: newId, isNew: true, front: '', back: '' }
+  let emptyValue = { id: newId, isNew: true, front: '', back: '', deck: getDefaultDeck() }
   // Record we made this on the fly
   window.lc.setPersistent(`cardBody.${newId}`, emptyValue)
   return emptyValue
@@ -85,25 +85,12 @@ exports.persistCardBodyChange = (cardBody, key, value) => {
   let changeCardBodyId = getCardBodyChangeId(cardBody)
   let changePath = `${changeCardBodyId}.${key}`
   window.lc.setPersistent(changePath, value)
+  let changes = window.lc.getPersistentChanges()
+  if (!changes.cardBody[cardBody.id].deck) {
+    let deckPath = `${changeCardBodyId}.deck`
+    window.lc.setPersistent(deckPath, getDefaultDeck())
+  }
 }
 function getCardBodyChangeId (cardBody) {
   return `cardBody.${cardBody.id}`
-}
-exports.editCardBody = (card, changes, deck) => {
-  if (!card) {
-    return
-  }
-  deck = getDefaultDeck(deck)
-  return editCardBody(deck, card, changes)
-}
-exports.deleteCardBody = (card, deck) => {
-  if (!card) {
-    return
-  }
-  deck = getDefaultDeck(deck)
-  return deleteCardBody(deck, card)
-}
-exports.addCardBody = async (changes, deck) => {
-  deck = getDefaultDeck(deck)
-  return addCardBody(deck, changes)
 }
