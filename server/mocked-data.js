@@ -24,11 +24,12 @@ let fakeData = {
 
     createdAt: Date.now(), //TODO::Maybe have a free trial?
 
-    //Fields for subscription info
-    activeSubscription: false,
-    lastCheckedSubscription: Date.now() - 1000,
-    stripe_subscriptionId: undefined,
-    stripe_customerId: undefined,
+    // Fields for subscription info
+    // activeSubscription: false,
+    // lastCheckedSubscription: Date.now() - 1000,
+    stripePaymentMethodId: "pm_1FpquvKc7i8wrRLvfcAyjtCJ"
+    // stripe_subscriptionId: undefined,
+    // stripe_customerId: undefined,
   },{
     userEmail: 'jackson@someemail2.com',
     password: 'X0VIy9vshnkFZVZO8tLB4Uod5JDREmf1eIh9qIP6KR0=',

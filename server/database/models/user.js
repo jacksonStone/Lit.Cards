@@ -7,7 +7,9 @@ let safeParametersToDynamicallyChange = [
   'hideProgress',
   'hideNavigation',
   'darkMode',
-  'displayName'
+  'displayName',
+  //Not safe to return - Must be last in the list
+  'stripePaymentMethodId',
 ];
 // Guilty until proven innocent!
 let safeParametersToReturn = [
@@ -16,7 +18,8 @@ let safeParametersToReturn = [
   'activeSubscription',
   // All props that a user can dynamically change
   // should be safe to return to the user
-  ...safeParametersToDynamicallyChange
+  // Except stripePaymentMethodId
+  ...(safeParametersToDynamicallyChange.slice(0, safeParametersToDynamicallyChange.length - 1))
 ]
 
 

@@ -3,7 +3,8 @@ let { grabFormData } = require('../../browser-abstractions/grab-form')
 let { hash } = require('abstract/url')
 let { navigateToSignupPage } = require('../../business-logic/login')
 let errorableInput = require('../shared-components/errorable-input')
-let { stripeRenderer } = require('./stripe')
+let {runNextRender} = require('abstract/rendering-meta')
+let { stripeRenderer, createPaymentMethod } = require('./stripe')
 let errorBanner = require('../shared-components/error-banner')
 let { changePassword } = require('../../business-logic/login')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
@@ -90,13 +91,24 @@ function changePasswordInterface(data){
             </form>`;
 }
 
+function updateUser(paymentMethodId) {
+  window.lc.setPersistent('user.stripePaymentMethodId', paymentMethodId)
+}
+
 function subscriptionSettingsInterface(data) {
 
-  waitForState('user', () => {
-    const subscribed = window.lc.getData('user.activeSubscription');
-    stripeRenderer("#stripe-stuff", subscribed)
-  });
+  if(!document.getElementById('stripe-stuff')) {
+    runNextRender(() => waitForState('user', () => {
+      const subscribed = window.lc.getData('user.activeSubscription');
+      stripeRenderer("#stripe-stuff", subscribed)
+    }));
+  }
   return html`
     <h1>Subscription Details</h1>
-    <div id="stripe-stuff"></div>`
+    ${getStripeStuffElement()}
+    <button @click=${()=>createPaymentMethod(updateUser)}>Foo</button>
+  `
+}
+function getStripeStuffElement() {
+  return html`<div><div id="stripe-stuff"></div><div>`;
 }
