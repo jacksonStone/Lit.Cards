@@ -5,6 +5,7 @@ async function initializeStripe() {
   while (!window.Stripe) {
     await new Promise(resolve => setTimeout(resolve, 20));
   }
+  console.log(STRIPE_PUBLIC_KEY);
   stripe = Stripe(STRIPE_PUBLIC_KEY);
 }
 
