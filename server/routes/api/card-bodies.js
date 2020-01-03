@@ -1,6 +1,6 @@
 let express = require('express')
 let router = express.Router()
-let { getCardBody, editCardBody, upsertCardBody, deleteCardBody } = require('../../buisness-logic/card-body')
+let { getCardBody } = require('../../buisness-logic/card-body')
 let code = require('../../node-abstractions/response-codes')
 
 //PUBLIC ROUTE

@@ -1,10 +1,11 @@
 let { html } = require('lit')
 let { grabFormData } = require('../../browser-abstractions/grab-form')
 let { hash } = require('abstract/url')
-let { navigateToSignupPage } = require('../../business-logic/login')
+let  month_catalog = require('../../../shared/month-cataloge.js')
+let { each } = require('../../utils');
 let errorableInput = require('../shared-components/errorable-input')
 let {runNextRender} = require('abstract/rendering-meta')
-let { stripeRenderer, createPaymentMethod } = require('./stripe')
+let { createStripeCheckoutSession } = require('./stripe')
 let errorBanner = require('../shared-components/error-banner')
 let { changePassword } = require('../../business-logic/login')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
@@ -44,7 +45,7 @@ module.exports = (data) => {
     <li class="usa-sidenav__item">
     <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
   </li><li class="usa-sidenav__item">
-    <a href="#subscription" class="${h === 'subscription' ? 'usa-current' : ''}">Subscription</a>
+    <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Plan Details</a>
   </li>
   </ul>
     </aside>
@@ -68,7 +69,7 @@ function getContents(data) {
   if (!currentHash) {
     return changePasswordInterface(data)
   }
-  if(currentHash === 'subscription') {
+  if(currentHash === 'plan-details') {
     return subscriptionSettingsInterface(data)
   }
 }
@@ -100,15 +101,17 @@ function subscriptionSettingsInterface(data) {
   if(!document.getElementById('stripe-stuff')) {
     runNextRender(() => waitForState('user', () => {
       const subscribed = window.lc.getData('user.activeSubscription');
-      stripeRenderer("#stripe-stuff", subscribed)
+      // stripeRenderer("#stripe-stuff", subscribed)
     }));
   }
+  const buttons_for_purchasing = [];
+  each(month_catalog, (entry, months) => {
+    buttons_for_purchasing.push(
+      html`<div style="margin-top: 40px;"><button class="usa-button continue-studying" @click=${() => createStripeCheckoutSession(months|0)}>
+        Buy ${entry.name} ($${entry.price/100})</button><div>`);
+  });
   return html`
-    <h1>Subscription Details</h1>
-    ${getStripeStuffElement()}
-    <button @click=${()=>createPaymentMethod(updateUser)}>Foo</button>
+    <h1>Purchase full Lit.Cards access</h1>
+    ${buttons_for_purchasing}
   `
-}
-function getStripeStuffElement() {
-  return html`<div><div id="stripe-stuff"></div><div>`;
 }

@@ -8,6 +8,8 @@ let express = require('express')
 let app = express()
 let routes = require('./routes')
 let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
+
+app.use('/', routes.stripe_webhook);
 app.use(cookieParser())
 app.use(bodyParser.json({limit:'5mb', extended: true}))
 
@@ -31,6 +33,7 @@ app.get('/', function (req, res) {
 
 //API endpoints
 app.use('/api', routes.api)
+console.log(routes.api);
 //App pages
 app.use('/site', routes.siteNavigation.router)
 

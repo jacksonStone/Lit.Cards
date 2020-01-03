@@ -11,5 +11,6 @@ router.use('/study', require('./study'))
 router.use('/study-history', require('./study-history'))
 router.use('/card-body', require('./card-bodies'))
 router.use('/password-reset', require('./password-reset'))
+router.use('/stripe', require('./stripe').router)
 
 module.exports = router

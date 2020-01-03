@@ -7,9 +7,7 @@ let safeParametersToDynamicallyChange = [
   'hideProgress',
   'hideNavigation',
   'darkMode',
-  'displayName',
-  //Not safe to return - Must be last in the list
-  'stripePaymentMethodId',
+  'displayName'
 ];
 // Guilty until proven innocent!
 let safeParametersToReturn = [
@@ -26,6 +24,10 @@ let safeParametersToReturn = [
 
 async function getUser (userEmail) {
   let results = await db.getRecord(tableName, { userEmail: userEmail })
+  if (results && results.length) return results[0]
+}
+async function getUserByCustomerId (customerId) {
+  let results = await db.getRecord(tableName, { stripeCustomerId:  customerId})
   if (results && results.length) return results[0]
 }
 async function getSafeUser (userEmail) {
@@ -49,6 +51,10 @@ async function updateSafe(userEmail, changes) {
     }
   }
   return db.editRecord(tableName, { userEmail }, safeChanges)
+}
+//Most scenarios will call for updateSafe
+async function update_UNSAFE(userEmail, changes) {
+  return db.editRecord(tableName, { userEmail }, changes)
 }
 
 function trimAllButSafeParameters (user) {
@@ -79,8 +85,10 @@ async function updateDarkModeValue(userEmail, darkmodeValue) {
 
 module.exports = {
   getUser,
+  getUserByCustomerId,
   editUser,
   updateSafe,
+  update_UNSAFE,
   createUser,
   userExists,
   getSafeUser,
