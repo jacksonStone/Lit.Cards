@@ -91,23 +91,48 @@ function changePasswordInterface(data){
               <button @click=${changePasswordBtn} class="usa-button continue-studying">Update Password</button>
             </form>`;
 }
-
-function buyTimeInterface() {
-
-  if(!document.getElementById('stripe-stuff')) {
-    runNextRender(() => waitForState('user', () => {
-      const subscribed = window.lc.getData('user.activeSubscription');
-      // stripeRenderer("#stripe-stuff", subscribed)
-    }));
+function getRemainingDays() {
+  let daysRemaining = 0;
+  let user = window.lc.getData('user');
+  let expiration = user.planExpiration;
+  let now = Date.now();
+  debugger;
+  if (expiration < now) {
+    return daysRemaining;
   }
-  const buttons_for_purchasing = [];
-  each(month_catalog, (entry, months) => {
-    buttons_for_purchasing.push(
-      html`<div style="margin-top: 20px; text-align: center;"><button class="usa-button continue-studying" style="min-width: 250px;" @click=${() => createStripeCheckoutSession(months|0)}>
-        ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br><br>$${entry.price/100}</button><div>`);
-  });
-  return html`
-    <h1 style="text-align:center;">Purchase Lit.Cards access time</h1>
-    ${buttons_for_purchasing}
-  `
+  let millisecondsRemaining = expiration - now;
+  daysRemaining = Math.ceil(millisecondsRemaining/(1000*60*60*24));
+  return daysRemaining;
+}
+function buyTimeInterface() {
+    if(!window.lc.getData('user')) {
+      return html`Loading...`;
+    } 
+    const buttons_for_purchasing = [];
+    each(month_catalog, (entry, months) => {
+      buttons_for_purchasing.push(
+        html`<div style="margin-top: 20px;"><button class="usa-button continue-studying" style="min-width: 250px;" @click=${() => createStripeCheckoutSession(months|0)}>
+          ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br><br>$${entry.price/100}</button><div>`);
+    });
+    const daysRemaining = getRemainingDays();
+    return html`
+      <h2>${daysRemaining} ${daysRemaining == 1 ? 'Day' : 'Days'} of Lit.Cards remaining.</h3>
+      <p>*If you run out of time, we will keep your cards around for a year - though you will not be able to study them again unless you renew.</p>
+      <div class="fancy-line" style="margin-top:40px"></div>
+
+      <h1>Purchase additional time</h1>
+      <h2>Features</h2>
+      <ul style="margin-bottom: 40px;">
+      <li style="margin-bottom: 10px;">Unlimited Cards with images <span style="font-size: 9px">(Just be reasonable, please!)<span></li>
+      <li style="margin-bottom: 10px;">Unrivled speed - even with decks containing thousands of cards</li>
+      <li style="margin-bottom: 10px;">Share decks with fellow students, and vice versa</li>
+      <li style="margin-bottom: 10px;">Hotkeys for everything to help you zip along</li>
+      <li style="margin-bottom: 10px;">Dark mode that was about as dark as I could make it <br><span style="font-size: 10px">(You can demo it with the check box in the bottom right)</span></li>
+      <li style="margin-bottom: 10px;">Customizable study interface</li>
+      <li style="margin-bottom: 10px;">No automatic renewals - just pay for how much time you'd like</li>
+      <li style="margin-bottom: 10px;">No ads! They suck!</li>
+      </ul>
+      ${buttons_for_purchasing}
+      <div style="margin-bottom: 40px"></div>
+    `
 }

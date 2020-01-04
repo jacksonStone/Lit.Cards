@@ -21,6 +21,27 @@ let emptyDataState = {
 function resetData () {
   lc.data = clone(emptyDataState)
 }
+function getParts(periodStr) {
+  const parts = [];
+  let i = 0;
+  let piece = '';
+  while(i < periodStr.length) {
+    if(periodStr[i] == '.' && !piece) {
+      //Period leading keys are permitted
+      piece += '.';
+    } else if(periodStr[i] != '.') {
+      piece+=periodStr[i];
+    } else {
+      parts.push(piece);
+      piece = '';
+    }
+    i++;
+  }
+  if(piece) {
+    parts.push(piece);
+  }
+  return parts;
+}
 function initLC () {
   return {
     test: false,
@@ -30,7 +51,7 @@ function initLC () {
     data: clone(emptyDataState),
     getData: (key) => {
       let currentPiece = lc.data
-      let parts = key.split('.')
+      let parts = getParts(key);
       for (let part of parts) {
         if (!currentPiece) return currentPiece
         currentPiece = currentPiece[part]
@@ -69,7 +90,7 @@ function initLC () {
      */
     setData: (key, value, NO_UPDATE) => {
       if (key) {
-        let paths = key.split('.')
+        let paths = getParts(key);
         let parent = lc.data
         for (let i = 0; i < paths.length; i++) {
           let currentPath = paths[i]
@@ -80,7 +101,7 @@ function initLC () {
             parent = parent[currentPath] = (parent[currentPath] || {})
           }
         }
-        if (lc._debugging) {
+        if (false) {
           lc.recordedSetData = lc.recordedSetData || []
           try {
             throw new Error('Fake error')
@@ -119,7 +140,8 @@ function initLC () {
       lc.setData(`changes.${obj}.${id}.deleted`, true)
     },
     debugging () {
-      return lc._debugging
+      return false;
+      // return lc._debugging
     },
     debugMode (rerender = true) {
       initDebug(rerender)

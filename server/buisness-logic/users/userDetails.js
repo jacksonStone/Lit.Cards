@@ -13,12 +13,6 @@ async function setDarkmode (userEmail, darkmodeValue) {
   return User.updateSafe(userEmail,  { darkMode: darkmodeValue })
 }
 
-/**
- *  planExpiration: epoch_time, //days
- */
-async function setPlanExpiration(userEmail, purchaseDate, purchaseDurationInDays) {
-  //When we confirm a payment has gone through - we need to update this
-}
 async function setMisc(userEmail, changes) {
   return User.updateSafe(userEmail, changes)
 }
@@ -31,5 +25,4 @@ exports.setDarkmode = setDarkmode
 exports.setMisc = setMisc;
 exports.UNSAFE_USER = UNSAFE_USER
 exports.UNSAFE_setMisc = UNSAFE_setMisc
-exports.setPlanExpiration = setPlanExpiration
 exports.UNSAFE_USER_BY_CUSTOMER_ID = UNSAFE_USER_BY_CUSTOMER_ID

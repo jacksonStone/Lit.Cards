@@ -14,6 +14,8 @@ let safeParametersToReturn = [
   'userEmail',
   'verifiedEmail',
   'activeSubscription',
+  'planExpiration',
+  'trialUser',
   // All props that a user can dynamically change
   // should be safe to return to the user
   // Except stripePaymentMethodId
@@ -68,11 +70,11 @@ function trimAllButSafeParameters (user) {
   return safeUser
 }
 
-async function createUser (userEmail, salt, password, displayName) {
+async function createUser (userEmail, salt, password, displayName, trialCutoff) {
   let results = await db.getRecord(tableName, { userEmail })
   if (results.length) return
   let emailVerificationKey = await randomString(20, 'hex')
-  return db.setRecord(tableName, { userEmail, salt, password, displayName, validSession: 0, emailVerificationKey, verifiedEmail: false })
+  return db.setRecord(tableName, { userEmail, salt, password, displayName, validSession: 0, emailVerificationKey, verifiedEmail: false, trialUser: true, planExpiration: trialCutoff });
 }
 
 function editUser(userEmail, changes) {

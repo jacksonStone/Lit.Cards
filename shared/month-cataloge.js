@@ -14,7 +14,7 @@ module.exports = {
     "12": {
         "name": "12 months of Lit.Cards",
         "description": "One time purchase (no auto-renewal) for twelve months worth of access to Lit.Cards, with unlimited decks and cards.",
-        "price": 1200,
+        "price": 1500,
         "image": "https://homepages.cae.wisc.edu/~ece533/images/airplane.png"
     },
 };

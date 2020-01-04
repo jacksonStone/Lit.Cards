@@ -10,7 +10,9 @@ async function signup (userEmail, plainTextPassword, displayName) {
 
   let salt = authUtils.getSalt()
   let password = authUtils.hashValues(plainTextPassword, salt)
-  let user = await User.createUser(userEmail, salt, password, displayName)
+  const trialDuration = new Date();
+  trialDuration.setMonth(trialDuration.getMonth() + 1);
+  let user = await User.createUser(userEmail, salt, password, displayName, trialDuration.getTime())
   sendVerificationEmail(user);
   return user
 }
