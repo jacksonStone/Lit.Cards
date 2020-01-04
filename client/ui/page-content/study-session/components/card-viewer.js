@@ -25,7 +25,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
     <div class="card-viewer-outline">
-        ${getTextForCard === false ? html`<div style="height: 300px">Loading...</div>`: html` ${popupComponent()}
+        ${getTextForCard === false ? html`<div style="height: 298px">Loading...</div>`: html` ${popupComponent()}
               <div alt="preview-of-crad-image" 
                 class="${hasImage ? 'image-spot-with-image' : 'image-spot-without-image'}" 
                 id="image-spot" class="usa-button usa-button--outline"

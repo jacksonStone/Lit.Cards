@@ -19,6 +19,11 @@ app.use(async (req, res, next) => {
   if (user) {
     req.userEmail = user.userEmail
     req.user = user
+    if(req.user.planExpiration && req.user.planExpiration > Date.now()) {
+      req.userSubbed = true;
+    } else {
+      req.userSubbed = false;
+    }
   }
   next()
 })
@@ -33,7 +38,6 @@ app.get('/', function (req, res) {
 
 //API endpoints
 app.use('/api', routes.api)
-console.log(routes.api);
 //App pages
 app.use('/site', routes.siteNavigation.router)
 

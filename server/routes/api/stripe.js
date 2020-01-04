@@ -3,7 +3,6 @@ let router = express.Router()
 let code = require('../../node-abstractions/response-codes')
 let { UNSAFE_USER, UNSAFE_setMisc, UNSAFE_USER_BY_CUSTOMER_ID } = require('../../buisness-logic/users/userDetails')
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
-console.log("Created stripe");
 const line_items_by_month = require('../../../shared/month-cataloge.js');
 /**
  * 
@@ -14,15 +13,12 @@ const line_items_by_month = require('../../../shared/month-cataloge.js');
  */
 router.post('/checkout', async (req, res) => {
     if (!req.userEmail) {
-        console.log("User not signed in");
         return code.unauthorized(res)
     }
     if(!req.body) {
-        console.log("No body in request");
         return code.invalidRequest(res);
     }
     if(!req.body.month_duration){
-        console.log("No month_duration");
         return code.invalidRequest(res);
     }
     const month_duration = req.body.month_duration;
@@ -31,7 +27,6 @@ router.post('/checkout', async (req, res) => {
         line_item = line_items_by_month[month_duration + ''];
     }
     if(!line_item) {
-        console.log("Invalid month duration");
         return code.invalidRequest(res);
     }
     const current_user = await UNSAFE_USER(req.userEmail);
@@ -76,6 +71,9 @@ async function handleCheckoutSession(session) {
     if(!current_user) {
         throw Error('No User with that customer id');
     }
+    if(current_user.stripeLastProcessedSessionId == session.id) {
+        return; // We've already processed this.
+    }
     const name = session.display_items[0].custom.name;
     const months_purchased = (name.split(' ')[0])|0;
     const now = new Date();
@@ -83,12 +81,18 @@ async function handleCheckoutSession(session) {
     if(!current_user.planExpiration || current_user.planExpiration < now.getTime()) {
         const months_in_advanced = new Date();
         months_in_advanced.setMonth(months_in_advanced.getMonth() + months_purchased);
-        await UNSAFE_setMisc(current_user.userEmail, {planExpiration:months_in_advanced.getTime()});
+        await UNSAFE_setMisc(current_user.userEmail, {
+            planExpiration: months_in_advanced.getTime(),
+            stripeLastProcessedSessionId: session.id
+        });
     } else {
         //Had time left
         const months_in_advanced = new Date(current_user.planExpiration);
         months_in_advanced.setMonth(months_in_advanced.getMonth() + months_purchased);
-        await UNSAFE_setMisc(current_user.userEmail, {planExpiration:months_in_advanced.getTime()});
+        await UNSAFE_setMisc(current_user.userEmail, {
+            planExpiration:months_in_advanced.getTime(),
+            stripeLastProcessedSessionId: session.id
+        });
     }
 }
 

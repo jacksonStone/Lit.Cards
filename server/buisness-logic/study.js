@@ -36,7 +36,6 @@ async function editSessionState (userEmail, sessionChanges) {
   let id = sessionChanges.id
   delete sessionChanges.id
   if (!id) {
-    console.log('No id in session', sessionChanges)
     return
   }
   if (sessionChanges.currentCard !== undefined) {

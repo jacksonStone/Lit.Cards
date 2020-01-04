@@ -24,11 +24,19 @@ let fakeData = {
 
     createdAt: Date.now(), //TODO::Maybe have a free trial?
 
+    //TODO::Add this
+    trialUser: false,
+
     // Fields for purchase info
     stripeCustomerId: "cus_GTvjSgfJdc0JDl",
+    //To handle potiential for double events according to Stripe docs -
+    //or with resolving missed transactions during server downtime
+    //This is the id for the last confirmed session we processed and added
+    //to plan expiration
+    stripeLastProcessedSessionId: "",
     
     //Will be set once stripePaymentIntentConfirmed becomes true
-    planExpiration: 0, //epoch_time
+    planExpiration: Date.now() + (60*60*1000), //epoch_time
     
   },{
     userEmail: 'jackson@someemail2.com',

@@ -19,7 +19,10 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
   let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
   let firstCardId = activeCard || (cards && cards.length && cards[0])
   let cardBody = await getCardBody(firstCardId, undefined, cards)
-  // WE WANT TO CREATE FIRST CARD ON THE SERVER
+  if (!cardBody) {
+    //In case something went sideways
+    window.location.href = '/';
+  }
   window.lc.setData('orderedCards', cards)
   window.lc.setData('deck', deck)
   window.lc.setData('activeCardId', firstCardId)
@@ -28,9 +31,9 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
   window.lc.setData('showingAnswer', false)
   window.lc.setData(`cardBody.${firstCardId}`, cardBody)
   runNextRender(() => {
+    initCommands()
     initEditor(cardBody.front, handleEditorTextChange)
     refreshEditor()
-    initCommands()
   })
   renderPage(content)
 })()

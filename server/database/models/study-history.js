@@ -1,7 +1,6 @@
 let db = require('../external-connections/fake-database-connector')
 let tableName = 'studyHistory'
 let _ = require('lodash')
-let { userExists } = require('./user')
 
 async function getStudyHistory (userEmail) {
   let results = await db.getRecord(tableName, { userEmail })

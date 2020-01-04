@@ -22,7 +22,7 @@ function initEditor (startingContent, onChange) {
     actions: ['bold', 'italic', 'olist', 'ulist'],
     onChange: onChange
   })
-  editor.content.innerHTML = startingContent
+  editor.content.innerHTML = startingContent || "";
   // IE - This is not supported for IE
   editorElement.addEventListener('paste', function (e) {
     // cancel paste

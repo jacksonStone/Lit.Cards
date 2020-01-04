@@ -70,7 +70,7 @@ function getContents(data) {
     return changePasswordInterface(data)
   }
   if(currentHash === 'plan-details') {
-    return subscriptionSettingsInterface(data)
+    return buyTimeInterface(data)
   }
 }
 
@@ -92,11 +92,7 @@ function changePasswordInterface(data){
             </form>`;
 }
 
-function updateUser(paymentMethodId) {
-  window.lc.setPersistent('user.stripePaymentMethodId', paymentMethodId)
-}
-
-function subscriptionSettingsInterface(data) {
+function buyTimeInterface() {
 
   if(!document.getElementById('stripe-stuff')) {
     runNextRender(() => waitForState('user', () => {
@@ -107,11 +103,11 @@ function subscriptionSettingsInterface(data) {
   const buttons_for_purchasing = [];
   each(month_catalog, (entry, months) => {
     buttons_for_purchasing.push(
-      html`<div style="margin-top: 40px;"><button class="usa-button continue-studying" @click=${() => createStripeCheckoutSession(months|0)}>
-        Buy ${entry.name} ($${entry.price/100})</button><div>`);
+      html`<div style="margin-top: 20px; text-align: center;"><button class="usa-button continue-studying" style="min-width: 250px;" @click=${() => createStripeCheckoutSession(months|0)}>
+        ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br><br>$${entry.price/100}</button><div>`);
   });
   return html`
-    <h1>Purchase full Lit.Cards access</h1>
+    <h1 style="text-align:center;">Purchase Lit.Cards access time</h1>
     ${buttons_for_purchasing}
   `
 }

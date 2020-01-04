@@ -37,7 +37,6 @@ async function handleCardBodyChange (userEmail, transaction) {
     let deck = cardBody.deck
     delete cardBody.deck
     if (!deck) {
-      console.log('No deck!', cardBody)
       continue
     }
     if (!cardBody.isNew && !cardBody.deleted) {

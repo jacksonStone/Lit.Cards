@@ -8,6 +8,11 @@ let makePageRoute = (path, details, auth) => {
     if(auth) {
       if (!req.userEmail) return res.redirect('/')
     }
+    if(details.subOnly) {
+      if(!req.userSubbed) {
+        return res.redirect('/site/me/settings#plan-details');
+      }
+    }
     return sendPage(res, details, req.user)
   })
 }
@@ -59,6 +64,7 @@ let pages = {
     darkModeable: true,
     entryFile: 'deck.js',
     page: 'me/deck',
+    subOnly: true
   },
   '/me/settings': {
     title: 'Lit: Settings',
@@ -70,6 +76,7 @@ let pages = {
     title: 'Lit: Study',
     entryFile: 'study.js',
     darkModeable: true,
+    subOnly: true
   },
 }
 

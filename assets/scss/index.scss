@@ -1,7 +1,7 @@
 @import 'uswds/dist/css/uswds.min.css';
 // use these
 // See all overwriteable variables in src/pell.scss
-$pell-content-height: 300px;
+$pell-content-height: 298px;
 
 @import '../../node_modules/pell/src/pell';
 @import '../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
@@ -269,7 +269,7 @@ body {
   top: 10px;
 }
 .study-card-no-image {
-  height: 300px;
+  height: 298px;
 }
 .study-card-with-image {
   height: 100px;
