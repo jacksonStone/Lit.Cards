@@ -18,15 +18,9 @@ let changePasswordBtn = (event) => {
   changePassword(values.currentPassword, values.password, values.passwordRepeat)
 }
 
-function passwordField(error, label='Password', name='password') {
-  return html`
-      <label class="usa-label" for="password">${label}</label>
-      <input class="usa-input" id=${name} name=${name} type="password" required aria-required="true">`
-}
-
 module.exports = (data) => {
   // add other screens to settings
-  //
+  let user = window.lc.getData('user');
   let h = hash()
   return html`
     <div class="grid-container">
@@ -53,7 +47,7 @@ module.exports = (data) => {
     <div class="grid-row">
         <div class="grid-col-1"></div>
         <div class="grid-col-10">
-           ${getContents(data)}
+           ${(user && !user.verifiedEmail) ? html`<h3 style="margin-top:20px;">Must first confirm email before you can make edits to your account.</h3>` : getContents(data)}
         </div>
         <div class="grid-col-1"></div>
     </div>
@@ -107,7 +101,10 @@ function buyTimeInterface() {
     const user = window.lc.getData('user')
     if(!user) {
       return html`Loading...`;
-    } 
+    }
+    if(!user.verifiedEmail) {
+      return html`<h3 style="margin-top:20px;">Must first confirm email before you can make edits to your account.</h3>`;
+    }
     const buttons_for_purchasing = [];
     each(month_catalog, (entry, months) => {
       buttons_for_purchasing.push(

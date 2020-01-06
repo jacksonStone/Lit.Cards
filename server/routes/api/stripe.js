@@ -8,11 +8,14 @@ const line_items_by_month = require('../../../shared/month-cataloge.js');
  * 
  * 
  * REMEMBER when testing you will need to run ngrok and make sure Stripe 
- * has that configured as the URL
+ * has that configured as the URL for the session.Completed webhook
  * 
  */
 router.post('/checkout', async (req, res) => {
     if (!req.userEmail) {
+        return code.unauthorized(res)
+    }
+    if (!req.user.verifiedEmail) {
         return code.unauthorized(res)
     }
     if(!req.body) {
@@ -62,6 +65,10 @@ router.post('/checkout', async (req, res) => {
     const session = await stripe.checkout.sessions.create(session_request);
     res.send(session);
 });
+/**
+ * This is what confirms a purchase from stripe
+ * @param {Stripe Session Object} session 
+ */
 async function handleCheckoutSession(session) {
     if(!session.customer) {
         throw Error('Customer must be attached to the checkout');
