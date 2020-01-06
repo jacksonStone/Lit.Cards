@@ -308,6 +308,9 @@ aside .usa-sidenav {
   font-size: 1.46397rem;
   line-height: 1.12707;
 }
+.background-bars {
+  background-color: #eee;
+}
 .darkmode {
   color: #555;
   .study-side-nav {
@@ -322,6 +325,9 @@ aside .usa-sidenav {
   }
   .pell-content {
     padding: 8px;
+  }
+  .background-bars {
+    background-color: #151515;
   }
   .fancy-line {
     border-top: 1px solid #555;

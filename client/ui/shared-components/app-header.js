@@ -53,16 +53,13 @@ function emailVerificationLink() {
     >Email verified!</div>`
   }
   if(window.lc.getData('resentEmailConfirmation')) {
-    return html`<div style="font-size: 12px; padding: 8px;
-    text-align: center;
-    background: #eee;"
+    return html`<div class="background-bars" style="font-size: 12px; padding: 8px;
+    text-align: center;"
     >Confirmation email resent.</div>`
   }
   if(waitingOnEmailVerification()) {
-    return html`<div style="font-size: 12px; padding: 8px;
-    text-align: center;
-    background: #eee;"
-
+    return html`<div class="background-bars" style="font-size: 12px; padding: 8px;
+    text-align: center;"
     >Please verify your email by clicking the confirmation link emailed to your address. <button class="usa-button usa-button--outline" style="margin-left: 10px; font-size: 12px; padding: 5px;" @click=${() => {
       resendEmailVerification()
       window.lc.setData('resentEmailConfirmation', true)

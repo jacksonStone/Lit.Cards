@@ -36,7 +36,6 @@ router.post('/checkout', async (req, res) => {
 
     const session_request = {
         payment_method_types: ['card'],
-        // customer_email: req.userEmail,
         line_items: [{
           name: line_item.name,
           description: line_item.description,
@@ -49,7 +48,7 @@ router.post('/checkout', async (req, res) => {
           capture_method: 'automatic',
         },
         mode: 'payment',
-        success_url: process.env.SITE_DOMAIN_ROOT + '/site/me/settings#plan-details?session_id={CHECKOUT_SESSION_ID}',
+        success_url: process.env.SITE_DOMAIN_ROOT + '/site/me',
         cancel_url: process.env.SITE_DOMAIN_ROOT + '/site/me/settings#plan-details',
       };
     if(current_user.stripeCustomerId) {
@@ -77,23 +76,20 @@ async function handleCheckoutSession(session) {
     const name = session.display_items[0].custom.name;
     const months_purchased = (name.split(' ')[0])|0;
     const now = new Date();
-
+    let months_in_advanced;
     if(!current_user.planExpiration || current_user.planExpiration < now.getTime()) {
-        const months_in_advanced = new Date();
-        months_in_advanced.setMonth(months_in_advanced.getMonth() + months_purchased);
-        await UNSAFE_setMisc(current_user.userEmail, {
-            planExpiration: months_in_advanced.getTime(),
-            stripeLastProcessedSessionId: session.id
-        });
+        months_in_advanced = new Date();
     } else {
-        //Had time left
-        const months_in_advanced = new Date(current_user.planExpiration);
-        months_in_advanced.setMonth(months_in_advanced.getMonth() + months_purchased);
-        await UNSAFE_setMisc(current_user.userEmail, {
-            planExpiration:months_in_advanced.getTime(),
-            stripeLastProcessedSessionId: session.id
-        });
+        //Had time left, add to their existing time
+        months_in_advanced = new Date(current_user.planExpiration);
     }
+
+    months_in_advanced.setMonth(months_in_advanced.getMonth() + months_purchased);
+    await UNSAFE_setMisc(current_user.userEmail, {
+        planExpiration: months_in_advanced.getTime(),
+        stripeLastProcessedSessionId: session.id,
+        trialUser:false
+    });
 }
 
 module.exports = {router, handleCheckoutSession};

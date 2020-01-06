@@ -36,7 +36,7 @@ let fakeData = {
     stripeLastProcessedSessionId: "",
     
     //Will be set once stripePaymentIntentConfirmed becomes true
-    planExpiration: Date.now() + (60*60*1000), //epoch_time
+    planExpiration: Date.now() + 1000*60*60, //epoch_time
     
   },{
     userEmail: 'jackson@someemail2.com',

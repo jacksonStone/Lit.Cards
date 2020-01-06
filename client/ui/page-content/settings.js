@@ -45,7 +45,7 @@ module.exports = (data) => {
     <li class="usa-sidenav__item">
     <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
   </li><li class="usa-sidenav__item">
-    <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Plan Details</a>
+    <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Purchase more time</a>
   </li>
   </ul>
     </aside>
@@ -96,7 +96,6 @@ function getRemainingDays() {
   let user = window.lc.getData('user');
   let expiration = user.planExpiration;
   let now = Date.now();
-  debugger;
   if (expiration < now) {
     return daysRemaining;
   }
@@ -105,7 +104,8 @@ function getRemainingDays() {
   return daysRemaining;
 }
 function buyTimeInterface() {
-    if(!window.lc.getData('user')) {
+    const user = window.lc.getData('user')
+    if(!user) {
       return html`Loading...`;
     } 
     const buttons_for_purchasing = [];
@@ -115,16 +115,28 @@ function buyTimeInterface() {
           ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br><br>$${entry.price/100}</button><div>`);
     });
     const daysRemaining = getRemainingDays();
+    const daysOrDay = daysRemaining === 1 ? 'Day' : 'Days';
+    let header;
+    if(daysRemaining === 0 && user.trialUser) {
+      header = html`<h2>Your trial has expired.</h2> <h3>Upgrade to get all features and additional time.</h3>`
+    }  else if(user.trialUser) {
+      header = html`<h2>Your free trial has ${daysRemaining + ' ' + daysOrDay} remaining.</h2><h3>Upgrade to get all features and additional time.</h3>`
+    }
+    else if(daysRemaining === 0) {
+      header = html`<h2>Your account has run out of access time</h2>`
+    }
+    else {
+      header = html`<h2>${daysRemaining + ' ' + daysOrDay} of Lit.Cards access remaining.</h2>`
+    }
     return html`
-      <h2>${daysRemaining} ${daysRemaining == 1 ? 'Day' : 'Days'} of Lit.Cards remaining.</h3>
-      <p>*If you run out of time, we will keep your cards around for a year - though you will not be able to study them again unless you renew.</p>
-      <div class="fancy-line" style="margin-top:40px"></div>
+      ${header}
+      <div class="fancy-line" style="margin-top:20px"></div>
 
-      <h1>Purchase additional time</h1>
+      <h1>Purchase access time</h1>
       <h2>Features</h2>
       <ul style="margin-bottom: 40px;">
       <li style="margin-bottom: 10px;">Unlimited Cards with images <span style="font-size: 9px">(Just be reasonable, please!)<span></li>
-      <li style="margin-bottom: 10px;">Unrivled speed - even with decks containing thousands of cards</li>
+      <li style="margin-bottom: 10px;">Unrivaled speed - even with decks containing thousands of cards</li>
       <li style="margin-bottom: 10px;">Share decks with fellow students, and vice versa</li>
       <li style="margin-bottom: 10px;">Hotkeys for everything to help you zip along</li>
       <li style="margin-bottom: 10px;">Dark mode that was about as dark as I could make it <br><span style="font-size: 10px">(You can demo it with the check box in the bottom right)</span></li>
