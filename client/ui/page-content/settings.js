@@ -4,12 +4,10 @@ let { hash } = require('abstract/url')
 let  month_catalog = require('../../../shared/month-cataloge.js')
 let { each } = require('../../utils');
 let errorableInput = require('../shared-components/errorable-input')
-let {runNextRender} = require('abstract/rendering-meta')
 let { createStripeCheckoutSession } = require('./stripe')
 let errorBanner = require('../shared-components/error-banner')
 let { changePassword } = require('../../business-logic/login')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
-let { waitForState } = require('abstract/rendering-meta')
 let { $ } = require('abstract/$');
 let checkboxHolder = require('component/checkbox-holder')
 let changePasswordBtn = (event) => {
@@ -100,10 +98,7 @@ function getRemainingDays() {
 function buyTimeInterface() {
     const user = window.lc.getData('user')
     if(!user) {
-      return html`Loading...`;
-    }
-    if(!user.verifiedEmail) {
-      return html`<h3 style="margin-top:20px;">Must first confirm email before you can make edits to your account.</h3>`;
+      return html`<h3 style="margin-top: 20px;">Loading...</h3>`;
     }
     const buttons_for_purchasing = [];
     each(month_catalog, (entry, months) => {

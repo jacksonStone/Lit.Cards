@@ -1,5 +1,5 @@
 let nodeMailer = require('nodemailer')
-let isTest = process.env.NODE_ENV === 'test'
+let isTest = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development'
 let transporter
 let testEmails
 let resetTestEmails
@@ -39,7 +39,7 @@ async function sendMail (to, subject, text, html) {
   try {
     // Returns unused info object
     await transporter.sendMail({
-      from: '"Lit.Cards 🔥" <jackson@lit.cards>', // sender address
+      from: `"Lit.Cards 🔥" <${process.env.EMAIL_ADDRESS}>`, // sender address
       to,
       subject,
       text,
@@ -51,7 +51,6 @@ async function sendMail (to, subject, text, html) {
     console.error(e)
   }
 }
-// sendMail("jacksonastone@gmail.com", "Hello ✔", "Hello world?", "<b>Hello world?</b>")
 module.exports = {
   sendMail,
 

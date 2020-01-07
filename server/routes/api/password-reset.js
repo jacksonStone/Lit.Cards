@@ -32,7 +32,7 @@ router.post('/verify', async (req, res) => {
 });
 
 router.post('/change', async (req, res) => {
-  if (!req.user) {
+  if (!req.user || !user.verifiedEmail) {
     return code.unauthorized(res)
   }
   let body = req.body
