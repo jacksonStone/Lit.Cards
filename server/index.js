@@ -49,5 +49,8 @@ app.use('/favicon.ico', express.static(path.join(ROOT, 'assets/favicon.ico'), { 
 
 
 app.use(express.static(path.join(ROOT, '/assets/dist')))
-
-app.listen(3000, () => console.info('Example app listening on port 3000!'))
+let port = 3000;
+if(process.env.$PORT) {
+  port = process.env.$PORT|0;
+}
+app.listen(port, () => console.info('App listening on port '+port+'!'))
