@@ -13,7 +13,7 @@ entries.forEach(entry => {
 module.exports = {
   mode: prodMode ? 'production' : 'development',
   entry: entryForWebpack,
-  watch: !prodMode,
+  // watch: !prodMode,
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, './assets/dist')
