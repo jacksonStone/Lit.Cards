@@ -9,6 +9,9 @@ let app = express()
 let routes = require('./routes')
 let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
 
+global.freezeTransactions = false;
+global.runningTransactions = 0;
+
 app.use('/', routes.stripe_webhook);
 app.use(cookieParser())
 app.use(bodyParser.json({limit:'5mb', extended: true}))

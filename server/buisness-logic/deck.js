@@ -4,13 +4,14 @@ let { User } = require('../database')
 let { deleteSessionByDeck } = require('./study')
 let { deleteAllCardBodies } = require('./card-body')
 let { removeFromStudyHistory } = require('./study-history')
-
+let recordTransaction = require("../node-abstractions/record-transacting.js")
 async function addDeck (userEmail, name) {
-  // make a transaction
   const user = await User.getUser(userEmail)
-  const newDeck = await Deck.createDeck(userEmail, name, user.displayName)
-  await CardBody.addCardBody(userEmail, newDeck.id, newDeck.cards)
-  return newDeck
+  return recordTransaction(async () => {
+    const newDeck = await Deck.createDeck(userEmail, name, user.displayName)
+    await CardBody.addCardBody(userEmail, newDeck.id, newDeck.cards)
+    return newDeck;
+  });
 }
 
 async function deleteDeck (userEmail, id) {
@@ -19,11 +20,12 @@ async function deleteDeck (userEmail, id) {
   if (deck && deck.length && deck[0].public) {
     return
   }
-  // make a transaction
-  await removeFromStudyHistory(userEmail, id)
-  await deleteSessionByDeck(userEmail, id)
-  await deleteAllCardBodies(userEmail, id)
-  return Deck.deleteDeck(userEmail, id)
+  return recordTransaction(async () => {
+    await removeFromStudyHistory(userEmail, id)
+    await deleteSessionByDeck(userEmail, id)
+    await deleteAllCardBodies(userEmail, id)
+    return Deck.deleteDeck(userEmail, id)
+  })
 }
 async function renameDeck (userEmail, id, name) {
   return Deck.editDeck({ userEmail, id }, { name })

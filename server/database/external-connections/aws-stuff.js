@@ -5,24 +5,70 @@ AWS.config = new AWS.Config({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: 'us-east-1'
 });
-let DynamoDB = new AWS.DynamoDB();
+// let DynamoDB = new AWS.DynamoDB();
+let DynamoDBDocClient = new AWS.DynamoDB.DocumentClient();
 let S3 = new AWS.S3();
+let tableNames = {
+    "test" : {
+        "user": "Litcards.Users.Test"
+    }
+};
 let params = {
     Item: {
-     "userEmail": {S: 'Foo'}
+     "userEmail":'Foo'
     }, 
-    ReturnConsumedCapacity: "TOTAL", 
-    TableName: "Litcards_test_users"
+    TableName: tableNames.test.user
 };
-DynamoDB.putItem(params, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log(data);           // successful response
-    /*
-    data = {
-        ConsumedCapacity: {
-        CapacityUnits: 1, 
-        TableName: "Music"
+/**
+ * Transaction example
+ * data = await dynamoDb.transactWriteItems({
+    TransactItems: [
+        {
+            Update: {
+                TableName: 'items',
+                Key: { id: { S: itemId } },
+                ConditionExpression: 'available = :true',
+                UpdateExpression: 'set available = :false, ' +
+                    'ownedBy = :player',
+                ExpressionAttributeValues: {
+                    ':true': { BOOL: true },
+                    ':false': { BOOL: false },
+                    ':player': { S: playerId }
+                }
+            }
+        },
+        {
+            Update: {
+                TableName: 'players',
+                Key: { id: { S: playerId } },
+                ConditionExpression: 'coins >= :price',
+                UpdateExpression: 'set coins = coins - :price, ' +
+                    'inventory = list_append(inventory, :items)',
+                ExpressionAttributeValues: {
+                    ':items': { L: [{ S: itemId }] },
+                    ':price': { N: itemPrice.toString() }
+                }
+            }
         }
+    ]
+}).promise();
+ */
+DynamoDBDocClient.put(params, function(err, data) {
+    if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+        DynamoDBDocClient.get({
+            TableName: tableNames.test.user,
+            Key:{
+                "userEmail": 'foo',
+            }
+        }, function(err, data) {
+            if (err) {
+                console.error("Unable to get item", JSON.stringify(err, null, 2));
+            } else {
+                console.log("Got Item:", data);
+            }
+        });
+        console.log("Added item:", data);
     }
-*/
 });

@@ -17,15 +17,16 @@ async function getCardBody (userEmail, deck, card) {
   }
   return cardBodies
 }
+let recordTransaction = require('../node-abstractions/record-transacting');
 async function deleteCardBody (userEmail, deck, card) {
   let cardBody = await getCardBody(userEmail, deck, card)
   if (cardBody && cardBody.length && cardBody[0].public) {
     return
   }
-  // TODO:: Wrap this in a transaction or something
-  // And make card deletion from deck atomic
-  await Deck.deleteCard(userEmail, deck, card)
-  return CardBody.deleteCardBody(userEmail, deck, card)
+  return recordTransaction(async () => {
+    await Deck.deleteCard(userEmail, deck, card)
+    return CardBody.deleteCardBody(userEmail, deck, card)
+  });
 }
 async function deleteAllCardBodies (userEmail, deck) {
   return CardBody.deleteCardBodies(userEmail, deck)
@@ -51,6 +52,7 @@ async function editCardBody (userEmail, deck, card, changes) {
   sanitizeCardContent(changes)
   return CardBody.editCardBody(userEmail, deck, card, changes)
 }
+let recordTransaction = require("../node-abstractions/record-transacting.js")
 async function upsertCardBody (userEmail, deck, changes = { front: '', back: '' }) {
   sanitizeCardContent(changes)
   const existingCard = await getCardBody(userEmail, deck, changes.id)
@@ -60,15 +62,16 @@ async function upsertCardBody (userEmail, deck, changes = { front: '', back: '' 
 
   // Otherwise is truely new
   delete changes.id
-  // TODO:: Wrap this in a transaction or something
   let deckRecord = await Deck.getDeck(userEmail, deck)
   let lastIdAsChar = deckRecord.cards ? deckRecord.cards[deckRecord.cards.length - 1] : intToChar(0)
   let nextIdAsInt = charToInt(lastIdAsChar) + 1
   let idAsChar = intToChar(nextIdAsInt)
-  await CardBody.addCardBody(userEmail, deck, idAsChar, changes)
-  let cards = deckRecord.cards
-  cards += idAsChar
-  await Deck.editDeck(deckRecord, { cards })
+  await recordTransaction(async () => {
+    await CardBody.addCardBody(userEmail, deck, idAsChar, changes)
+    let cards = deckRecord.cards
+    cards += idAsChar
+    await Deck.editDeck(deckRecord, { cards })
+  })
   return idAsChar
 }
 module.exports = {
