@@ -83,7 +83,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:30px">
                     <div class="grid-col-3" style="text-align: left">
-                    ${(getSession().none && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
+                    ${((!getSession() || getSession().none) && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         id="remove-card-button-active"
                         style="
