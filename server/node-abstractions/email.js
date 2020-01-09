@@ -1,18 +1,17 @@
-let nodeMailer = require('nodemailer')
-let isTest = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development'
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+let isTest = process.env.NODE_ENV === 'test'
 let transporter
 let testEmails
 let resetTestEmails
 let getTestEmails
 if (!isTest) {
-  transporter = nodeMailer.createTransport({
-    pool: true,
-    service: 'Gmail',
-    auth: {
-      user: process.env.EMAIL_ADDRESS,
-      pass: process.env.EMAIL_PASSWORD
+  transporter = {
+    sendMail: (details) => {
+      return sgMail.send(details);
     }
-  })
+  };
 } else {
   testEmails = []
   resetTestEmails = () => {
@@ -39,7 +38,7 @@ async function sendMail (to, subject, text, html) {
   try {
     // Returns unused info object
     await transporter.sendMail({
-      from: `"Lit.Cards 🔥" <${process.env.EMAIL_ADDRESS}>`, // sender address
+      from: `Lit.Cards 🔥<${process.env.EMAIL_ADDRESS}>`, // sender address
       to,
       subject,
       text,
