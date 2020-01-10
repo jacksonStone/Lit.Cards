@@ -28,6 +28,7 @@ async function _handleChanges () {
 }
 
 async function _handleTransaction(transaction) {
+  //Clean no-ops
   if (transaction.cardBody) {
     each(transaction.cardBody, (cardBody, cardId) => {
       if(cardBody.isNew && cardBody.isDeleted) {
@@ -42,7 +43,21 @@ async function _handleTransaction(transaction) {
       }
     }
   }
-  return handleTransaction(transaction);
+
+  let firstTry = true;
+  let success = false;
+  while(!success) {
+    if (!firstTry) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } else { firstTry = true; }
+    try {
+      let res = await handleTransaction(transaction);
+      return res;
+    } catch(e) {
+      console.log(e);
+    }
+  }
+  
 }
 
 module.exports = listenToSaveableChanges
