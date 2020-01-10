@@ -1,5 +1,6 @@
 let { html } = require('lit')
 let { getValueFromInput } = require('../../../../browser-abstractions/events')
+let { getParam } = require('../../../../browser-abstractions/url')
 function getName () {
   return window.lc.getData('deck.name')
 }

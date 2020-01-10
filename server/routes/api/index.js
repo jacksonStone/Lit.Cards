@@ -16,6 +16,5 @@ router.use('/card-body', requireActiveSub);
 router.use('/card-body', require('./card-bodies'))
 router.use('/password-reset', require('./password-reset'))
 router.use('/stripe', require('./stripe').router)
-router.use('/prevent-transactions', require('./prevent-transactions'))
 
 module.exports = router

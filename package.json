@@ -37,7 +37,7 @@
     "sassw": "sass --watch assets/scss/index.scss assets/dist/index.css",
     "sw": "cd server && nodemon index.js",
     "lint": "eslint --fix server/**/*.js client/**/*.js shared/**/*.js",
-    "build": "sass assets/scss/index.scss assets/dist/index.css && webpack -p && node ./server/safe_to_deploy.js "
+    "build": "sass assets/scss/index.scss assets/dist/index.css && webpack -p"
   },
   "author": "",
   "license": "ISC",

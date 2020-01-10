@@ -6,7 +6,7 @@ let { runNextRender } = require('abstract/rendering-meta')
 let { getParam } = require('abstract/url')
 let { defaultDarkMode } = require('abstract/darkmode')
 let { fetchUser } = require('logic/user')
-let { getCardBody } = require('logic/card-bodies')
+let { getCardBody, getCardBodyForEmptyState } = require('logic/card-bodies')
 let { getStudySession } = require('logic/study')
 let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
 
@@ -18,7 +18,16 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
   let rawParam = getParam('card')
   let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
   let firstCardId = activeCard || (cards && cards.length && cards[0])
-  let cardBody = await getCardBody(firstCardId, undefined, cards)
+  let cardBody;
+  try {
+    cardBody = await getCardBody(firstCardId, undefined, cards)
+  } catch(e) {
+    if(deck.cards.length === 1) {
+      //We probably failed to add new card, due to server restart or some such
+      cardBody = getCardBodyForEmptyState(firstCardId);
+    }
+  }
+  
   if (!cardBody) {
     //In case something went sideways
     window.location.href = '/';
