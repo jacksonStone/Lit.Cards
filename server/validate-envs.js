@@ -11,6 +11,9 @@ const listOfNeededEnvs = [
   'STRIPE_WEBHOOK_SECRET',
   'SITE_DOMAIN_ROOT',
   'NODE_ENV',
+  'AWS_ACCESS_KEY',
+  'AWS_SECRET_ACCESS_KEY',
+  'DEPLOYMENT_KEY'
 ];
 for(let i of listOfNeededEnvs) {
   if(!envs[i]) throw new Error("Missing environment variable: " + i);

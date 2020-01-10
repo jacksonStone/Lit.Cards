@@ -52,7 +52,6 @@ async function editCardBody (userEmail, deck, card, changes) {
   sanitizeCardContent(changes)
   return CardBody.editCardBody(userEmail, deck, card, changes)
 }
-let recordTransaction = require("../node-abstractions/record-transacting.js")
 async function upsertCardBody (userEmail, deck, changes = { front: '', back: '' }) {
   sanitizeCardContent(changes)
   const existingCard = await getCardBody(userEmail, deck, changes.id)

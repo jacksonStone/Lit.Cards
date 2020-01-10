@@ -9,7 +9,7 @@ let app = express()
 let routes = require('./routes')
 let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
 
-global.freezeTransactions = false;
+global.preventTransactions = false;
 global.runningTransactions = 0;
 
 app.use('/', routes.stripe_webhook);
