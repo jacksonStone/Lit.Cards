@@ -5,70 +5,80 @@ AWS.config = new AWS.Config({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: 'us-east-1'
 });
+let PROD = process.env.NODE_ENV === 'production';
 // let DynamoDB = new AWS.DynamoDB();
 let DynamoDBDocClient = new AWS.DynamoDB.DocumentClient();
 let S3 = new AWS.S3();
 let tableNames = {
     "test" : {
-        "user": "Litcards.Users.Test"
+        "user": "Litcards.Users.Test",
+        "deck": "Litcards.Decks.Test"
     }
 };
-let params = {
-    Item: {
-     "userEmail":'Foo'
-    }, 
-    TableName: tableNames.test.user
-};
-/**
- * Transaction example
- * data = await dynamoDb.transactWriteItems({
-    TransactItems: [
-        {
-            Update: {
-                TableName: 'items',
-                Key: { id: { S: itemId } },
-                ConditionExpression: 'available = :true',
-                UpdateExpression: 'set available = :false, ' +
-                    'ownedBy = :player',
-                ExpressionAttributeValues: {
-                    ':true': { BOOL: true },
-                    ':false': { BOOL: false },
-                    ':player': { S: playerId }
-                }
+function mapObj(obj, callback) {
+    let keys = Object.keys(obj);
+    for(let key of keys) {
+        callback(obj[key], key);
+    }
+}
+async function editRecord (table, filter, values) {
+    let keyField = 'id';
+    if(table === 'user') {
+        keyField = 'userEmail'
+    }
+    let EAV = {};
+    let EAN = {};
+    let updateExpression = 'SET ';
+    let conditionExpression = '';
+    mapObj(filter, (value, key) => {
+        if(key !== keyField) {
+            EAV[':f'+key] = value;
+            EAN['#f'+key] = key;
+            if(conditionExpression) {
+                conditionExpression+=' AND '
             }
-        },
-        {
-            Update: {
-                TableName: 'players',
-                Key: { id: { S: playerId } },
-                ConditionExpression: 'coins >= :price',
-                UpdateExpression: 'set coins = coins - :price, ' +
-                    'inventory = list_append(inventory, :items)',
-                ExpressionAttributeValues: {
-                    ':items': { L: [{ S: itemId }] },
-                    ':price': { N: itemPrice.toString() }
-                }
-            }
+            conditionExpression+=`#f${key} = :f${key}`;
         }
-    ]
-}).promise();
- */
-DynamoDBDocClient.put(params, function(err, data) {
-    if (err) {
-        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
-    } else {
-        DynamoDBDocClient.get({
-            TableName: tableNames.test.user,
-            Key:{
-                "userEmail": 'foo',
+    });
+    let firstValue = true;
+    mapObj(values, (value, key) => {
+        if(key !== keyField) {
+            EAV[':v'+key] = value;
+            EAN['#v'+key] = key;
+            if(!firstValue) {
+                updateExpression+=', ';
             }
-        }, function(err, data) {
+            else {
+                firstValue = false;
+            }
+            updateExpression+=`#v${key} = :v${key}`;
+        }
+    });
+    updateExpression
+
+    let params = {
+        Key: {
+            [keyField]:filter[keyField]
+        },
+        ExpressionAttributeValues:EAV,
+        ExpressionAttributeNames: EAN,
+        UpdateExpression: updateExpression,
+        ConditionExpression: conditionExpression,
+        TableName: PROD ? tableNames.prod[table] : tableNames.test[table],
+    };
+
+    return new Promise((resolve, reject) => {
+        DynamoDBDocClient.update(params, function(err, data) {
             if (err) {
-                console.error("Unable to get item", JSON.stringify(err, null, 2));
+                //TODO:: Error reporting
+                console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+                reject();
             } else {
-                console.log("Got Item:", data);
+                console.log("Added item:", data);
+                resolve();
             }
         });
-        console.log("Added item:", data);
-    }
-});
+    })
+}
+
+editRecord('deck', {userEmail: 'foo@gmail.com', id: 'foo'}, {"Boo": "Goo", userEmail: 'foo@gmail1.com',});
