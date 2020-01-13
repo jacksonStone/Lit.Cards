@@ -1,4 +1,4 @@
-let db = require('../external-connections/fake-database-connector')
+let db = require('../external-connections/configured-connector')
 let tableName = 'deck'
 let { userExists } = require('./user')
 let { generateId } = require('../../../shared/id-generator')
@@ -12,9 +12,9 @@ async function getDeck (userEmail, deck, requireUserIdMatch = false) {
   if(requireUserIdMatch) {
     query.userEmail = userEmail;
   }
-  let results = await db.getRecord(tableName, query)
-  if (results && results.length) {
-    let firstResult = results[0];
+  let results = await db.getRecord(tableName, query, 1)
+  if (results) {
+    let firstResult = results;
     if (firstResult.userEmail === userEmail || firstResult.public) {
       if(firstResult.userEmail !== userEmail) {
         //We don't want to make emails public

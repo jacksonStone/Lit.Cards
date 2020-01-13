@@ -10,10 +10,10 @@ async function verify (userEmail, plainTextPassword) {
 }
 
 function getLoginCookie (user) {
-  return cookieUtils.createUserCookie(user.userEmail, user.validSession || 0)
+  return cookieUtils.createUserCookie(user, user.validSession || 0)
 }
 
-async function getUser (cookies) {
+async function getUserFromCookie (cookies) {
   if (!cookies) return
   return cookieUtils.validateUserCookie(cookies)
 }
@@ -26,5 +26,5 @@ module.exports = {
   verify,
   getLogoutCookie,
   getLoginCookie,
-  getUser
+  getUserFromCookie
 }

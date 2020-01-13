@@ -6,6 +6,7 @@ let routeToVerifyEmail = '/site/me?verification='
 
 async function signup (userEmail, plainTextPassword, displayName) {
   let existingUser = await User.getUser(userEmail)
+  console.log(existingUser);
   if (existingUser) return
 
   let salt = authUtils.getSalt()

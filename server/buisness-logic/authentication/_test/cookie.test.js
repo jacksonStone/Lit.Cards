@@ -36,7 +36,7 @@ describe('Cookie verification works', () => {
     let validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
     assert.strictEqual(validatedCookie, undefined)
   })
-  it('Verify cookie created', () => {
+  it('Verify cookie created', async () => {
     let cookie = cookieUtils.createUserCookie(userEmail)
     assert.strictEqual(cookie.name, authCookieName)
     let encryptedValue = cookie.value

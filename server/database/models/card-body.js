@@ -1,16 +1,16 @@
-let db = require('../external-connections/fake-database-connector')
+let db = require('../external-connections/configured-connector')
 let tableName = 'cardBody'
 async function getCardBody (userEmail, deck, card) {
   let results
   if (card) {
-    results = await db.getRecord(tableName, { deck, id: card })
+    cardBody = await db.getRecord(tableName, { deck, id: card }, 1)
   } else {
-    results = await db.getRecord(tableName, { deck }, 1)
+    cardBody = await db.getRecord(tableName, { deck }, 1)
   }
-  results = (results && results.length) ? results.filter(cardBody => {
-    return ( cardBody.userEmail === userEmail || cardBody.public );
-  }) : results
-  return results || {}
+  if(cardBody && (cardBody.userEmail === userEmail || cardBody.public)) {
+    return cardBody;
+  }
+  return {}
 }
 async function getCardBodies (userEmail, deck) {
   return db.getRecord(tableName, { userEmail, deck })

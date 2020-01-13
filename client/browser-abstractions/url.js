@@ -41,7 +41,7 @@ let onExactPage = (pageName) => {
 let hash = () => {
   let hash = window.location.hash
   if (!hash) return ''
-  return hash.substring(1).split('?')[0];
+  return hash.substring(1).split('?')[0]
 }
 module.exports = {
   hash,

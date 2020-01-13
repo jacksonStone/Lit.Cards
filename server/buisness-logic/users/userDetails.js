@@ -1,5 +1,4 @@
 let { User } = require('../../database')
-const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 async function userDetails (userEmail) {
   return User.getSafeUser(userEmail)
 }

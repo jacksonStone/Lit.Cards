@@ -19,7 +19,11 @@ async function getRecord (table, conditions, limit) {
       return _.cloneDeep(v)
     }
   )
-  if (limit) {
+  if (limit === 1 && results && results.length) {
+    return results[0]
+  } else if(limit === 1) {
+    return;
+  } else if(limit) {
     return results.slice(0, limit)
   }
   return results
@@ -69,4 +73,4 @@ function getAllData(userEmail) {
   return userView;
 }
 
-module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord, getAllData }
+module.exports = { getRecord, setRecord, setFakeData, resetData, unsetRecord, editRecord, getAllData, connectToDatabase: async () =>{} }

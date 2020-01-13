@@ -1,4 +1,4 @@
-let db = require('../external-connections/fake-database-connector')
+let db = require('../external-connections/configured-connector')
 let tableName = 'user'
 let _ = require('lodash')
 let { randomString } = require('../../node-abstractions/random')
@@ -25,12 +25,12 @@ let safeParametersToReturn = [
 
 
 async function getUser (userEmail) {
-  let results = await db.getRecord(tableName, { userEmail: userEmail })
-  if (results && results.length) return results[0]
+  let results = await db.getRecord(tableName, { userEmail: userEmail }, 1)
+  if (results) return results
 }
 async function getUserByCustomerId (customerId) {
-  let results = await db.getRecord(tableName, { stripeCustomerId:  customerId})
-  if (results && results.length) return results[0]
+  let results = await db.getRecord(tableName, { stripeCustomerId:  customerId}, 1)
+  if (results) return results
 }
 async function getSafeUser (userEmail) {
   let user = await getUser(userEmail)
@@ -71,8 +71,8 @@ function trimAllButSafeParameters (user) {
 }
 
 async function createUser (userEmail, salt, password, displayName, trialCutoff) {
-  let results = await db.getRecord(tableName, { userEmail })
-  if (results.length) return
+  let results = await db.getRecord(tableName, { userEmail }, 1)
+  if (results) return
   let emailVerificationKey = await randomString(20, 'hex')
   return db.setRecord(tableName, { userEmail, salt, password, displayName, validSession: 0, emailVerificationKey, verifiedEmail: false, trialUser: true, planExpiration: trialCutoff });
 }

@@ -18,19 +18,19 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
   let rawParam = getParam('card')
   let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
   let firstCardId = activeCard || (cards && cards.length && cards[0])
-  let cardBody;
+  let cardBody
   try {
     cardBody = await getCardBody(firstCardId, undefined, cards)
-  } catch(e) {
-    if(deck.cards.length === 1) {
-      //We probably failed to add new card, due to server restart or some such
-      cardBody = getCardBodyForEmptyState(firstCardId);
+  } catch (e) {
+    if (deck.cards.length === 1) {
+      // We probably failed to add new card, due to server restart or some such
+      cardBody = getCardBodyForEmptyState(firstCardId)
     }
   }
-  
+
   if (!cardBody) {
-    //In case something went sideways
-    window.location.href = '/';
+    // In case something went sideways
+    window.location.href = '/'
   }
   window.lc.setData('orderedCards', cards)
   window.lc.setData('deck', deck)

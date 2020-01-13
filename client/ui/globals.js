@@ -21,26 +21,26 @@ let emptyDataState = {
 function resetData () {
   lc.data = clone(emptyDataState)
 }
-function getParts(periodStr) {
-  const parts = [];
-  let i = 0;
-  let piece = '';
-  while(i < periodStr.length) {
-    if(periodStr[i] == '.' && !piece) {
-      //Period leading keys are permitted
-      piece += '.';
-    } else if(periodStr[i] != '.') {
-      piece+=periodStr[i];
+function getParts (periodStr) {
+  const parts = []
+  let i = 0
+  let piece = ''
+  while (i < periodStr.length) {
+    if (periodStr[i] === '.' && !piece) {
+      // Period leading keys are permitted
+      piece += '.'
+    } else if (periodStr[i] !== '.') {
+      piece += periodStr[i]
     } else {
-      parts.push(piece);
-      piece = '';
+      parts.push(piece)
+      piece = ''
     }
-    i++;
+    i++
   }
-  if(piece) {
-    parts.push(piece);
+  if (piece) {
+    parts.push(piece)
   }
-  return parts;
+  return parts
 }
 function initLC () {
   return {
@@ -51,7 +51,7 @@ function initLC () {
     data: clone(emptyDataState),
     getData: (key) => {
       let currentPiece = lc.data
-      let parts = getParts(key);
+      let parts = getParts(key)
       for (let part of parts) {
         if (!currentPiece) return currentPiece
         currentPiece = currentPiece[part]
@@ -90,7 +90,7 @@ function initLC () {
      */
     setData: (key, value, NO_UPDATE) => {
       if (key) {
-        let paths = getParts(key);
+        let paths = getParts(key)
         let parent = lc.data
         for (let i = 0; i < paths.length; i++) {
           let currentPath = paths[i]
@@ -101,21 +101,21 @@ function initLC () {
             parent = parent[currentPath] = (parent[currentPath] || {})
           }
         }
-        if (false) {
-          lc.recordedSetData = lc.recordedSetData || []
-          try {
-            throw new Error('Fake error')
-          } catch (e) {
-            let stack = e.stack
-            let recordedStack = stack.split('Error: Fake error').join('').split('\n    at ')
-            recordedStack = recordedStack.slice(2)
-            recordedStack.forEach((entry, index) => {
-              let webpackFluff = 'webpack:///'
-              recordedStack[index] = entry.split(webpackFluff).join('')
-            })
-            lc.recordedSetData.push({ key, value, NO_UPDATE, stack: recordedStack })
-          }
-        }
+        // if (false) {
+        //   lc.recordedSetData = lc.recordedSetData || []
+        //   try {
+        //     throw new Error('Fake error')
+        //   } catch (e) {
+        //     let stack = e.stack
+        //     let recordedStack = stack.split('Error: Fake error').join('').split('\n    at ')
+        //     recordedStack = recordedStack.slice(2)
+        //     recordedStack.forEach((entry, index) => {
+        //       let webpackFluff = 'webpack:///'
+        //       recordedStack[index] = entry.split(webpackFluff).join('')
+        //     })
+        //     lc.recordedSetData.push({ key, value, NO_UPDATE, stack: recordedStack })
+        //   }
+        // }
       }
       if (!lc.data._willRerender && !NO_UPDATE) {
         lc.data._willRerender = true
@@ -140,7 +140,7 @@ function initLC () {
       lc.setData(`changes.${obj}.${id}.deleted`, true)
     },
     debugging () {
-      return false;
+      return false
       // return lc._debugging
     },
     debugMode (rerender = true) {

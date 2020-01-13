@@ -23,28 +23,39 @@ async function validateUserCookie (cookies) {
   let authCookie = cookies.auth
   let decryptedCookie = authUtils.decrypt(authCookie)
   let youngCookie = checkCookieExperation(decryptedCookie)
-  if (!youngCookie) {
+  if (!youngCookie || !youngCookie.user) {
     return
   }
-  let userEmail = youngCookie.userEmail
-  let user = await UNSAFE_USER(userEmail)
-  if (!user) {
-    return
-  }
-  if (user.validSession === youngCookie.session) {
-    return user
-  }
+  return youngCookie.user
+  // TODO:: Maybe put this back
+  // let user = await UNSAFE_USER(userEmail)
+  // if (!user) {
+  //   return
+  // }
+  // if (user.validSession === youngCookie.session) {
+  //   return user
+  // }
 }
-
-function createUserCookie (userEmail, session) {
+const trimProps = [
+  '_id',
+  'salt',
+  'password',
+  'displayName',
+  'emailVerificationKey',
+  'stripeCustomerId'
+]
+function createUserCookie (user, session) {
   let now = Date.now()
+  let trimmedUser = Object.assign({}, user);
+  for(prop of trimProps) {
+    delete trimmedUser[prop];
+  }
   var userCookie = {
-    userEmail: userEmail,
+    user: trimmedUser,
     created: now,
     session
   }
   var encryptedCookied = authUtils.encrypt(JSON.stringify(userCookie))
-
   return {
     value: encryptedCookied,
     name: authCookieName,

@@ -9,8 +9,8 @@ router.post('/', async (req, res) => {
   let card = req.body.card
   if (!deck) return code.invalidRequest(res)
   let cardBody = await getCardBody(req.userEmail, deck, card)
-  if (cardBody && cardBody.length) {
-    res.send(cardBody[0])
+  if (cardBody) {
+    res.send(cardBody)
     return
   }
   return code.invalidRequest(res)

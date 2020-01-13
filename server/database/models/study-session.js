@@ -1,4 +1,4 @@
-let db = require('../external-connections/fake-database-connector')
+let db = require('../external-connections/configured-connector')
 let tableName = 'studySession'
 let _ = require('lodash')
 let { userExists } = require('./user')
@@ -11,17 +11,17 @@ async function getStudySessions (userEmail) {
   return results || []
 }
 async function getStudySession (userEmail, sessionId) {
-  let results = await db.getRecord(tableName, { userEmail, id: sessionId })
-  if (results && results.length) {
-    return results[0]
+  let results = await db.getRecord(tableName, { userEmail, id: sessionId }, 1)
+  if (results) {
+    return results;
   }
   return { none: true }
 }
 
 async function getStudySessionByDeckId (userEmail, deck) {
-  let results = await db.getRecord(tableName, { userEmail, deck })
-  if (results && results.length) {
-    return results[0]
+  let results = await db.getRecord(tableName, { userEmail, deck }, 1)
+  if (results) {
+    return results
   }
   return { none: true }
 }
