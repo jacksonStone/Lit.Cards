@@ -21,19 +21,19 @@ describe('Cookie verification works', () => {
   it('Happy path', async () => {
     let someText = JSON.stringify({ userEmail: userEmail, created: Date.now(), session: 0 })
     let encryptedValue = authUtils.encrypt(someText)
-    let validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
+    let validatedCookie = cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
     assert.strictEqual(validatedCookie.userEmail, userEmail)
   })
   it('Invalid session on cookie', async () => {
     let someText = JSON.stringify({ userEmail: userEmail, created: Date.now(), session: 2 })
     let encryptedValue = authUtils.encrypt(someText)
-    let validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
+    let validatedCookie = cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
     assert(!validatedCookie)
   })
   it('Expired', async () => {
     let someText = JSON.stringify({ userEmail: userEmail, created: Date.now() - 1000 * 60 * 60 * 24 * 60 })
     let encryptedValue = authUtils.encrypt(someText)
-    let validatedCookie = await cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
+    let validatedCookie = cookieUtils.validateUserCookie({ [authCookieName]: encryptedValue })
     assert.strictEqual(validatedCookie, undefined)
   })
   it('Verify cookie created', async () => {

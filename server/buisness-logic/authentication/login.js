@@ -13,7 +13,7 @@ function getLoginCookie (user) {
   return cookieUtils.createUserCookie(user, user.validSession || 0)
 }
 
-async function getUserFromCookie (cookies) {
+function getUserFromCookie (cookies) {
   if (!cookies) return
   return cookieUtils.validateUserCookie(cookies)
 }

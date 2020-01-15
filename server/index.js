@@ -21,7 +21,7 @@ app.use(bodyParser.json({limit:'5mb', extended: true}))
 
 //User middleware
 app.use(async (req, res, next) => {
-  let user = await loginUtils.getUserFromCookie(req.cookies)
+  let user = loginUtils.getUserFromCookie(req.cookies)
   if (user) {
     req.userEmail = user.userEmail
     req.user = user
@@ -31,7 +31,7 @@ app.use(async (req, res, next) => {
       //TODO::Maybe put all this somewhere else
       let freshUser = await User.getUser(user.userEmail);
       if (freshUser.planExpiration && freshUser.planExpiration > Date.now()) {
-        let cookie = loginUtils.getLoginCookie(user)
+        let cookie = loginUtils.getLoginCookie(freshUser)
         addCookie(res, cookie)
         req.userSubbed = true;
       } else {

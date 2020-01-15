@@ -18,7 +18,7 @@ function checkCookieExperation (deCookieContent) {
   return false
 }
 
-async function validateUserCookie (cookies) {
+function validateUserCookie (cookies) {
   if (!cookies || !cookies.auth) return
   let authCookie = cookies.auth
   let decryptedCookie = authUtils.decrypt(authCookie)

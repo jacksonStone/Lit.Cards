@@ -33,6 +33,7 @@ async function connectToDatabase() {
         ],
         studySession: [
             {i:{userEmail : 1, deck: 1}, name: 'studySession userEmail-deck'}, 
+            {i:{userEmail : 1, id: 1}, name: 'studySession userEmail-id'}, 
             {i:{userEmail : 1, deck: 1, id: 1}, o: {unique: true}, name: 'studySession userEmail-deck-id'}, 
         ],
     }

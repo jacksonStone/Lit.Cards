@@ -91,7 +91,7 @@ async function editRecord (table, filter, values) {
     if(!database) await connectToDatabase();
     let collection = database.collection(table);
     return new Promise((resolve, reject) => {
-        collection.update(filter, {$set: values}, (err) => {
+        collection.updateOne(filter, {$set: values}, (err) => {
             if(err) {
                 reject(err);
             } else {
