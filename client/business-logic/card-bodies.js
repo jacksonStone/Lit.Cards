@@ -14,6 +14,7 @@ function getDefaultDeck (deck) {
   }
   return deck
 }
+let inProgressRequests = {};
 exports.getCardBody = async (card, deck, visibleCards) => {
   if (!card) {
     return
@@ -40,9 +41,13 @@ exports.getCardBody = async (card, deck, visibleCards) => {
   return new Promise(async (resolve, reject) => {
     for (let i = 0; i < cardsToFetch.length; i++) {
       let card = cardsToFetch[i]
+      let cardBodyDataId = `cardBody.${card}`;
       try {
-        if (!cachedCardBodies[`${deck}:${card}`]) {
-          let cardData = await getCardBody(deck, card)
+        if (!window.lc.getData(cardBodyDataId) && !inProgressRequests[cardBodyDataId]) {
+          // No cache
+          inProgressRequests[cardBodyDataId] = getCardBody(deck, card)
+          let cardData = await inProgressRequests[cardBodyDataId];
+          delete inProgressRequests[cardBodyDataId];
           let cardDataAsJSON = JSON.parse(cardData)
           if (cardDataAsJSON) {
             cardDataAsJSON.front = cardDataAsJSON.front || ''
@@ -56,16 +61,18 @@ exports.getCardBody = async (card, deck, visibleCards) => {
               cardDataAsJSON.backImage = decompress(cardDataAsJSON.backImage)
             }
           }
-          cachedCardBodies[`${deck}:${card}`] = cardDataAsJSON
           if (!firstCardBody) {
             firstCardBody = cardDataAsJSON
+            window.lc.setData(cardBodyDataId, cardDataAsJSON);
             resolve(JSON.parse(JSON.stringify(firstCardBody)))
+          } else {
+            window.lc.setData(cardBodyDataId, cardDataAsJSON, false);
           }
-        } else { // No cache
-          if (!firstCardBody) {
-            firstCardBody = cachedCardBodies[`${deck}:${card}`]
-            resolve(JSON.parse(JSON.stringify(firstCardBody)))
-          }
+        } else if (inProgressRequests[cardBodyDataId]) {
+          return inProgressRequests[cardBodyDataId]
+        } else if (!firstCardBody) {
+          firstCardBody = window.lc.getData(cardBodyDataId);
+          resolve(JSON.parse(JSON.stringify(firstCardBody)))
         }
       } catch (e) {
         return reject(e)

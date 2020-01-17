@@ -14,7 +14,7 @@ let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
 
 global.preventTransactions = false;
 global.runningTransactions = 0;
-
+app.enable('etag')
 app.use('/', routes.stripeWebhook);
 app.use(cookieParser())
 app.use(bodyParser.json({limit:'5mb', extended: true}))

@@ -37,7 +37,7 @@
     "sassw": "sass --watch assets/scss/index.scss assets/dist/index.css",
     "sw": "cd server && nodemon index.js",
     "lint": "eslint --fix server/**/*.js client/**/*.js shared/**/*.js",
-    "build": "sass assets/scss/index.scss assets/dist/index.css && webpack -p"
+    "build": "node ./server/validate-envs.js && node ./server/database/external-connections/mongo-stuff/index-creation && sass assets/scss/index.scss assets/dist/index.css && webpack -p"
   },
   "author": "",
   "license": "ISC",

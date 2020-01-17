@@ -3,10 +3,12 @@ let router = express.Router()
 let { getCardBody } = require('../../buisness-logic/card-body')
 let code = require('../../node-abstractions/response-codes')
 
-//PUBLIC ROUTE
-router.post('/', async (req, res) => {
-  let deck = req.body.deck
-  let card = req.body.card
+router.get('/:deck/:card', async (req, res) => {
+  if(!req.userEmail) {
+    return code.unauthorized(res)
+  }
+  let deck = req.params.deck
+  let card = req.params.card
   if (!deck) return code.invalidRequest(res)
   let cardBody = await getCardBody(req.userEmail, deck, card)
   if (cardBody) {
