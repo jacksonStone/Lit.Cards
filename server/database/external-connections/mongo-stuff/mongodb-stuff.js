@@ -1,26 +1,34 @@
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
-let database;
-let client;
-
+let database = [];
+let clients = [];
+let connectionToUse = 0;
 async function connectToDatabase() {
     console.log("Connecting to DB...");
-    return new Promise((resolve, reject)=> {
+    return Promise.all([0,1,2].map(i =>{
+      return new Promise((resolve, reject)=> {
         MongoClient.connect(process.env.MONGO_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }, (err, c) => {
             if(err) {
                 console.log("Unable to connect!", err);
                 reject(err);
                 return;
             }
-            client = c;
-            database = client.db(process.env.MONGO_DATABASE_NAME);
+            clients.push(c);
+            database.push(c.db(process.env.MONGO_DATABASE_NAME));
             console.log("Connected to Mongo successfully!");
             resolve();
         });
-    })
+    })}));
+}
+function getDB(){
+    let toRet = database[connectionToUse];
+    connectionToUse++;
+    connectionToUse = connectionToUse % 3;
+    return toRet
 }
 async function setRecord(table, values) {
-    if(!database) await connectToDatabase();
+    let database = getDB();
+    if(!database) { await connectToDatabase(); database = getDB()};
     let collection = database.collection(table);
     return new Promise((resolve, reject) => {
         collection.insertOne(values, (err) => {
@@ -37,7 +45,8 @@ async function unsetRecord(table, filter = {NOOP: "NOOP"}) {
     if(Object.keys(unsetRecord).length === 0 && process.env.NODE_ENV !== 'development') {
         return; //Probably unintentional
     }
-    if(!database) await connectToDatabase();
+    let database = getDB();
+    if(!database) {await connectToDatabase(); database = getDB()};
     let collection = database.collection(table);
     return new Promise((resolve, reject) => {
         collection.deleteMany(filter, (err) => {
@@ -50,15 +59,10 @@ async function unsetRecord(table, filter = {NOOP: "NOOP"}) {
         });
     })
 }
-//TODO:: You are here. Let's try to get it zippy
-// Did not work, still gets whole doc
-// function getRecordStream(table, filter) {
-//     let collection = database.collection(table);
-//     return collection.find(filter).stream();
-// }
 async function getRecord(table, filter, limit) {
     assert(limit === 1 || !limit)
-    if(!database) await connectToDatabase();
+    let database = getDB();
+    if(!database) {await connectToDatabase(); database = getDB()};
     let collection = database.collection(table);
     if(limit === 1) {
         let now = Date.now();
@@ -88,7 +92,8 @@ async function getRecord(table, filter, limit) {
 }
 
 async function editRecord (table, filter, values) {
-    if(!database) await connectToDatabase();
+    let database = getDB();
+    if(!database) {await connectToDatabase(); database = getDB()};
     let collection = database.collection(table);
     return new Promise((resolve, reject) => {
         collection.updateOne(filter, {$set: values}, (err) => {

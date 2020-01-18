@@ -1,9 +1,14 @@
 let { api } = require('./api-request')
 
-exports.getCardBody = (deck, card = '') => {
+exports.getCardBody = (deckId, card = '') => {
+  const deck = window.lc.getData('deck');
+  let url;
   if(card) {
     card = encodeURI(card);
-    return api(`card-body/${deck}?card=${card}`)
+    url = `card-body/${deckId}?card=${card}&t=`
+  } else {
+    url = `card-body/${deckId}?t=`;
   }
-  return api(`card-body/${deck}`);
+  url += ((deck && deck.lastModified) ? deck.lastModified : '');
+  return api(url);
 }

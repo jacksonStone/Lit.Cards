@@ -16,6 +16,7 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
   let cards = deck.cards || ''
   // For when you navigate from study to edit
   let rawParam = getParam('card')
+  window.lc.setData('deck', deck)
   let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
   let firstCardId = activeCard || (cards && cards.length && cards[0])
   let cardBody
@@ -33,7 +34,6 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
     window.location.href = '/'
   }
   window.lc.setData('orderedCards', cards)
-  window.lc.setData('deck', deck)
   window.lc.setData('activeCardId', firstCardId)
   window.lc.setData('user', user)
   window.lc.setData('session', studySession)
