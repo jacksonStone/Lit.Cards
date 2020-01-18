@@ -36,14 +36,14 @@ exports.getCardBody = async (card, deck, visibleCards) => {
     }
   }
   deck = getDefaultDeck(deck)
-  let firstCardBody
+  let targetCard = card;
   // don't wait on other fetches
   return new Promise(async (resolve, reject) => {
-    for (let i = 0; i < cardsToFetch.length; i++) {
-      let card = cardsToFetch[i]
+    cardsToFetch.forEach(async (card) => {
       let cardBodyDataId = `cardBody.${card}`;
+      let cachedCard = window.lc.getData(cardBodyDataId);
       try {
-        if (!window.lc.getData(cardBodyDataId) && !inProgressRequests[cardBodyDataId]) {
+        if (!cachedCard && !inProgressRequests[cardBodyDataId]) {
           // No cache
           inProgressRequests[cardBodyDataId] = getCardBody(deck, card)
           let cardData = await inProgressRequests[cardBodyDataId];
@@ -61,23 +61,21 @@ exports.getCardBody = async (card, deck, visibleCards) => {
               cardDataAsJSON.backImage = decompress(cardDataAsJSON.backImage)
             }
           }
-          if (!firstCardBody) {
-            firstCardBody = cardDataAsJSON
+          if (card === targetCard) {
             window.lc.setData(cardBodyDataId, cardDataAsJSON);
-            resolve(JSON.parse(JSON.stringify(firstCardBody)))
+            resolve(JSON.parse(JSON.stringify(cardDataAsJSON)))
           } else {
             window.lc.setData(cardBodyDataId, cardDataAsJSON, false);
           }
         } else if (inProgressRequests[cardBodyDataId]) {
           return inProgressRequests[cardBodyDataId]
-        } else if (!firstCardBody) {
-          firstCardBody = window.lc.getData(cardBodyDataId);
-          resolve(JSON.parse(JSON.stringify(firstCardBody)))
+        } else if (card === targetCard) {
+          resolve(JSON.parse(JSON.stringify(cachedCard)))
         }
       } catch (e) {
         return reject(e)
       }
-    }
+    })
   })
 }
 

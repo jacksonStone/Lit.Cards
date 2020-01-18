@@ -3,12 +3,15 @@ let router = express.Router()
 let { getCardBody } = require('../../buisness-logic/card-body')
 let code = require('../../node-abstractions/response-codes')
 
-router.get('/:deck/:card', async (req, res) => {
+router.get('/:deck/:card?', async (req, res) => {
   if(!req.userEmail) {
     return code.unauthorized(res)
   }
   let deck = req.params.deck
-  let card = req.params.card
+  let card;
+  if(req.query) {
+    card = req.query.card;
+  }
   if (!deck) return code.invalidRequest(res)
   let cardBody = await getCardBody(req.userEmail, deck, card)
   if (cardBody) {

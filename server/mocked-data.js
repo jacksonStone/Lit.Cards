@@ -2,6 +2,7 @@ let { listToStr, intToChar } = require('../shared/char-encoding')
 let fakeCardBody = require('./fake-card-body.json')
 
 fakeCardBody.id = intToChar(0);
+// fakeCardBody.lastModified = Date.now();
 // password: somePassword
 let fakeData = {
   user: [{
@@ -65,7 +66,7 @@ let fakeData = {
     { userEmail: 'jackson@someemail2.com', deck: 'asd', front: 'This is the front of card 1 - Public!', back: 'This is the back of card 1 - Public!', id: intToChar(3), public: true }
   ],
   deck: [
-    { userEmail: 'jackson@someemail.com', name: 'This is my deck about biology - for another biology class', date: Date.now(), cards: listToStr([0,1,2]), id: 'foo' },
+    { lastModified: Date.now(), userEmail: 'jackson@someemail.com', name: 'This is my deck about biology - for another biology class', date: Date.now(), cards: listToStr([0,1,2]), id: 'foo' },
     { userEmail: 'jackson@someemail.com', name: 'Second study session', date: Date.now(), id: 'fee' },
     { userEmail: 'jackson@someemail.com', name: 'THIRD study session',  date: Date.now(), id: 'fii' },
     { userEmail: 'jackson@someemail.com', name: 'Fourth study session', date: Date.now(), id: 'fum' },

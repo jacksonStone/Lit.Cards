@@ -47,6 +47,9 @@ async function editCardBody (userEmail, deck, card, changes) {
     delete changes[protectedDeckFields[i]]
   }
   sanitizeCardContent(changes)
+  Deck.editDeck({userEmail, id: deck}, { lastModified: Date.now() }).catch(() => {
+    console.error('Failed to update deck lastModified');
+  })
   return CardBody.editCardBody(userEmail, deck, card, changes)
 }
 async function upsertCardBody (userEmail, deck, changes = { front: '', back: '' }) {
@@ -58,7 +61,11 @@ async function upsertCardBody (userEmail, deck, changes = { front: '', back: '' 
       // Somehow we got out of sync with deck cards and cardBodies that exist,
       // If we restarted in the middle for example - so handle this.
       deckCards += changes.id
-      await Deck.editDeck(deckRecord, { cards: deckCards })
+      await Deck.editDeck(deckRecord, { cards: deckCards, lastModified: Date.now() })
+    } else {
+      Deck.editDeck({userEmail, id: deck}, { lastModified: Date.now() }).catch(() => {
+        console.error('Failed to update deck lastModified');
+      })
     }
     return editCardBody(userEmail, deck, changes.id, changes)
   }
