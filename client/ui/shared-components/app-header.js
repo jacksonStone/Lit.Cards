@@ -19,7 +19,7 @@ module.exports = (userInfo) => {
     <div class="grid-container">
             <div class="navbar-custom"  style="height: 110px">
              <div class="usa-logo" id="basic-logo" style="float:left; position: relative;">
-                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">L<img src="static-images/dot.svg" style="position: absolute; top: 4px; left: 19px;"></img>it.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
+                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">L<img src="/static-images/dot.svg" style="position: absolute; top: 4px; left: 19px;"></img>it.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
             </div>  
             <div style="float:right; margin-top:40px;">
                 ${getNavOptions(userInfo)}
