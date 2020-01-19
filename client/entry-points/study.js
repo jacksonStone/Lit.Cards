@@ -15,6 +15,7 @@ let { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accou
   let deckId = studySession.deck
   let [deck] = await Promise.all([getDeck(deckId)])
   let cards = deck.cards || ''
+  window.lc.setData('deck', deck)
   if (studySession) {
     studySession = accountForNewCards(studySession, cards)
   }

@@ -59,7 +59,8 @@ app.use('/site', routes.siteNavigation.router)
 app.use('/uswds', express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
 app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: ONE_YEAR }))
 app.use('/fonts', express.static(path.join(ROOT, 'assets/fonts'), { maxAge: ONE_YEAR }))
-app.use('/favicon.ico', express.static(path.join(ROOT, 'assets/favicon.ico'), { maxAge: ONE_YEAR }))
+app.use('/favicon.ico', express.static(path.join(ROOT, 'assets/static-images/favicon.ico'), { maxAge: ONE_YEAR }))
+app.use('/static-images', express.static(path.join(ROOT, 'assets/static-images'), { maxAge: ONE_YEAR }))
 
 
 app.use(express.static(path.join(ROOT, '/assets/dist')))
