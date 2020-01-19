@@ -197,12 +197,17 @@ body {
   height:133px;
 }
 .image-spot-with-image {
-  height:198px;
+  height:196px;
   background-size:cover;
   background-position:center center;
   background-repeat:no-repeat;
   width:100%;
   border: none;
+}
+.study-card {
+  .image-spot-with-image{
+    height: 198px;
+  }
 }
 .image-spot-without-image {
   height: 0;

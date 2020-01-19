@@ -23,7 +23,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
   runNextRender(refreshEditor)
   let getTextForCard = getTextToShowForCard();
   return html`
-    <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
+    <div class="card-editor ${hasImage ? 'card-editor-with-image study-card' : ''}">
     <div class="card-viewer-outline">
         ${getTextForCard === false ? html`<div style="height: 298px">Loading...</div>`: html` ${popupComponent()}
               <div alt="preview-of-crad-image" 
