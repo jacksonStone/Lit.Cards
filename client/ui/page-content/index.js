@@ -21,7 +21,7 @@ module.exports = () => {
             </div>
         </div>
     </div>
-    <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;"></div>
+    <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;" id="learnmore"></div>
     <h3 style="font-size: 24px;">Why Lit.Cards?</h3>
     <div class="grid-row" style="max-width: 750px; margin: 20px auto;">
         <div class="grid-col-4">
@@ -104,8 +104,10 @@ function cardFlipper(url, description, backContent) {
         </div>`
 }
 function tryItButton() {
-    //TODO
+    window.location.href = '/site/signup';
 }
 function learnMoreButton() {
-    //TODO
+    var learnMore = document.querySelector('#learnmore');
+    document.documentElement.scrollTop = learnMore.offsetTop;
+    document.documentElement.scrollLeft = learnMore.offsetLeft;
 }
