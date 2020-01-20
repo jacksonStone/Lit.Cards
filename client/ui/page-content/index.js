@@ -2,7 +2,7 @@ let { html } = require('lit')
 module.exports = () => {
     return html`<div class="grid-container" style="text-align: center;">
     <div style="max-width: 650px; margin: 0 auto;">
-            <div class="below-750">
+<div class="below-750">
                 <div style="margin-top:20px">
 
                 <div>
@@ -23,8 +23,9 @@ module.exports = () => {
                 </div>
                 </div>
             </div>
-            </div>
-            <div class="above-750">
+</div>
+
+<div class="above-750">
                 <div class="grid-row" style="margin-top:20px">
                 <div class="grid-col-6">
                     <img src="/static-images/logo.svg" style="width: 250px; height: 219px"/>
@@ -44,10 +45,12 @@ module.exports = () => {
                 </div>
             </div>
         </div>
-    </div>
+</div>
+
     <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;" id="learnmore"></div>
     <h3 style="font-size: 24px;">Why Lit.Cards?</h3>
-    <div class="above-750">
+    
+<div class="above-750">
          <div class="grid-row" style="max-width: 750px; margin: 20px auto;">
             <div class="grid-col-4">
                ${cardFlipper("/static-images/minimalistic.svg", "Minimalistic", "We only do note cards. Nothing more and nothing less.")}
@@ -59,20 +62,21 @@ module.exports = () => {
                ${cardFlipper("/static-images/fast.svg", "Fast", "Built for doctoral students in mind, with thousands of cards.")}
             </div>
         </div>
-    </div>
-    <div class="below-750">
-    <div style="max-width: 230px; margin: 0 auto;">
-    <div style="margin-bottom: 20px;">       ${cardFlipper("/static-images/minimalistic.svg", "Minimalistic", "We only do note cards. Nothing more and nothing less.")}
-</div>
-    <div style="margin-bottom: 20px;">       ${cardFlipper("/static-images/easy_to_use.svg", "Easy to use", "Intuitive interface with hotkeys for nearly everything.")}
 </div>
 
+<div class="below-750">
+    <div style="max-width: 230px; margin: 0 auto;">
+    <div style="margin-bottom: 20px;">       ${cardFlipper("/static-images/minimalistic.svg", "Minimalistic", "We only do note cards. Nothing more and nothing less.")}
+    </div>
+    <div style="margin-bottom: 20px;">       ${cardFlipper("/static-images/easy_to_use.svg", "Easy to use", "Intuitive interface with hotkeys for nearly everything.")}
+    </div>
+
     <div style="margin-bottom: 20px;">       ${cardFlipper("/static-images/fast.svg", "Fast", "Built for doctoral students in mind, with thousands of cards.")}
+    </div>
+            
+    </div>
+            
 </div>
-            
-    </div>
-            
-    </div>
 
     <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;"></div>
         <h3 style="font-size: 24px;">Features</h3>
@@ -91,29 +95,29 @@ module.exports = () => {
         <button class="usa-button" style="font-size: 16px; text-align: center; width: 150px; background-color: #FF5E00" @click=${tryItButton}>Try it free</button>
 
     <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;"></div>
-                <h3 style="font-size: 24px;">Contact/About</h3>
-                <div style="max-width: 505px; margin: 0 auto 50px auto; text-align: left; font-size: 18px;">
-                <p>
-                    I created Lit.Cards because my wife, a med-student, was unable to
-                    find a suitable app to handle her study work load of 1000’s of cards. 
-                    Now onto her third year she’s beyond the need for many note cards, but 
-                    I hope this app can serve those like her and get out of your way 
-                    while you try to learn.
-                </p>
-                     <p>
-                   If you have any questions, issues or ideas for the application, you 
-                   can contact me, the creator of the app, directly via email at:
-                   <a href="mailto:jackson@lit.cards?subject=Question!">jackson@lit.cards</a>
-                </p><br>
-                <b>- Jackson Stone</b>
-                </div>
+        <h3 style="font-size: 24px;">Contact/About</h3>
+        <div style="max-width: 505px; margin: 0 auto 50px auto; text-align: left; font-size: 18px;">
+        <p>
+            I created Lit.Cards because my wife, a med-student, was unable to
+            find a suitable app to handle her study work load of 1000’s of cards. 
+            Now onto her third year she’s beyond the need for many note cards, but 
+            I hope this app can serve those like her and get out of your way 
+            while you try to learn.
+        </p>
+             <p>
+           If you have any questions, issues or ideas for the application, you 
+           can contact me, the creator of the app, directly via email at:
+           <a href="mailto:jackson@lit.cards?subject=Question!">jackson@lit.cards</a>
+        </p><br>
+        <b>- Jackson Stone</b>
+        </div>
                 
     </div>
 `
 }
 
 function cardFlipper(url, description, backContent) {
-    return html` <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+    return html` <div class="flip-container" ontouch="this.classList.toggle('hover');">
             <div class="flipper">
                 <div class="front">
                     <div class="homepage-card" style="

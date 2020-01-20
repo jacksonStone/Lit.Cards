@@ -31,6 +31,7 @@ body {
 /* flip the pane when hovered */
 .flip-container:hover .flipper, .flip-container.hover .flipper {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .flip-container, .front, .back {
@@ -49,7 +50,7 @@ body {
 /* hide back of pane during swap */
 .front, .back {
   backface-visibility: hidden;
-
+  -webkit-backface-visibility: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -60,11 +61,13 @@ body {
   z-index: 2;
   /* for firefox 31 */
   transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
 }
 
 /* back, initially hidden pane */
 .back {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 .wrong-count {
   color: $bad-color;
