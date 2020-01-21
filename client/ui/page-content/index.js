@@ -117,7 +117,7 @@ module.exports = () => {
 }
 
 function cardFlipper(url, description, backContent) {
-    return html` <div class="flip-container" ontouch="this.classList.toggle('hover');">
+    return html` <div class="flip-container">
             <div class="flipper">
                 <div class="front">
                     <div class="homepage-card" style="

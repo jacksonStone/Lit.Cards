@@ -31,7 +31,7 @@ function passwordField(error) {
       </div>`
   }
   return html`
-      <label class="usa-label" for="password">Password <a 
+      <label class="usa-label" for="password" style="position: relative;">Password <a 
         style="
         position: absolute;
         right: 0;"
@@ -47,8 +47,8 @@ module.exports = (data) => {
   return html`
     <div class="grid-container">
     <div class="grid-row">
-        <div class="grid-col-4"></div>
-        <div class="grid-col-4">
+        <div class="tablet:grid-col-4 mobile-lg:grid-col-2"></div>
+        <div class="tablet:grid-col-4 mobile-lg:grid-col-8">
             <form class="usa-form" id="login">
               <fieldset class="usa-fieldset">
                 ${ea.loginFailed && errorBanner('Bad login', 'Perhaps it is your next guess!')}
@@ -60,7 +60,7 @@ module.exports = (data) => {
               <button @click=${signupBtn} id="signup-button" class="usa-button usa-button--outline">Signup</button>
             </form>
         </div>
-        <div class="grid-col-4"></div>
+        <div class="tablet:grid-col-4 mobile-lg:grid-col-2"></div>
     </div>
     </div> 
 `
