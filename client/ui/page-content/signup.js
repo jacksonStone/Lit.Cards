@@ -13,8 +13,8 @@ module.exports = (data) => {
   return html`
     <div class="grid-container">
     <div class="grid-row">
-        <div class="grid-col-4"></div>
-        <div class="grid-col-4">
+        <div class="tablet:grid-col-4 mobile-lg:grid-col-2"></div>
+        <div class="tablet:grid-col-4 mobile-lg:grid-col-8">
              <form class="usa-form" id="signup">
               <fieldset class="usa-fieldset">
                 <legend class="usa-legend">Sign-up</legend>
@@ -29,7 +29,7 @@ module.exports = (data) => {
               <button @click=${signupBtn} id="signup-button" class="usa-button">Signup</button>
             </form>
         </div>
-        <div class="grid-col-4"></div>
+        <div class="tablet:grid-col-4 mobile-lg:grid-col-2"></div>
     </div>
     </div> 
 `
