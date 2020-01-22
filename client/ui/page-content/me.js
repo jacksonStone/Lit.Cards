@@ -9,15 +9,18 @@ let trialUserBar = require('component/trial-user-bar');
 // Keep numPerRow in sync with col-n below
 let numPerRow = 3
 function addDeckCard () {
-  return html`<div class="mobile-lg:grid-col-4">
+  return html`
+<div class="tablet:grid-col-4">
+    <div style="width: 100%; max-width: 300px; margin: 0 auto;">
         <button id="add-deck-card" class="usa-button deck-card-outline deck-selection"
         style=""
          @click=${() => { createDeck('Untitled') }}
         >
   
         <i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">Add new</span>
-</i>&nbsp;&nbsp;Deck </button>
-    </div>`
+        </i>&nbsp;&nbsp;Deck </button>
+    </div>
+</div>`
 }
 function deleteDeckBtn (id) {
   if (window.confirm('Are you sure you want to delete this deck?')) {
@@ -46,8 +49,8 @@ function deckPreview (deck, sessionMapping, forSession) {
   let deckCount = deck.cards && deck.cards.length || 0
   if(deck.borrowed) {
     return html`
-    <div class="mobile-lg:grid-col-4">
-           <div style="position:relative">
+    <div class="tablet:grid-col-4">
+           <div style="position:relative; max-width:300px; margin: 0 auto;">
            ${makeBackgroundCards(0, 0, deckCount)}
            
         <div class=" deck-card-outline"
@@ -91,8 +94,8 @@ function deckPreview (deck, sessionMapping, forSession) {
     `
   }
   return html`
-    <div class="mobile-lg:grid-col-4">
-           <div style="position:relative">
+    <div class="tablet:grid-col-4">
+           <div style="position:relative;  max-width:300px; margin: 0 auto;">
            ${makeBackgroundCards(0, 0, deckCount)}
            
         <div class=" deck-card-outline"
@@ -150,8 +153,8 @@ function recentlyStudiedPreview (deck) {
   const borrowed = deck.borrowed;
   if(borrowed) {
     return html`
-    <div class="mobile-lg:grid-col-4">
-           <div style="position:relative">
+    <div class="tablet:grid-col-4">
+           <div style="position:relative; max-width:300px; margin: 0 auto;">
            ${makeBackgroundCards(0, 0, deckCount)}
            
         <div class=" deck-card-outline"
@@ -199,8 +202,8 @@ function recentlyStudiedPreview (deck) {
     `
   }
   return html`
-    <div class="mobile-lg:grid-col-4">
-           <div style="position:relative">
+    <div class="tablet:grid-col-4">
+           <div style="position:relative; max-width:300px; margin: 0 auto;">
            ${makeBackgroundCards(0, 0, deckCount)}
            
         <div class=" deck-card-outline"
@@ -280,11 +283,11 @@ function makeBackgroundCards (startingTop, startingLeft, cardCount) {
 }
 
 function deckRow (decks, studySessionsByDeck, session) {
-  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck, session) })}</div>`
+  return html`<div class="grid-row grouping-of-three">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck, session) })}</div>`
 }
 
 function recentlyStudiedRow (decks) {
-  return html`<div class="grid-row" style="margin-bottom: 65px">${decks.map((deck) => { return recentlyStudiedPreview(deck) })}</div>`
+  return html`<div class="grid-row grouping-of-three">${decks.map((deck) => { return recentlyStudiedPreview(deck) })}</div>`
 }
 
 function deckRows (allDecks, studySessionsByDeck) {
@@ -329,16 +332,16 @@ function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
 module.exports = (data = {}) => {
   return html`
     <div class="grid-container">
-        ${(data.studySessions && data.studySessions.length) ? html`<h1>Active Study Sessions</h1>
+        ${(data.studySessions && data.studySessions.length) ? html`<h1 class="deck-header">Active Study Sessions</h1>
         ${data.studySessions && studySessionRows(data.decks, data.borrowedDecks, data.studySessionsByDeck)}
          <div class="fancy-line" style="margin-top:80px"></div>`: html``}
         
-        <h1>Your Decks</h1>
+        <h1 class="deck-header">Your Decks</h1>
         ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
         
         ${(data.studyHistory && data.studyHistory.length) ? html`
         <div class="fancy-line" style="margin-top:80px"></div>
-        <h1>Recently Studied</h1> 
+        <h1 class="deck-header">Recently Studied</h1> 
         ${studyHistoryRows(data.studyHistory)}` : html``}
         <div style="margin-top:130px;"></div>
      </div>

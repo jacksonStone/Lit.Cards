@@ -93,6 +93,25 @@ body {
 .spacing {
   margin-top: 170px;
 }
+.grouping-of-three {
+  margin-bottom: 65px;
+  margin-left: 0;
+}
+.deck-header {
+  text-align: left;
+}
+@media (max-width: 640px) {
+  .deck-header {
+    text-align: center;
+  }
+  .spacing {
+    margin-top: 235px;
+  }
+  .grouping-of-three {
+    margin-bottom: 0;
+    margin-left: 40px;
+  }
+}
 .remove-button {
   width: 20px;
   height: 20px;
@@ -176,14 +195,6 @@ body {
   }
   .public-deck-marker {
     left: 60%
-  }
-}
-@media (max-width: 550px) {
-  .remove-button {
-    left: 67%
-  }
-  .public-deck-marker {
-    left: 56%
   }
 }
 //Mobile view!

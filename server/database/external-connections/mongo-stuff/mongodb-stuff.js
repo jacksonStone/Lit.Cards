@@ -25,6 +25,10 @@ async function connectToDatabase() {
                 console.log("Connection closed!");
                 connectToDatabase()
             });
+            client.on('error', () => {
+                console.log("Connection ERROR!");
+                connectToDatabase()
+            });
             database = client.db(process.env.MONGO_DATABASE_NAME);
             console.log("Connected to Mongo successfully!");
             resolve();
