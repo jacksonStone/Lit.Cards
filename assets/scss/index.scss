@@ -172,9 +172,10 @@ body {
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
 }
+
 @media (min-width: 750px) {
   .above-750 {
-    display: block;
+    display: inherit;
   }
   .below-750 {
     display: none;
@@ -185,9 +186,20 @@ body {
     display: none;
   }
   .below-750 {
-    display: block;
+    display: inherit;
   }
 }
+@media (min-width: 350px) {
+  .above-350 {
+    display: inherit;
+  }
+}
+@media (max-width: 350px) {
+  .above-350 {
+    display: none;
+  }
+}
+
 
 @media (max-width: 750px) {
   .remove-button {
@@ -204,6 +216,12 @@ body {
   }
   .public-deck-marker {
     left: 63%;
+  }
+}
+//Mobile view!
+@media (max-width: 365px) {
+  .public-deck-marker {
+    left: 60%;
   }
 }
 .remove-button:hover{
