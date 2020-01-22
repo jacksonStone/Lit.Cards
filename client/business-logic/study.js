@@ -163,9 +163,21 @@ exports.accountForNewCards = (session, cards) => {
 }
 exports.resetSession = async () => {
   let session = getSessionFromState()
-  await deleteStudySession(session.id)
+  try {
+    console.log("About to reset");
+    await deleteStudySession(session.id)
+  } catch (e) {
+    console.log('Error deleting!');
+    throw e;
+  }
   let deck = window.lc.getData('deck')
-  await createStudySessionAndNavigate(deck.id)
+  try {
+    console.log("about to create")
+    await createStudySessionAndNavigate(deck.id)
+  } catch(e) {
+    console.log("ERROR CREATING");
+    console.log(e);
+  }
   // navigate
 }
 exports.studyWrongAnswers = async () => {

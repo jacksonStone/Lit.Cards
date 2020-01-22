@@ -11,7 +11,7 @@ entries.forEach(entry => {
   entryForWebpack[entryName] ='./client/entry-points/' + entry
 })
 module.exports = {
-  mode: prodMode ? 'production' : 'development',
+  mode: 'development',
   entry: entryForWebpack,
   // watch: !prodMode,
   output: {
