@@ -24,6 +24,7 @@ async function removeFromStudyHistory (userEmail, deck) {
 }
 
 async function pushStudyHistory (userEmail, deck) {
+  if (!deck) return;
   let studyHistory = await getStudyHistory(userEmail)
   let history = JSON.parse(studyHistory.studied)
   let existingIndex = history.findIndex(entry => entry === deck)

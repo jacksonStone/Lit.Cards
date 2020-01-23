@@ -6,7 +6,11 @@ async function createSession (userEmail, deck, startingState) {
 }
 async function deleteSession (userEmail, id) {
   let session = await getSession(userEmail, id)
+  console.log(session);
   await pushStudyHistory(userEmail, session.deck)
+  console.log(userEmail, id);
+
+  //YOU ARE HERE - Seems push study history works it prod - just not deleting
   return StudySession.deleteStudySession(userEmail, id)
 }
 async function deleteSessionByDeck (userEmail, deckId) {
