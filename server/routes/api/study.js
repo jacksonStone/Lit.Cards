@@ -14,7 +14,9 @@ router.post('/create', requireActiveSub, async (req, res) => {
   if (!req.body || !req.body.deck) return code.invalidRequest(res)
   if (!req.userEmail) return code.unauthorized(res)
   let newSession = await createSession(req.userEmail, req.body.deck, req.body.startingState)
-  res.send(newSession)
+  let sessionString = JSON.stringify(newSession)
+  res.setHeader('Content-Type', 'application/json');
+  res.send(sessionString);
 })
 
 router.post('/delete', requireActiveSub, async (req, res) => {

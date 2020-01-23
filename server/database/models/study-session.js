@@ -30,10 +30,11 @@ async function createStudySession (userEmail, deckId, startingState) {
   if (!userEmail || !deckId) return
   let deck = await getDeck(userEmail, deckId)
   // Required
-  if (deck.none) return
-  if (!(await getStudySessionByDeckId(userEmail, deckId)).none) {
+  if (deck.none) return {noDeck: true};
+  let existingSession = await getStudySessionByDeckId(userEmail, deckId);
+  if (!existingSession.none) {
     // Person already has a session for that deck
-    return
+    return existingSession;
   }
 
   let currentCard
@@ -59,7 +60,8 @@ async function createStudySession (userEmail, deckId, startingState) {
     // So that we know to fetch these when loading their "me" page
     newStudySession.borrowed = true;
   }
-  return db.setRecord(tableName, newStudySession)
+  await db.setRecord(tableName, newStudySession)
+  return newStudySession;
 }
 
 function getStartingCardFromSkips (ordering, studyState) {
