@@ -50,9 +50,6 @@ async function setRecord(table, values) {
     })
 }
 async function unsetRecord(table, filter = {NOOP: "NOOP"}) {
-    if(Object.keys(unsetRecord).length === 0 && process.env.NODE_ENV !== 'development') {
-        return; //Probably unintentional
-    }
     if(!database) await connectToDatabase();
     let collection = database.collection(table);
     return new Promise((resolve, reject) => {
