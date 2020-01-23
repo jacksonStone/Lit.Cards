@@ -22,25 +22,27 @@ module.exports = (data) => {
   let h = hash()
   return html`
     <div class="grid-container">
-        <aside style="display: block;
-            float: left;
-            margin-bottom: 3rem;
-            margin-top: 2rem;
-            padding-right: 0;
-            padding-left: 2rem;
-            width: 15rem;
-        ">
-  <ul class="usa-sidenav" style="font-size: .9375rem;
-    line-height: 1.35;
-    border-radius: .25rem;
-    padding: 0;">
-    <li class="usa-sidenav__item">
-    <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
-  </li><li class="usa-sidenav__item">
-    <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Purchase more time</a>
-  </li>
-  </ul>
-    </aside>
+    <div class="above-750">
+      <aside style="display: block;
+          float: left;
+          margin-bottom: 3rem;
+          margin-top: 2rem;
+          padding-right: 0;
+          padding-left: 2rem;
+          width: 15rem;
+      ">
+        <ul class="usa-sidenav" style="font-size: .9375rem;
+          line-height: 1.35;
+          border-radius: .25rem;
+          padding: 0;">
+          <li class="usa-sidenav__item">
+          <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
+        </li><li class="usa-sidenav__item">
+          <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Purchase more time</a>
+        </li>
+        </ul>
+      </aside>
+    </div>
     <div class="grid-container">
     <div class="grid-row">
         <div class="grid-col-1"></div>
@@ -48,6 +50,20 @@ module.exports = (data) => {
            ${(user && !user.verifiedEmail) ? html`<h3 style="margin-top:20px;">Must first confirm email before you can make edits to your account.</h3>` : getContents(data)}
         </div>
         <div class="grid-col-1"></div>
+    </div>
+    <div class="below-750">
+      <aside style="margin: 40px">
+        <ul class="usa-sidenav" style="font-size: .9375rem;
+          line-height: 1.35;
+          border-radius: .25rem;
+          padding: 0;">
+          <li class="usa-sidenav__item">
+          <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
+        </li><li class="usa-sidenav__item">
+          <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Purchase more time</a>
+        </li>
+        </ul>
+      </aside>
     </div>
     </div>
     </div>
