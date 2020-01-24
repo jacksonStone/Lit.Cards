@@ -11,24 +11,35 @@ let getUser = () => {
   const user = window.lc.getData('user');
   return user || {};
 }
-module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => html`
-<div class="grid-container">
-    <div class="grid-row">
-    <div class="grid-col-3 study-side-nav"> 
-        ${getUser().hideNavigation ? html``: html`
-         <div style="margin-right: 40px;">
-          ${sidenav()}
-        </div>` }
+module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => {
 
-    </div>
-        <div class="grid-col-6">
-            
+  screenWidth = window.lc.getData('screen.width');
+  if(screenWidth >= 750) {
+
+  }
+  return html`
+    <div class="grid-container">
+        ${screenWidth >= 750 ? html`
+        <div class="grid-row">
+          <div class="grid-col-3 study-side-nav"> 
+            ${getUser().hideNavigation ? html``: html`
+             <div style="margin-right: 40px;">
+              ${sidenav()}
+            </div>` }
+          </div>
+          <div class="grid-col-6">      
+            ${cards.length ? viewer(hasImage, showingAnswer, fontSize) : nextSteps()}
+          </div>
+          <div class="grid-col-3 study-side-nav">
+            ${getUser().hideProgress ? html``: cardStack(cardId, cards) }
+          </div>
+        </div>` : html`
+        <div style="max-width: 450px; margin: 0 auto">
             ${cards.length ? viewer(hasImage, showingAnswer, fontSize) : nextSteps()}
         </div>
-        <div class="grid-col-3 study-side-nav">
-        ${getUser().hideProgress ? html``: cardStack(cardId, cards) }
-        </div>
+        `}
+        
     </div>
-</div>
-${checkboxHolder([hideProgress(), hideSideNav(), darkmodeCheckbox()])}
-`
+    ${checkboxHolder([hideProgress(), hideSideNav(), darkmodeCheckbox()])}
+  `
+}

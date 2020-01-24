@@ -4,6 +4,7 @@ let { generateId } = require('../../shared/id-generator')
 let persistentDataChanges = require('./watchers/persistent-data-changes')
 let userInput = require('./watchers/user-input')
 let urlHashWatcher = require('./watchers/url-hash-watcher')
+let windowResizeWatcher = require('./watchers/window-resize')
 let appHeader = require('./shared-components/app-header')
 let { initDebug, deactivateDebug } = require('./debug-global')
 let { each } = require('utils')
@@ -16,10 +17,15 @@ let clone = (obj) => {
 }
 let emptyDataState = {
   errors: defaultErrorObject,
-  changes: {}
+  changes: {},
+  screen: { width: window.innerWidth }
 }
 function resetData () {
-  lc.data = clone(emptyDataState)
+  lc.data = {
+    errors: defaultErrorObject,
+    changes: {},
+    screen: { width: window.innerWidth }
+  }
 }
 function getParts (periodStr) {
   const parts = []
@@ -161,6 +167,7 @@ if (process.env.NODE_ENV !== 'test') {
   persistentDataChanges()
   userInput()
   urlHashWatcher()
+  windowResizeWatcher()
 }
 
 function renderPage (pageContentFunc) {

@@ -172,7 +172,19 @@ body {
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
 }
+.mark-right {
+  padding: 8px;
+}
+.mark-wrong {
+  padding: 8px;
+}
 @media (min-width: 750px) {
+  .mark-wrong {
+    padding: auto;
+  }
+  .mark-right {
+    padding: auto;
+  }
   .above-750 {
     display: inherit;
   }
@@ -181,6 +193,12 @@ body {
   }
 }
 @media (max-width: 750px) {
+  .mark-wrong {
+    padding: 0;
+  }
+  .mark-right {
+    padding: 0;
+  }
   .above-750 {
     display: none;
   }

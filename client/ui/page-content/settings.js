@@ -60,7 +60,7 @@ module.exports = (data) => {
           <li class="usa-sidenav__item">
           <a href="#" class="${h === '' ? 'usa-current' : ''}">Change Password</a>
         </li><li class="usa-sidenav__item">
-          <a href="#plan-details" class="${h === 'plan' ? 'usa-current' : ''}">Purchase more time</a>
+          <a href="#plan-details" class="${h === 'plan-details' ? 'usa-current' : ''}">Purchase more time</a>
         </li>
         </ul>
       </aside>
@@ -123,12 +123,12 @@ function buyTimeInterface() {
           ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br><br>$${entry.price/100}</button><div>`);
     });
     const daysRemaining = getRemainingDays();
-    const daysOrDay = daysRemaining === 1 ? 'Day' : 'Days';
+    const daysOrDay = daysRemaining === 1 ? 'day' : 'days';
     let header;
     if(daysRemaining === 0 && user.trialUser) {
-      header = html`<h2>Your trial has expired.</h2> <h3>Upgrade to get all features and additional time.</h3>`
+      header = html`<h2>Your trial has expired.</h2>`
     }  else if(user.trialUser) {
-      header = html`<h2>Your free trial has ${daysRemaining + ' ' + daysOrDay} remaining.</h2><h3>Upgrade to get all features and additional time.</h3>`
+      header = html`<h2>Your free trial has ${daysRemaining + ' ' + daysOrDay} remaining.</h2>`
     }
     else if(daysRemaining === 0) {
       header = html`<h2>Your account has run out of access time</h2>`
@@ -143,11 +143,11 @@ function buyTimeInterface() {
       <h1>Purchase access time</h1>
       <h2>Features</h2>
       <ul style="margin-bottom: 40px;">
-      <li style="margin-bottom: 10px;">Unlimited Cards with images <span style="font-size: 9px">(Just be reasonable, please!)<span></li>
+      <li style="margin-bottom: 10px;">Unlimited Cards with images</li>
       <li style="margin-bottom: 10px;">Unrivaled speed - even with decks containing thousands of cards</li>
       <li style="margin-bottom: 10px;">Share decks with fellow students, and vice versa</li>
       <li style="margin-bottom: 10px;">Hotkeys for everything to help you zip along</li>
-      <li style="margin-bottom: 10px;">Dark mode that was about as dark as I could make it <br><span style="font-size: 10px">(You can demo it with the check box in the bottom right)</span></li>
+      <li style="margin-bottom: 10px;">Dark mode that was about as dark as I could make it</li>
       <li style="margin-bottom: 10px;">Customizable study interface</li>
       <li style="margin-bottom: 10px;">No automatic renewals - just pay for how much time you'd like</li>
       <li style="margin-bottom: 10px;">No ads! They suck!</li>
