@@ -7,6 +7,8 @@ let darkmodeCheckbox = require('component/darkmode-checkbox')
 let checkboxHolder = require('component/checkbox-holder')
 
 module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => {
+    // 480
+    const width = window.lc.getData('screen.width');
    return html`
     <div class="grid-container">
         <div class="grid-row">
@@ -20,7 +22,7 @@ module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) =>
                 ${editor(addImage, hasImage, showingAnswer, fontSize)}
             </div>
             <div class="tablet:grid-col-3 mobile-lg:grid-col-2">
-                ${cardEditStack(cardId, cards)}
+                ${width >= 480 ? cardEditStack(cardId, cards) : html``}//TODO::Make this work.
             </div>
         </div>
     </div>
