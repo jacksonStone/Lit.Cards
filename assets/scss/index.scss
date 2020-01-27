@@ -180,7 +180,7 @@ body {
 }
 @media (min-width: 750px) {
   .mark-wrong {
-    padding: auto;
+    padding:auto
   }
   .mark-right {
     padding: auto;
@@ -194,10 +194,10 @@ body {
 }
 @media (max-width: 750px) {
   .mark-wrong {
-    padding: 0;
+    padding: 10px 0;
   }
   .mark-right {
-    padding: 0;
+    padding: 10px 0;
   }
   .above-750 {
     display: none;

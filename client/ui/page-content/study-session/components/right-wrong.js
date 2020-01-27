@@ -7,7 +7,8 @@ function stillStudying() {
   if (!cards || !cards.length) return false
   return true
 }
-module.exports = (currentCardId, cards) => {
+
+function cardStack(currentCardId, cards) {
   // Humans are 1-based
   if (!cards) return
   return html`<div
@@ -31,4 +32,20 @@ margin-top: 20px;
         <div><button class="usa-button usa-button--outline prev-next" @click=${()=>{nextCard()}}><i class="far fa-caret-square-down"><span class="sr-only">Next card</span></i></button></div>`:
         html``}
     </div>`
+}
+
+function smallCardStack(currentCardId, cards) {
+   // Humans are 1-based
+   if (!cards) return
+   return html`<div style="position: relative">
+      <div style="text-align: center; width: 200px; margin-top: -40px; font-size:16px; position: absolute; top: 50px; margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+      " >${cards.length.toLocaleString()} left, <span class="right-count">${getNumberRight().toLocaleString()} Right</span>, <span class="wrong-count">${getNumberWrong().toLocaleString()} Wrong</span></div>
+    </div>`
+}
+module.exports = {
+  cardStack,
+  smallCardStack
 }

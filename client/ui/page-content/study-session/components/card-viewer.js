@@ -14,6 +14,7 @@ let rightAction = () => {
 let leftAction = () => {
   simulateKey('ArrowLeft')
 }
+
 module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
   if (showingAnswer) {
     showingAnswerKeyBindings()
@@ -47,7 +48,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                     <div><i class="far fa-thumbs-down" aria-hidden="true">
                     <span class="sr-only">Mark Wrong</span>
                     </i>&nbsp;&nbsp;Wrong</div>
-                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( ⇦ )</div></div>
+                    <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750">( ⇦ )</div></div>
                     </button>` : html`<div></div>`}
                     </div>
                     <div class="grid-col-6">
@@ -65,7 +66,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-thumbs-up" aria-hidden="true"><span class="sr-only">Mark Correct</span>
                         </i>&nbsp;&nbsp;Right </div>
-                        <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( ⇨ )</div></div>
+                        <div style="position: relative"><div aria-hidden="true" class="above-750 hotkey-indicator">( ⇨ )</div></div>
                     </button>` :  html`<div></div>`}
                     </div>
                 </div></div>

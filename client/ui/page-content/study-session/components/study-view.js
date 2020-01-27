@@ -1,9 +1,9 @@
 let { html } = require('lit')
 let viewer = require('./card-viewer')
-let cardStack = require('./right-wrong')
+let { cardStack, smallCardStack } = require('./right-wrong')
 let sidenav = require('./sidenav')
 let nextSteps = require('./end-of-session')
-let { storeAllState, retrieveStateStored } = require('abstract/browser-storage')
+// let { storeAllState, retrieveStateStored } = require('abstract/browser-storage')
 let darkmodeCheckbox = require('component/darkmode-checkbox')
 let { hideSideNav, hideProgress } = require('component/focus-mode-checkboxes')
 let checkboxHolder = require('component/checkbox-holder')
@@ -14,9 +14,6 @@ let getUser = () => {
 module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => {
 
   screenWidth = window.lc.getData('screen.width');
-  if(screenWidth >= 750) {
-
-  }
   return html`
     <div class="grid-container">
         ${screenWidth >= 750 ? html`
@@ -36,6 +33,7 @@ module.exports = (cardId, cards, hasImage, showingAnswer, fontSize) => {
         </div>` : html`
         <div style="max-width: 450px; margin: 0 auto">
             ${cards.length ? viewer(hasImage, showingAnswer, fontSize) : nextSteps()}
+            ${getUser().hideProgress ? html``: smallCardStack(cardId, cards) }
         </div>
         `}
         

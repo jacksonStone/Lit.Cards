@@ -16,7 +16,23 @@ let showPopup = () => {
   listenForKey('Escape', _hidePopup)
   window.lc.setData('showingPopup', true)
 }
-
+let getPopupWidthAndHeight = function(width){
+  if(width > 600) {
+    return `
+      width: 600px;
+      height: 600px;
+      margin-top: -300px;
+      margin-left: -300px;
+    `
+  } else {
+    return `
+      width: ${width + ''}px;
+      height: ${width + ''}px;
+      margin-top: -${((width/2)|0) + ''}px;
+      margin-left: -${((width/2)|0) + ''}px;
+    `
+  }
+}
 let popupComponent = () => {
   if (!window.lc.getData('showingPopup')) {
     return null
@@ -24,6 +40,7 @@ let popupComponent = () => {
   runNextRender(() => {
     addImageDataToImage(getImageData(), 'popup-image')
   })
+  let width = window.lc.getData('screen.width');
   return html`<div id="overlay" style="
     position: fixed;
     width: 100%;
@@ -36,12 +53,9 @@ let popupComponent = () => {
     >
     <div class="popup" style="
     position: fixed;
-    width: 600px;
-    height: 600px;
     top: 50%;
     left: 50%;
-    margin-top: -300px;
-    margin-left: -300px;
+    ${getPopupWidthAndHeight(width)}
     padding: 5px;">
     <img id="popup-image" 
     style="

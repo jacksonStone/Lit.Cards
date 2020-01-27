@@ -1,10 +1,13 @@
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 let database;
-let clients;
-let connectionToUse = 0;
+// let clients;
+// let connectionToUse = 0;
 const DB_OPTIONS = {
-    useNewUrlParser: true, useUnifiedTopology: true,
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    // reconnectTries : Number.MAX_VALUE,
+    // autoReconnect : true
 };
 async function connectToDatabase() {
     console.log("Connecting to DB...");
