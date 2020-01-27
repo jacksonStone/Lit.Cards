@@ -257,10 +257,16 @@ async function updateCardBody (id, cards) {
   if (!currentCardBody) {
     refreshEditor('loading...')
     window.lc.setData('_cardBodyLoading', true, false)
-    await getCardBody(id, undefined, cards)
+    try{
+      await getCardBody(id, undefined, cards)
+      window.lc.setData('_cardBodyLoading', false)
+      refreshEditor()
+    } catch(e) {
+      refreshEditor('Failed to load card');
+      window.lc.setData('_cardBodyLoading', false)
+      refreshEditor()
+    }
     // window.lc.setData('cardBody.' + id, cardBody)
-    window.lc.setData('_cardBodyLoading', false)
-    refreshEditor()
   } else {
     getCardBody(id, undefined, cards) // We call this anyway to fetch next card
     refreshEditor()

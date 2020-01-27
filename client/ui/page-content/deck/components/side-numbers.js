@@ -3,7 +3,7 @@ let { html } = require('lit')
 let { nextCard, previousCard } = require('logic/deck')
 module.exports = (currentCardId, cards) => {
   if (!cards) return
-
+  const width = window.lc.getData('screen.width');
   // Humans are 1-based
   let index = cards.indexOf(currentCardId) + 1
 
@@ -12,7 +12,7 @@ style="text-align: center;">
         <h1  style="
               font-style: normal;
               font-weight: normal;
-              font-size: 75px;
+              font-size: ${width >= 750 ? '75px' : '44px'};
               margin: 0;
               ">${(index).toLocaleString()}</h1>
         <div>of ${cards.length.toLocaleString()}</div>

@@ -5,9 +5,9 @@ let database;
 // let connectionToUse = 0;
 const DB_OPTIONS = {
     useNewUrlParser: true, 
-    useUnifiedTopology: true,
-    // reconnectTries : Number.MAX_VALUE,
-    // autoReconnect : true
+    // useUnifiedTopology: true,
+    reconnectTries : Number.MAX_VALUE,
+    autoReconnect : true
 };
 async function connectToDatabase() {
     console.log("Connecting to DB...");

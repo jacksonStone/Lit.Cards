@@ -5,7 +5,9 @@ function request (url, body) {
       let xhr = new window.XMLHttpRequest()
       xhr.open(method, url)
       xhr.onload = () => resolve(xhr.responseText)
-      xhr.onerror = () => {reject(xhr.statusText);}
+      xhr.onerror = () => {
+        reject(xhr.statusText);
+      }
       if (body) {
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(JSON.stringify(body))

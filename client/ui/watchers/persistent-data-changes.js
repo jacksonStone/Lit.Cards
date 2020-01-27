@@ -49,7 +49,7 @@ async function _handleTransaction(transaction) {
   while(!success) {
     if (!firstTry) {
       await new Promise(resolve => setTimeout(resolve, 1000));
-    } else { firstTry = true; }
+    } else { firstTry = false; }
     try {
       let res = await handleTransaction(transaction);
       return res;

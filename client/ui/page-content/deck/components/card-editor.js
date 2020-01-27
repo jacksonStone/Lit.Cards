@@ -110,8 +110,8 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         @click=${spaceAction}
                         style="margin-right:0; width:100%;">
                     Flip
-                    ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( space )</div></div>`
-                      ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" style="top: 20px;">( ${getNameOfShortcutKey() } + f )</div></div>`)}
+                    ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750" style="top: 20px;">( space )</div></div>`
+                      ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750" style="top: 20px;">( ${getNameOfShortcutKey() } + f )</div></div>`)}
                     </button>
                     </div>
                     <div class="grid-col-3" style="text-align: right;">
@@ -121,8 +121,8 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
 </i>&nbsp;&nbsp;card </div>
-                    ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator">( s )</div></div>`
-                    ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator" >( ${getNameOfShortcutKey() } + s )</div></div>`)}
+                    ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750">( s )</div></div>`
+                    ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750" >( ${getNameOfShortcutKey() } + s )</div></div>`)}
                     </button>
                     </div>
                 </div>
