@@ -18,11 +18,11 @@ module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) =>
             ${sidenav()}
             </div>
         </div>
-            <div class="tablet:grid-col-6 mobile-lg:grid-col-10">
+            <div class="tablet:grid-col-6 mobile-lg:grid-col-10 grid-col-11">
                 ${editor(addImage, hasImage, showingAnswer, fontSize)}
             </div>
-            <div class="tablet:grid-col-3 mobile-lg:grid-col-2">
-                ${width >= 480 ? cardEditStack(cardId, cards) : html``}//TODO::Make this work.
+            <div class="tablet:grid-col-3 mobile-lg:grid-col-2 grid-col-1">
+                ${cardEditStack(cardId, cards)}
             </div>
         </div>
     </div>

@@ -6,6 +6,7 @@ let { User } = require('./database')
 let { addCookie } = require('./node-abstractions/cookie')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
+
 let ROOT = path.join(__dirname, '../')
 let express = require('express')
 let app = express()
@@ -17,7 +18,6 @@ global.runningTransactions = 0;
 app.enable('etag')
 app.use('/', routes.stripeWebhook);
 app.use(cookieParser())
-app.use(bodyParser.json({limit:'5mb', extended: true}))
 
 //User middleware
 app.use(async (req, res, next) => {
@@ -49,10 +49,6 @@ app.get('/', function (req, res) {
   }
   return routes.siteNavigation.returnIndexPage(req, res)
 })
-
-//API endpoints
-app.use('/api', routes.api)
-//App pages
 app.use('/site', routes.siteNavigation.router)
 
 //Third party assets
@@ -63,7 +59,17 @@ app.use('/favicon.ico', express.static(path.join(ROOT, 'assets/static-images/fav
 app.use('/static-images', express.static(path.join(ROOT, 'assets/static-images'), { maxAge: ONE_YEAR }))
 
 
+//We need to use this before setting up bodyParser.json
+app.use('/api/transaction', require('./routes/api/middleware').requireActiveSub);
+app.use('/api/transaction', bodyParser.raw({type:'application/octet-stream', limit:'1mb'}))
+app.use('/api/transaction', require('./routes/api/transaction'))
+
+//API endpoints
+app.use('/api', routes.api)
+//App pages
+
 app.use(express.static(path.join(ROOT, '/assets/dist')))
+
 let port = process.env.PORT || 3000;
 (async () =>{
   await dataConnector.connectToDatabase();

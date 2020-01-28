@@ -7,9 +7,11 @@ let code = require('../../node-abstractions/response-codes')
 
 router.post('/', async (req, res) => {
     if (!req.userEmail) return code.unauthorized(res)
-    if (!req.body || !Object.keys(req.body).length) return code.invalidRequest(res)
+    if (!req.body) return code.invalidRequest(res)
     try {
-      await handleTransaction(req.userEmail, req.body);
+      const asStr = Buffer.from(req.body).toString('utf16le');
+      const asJSON = JSON.parse(asStr);
+      await handleTransaction(req.userEmail, asJSON);
       return code.ok(res);
     } catch(e) {
       console.error(e); //TODO:: Do something better here

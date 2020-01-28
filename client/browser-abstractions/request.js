@@ -1,5 +1,6 @@
-function request (url, body) {
+function request (url, body, options = {}) {
   let method = body ? 'POST' : 'GET'
+  let binary = options.binary;
   return new Promise((resolve, reject) => {
     try {
       let xhr = new window.XMLHttpRequest()
@@ -9,8 +10,14 @@ function request (url, body) {
         reject(xhr.statusText);
       }
       if (body) {
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        xhr.send(JSON.stringify(body))
+        if(!binary) {
+          xhr.setRequestHeader('Content-Type', 'application/json')
+          xhr.send(JSON.stringify(body))
+        }
+        else {
+          xhr.setRequestHeader('Content-Type', 'application/octet-stream')
+          xhr.send(body);
+        }
       } else {
         xhr.send();
       }
