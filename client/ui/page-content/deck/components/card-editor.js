@@ -52,6 +52,7 @@ function alertCantRemove () {
 }
 
 module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
+  const width = window.lc.getData('screen.width');
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
               ${popupComponent()}
@@ -61,12 +62,14 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                 id="image-spot" class="usa-button usa-button--outline"
                 @click=${showPopup}></div>
               ${hasImage ? html`
-                <button style="position: absolute; top: 208px; right: 10px;"
-                    class="usa-button usa-button--unstyled" id="remove-image-from-card"
-                    @click=${removeImageAction}>
+              <button style="position: absolute; top: 202px; ${width >= 480 ? 'right: 10px' : (width >= 315 ? ( width >= 345 ? 'left: 60%' : 'left: 50%') : 'left: 60%')};"
+                class="usa-button usa-button--unstyled" id="remove-image-from-card"
+                @click=${removeImageAction}>
                 <i class="far fa-times-circle" aria-hidden="true"></i>
-                Remove image
-                </button>` : html`
+                ${width >= 315 ? 'Remove image' : 'Image'}
+              </button>
+               ` : html`\
+
               
                <div class="upload-container" style="position: absolute;top: 5px;right: 10px;">
                 <input @change=${addImageAction} type="file" name="upload" id="image-upload" accept="image/*" class="image-upload-input"/>
@@ -92,7 +95,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                                margin-right:0; 
                         "><div><i class="far fa-times-circle" aria-hidden="true">
                     <span class="sr-only">Remove</span>
-                    </i>&nbsp;&nbsp;card</div>
+                    </i>${width >= 300 ? '  card' : ''}</div>
                     </button>` : html`<button class="usa-button usa-button--outline disabled-button-no-outline"
                         @click=${alertCantRemove}
                         id="remove-card-button-inactive"
@@ -102,7 +105,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                              margin-right:0; 
                         "><div><i class="far fa-times-circle" aria-hidden="true">
                     <span class="sr-only">Remove</span>
-                    </i>&nbsp;&nbsp;card</div>
+                    </i>${width >= 300 ? '  card' : ''}</div>
                     </button>`}  
                     </div>
                     <div class="grid-col-6">
@@ -120,7 +123,7 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
                         @click=${newAction}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-plus-square" aria-hidden="true"><span class="sr-only">New</span>
-</i>&nbsp;&nbsp;card </div>
+</i>${width >= 300 ? '  card' : ''}</div>
                     ${ifTextNotSelected(html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750">( s )</div></div>`
                     ,html`<div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750" >( ${getNameOfShortcutKey() } + s )</div></div>`)}
                     </button>

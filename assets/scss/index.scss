@@ -399,10 +399,22 @@ body {
   padding:0;
   font-size: 44px;
   box-shadow: none;
+  width: 100%;
 }
 .prev-next:hover {
   box-shadow: none;
 }
+
+@media (max-width: 480px) {
+  .prev-next {
+    margin: 0;
+    padding:0;
+    width: auto;
+    font-size: 50px;
+    box-shadow: none;
+  }
+}
+
 .darkmode-checkbox-container {
   background:white;
 }
