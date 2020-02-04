@@ -43,7 +43,7 @@ router.post('/checkout', async (req, res) => {
         line_items: [{
           name: line_item.name,
           description: line_item.description,
-          images: [baseURL + '/static-images/logo.svg'],
+          images: [baseURL + '/static-images/stripe-image.png'],
           amount: line_item.price,
           currency: 'usd',
           quantity: 1,
