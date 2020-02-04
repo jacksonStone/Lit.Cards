@@ -27,7 +27,10 @@ app.use(async (req, res, next) => {
     req.user = user
     if(req.user.planExpiration && req.user.planExpiration > Date.now()) {
       req.userSubbed = true;
-    } else {
+    }
+    //We want to check these off the live database each time rather than fetch from
+    //use the cookie as these may have changed
+    if(!req.user.verifiedEmail || !req.userSubbed) {
       //TODO::Maybe put all this somewhere else
       let freshUser = await User.getUser(user.userEmail);
       if (freshUser.planExpiration && freshUser.planExpiration > Date.now()) {
@@ -37,7 +40,7 @@ app.use(async (req, res, next) => {
       } else {
         req.userSubbed = false;
       }
-    }
+    }  
   }
   next()
 })
