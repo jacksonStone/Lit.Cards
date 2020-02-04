@@ -5,6 +5,7 @@ let baseURL = process.env.SITE_DOMAIN_ROOT
 let routeToVerifyEmail = '/site/me?verification='
 
 async function signup (userEmail, plainTextPassword, displayName) {
+  userEmail = userEmail.toLowerCase();
   let existingUser = await User.getUser(userEmail)
   if (existingUser) return
 

@@ -3,7 +3,7 @@ let cookieUtils = require('./cookie')
 let { User } = require('../../database')
 
 async function verify (userEmail, plainTextPassword) {
-  let user = await User.getUser(userEmail)
+  let user = await User.getUser(userEmail.toLowerCase())
   if (!user) return false
   let hashResult = authUtils.hashValues(plainTextPassword, user.salt)
   return hashResult === user.password
