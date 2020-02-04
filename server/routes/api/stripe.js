@@ -4,6 +4,7 @@ let code = require('../../node-abstractions/response-codes')
 let { UNSAFE_USER, UNSAFE_setMisc, UNSAFE_USER_BY_CUSTOMER_ID } = require('../../buisness-logic/users/userDetails')
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 const line_items_by_month = require('../../../shared/month-cataloge.js');
+let baseURL = process.env.SITE_DOMAIN_ROOT;
 /**
  * 
  * 
@@ -42,7 +43,7 @@ router.post('/checkout', async (req, res) => {
         line_items: [{
           name: line_item.name,
           description: line_item.description,
-          images: [line_item.image],
+          images: [baseURL + '/static-images/logo.svg'],
           amount: line_item.price,
           currency: 'usd',
           quantity: 1,
