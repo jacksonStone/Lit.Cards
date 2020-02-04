@@ -8,7 +8,11 @@ let { emailIsValid } = require('../../../shared/email-address-validation')
 
 router.post('/', async (req, res) => {
   let userEmail = req.body && req.body.userEmail
-  if (!userEmail || !emailIsValid(userEmail)) return code.invalidRequest(res)
+  if (!userEmail) return code.invalidRequest(res)
+  userEmail = userEmail.toLowerCase();
+  if (!emailIsValid(userEmail)){
+    return code.invalidRequest(res)
+  }
   await passwordReset(userEmail)
   return code.ok(res)
 })

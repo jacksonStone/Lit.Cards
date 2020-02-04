@@ -10,6 +10,7 @@ router.post('/', async (req, res) => {
   let userEmail = req.body.userEmail
   let password = req.body.password
   if (!userEmail || !password) return code.unauthorized(res)
+  userEmail = userEmail.toLowerCase();
   let valid = await verify(userEmail, password)
   if (!valid) return code.unauthorized(res)
   let user = await UNSAFE_USER(userEmail)
