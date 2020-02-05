@@ -32,7 +32,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                 id="image-spot" class="usa-button usa-button--outline"
                 @click=${showPopup}></div>
             <div id="editor" class="pell ${hasImage ? 'has-image-editor study-card-with-image' : 'size-' + currentfontSize + ' study-card-no-image'}">
-                <div id="card-content" class="pell-content">${unsafeHTML(getTextForCard)} </div>
+                <div id="card-content" aria-live="polite" class="pell-content">${unsafeHTML(getTextForCard)} </div>
             </div>`}
     </div>
             <div style="text-align: center">
