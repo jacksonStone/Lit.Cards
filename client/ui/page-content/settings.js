@@ -111,6 +111,17 @@ function getRemainingDays() {
   daysRemaining = Math.ceil(millisecondsRemaining/(1000*60*60*24));
   return daysRemaining;
 }
+
+function savingsBox(savings) {
+  return html`<div style="
+    position: absolute; 
+    color: #005ea2; 
+    right: -60px; 
+    top: 0; 
+    font-size: 1.06471rem;
+    padding: 12px;
+    ">save<br>%${savings}</div>`
+}
 function buyTimeInterface() {
     const user = window.lc.getData('user')
     if(!user) {
@@ -119,8 +130,11 @@ function buyTimeInterface() {
     const buttons_for_purchasing = [];
     each(month_catalog, (entry, months) => {
       buttons_for_purchasing.push(
-        html`<div style="margin-top: 20px;"><button class="usa-button continue-studying" style="min-width: 250px;" @click=${() => createStripeCheckoutSession(months|0)}>
-          ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br><br>$${entry.price/100}</button><div>`);
+        html`<div style="margin-top: 20px;">
+        <button class="usa-button continue-studying" style="min-width: 250px; line-height: 20px; position: relative;" @click=${() => createStripeCheckoutSession(months|0)}>
+          ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br>
+          $${entry.price/100} ${(months|0) === 1 ? html`` : savingsBox(entry.savings)} </button>
+          <div>`);
     });
     const daysRemaining = getRemainingDays();
     const daysOrDay = daysRemaining === 1 ? 'day' : 'days';
@@ -143,14 +157,16 @@ function buyTimeInterface() {
       <h1>Purchase access time</h1>
       <h2>Features</h2>
       <ul style="margin-bottom: 40px;">
-      <li style="margin-bottom: 10px;">Unlimited Cards with images</li>
-      <li style="margin-bottom: 10px;">Unrivaled speed - even with decks containing thousands of cards</li>
-      <li style="margin-bottom: 10px;">Share decks with fellow students, and vice versa</li>
-      <li style="margin-bottom: 10px;">Hotkeys for everything to help you zip along</li>
-      <li style="margin-bottom: 10px;">Dark mode that was about as dark as I could make it</li>
-      <li style="margin-bottom: 10px;">Customizable study interface</li>
-      <li style="margin-bottom: 10px;">No automatic renewals - just pay for how much time you'd like</li>
-      <li style="margin-bottom: 10px;">No ads! They suck!</li>
+            <li><b>Create, study, and share decks of online note cards</b></li>
+            <li><b>Unlimited cards with any plan</b></li>
+            <li><b>Decks support thousands of cards - no problem</b></li>
+            <li><b>Faster load times than online alternatives</b></li>
+            <li><b>Only pay for the time you need - no automatic renewals</b></li>
+            <li><b>Hotkeys for almost everything - create cards without a mouse</b></li>
+            <li><b>Customize the study interface</b></li>
+            <li><b>Dark mode for those late study sessions</b></li>
+            <li><b>Quickly edit a card while studying</b></li>
+            <li><b>Images on both sides of the card</b></li>
       </ul>
       ${buttons_for_purchasing}
       <div style="margin-bottom: 40px"></div>
