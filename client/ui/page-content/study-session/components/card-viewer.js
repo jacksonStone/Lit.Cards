@@ -21,6 +21,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
   } else {
     showingQuestionKeyBindings()
   }
+  const width = window.lc.getData('screen.width');
   runNextRender(refreshEditor)
   let getTextForCard = getTextToShowForCard();
   return html`
@@ -47,7 +48,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                         ">
                     <div><i class="far fa-thumbs-down" aria-hidden="true">
                     <span class="sr-only">Mark Wrong</span>
-                    </i>&nbsp;&nbsp;Wrong</div>
+                    </i>${width > 340 ? '  Wrong' : '' }</div>
                     <div style="position: relative"><div aria-hidden="true" class="hotkey-indicator above-750">( ⇦ )</div></div>
                     </button>` : html`<div></div>`}
                     </div>
@@ -65,7 +66,7 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
                         @click=${rightAction}
                         style="margin-right:0; width: 100%; box-shadow: none;">
                     <div><i class="far fa-thumbs-up" aria-hidden="true"><span class="sr-only">Mark Correct</span>
-                        </i>&nbsp;&nbsp;Right </div>
+                        </i>${width > 340 ? '  Right' : '' }</div>
                         <div style="position: relative"><div aria-hidden="true" class="above-750 hotkey-indicator">( ⇨ )</div></div>
                     </button>` :  html`<div></div>`}
                     </div>

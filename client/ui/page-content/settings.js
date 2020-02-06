@@ -156,7 +156,7 @@ function buyTimeInterface() {
 
       <h1>Purchase access time</h1>
       <h2>Features</h2>
-      <ul style="margin-bottom: 40px;">
+      <ul style="margin-bottom: 40px; font-size: 18px; line-height: 25px">
             <li><b>Create, study, and share decks of online note cards</b></li>
             <li><b>Unlimited cards with any plan</b></li>
             <li><b>Decks support thousands of cards - no problem</b></li>
