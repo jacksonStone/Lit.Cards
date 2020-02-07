@@ -125,7 +125,7 @@ function deckPreview (deck, sessionMapping, forSession) {
             @click=${() => { deleteDeckBtn(deck.id) }}
             class="usa-button usa-button--unstyled remove-button" >
                 <i class="far fa-times-circle" aria-hidden="true"></i>
-                <span style="display:none;">Remove this deck</span>
+                <span class="sr-only">Remove Deck</span>
             </button>
             <button
             style="position: absolute;
