@@ -4,7 +4,15 @@ const path = require('path');
 const distPath = path.resolve(__dirname, '../assets/dist');
 const cssDist = path.resolve(__dirname, '../node_modules/uswds/dist/css/uswds.min.css');
 require('events').EventEmitter.defaultMaxListeners = 30;
-// node_modules/uswds/uswds/dist/css/uswds.min.css
+
+//MIT © Kevin Mårtensson
+const isGzip = buf => {
+	if (!buf || buf.length < 3) {
+		return false;
+	}
+
+	return buf[0] === 0x1F && buf[1] === 0x8B && buf[2] === 0x08;
+};
 const filePathes = [];
 if(process.env.NODE_ENV === 'production') {
   fs.readdir(distPath, (err, fileNames) => {
@@ -16,6 +24,10 @@ if(process.env.NODE_ENV === 'production') {
     });
     filePathes.push(cssDist);
     filePathes.forEach(filePath => {
+        if(isGzip(fs.readFileSync(filePath))) {
+          console.log(filePath + ' is already gzipped');
+          return;
+        }
         const inp = fs.createReadStream(filePath);
         var writeStream = fs.createWriteStream(filePath + '.compressed');
         gzip = zlib.createGzip();
