@@ -37,7 +37,8 @@
     "sassw": "sass --watch assets/scss/index.scss assets/dist/index.css",
     "sw": "cd server && nodemon index.js",
     "lint": "eslint --fix server/**/*.js client/**/*.js shared/**/*.js",
-    "build": "node ./server/validate-envs.js && node ./server/database/external-connections/mongo-stuff/index-creation && sass assets/scss/index.scss assets/dist/index.css && webpack -p"
+    "massage-assets": "node ./scripts/massage-assets.js",
+    "build": "node ./server/validate-envs.js && node ./server/database/external-connections/mongo-stuff/index-creation && sass assets/scss/index.scss assets/dist/index.css && webpack && npm run massage-assets"
   },
   "author": "",
   "license": "ISC",
@@ -62,6 +63,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",
+    "compression-webpack-plugin": "^3.1.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.1",

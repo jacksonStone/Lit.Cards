@@ -55,7 +55,12 @@ app.get('/', function (req, res) {
 app.use('/site', routes.siteNavigation.router)
 
 //Third party assets
-app.use('/uswds', express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
+app.use('/uswds', (req, res, next) => {
+  if(isProd && req.url.indexOf('uswds.min.css') > -1) {
+      res.setHeader("Content-Encoding", "gzip");
+  }
+  next();
+}, express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
 app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: ONE_YEAR }))
 app.use('/fonts', express.static(path.join(ROOT, 'assets/fonts'), { maxAge: ONE_YEAR }))
 app.use('/favicon.ico', express.static(path.join(ROOT, 'assets/static-images/favicon.ico'), { maxAge: ONE_YEAR }))
@@ -70,8 +75,15 @@ app.use('/api/transaction', require('./routes/api/transaction'))
 //API endpoints
 app.use('/api', routes.api)
 //App pages
-
-app.use(express.static(path.join(ROOT, '/assets/dist')))
+let isProd = process.env.NODE_ENV === 'production';
+app.use( (req, res, next) => {
+  if(isProd) {
+    if(req.url.indexOf('.js') > -1 || req.url.indexOf('.css') > -1) {
+      res.setHeader("Content-Encoding", "gzip");
+    }
+  }
+  next();
+}, express.static(path.join(ROOT, '/assets/dist')))
 
 let port = process.env.PORT || 3000;
 (async () =>{

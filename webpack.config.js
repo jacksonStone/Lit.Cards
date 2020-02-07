@@ -1,6 +1,8 @@
 let path = require('path')
 let fs = require('fs')
 let webpack = require('webpack')
+// const CompressionPlugin = require('compression-webpack-plugin');
+
 let entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
   return file.match(/.*\.js$/);
 });
@@ -10,8 +12,18 @@ entries.forEach(entry => {
   let entryName = entry.split('.')[0]
   entryForWebpack[entryName] ='./client/entry-points/' + entry
 })
+const plugins = [
+  new webpack.DefinePlugin({
+    'STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.STRIPE_PUBLIC_KEY)
+  })
+];
+// if(prodMode) {
+//   plugins.push(new CompressionPlugin({
+//     filename:'[file]'
+//   }));
+// }
 module.exports = {
-  mode: 'development',
+  mode: prodMode ? 'production' : 'development',
   entry: entryForWebpack,
   // watch: !prodMode,
   output: {
@@ -31,9 +43,5 @@ module.exports = {
       'shared': path.join(__dirname, 'shared')
     }
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.STRIPE_PUBLIC_KEY)
-    })
-  ],
+  plugins
 }
