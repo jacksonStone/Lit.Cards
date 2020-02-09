@@ -18,7 +18,16 @@ global.runningTransactions = 0;
 app.enable('etag')
 app.use('/', routes.stripeWebhook);
 app.use(cookieParser())
-
+let PROD = process.env.NODE_ENV === 'production';
+let SITE_ROOT = process.env.SITE_DOMAIN_ROOT;
+let REAL_PROD = SITE_ROOT === 'https://www.lit.cards';
+app.use(function(req, res, next){
+  if(REAL_PROD && (req.headers['x-forwarded-proto'] !== 'https' || req.host.indexOf('www.') === -1)) {
+    res.redirect(SITE_ROOT + req.url);
+    return;
+  }
+  next();
+});
 //User middleware
 app.use(async (req, res, next) => {
   let user = loginUtils.getUserFromCookie(req.cookies)
@@ -40,7 +49,7 @@ app.use(async (req, res, next) => {
       } else {
         req.userSubbed = false;
       }
-    }  
+    }
   }
   next()
 })
@@ -56,8 +65,9 @@ app.use('/site', routes.siteNavigation.router)
 
 //Third party assets
 app.use('/uswds', (req, res, next) => {
-  if(isProd && req.url.indexOf('uswds.min.css') > -1) {
+  if(PROD && req.url.indexOf('uswds.min.css') > -1) {
       res.setHeader("Content-Encoding", "gzip");
+      // res.setHeader("Content-Type", )
   }
   next();
 }, express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
@@ -75,9 +85,8 @@ app.use('/api/transaction', require('./routes/api/transaction'))
 //API endpoints
 app.use('/api', routes.api)
 //App pages
-let isProd = process.env.NODE_ENV === 'production';
 app.use( (req, res, next) => {
-  if(isProd) {
+  if(PROD) {
     if(req.url.indexOf('.js') > -1 || req.url.indexOf('.css') > -1) {
       res.setHeader("Content-Encoding", "gzip");
     }

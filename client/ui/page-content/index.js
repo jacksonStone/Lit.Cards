@@ -6,12 +6,12 @@ module.exports = () => {
                 <div style="margin-top:20px">
 
                 <div>
-                    <img src="/static-images/logo.svg" style="width: 200px; height: 175px"/>
+                    <img alt="Lit.cards logo" src="/static-images/logo.svg" style="width: 200px; height: 175px"/>
                 </div>
                 <div style=" text-align: center;">
                 <div style="position: relative; max-width: 265px;  margin: 0 auto;">
                  <p style=" font-weight: bold; font-size: 24px;">Fast and simple online note cards built for<br>
-                    s<img src="/static-images/highlighter-mark.png" style="position: absolute; left: 20px; opacity: .8;"/>erious students</p>
+                    s<img aria-hidden="true" src="/static-images/highlighter-mark.png" style="position: absolute; left: 20px; opacity: .8;"/>erious students</p>
                     <div style="margin-top: 20px;">
                         <div>
                         <button class="usa-button" style="font-size: 16px; text-align: center; width: 150px; background-color: #FF5E00" @click=${tryItButton}>Try it free</button>
@@ -26,25 +26,26 @@ module.exports = () => {
 </div>
 
 <div class="above-750">
-                <div class="grid-row" style="margin-top:20px">
-                <div class="grid-col-6">
-                    <img src="/static-images/logo.svg" style="width: 250px; height: 219px"/>
+    <div class="grid-row" style="margin-top:20px">
+        <div class="grid-col-6">
+            <img alt="Lit.cards logo" src="/static-images/logo.svg" style="width: 250px; height: 219px"/>
+        </div>
+        <div class="grid-col-6">
+            <p style="text-align: left; max-width: 265px; font-weight: bold; font-size: 24px;">Fast and simple online note cards built for<br>
+            <img aria-hidden="true" src="/static-images/highlighter-mark.png" style="position: absolute; left: -15px; opacity: .8;"/>serious students</p>
+            <div style="margin-top: 20px; text-align:left">
+                <div>
+                <button class="usa-button" style="font-size: 16px; text-align: center; width: 150px; background-color: #FF5E00" @click=${tryItButton}>Try it free</button>
                 </div>
-                <div class="grid-col-6">
-                    <p style="text-align: left; max-width: 265px; font-weight: bold; font-size: 24px;">Fast and simple online note cards built for<br>
-                    <img src="/static-images/highlighter-mark.png" style="position: absolute; left: -15px; opacity: .8;"/>serious students</p>
-                    <div style="margin-top: 20px; text-align:left">
-                        <div>
-                        <button class="usa-button" style="font-size: 16px; text-align: center; width: 150px; background-color: #FF5E00" @click=${tryItButton}>Try it free</button>
-                        </div>
-                        <div style="margin-top: 15px;">
-                        <button class="usa-button usa-button--outline" style="font-size: 16px;  text-align: center; width: 150px; color: #FF5E00; box-shadow: inset 0 0 0 2px #FF5E00" @click=${learnMoreButton}>Learn more</button>
-                        </div>
-                    </div>
-                    
+                <div style="margin-top: 15px;">
+                <button class="usa-button usa-button--outline" style="font-size: 16px;  text-align: center; width: 150px; color: #FF5E00; box-shadow: inset 0 0 0 2px #FF5E00" @click=${learnMoreButton}>Learn more</button>
                 </div>
             </div>
+            
         </div>
+    </div>
+</div>
+
 </div>
 
     <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;" id="learnmore"></div>
@@ -127,7 +128,7 @@ function cardFlipper(url, description, backContent) {
                         padding: 30px 20px;
                         margin: 10px"
                     >
-                       <div class="homepage-card-img" style="margin-bottom: 10px;"><img src="${url}"/></div>
+                       <div class="homepage-card-img" style="margin-bottom: 10px;"><img alt="${description}" src="${url}"/></div>
                        <b  class="homepage-card-b" style="color: #FF7C00; font-size: 16px;">${description}</b>
                     </div>
                 </div>

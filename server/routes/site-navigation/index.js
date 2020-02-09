@@ -21,12 +21,14 @@ let pages = {
   '/': {
     darkModeable: false,
     title: 'Lit.Cards',
+    description: "Fast and simple online notecards",
     entryFile: 'index.js',
     auth: false
   },
   '/forgot-password': {
     title: 'Lit: Forgotten password',
     darkModeable: false,
+    description: "Forgot page",
     page: 'forgot-password',
     entryFile: 'forgot-password.js',
     auth: false
@@ -34,6 +36,7 @@ let pages = {
   '/verify': {
     darkModeable: false,
     title: 'Lit: New password',
+    description: "New password",
     page: 'verify-password-reset',
     entryFile: 'verify-password-reset.js',
     auth: false
@@ -41,12 +44,14 @@ let pages = {
   '/login': {
     title: 'Lit: Login',
     darkModeable: false,
+    description: "Login page",
     entryFile: 'login.js',
     page: 'login',
     auth: false
   },
   '/signup': {
     title: 'Lit: Sign Up',
+    description: "Signup page",
     darkModeable: false,
     page: 'signup',
     entryFile: 'signup.js',
@@ -55,6 +60,7 @@ let pages = {
   // url to visit: /site/me for example
   '/me': {
     title: 'Lit: Your stuff',
+    description: "All decks and study sessions",
     darkModeable: true,
     entryFile: 'me.js',
     // auth: true - default
@@ -62,12 +68,14 @@ let pages = {
   '/me/deck': {
     title: 'Lit: Edit deck',
     darkModeable: true,
+    description: "Edit deck",
     entryFile: 'deck.js',
     page: 'me/deck',
     subOnly: true
   },
   '/me/settings': {
     title: 'Lit: Settings',
+    description: "User settings",
     entryFile: 'settings.js',
     additionalFiles: `<script src=https://js.stripe.com/v3/></script>`,
     darkModeable: true,
@@ -75,6 +83,7 @@ let pages = {
   '/me/study': {
     title: 'Lit: Study',
     entryFile: 'study.js',
+    description: "Study session",
     darkModeable: true,
     subOnly: true
   },

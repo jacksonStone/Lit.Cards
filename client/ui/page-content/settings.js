@@ -120,7 +120,7 @@ function savingsBox(savings) {
     top: 0; 
     font-size: 1.06471rem;
     padding: 12px;
-    ">save<br>%${savings}</div>`
+    ">save<br>${savings}%</div>`
 }
 function buyTimeInterface() {
     const user = window.lc.getData('user')
