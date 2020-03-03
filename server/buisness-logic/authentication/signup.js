@@ -19,6 +19,10 @@ async function signup (userEmail, plainTextPassword, displayName) {
 }
 async function sendVerificationEmail(user) {
   let userEmail = user.userEmail
+  //We may only have the cookie-portion of the user
+  if(!user.emailVerificationKey) {
+    user = await User.getUser(userEmail);
+  }
   sendMail(
     userEmail,
     'Email Verification',

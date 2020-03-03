@@ -29,7 +29,7 @@
     "tw": "npm run wt",
     "tt": "npm run wt",
     "start": "node server/index.js",
-    "w": "concurrently --kill-others \"npm run ww\" \"npm run ss\" \"npm run sassw\"",
+    "w": "rm -rf assets/dist && concurrently --kill-others \"npm run ww\" \"npm run ss\" \"npm run sassw\"",
     "webpack": "webpack",
     "ww": "webpack -w",
     "ss": "npm run sw",
