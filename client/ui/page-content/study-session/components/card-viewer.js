@@ -1,7 +1,7 @@
 let { html } = require('lit')
 let { simulateKey } = require('abstract/keyboard')
 let { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
-let { getTextToShowForCard, refreshEditor } = require('logic/deck')
+let { getTextToShowForCard, refreshEditor } = require('logic/deck.ts')
 let { runNextRender } = require('abstract/rendering-meta')
 let { showingAnswerKeyBindings, showingQuestionKeyBindings } = require('../key-commands')
 let { unsafeHTML } = require('lit-html/directives/unsafe-html')

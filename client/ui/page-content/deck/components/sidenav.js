@@ -1,12 +1,12 @@
 let { html } = require('lit-html/lit-html')
 let { deleteSession: deleteSessionInServerAndState } = require('logic/study')
-let { makeDeckPublic: makePublicInServerAndState } = require('logic/deck')
+let { makeDeckPublic: makePublicInServerAndState } = require('logic/deck.ts')
 function getDeckId () {
-  let deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck.ts.ts')
   return deck && deck.id
 }
 function deckIsPublic () {
-  let deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck.ts.ts')
   return deck && deck.public;
 }
 function getSessionId () {

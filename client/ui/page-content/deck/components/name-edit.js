@@ -2,12 +2,12 @@ let { html } = require('lit')
 let { getValueFromInput } = require('../../../../browser-abstractions/events')
 let { getParam } = require('../../../../browser-abstractions/url')
 function getName () {
-  return window.lc.getData('deck.name')
+  return window.lc.getData('deck.ts.ts.name')
 }
 function setName (e) {
   let value = getValueFromInput(e)
-  window.lc.setPersistent('deck.name', value)
-  window.lc.setPersistent('deck.id', getParam('deck'))
+  window.lc.setPersistent('deck.ts.ts.name', value)
+  window.lc.setPersistent('deck.ts.ts.id', getParam('deck.ts.ts'))
 }
 module.exports = function () {
   return html`

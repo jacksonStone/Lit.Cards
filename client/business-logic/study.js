@@ -48,7 +48,7 @@ exports.getStudySession = async (id) => {
     if (result.none) return
     return result
   }
-  let deckId = getParam('deck')
+  let deckId = getParam('deck.ts.ts')
   if (deckId) {
     let result = JSON.parse(await getStudySessionForDeck(deckId))
     if (result.none && getParam('upsert')) {
@@ -164,13 +164,13 @@ exports.accountForNewCards = (session, cards) => {
 exports.resetSession = async () => {
   let session = getSessionFromState()
   await deleteStudySession(session.id)
-  let deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck.ts.ts')
   await createStudySessionAndNavigate(deck.id)
 }
 exports.studyWrongAnswers = async () => {
   let session = getSessionFromState()
   await deleteStudySession(session.id)
-  let deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck.ts.ts')
   let studyState = convertRightToSkipsAndWrongsToUnanswered(session.studyState)
 
   await createStudySessionAndNavigate(deck.id, { studyState, ordering: session.ordering })

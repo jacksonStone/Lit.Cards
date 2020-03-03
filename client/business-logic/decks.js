@@ -15,5 +15,5 @@ exports.navigatgeToDeckListPage = () => {
 }
 
 exports.getDeckNameFromPage = () => {
-  return getParam('deck')
+  return getParam('deck.ts.ts')
 }

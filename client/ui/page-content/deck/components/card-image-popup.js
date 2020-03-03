@@ -2,7 +2,7 @@ let { html } = require('lit')
 let { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
 let { addImageDataToImage } = require('abstract/file-upload')
 // TODO::Consider reworking deps here
-let { getImageData } = require('logic/deck')
+let { getImageData } = require('logic/deck.ts')
 let { runNextRender } = require('abstract/rendering-meta')
 
 let _hidePopup = (e) => {

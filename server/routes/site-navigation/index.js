@@ -69,7 +69,7 @@ let pages = {
     title: 'Lit: Edit deck',
     darkModeable: true,
     description: "Edit deck",
-    entryFile: 'deck.js',
+    entryFile: 'deck.ts.ts.js',
     page: 'me/deck',
     subOnly: true
   },

@@ -1,6 +1,6 @@
 let { html } = require('lit')
 let { simulateKey } = require('abstract/keyboard')
-let { removeCard, removeImage } = require('logic/deck')
+let { removeCard, removeImage } = require('logic/deck.ts')
 let { popupComponent, showPopup } = require('./card-image-popup')
 let focusingOnTextProp = '_focusingOnText'
 
@@ -18,7 +18,7 @@ let removeImageAction = () => {
   removeImage()
 }
 let deckIsPublic = () => {
-  let deck = window.lc.getData('deck');
+  let deck = window.lc.getData('deck.ts.ts');
   return deck && deck.public;
 }
 //TODO::Move to one place

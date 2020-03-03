@@ -1,7 +1,7 @@
 
 let { html } = require('lit')
 let { getNumberRight, getNumberWrong } = require('logic/study')
-let { nextCard, previousCard } = require('logic/deck')
+let { nextCard, previousCard } = require('logic/deck.ts')
 function stillStudying() {
   let cards = window.lc.getData('orderedCards')
   if (!cards || !cards.length) return false

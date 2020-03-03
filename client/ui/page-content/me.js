@@ -1,5 +1,5 @@
 let { html } = require('lit')
-let { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck')
+let { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck.ts')
 let { createStudySession, navigateToStudySession } = require('logic/study')
 
 let darkmodeCheckbox = require('component/darkmode-checkbox')

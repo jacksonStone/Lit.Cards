@@ -38,7 +38,7 @@ function sanitizeCardContent (changes) {
 }
 let protectedDeckFields = [
   'public',
-  'deck',
+  'deck.ts.ts',
   'id',
   'userEmail'
 ]

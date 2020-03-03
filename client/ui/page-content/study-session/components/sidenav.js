@@ -2,14 +2,14 @@ let { html } = require('lit-html/lit-html')
 let { deleteCurrentSessionWithConfirmation } = require('logic/study')
 
 function getDeckId () {
-  let deck = window.lc.getData('deck')
+  let deck = window.lc.getData('deck.ts.ts')
   return deck && deck.id
 }
 function getActiveCardId () {
   return window.lc.getData('activeCardId')
 }
 function getName () {
-  return window.lc.getData('deck.name')
+  return window.lc.getData('deck.ts.ts.name')
 }
 module.exports = () => {
   return html`<ul class="site-sidenav usa-sidenav">

@@ -2,7 +2,7 @@ let { listenForKey, resetAllKeyBindings, resetKey } = require('../../../browser-
 let {
   previousCard,
   nextCard
-} = require('logic/deck')
+} = require('logic/deck.ts')
 let {
   flipCard,
   markWrong,

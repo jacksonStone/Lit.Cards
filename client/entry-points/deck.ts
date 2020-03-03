@@ -1,3 +1,8 @@
+declare global {
+  interface Window {
+    lc: any;
+  }
+}
 let { renderPage } = require('../ui/globals')
 let content = require('../ui/page-content/deck')
 let { initCommands } = require('../ui/page-content/deck/key-commands')
@@ -8,18 +13,21 @@ let { defaultDarkMode } = require('abstract/darkmode')
 let { fetchUser } = require('logic/user')
 let { getCardBody, getCardBodyForEmptyState } = require('logic/card-bodies')
 let { getStudySession } = require('logic/study')
-let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
+const { getDeckLogic, handleEditorTextChange, refreshEditor } = require('logic/deck.ts')
 
 ;(async () => {
   defaultDarkMode()
-  let [user, deck, studySession] = await Promise.all([fetchUser(), getDeck(), getStudySession()])
+  let [user, deck, studySession] = await Promise.all([fetchUser(), getDeckLogic(), getStudySession()])
   let cards = deck.cards || ''
+  const deck2 = await getDeckLogic();
   // For when you navigate from study to edit
   let rawParam = getParam('card')
-  window.lc.setData('deck', deck)
-  let activeCard = rawParam ? window.decodeURIComponent(rawParam) : undefined
-  let firstCardId = activeCard || (cards && cards.length && cards[0])
-  let cardBody
+
+
+  window.lc.setData('deck.ts.ts', deck)
+  let activeCard: string = rawParam ? window.decodeURIComponent(rawParam) : undefined
+  let firstCardId: string = activeCard || (cards && cards.length && cards[0])
+  let cardBody: any;
   try {
     cardBody = await getCardBody(firstCardId, undefined, cards)
   } catch (e) {
@@ -46,3 +54,5 @@ let { getDeck, handleEditorTextChange, refreshEditor } = require('logic/deck')
   })
   renderPage(content)
 })()
+
+export {}

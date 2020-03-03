@@ -1,5 +1,5 @@
 let db = require('../external-connections/configured-connector')
-let tableName = 'deck'
+let tableName = 'deck.ts.ts'
 let { userExists } = require('./user')
 let { generateId } = require('../../../shared/id-generator')
 let { intToChar } = require('../../../shared/char-encoding')

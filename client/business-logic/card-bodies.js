@@ -4,7 +4,7 @@ let { decompress } = require('shared/compress')
 let cachedCardBodies = {}
 function getDefaultDeck (deck) {
   if (!deck) {
-    deck = getParam('deck')
+    deck = getParam('deck.ts.ts')
     if (!deck) {
       let dataDeck = window.lc.getData('deck')
       if (dataDeck && dataDeck.id) {

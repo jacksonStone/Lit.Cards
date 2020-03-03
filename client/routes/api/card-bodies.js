@@ -1,7 +1,7 @@
 let { api } = require('./api-request')
 
 exports.getCardBody = (deckId, card = '') => {
-  const deck = window.lc.getData('deck');
+  const deck = window.lc.getData('deck.ts.ts');
   let url;
   if(card) {
     card = encodeURI(card);

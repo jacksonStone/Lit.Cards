@@ -6,7 +6,7 @@ let { defaultDarkMode } = require('abstract/darkmode')
 let { runNextRender } = require('abstract/rendering-meta')
 let { fetchUser } = require('logic/user')
 let { getCardBody } = require('logic/card-bodies')
-let { getDeck } = require('logic/deck')
+let { getDeck } = require('logic/deck.ts')
 let { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } = require('logic/study')
 
 ;(async () => {
@@ -15,7 +15,7 @@ let { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accou
   let deckId = studySession.deck
   let [deck] = await Promise.all([getDeck(deckId)])
   let cards = deck.cards || ''
-  window.lc.setData('deck', deck)
+  window.lc.setData('deck.ts.ts', deck)
   if (studySession) {
     studySession = accountForNewCards(studySession, cards)
   }
@@ -29,7 +29,7 @@ let { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accou
   window.lc.setData('orderedCards', visibleCards)
   window.lc.setData('sessionShuffledCards', sessionOrderedCards)
   window.lc.setData('session', studySession)
-  window.lc.setData('deck', deck)
+  window.lc.setData('deck.ts.ts', deck)
   window.lc.setData('activeCardId', firstCardId)
   window.lc.setData('user', user)
   window.lc.setData('showingAnswer', false)

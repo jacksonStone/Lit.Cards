@@ -5,7 +5,7 @@ let {
   previousCard,
   nextCard,
   addNewCard
-} = require('logic/deck')
+} = require('logic/deck.ts')
 
 function initCommands () {
   resetAllKeyBindings()

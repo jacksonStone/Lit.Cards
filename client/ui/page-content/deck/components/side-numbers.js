@@ -1,6 +1,6 @@
 
 let { html } = require('lit')
-let { nextCard, previousCard } = require('logic/deck')
+let { nextCard, previousCard } = require('logic/deck.ts')
 let fullCardNavigation = (currentCardId, cards) => {
   if (!cards) return
   const width = window.lc.getData('screen.width');

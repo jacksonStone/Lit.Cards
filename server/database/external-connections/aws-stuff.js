@@ -9,7 +9,7 @@ AWS.config = new AWS.Config({
 let PROD = process.env.NODE_ENV === 'production';
 // let DynamoDB = new AWS.DynamoDB();
 let DynamoDBDocClient = new AWS.DynamoDB.DocumentClient({
-    paramValidation: false, 
+    paramValidation: false,
     convertResponseTypes: false
 });
 let S3 = new AWS.S3();
@@ -109,7 +109,7 @@ async function getDeckRecords(conditions, limit) {
                     [keyField]:conditions[keyField],
                     [sortKey]: conditions[sortKey]
                 },
-                TableName: PROD ? tableNames.prod['deck'] : tableNames.test['deck']
+                TableName: PROD ? tableNames.prod['deck.ts.ts'] : tableNames.test['deck']
             }, (err, data) => {
                 if(err) {
                     console.log(err);
@@ -121,14 +121,14 @@ async function getDeckRecords(conditions, limit) {
                 if(keys.length > 2) {
                     for(let key of keys) {
                         if(data[key] !== conditions[key]) {
-                            return resolve(limit === 1 ? undefined : []); 
+                            return resolve(limit === 1 ? undefined : []);
                         }
                     }
                 }
                 resolve(limit === 1 ? data : [data]);
             });
         });
-       
+
     }
     else if(conditions[keyField] || conditions[sortKey]) {
         return new Promise((resolve) => {
@@ -137,7 +137,7 @@ async function getDeckRecords(conditions, limit) {
             let EAN = {};
             let keyExpression = ''
             mapObj(conditions, (value, key) => {
-        
+
                 if(key !== keyField && key !== sortKey) {
                 //Unnecessary
                 return;
@@ -149,13 +149,13 @@ async function getDeckRecords(conditions, limit) {
                     }
                     keyExpression+=`#f${key} = :f${key}`;
                 }
-            });    
+            });
             let params = {
                 KeyConditionExpression: keyExpression,
                 ExpressionAttributeValues:EAV,
                 ExpressionAttributeNames: EAN,
                 // ConditionExpression: conditionExpression,
-                TableName: PROD ? tableNames.prod['deck'] : tableNames.test['deck'],
+                TableName: PROD ? tableNames.prod['deck.ts.ts'] : tableNames.test['deck'],
             };
             DynamoDBDocClient.query(params, (err, data) => {
                 console.log(err, data);
@@ -168,7 +168,7 @@ async function getDeckRecords(conditions, limit) {
     }
 }
 async function getRecord (table, conditions, limit) {
-    if(table === 'deck') {
+    if(table === 'deck.ts.ts') {
         return getDeckRecords(conditions, limit)
     }
     if(table === 'user') {
@@ -189,13 +189,13 @@ async function getRecord (table, conditions, limit) {
                     resolve(data);
                 });
             });
-           
+
         }
         else {
             // Scan
         }
     }
-    
+
 //     let tableData = fakeDatabaseConnector[table]
 //     if (!tableData) return
 //     let results = _.map(
@@ -217,14 +217,14 @@ async function getRecord (table, conditions, limit) {
 //     }
 //     return results
   }
-  
+
   async function setRecord (table, newRecord) {
     // let tableData = fakeDatabaseConnector[table]
     // if (!tableData) return
     // tableData.push(values)
     // return values
   }
-  
+
   async function unsetRecord (table, deleteFilter) {
 
     // let tableData = fakeDatabaseConnector[table]
@@ -239,4 +239,3 @@ async function getRecord (table, conditions, limit) {
     let time = Date.now() - before;
     console.log(time, res);
 })();
-  

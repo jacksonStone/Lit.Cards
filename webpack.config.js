@@ -3,9 +3,7 @@ let fs = require('fs')
 let webpack = require('webpack')
 // const CompressionPlugin = require('compression-webpack-plugin');
 
-let entries = fs.readdirSync('./client/entry-points/').filter(function(file) {
-  return file.match(/.*\.js$/);
-});
+let entries = fs.readdirSync('./client/entry-points/')
 let prodMode = process.env.NODE_ENV === 'production'
 entryForWebpack = {}
 entries.forEach(entry => {
@@ -25,12 +23,22 @@ const plugins = [
 module.exports = {
   mode: prodMode ? 'production' : 'development',
   entry: entryForWebpack,
+  module: {
+    rules: [
+      {
+        test: /\.ts?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
   // watch: !prodMode,
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, './assets/dist')
   },
   resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
     alias: {
       'lit': path.join(__dirname, 'node_modules/lit-html/lit-html'),
       'misc': path.join(__dirname, 'misc'),
