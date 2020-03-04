@@ -1,11 +1,5 @@
-let { listenForKey, resetAllKeyBindings, listenForCMDKey } = require('abstract/keyboard')
-let {
-  pickImage,
-  flipCard,
-  previousCard,
-  nextCard,
-  addNewCard
-} = require('logic/deck.ts')
+import { listenForKey, resetAllKeyBindings, listenForCMDKey } from 'abstract/keyboard';
+import { pickImage, flipCard, previousCard, nextCard, addNewCard } from 'logic/deck.ts';
 
 function initCommands () {
   resetAllKeyBindings()
@@ -23,6 +17,6 @@ function initCommands () {
   listenForKey('ArrowDown', nextCard)
 }
 
-module.exports = {
+export default {
   initCommands
-}
+};

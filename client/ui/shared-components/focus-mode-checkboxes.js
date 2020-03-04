@@ -1,6 +1,6 @@
-let { html } = require('lit')
-let { getValueFromCheckbox } = require('abstract/events')
-let { recordAndSetDarkMode } = require('abstract/darkmode')
+import { html } from 'lit';
+import { getValueFromCheckbox } from 'abstract/events';
+import { recordAndSetDarkMode } from 'abstract/darkmode';
 let isHidingProgress= () => {
   let user = window.lc.getData('user')
   return user && user.hideProgress
@@ -37,7 +37,7 @@ hideProgress = () => html`
       <label class="usa-checkbox__label" for="hiding-progress">Hide progress</label>
 `
 
-module.exports = {
+export default {
   hideSideNav,
   hideProgress
-}
+};

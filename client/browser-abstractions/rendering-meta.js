@@ -12,7 +12,7 @@ async function waitForState (dataPath, callback) {
   return runNextRender(callback)
 }
 
-module.exports = {
+export default {
   runNextRender,
   waitForState
-}
+};

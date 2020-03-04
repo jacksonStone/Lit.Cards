@@ -322,8 +322,7 @@ function _getCurrentCardIndex () {
   }
   return currentIndex
 }
-
-module.exports = {
+export {
   navigateToDeckPage,
   getDeckLogic,
   deleteDeck: deleteDeckLogic,

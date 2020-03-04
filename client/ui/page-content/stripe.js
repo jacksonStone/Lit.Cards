@@ -1,6 +1,6 @@
 
 let stripe;
-let { request } = require('../../browser-abstractions/request')
+import { request } from '../../browser-abstractions/request';
 async function initializeStripe() {
   if (stripe) return true;
   while (!window.Stripe) {
@@ -18,6 +18,6 @@ async function createStripeCheckoutSession(monthDuration) {
   })
 }
 
-module.exports = {
+export default {
   createStripeCheckoutSession,
-}
+};

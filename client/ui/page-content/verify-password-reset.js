@@ -1,14 +1,15 @@
-let { html } = require('lit')
-let { grabFormData } = require('../../browser-abstractions/grab-form')
-let { verifyPasswordReset } = require('../../business-logic/login')
-let errorableInput = require('../shared-components/errorable-input')
-let errorBanner = require('../shared-components/error-banner')
+import { html } from 'lit';
+import { grabFormData } from '../../browser-abstractions/grab-form';
+import { verifyPasswordReset } from '../../business-logic/login';
+import errorableInput from '../shared-components/errorable-input';
+import errorBanner from '../shared-components/error-banner';
 function confrimNewBtn (event) {
   event.preventDefault()
   let verifyData = grabFormData('#verify')
   return verifyPasswordReset(verifyData.password, verifyData['password-repeat'])
 }
-module.exports = (data) => {
+
+export default (data) => {
   let { fields: ef, abstract: ea } = data.errors
   return html`
     <div class="grid-container">
@@ -30,4 +31,4 @@ module.exports = (data) => {
     </div>
     </div> 
 `
-}
+};

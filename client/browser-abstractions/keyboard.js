@@ -93,7 +93,7 @@ if (process.env.NODE_ENV !== 'test') {
   window.document.addEventListener('keydown', _handleKeyDown)
 }
 
-module.exports = {
+export default {
   listenForKey,
   listenForKeyGlobal,
   resetKey,
@@ -103,4 +103,4 @@ module.exports = {
   resetAllKeyBindings,
   listenForCMDKey,
   simulateKey
-}
+};

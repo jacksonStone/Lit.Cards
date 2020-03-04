@@ -1,7 +1,7 @@
 
-let { html } = require('lit')
-let { getNumberRight, getNumberWrong } = require('logic/study')
-let { nextCard, previousCard } = require('logic/deck.ts')
+import { html } from 'lit';
+import { getNumberRight, getNumberWrong } from 'logic/study';
+import { nextCard, previousCard } from 'logic/deck.ts';
 function stillStudying() {
   let cards = window.lc.getData('orderedCards')
   if (!cards || !cards.length) return false
@@ -45,7 +45,8 @@ function smallCardStack(currentCardId, cards) {
       " >${cards.length.toLocaleString()} left, <span class="right-count">${getNumberRight().toLocaleString()} Right</span>, <span class="wrong-count">${getNumberWrong().toLocaleString()} Wrong</span></div>
     </div>`
 }
-module.exports = {
+
+export default {
   cardStack,
   smallCardStack
-}
+};

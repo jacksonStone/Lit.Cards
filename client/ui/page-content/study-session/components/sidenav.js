@@ -1,5 +1,5 @@
-let { html } = require('lit-html/lit-html')
-let { deleteCurrentSessionWithConfirmation } = require('logic/study')
+import { html } from 'lit-html/lit-html';
+import { deleteCurrentSessionWithConfirmation } from 'logic/study';
 
 function getDeckId () {
   let deck = window.lc.getData('deck.ts.ts')
@@ -11,7 +11,8 @@ function getActiveCardId () {
 function getName () {
   return window.lc.getData('deck.ts.ts.name')
 }
-module.exports = () => {
+
+export default () => {
   return html`<ul class="site-sidenav usa-sidenav">
   <li class="usa-sidenav__item" >
     <div style="margin:10px; border-top: none; border-left: none; border-right: none; overflow-wrap: break-word">Studying: ${getName()}</div>
@@ -26,4 +27,4 @@ module.exports = () => {
     <a href="#" id="end-session-link" @click=${() => { deleteCurrentSessionWithConfirmation() }}><i class="far fa-times-circle"></i>&nbsp;&nbsp;End session</a>
   </li>
   </ul>`
-}
+};

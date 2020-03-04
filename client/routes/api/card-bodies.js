@@ -1,6 +1,6 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.getCardBody = (deckId, card = '') => {
+export const getCardBody = (deckId, card = '') => {
   const deck = window.lc.getData('deck.ts.ts');
   let url;
   if(card) {
@@ -11,4 +11,4 @@ exports.getCardBody = (deckId, card = '') => {
   }
   url += ((deck && deck.lastModified) ? deck.lastModified : '');
   return api(url);
-}
+};

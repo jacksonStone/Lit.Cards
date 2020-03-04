@@ -1,6 +1,6 @@
-let { html } = require('lit')
-let { getValueFromInput } = require('../../../../browser-abstractions/events')
-let { getParam } = require('../../../../browser-abstractions/url')
+import { html } from 'lit';
+import { getValueFromInput } from '../../../../browser-abstractions/events';
+import { getParam } from '../../../../browser-abstractions/url';
 function getName () {
   return window.lc.getData('deck.ts.ts.name')
 }
@@ -9,7 +9,8 @@ function setName (e) {
   window.lc.setPersistent('deck.ts.ts.name', value)
   window.lc.setPersistent('deck.ts.ts.id', getParam('deck.ts.ts'))
 }
-module.exports = function () {
+
+export default function () {
   return html`
     <label class="usa-label usa-sr-only" for="input-type-text">
         Deck Name
@@ -28,4 +29,4 @@ module.exports = function () {
             border-bottom:none;"
     />
     `
-}
+};

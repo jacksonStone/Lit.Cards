@@ -1,19 +1,19 @@
-let { getDecks, createDeck } = require('../routes/api/decks')
-let { decks } = require('../routes/navigation/pages')
-let { getParam } = require('../browser-abstractions/url')
+import { getDecks, createDeck } from '../routes/api/decks';
+import { decks } from '../routes/navigation/pages';
+import { getParam } from '../browser-abstractions/url';
 
-exports.getDecks = async () => {
+export const getDecks = async () => {
   return JSON.parse(await getDecks())
-}
+};
 
-exports.createDeck = (name) => {
+export const createDeck = (name) => {
   return createDeck(name)
-}
+};
 
-exports.navigatgeToDeckListPage = () => {
+export const navigatgeToDeckListPage = () => {
   return decks()
-}
+};
 
-exports.getDeckNameFromPage = () => {
+export const getDeckNameFromPage = () => {
   return getParam('deck.ts.ts')
-}
+};

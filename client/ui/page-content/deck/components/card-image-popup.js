@@ -1,9 +1,11 @@
-let { html } = require('lit')
-let { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } = require('abstract/keyboard')
-let { addImageDataToImage } = require('abstract/file-upload')
+import { html } from 'lit';
+import { listenForKey, archiveCurrentKeyBindings, restoreArchivedKeyBindings } from 'abstract/keyboard';
+import { addImageDataToImage } from 'abstract/file-upload';
+
 // TODO::Consider reworking deps here
-let { getImageData } = require('logic/deck.ts')
-let { runNextRender } = require('abstract/rendering-meta')
+import { getImageData } from 'logic/deck.ts';
+
+import { runNextRender } from 'abstract/rendering-meta';
 
 let _hidePopup = (e) => {
   e.preventDefault()
@@ -69,7 +71,7 @@ let popupComponent = () => {
 </div></div>`
 }
 
-module.exports = {
+export default {
   popupComponent,
   showPopup
-}
+};

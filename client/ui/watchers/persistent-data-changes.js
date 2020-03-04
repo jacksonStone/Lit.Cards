@@ -1,5 +1,5 @@
-let { each } = require('utils')
-let { handleTransaction } = require('logic/handle-transaction');
+import { each } from 'utils';
+import { handleTransaction } from 'logic/handle-transaction';
 
 function listenToSaveableChanges () {
   let runningAlready = false
@@ -60,4 +60,4 @@ async function _handleTransaction(transaction) {
   
 }
 
-module.exports = listenToSaveableChanges
+export default listenToSaveableChanges;

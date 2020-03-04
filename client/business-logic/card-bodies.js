@@ -1,6 +1,6 @@
-let { getCardBody } = require('../routes/api/card-bodies')
-let { getParam } = require('../browser-abstractions/url')
-let { decompress } = require('shared/compress')
+import { getCardBody } from '../routes/api/card-bodies';
+import { getParam } from '../browser-abstractions/url';
+import { decompress } from 'shared/compress';
 let cachedCardBodies = {}
 function getDefaultDeck (deck) {
   if (!deck) {
@@ -15,7 +15,8 @@ function getDefaultDeck (deck) {
   return deck
 }
 let inProgressRequests = {};
-exports.getCardBody = async (card, deck, visibleCards) => {
+
+export const getCardBody = async (card, deck, visibleCards) => {
   if (!card) {
     return
   }
@@ -77,16 +78,16 @@ exports.getCardBody = async (card, deck, visibleCards) => {
       }
     })
   })
-}
+};
 
-exports.getCardBodyForEmptyState = (newId) => {
+export const getCardBodyForEmptyState = (newId) => {
   let emptyValue = { id: newId, isNew: true, front: '', back: '', deck: getDefaultDeck() }
   // Record we made this on the fly
   window.lc.setPersistent(`cardBody.${newId}`, emptyValue)
   return emptyValue
-}
+};
 
-exports.persistCardBodyChange = (cardBody, key, value) => {
+export const persistCardBodyChange = (cardBody, key, value) => {
   let changeCardBodyId = getCardBodyChangeId(cardBody)
   let changePath = `${changeCardBodyId}.${key}`
   window.lc.setPersistent(changePath, value)
@@ -95,7 +96,8 @@ exports.persistCardBodyChange = (cardBody, key, value) => {
     let deckPath = `${changeCardBodyId}.deck`
     window.lc.setPersistent(deckPath, getDefaultDeck())
   }
-}
+};
+
 function getCardBodyChangeId (cardBody) {
   return `cardBody.${cardBody.id}`
 }

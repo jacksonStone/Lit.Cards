@@ -12,4 +12,4 @@ function listenForResizeEvent () {
     window.lc.setData('screen.width', width);
   });
 }
-module.exports = listenForResizeEvent;
+export default listenForResizeEvent;

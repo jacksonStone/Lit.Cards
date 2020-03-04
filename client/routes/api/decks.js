@@ -1,19 +1,21 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.getDecks = () => {
+export const getDecks = () => {
   return api('decks/me')
-}
+};
 
-exports.getDeck = (id) => {
+export const getDeck = (id) => {
   return api(`decks/${id}`)
-}
+};
 
-exports.createDeck = (name) => {
+export const createDeck = (name) => {
   return api('decks/create', { name })
-}
-exports.makePublic = (id) => {
+};
+
+export const makePublic = (id) => {
   return api('decks/make-public', { id })
-}
-exports.deleteDeck = (id) => {
+};
+
+export const deleteDeck = (id) => {
   return api('decks/delete', { id })
-}
+};

@@ -1,10 +1,9 @@
-let { html } = require('lit')
-let { navigateToDeckPage, createDeck, deleteDeck } = require('logic/deck.ts')
-let { createStudySession, navigateToStudySession } = require('logic/study')
-
-let darkmodeCheckbox = require('component/darkmode-checkbox')
-let checkboxHolder = require('component/checkbox-holder')
-let trialUserBar = require('component/trial-user-bar');
+import { html } from 'lit';
+import { navigateToDeckPage, createDeck, deleteDeck } from 'logic/deck.ts';
+import { createStudySession, navigateToStudySession } from 'logic/study';
+import darkmodeCheckbox from 'component/darkmode-checkbox';
+import checkboxHolder from 'component/checkbox-holder';
+import trialUserBar from 'component/trial-user-bar';
 
 // Keep numPerRow in sync with col-n below
 let numPerRow = 3
@@ -329,7 +328,7 @@ function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
 //   let values = grabFormData('#search-public-decks')
 // }
 
-module.exports = (data = {}) => {
+export default (data = {}) => {
   return html`
     <div class="grid-container">
         ${(data.studySessions && data.studySessions.length) ? html`<h1 class="deck-header">Active Study Sessions</h1>
@@ -362,4 +361,4 @@ module.exports = (data = {}) => {
    ${studyHistoryRows(data.searchResults || [])}
    <div style="margin-top:130px;"></divstyle>
    */
-}
+};

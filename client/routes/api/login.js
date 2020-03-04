@@ -1,27 +1,34 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.login = (userEmail, password) => {
+export const login = (userEmail, password) => {
   return api('login', { userEmail, password })
-}
-exports.logout = () => {
+};
+
+export const logout = () => {
   return api('logout')
-}
-exports.signup = (userEmail, password, displayName) => {
+};
+
+export const signup = (userEmail, password, displayName) => {
   return api('signup', { userEmail, password, displayName })
-}
-exports.verifyEmail = (emailVerificationKey) => {
+};
+
+export const verifyEmail = (emailVerificationKey) => {
   return api('signup/verify-email', { emailVerificationKey })
-}
-exports.resendEmailVerification = () => {
+};
+
+export const resendEmailVerification = () => {
   return api('signup/resend-verification-email')
-}
-exports.resetPassword = (userEmail) => {
+};
+
+export const resetPassword = (userEmail) => {
   return api('password-reset', { userEmail })
-}
-exports.verifyPasswordReset = (userEmail, token, password) => {
+};
+
+export const verifyPasswordReset = (userEmail, token, password) => {
   return api('password-reset/verify', { id: userEmail, token, newPassword: password })
-}
-exports.changePassword = (currentPassword, newPassword) => {
+};
+
+export const changePassword = (currentPassword, newPassword) => {
   return api('password-reset/change', { currentPassword, newPassword })
-}
+};
 

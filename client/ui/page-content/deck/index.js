@@ -1,8 +1,8 @@
-let { html } = require('lit')
-let editView = require('./components/edit-view')
-require('./key-commands')
-let { handleImageUpload, hasImage, getPresentFontSize } = require('logic/deck.ts')
+import { html } from 'lit';
+import editView from './components/edit-view';
+import './key-commands';
+import { handleImageUpload, hasImage, getPresentFontSize } from 'logic/deck.ts';
 
-module.exports = (data) => html`
+export default (data) => html`
      ${editView(data.activeCardId, data.orderedCards, handleImageUpload, hasImage(), data.showingAnswer, getPresentFontSize())}
-`
+`;

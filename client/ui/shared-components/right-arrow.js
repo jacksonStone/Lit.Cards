@@ -1,5 +1,6 @@
-let { html } = require('lit')
-module.exports = (action) => {
+import { html } from 'lit';
+
+export default (action) => {
   return html`
 <button class="usa-button usa-button--outline flip-card"
 style="box-shadow: none;"
@@ -8,4 +9,4 @@ style="box-shadow: none;"
 <div style="font-size: 14px; margin-bottom: 10px">Correct</div>
     </button>
 `
-}
+};

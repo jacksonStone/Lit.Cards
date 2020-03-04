@@ -1,5 +1,5 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.handleTransaction = (changes) => {
+export const handleTransaction = (changes) => {
   return api(`transaction`, changes, {binary: true})
-}
+};

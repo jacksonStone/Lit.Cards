@@ -1,22 +1,22 @@
-let { html } = require('lit')
-let { grabFormData } = require('../../browser-abstractions/grab-form')
-let { hash } = require('abstract/url')
-let  month_catalog = require('../../../shared/month-cataloge.js')
-let { each } = require('../../utils');
-let errorableInput = require('../shared-components/errorable-input')
-let { createStripeCheckoutSession } = require('./stripe')
-let errorBanner = require('../shared-components/error-banner')
-let { changePassword } = require('../../business-logic/login')
-let darkmodeCheckbox = require('component/darkmode-checkbox')
-let { $ } = require('abstract/$');
-let checkboxHolder = require('component/checkbox-holder')
+import { html } from 'lit';
+import { grabFormData } from '../../browser-abstractions/grab-form';
+import { hash } from 'abstract/url';
+import month_catalog from '../../../shared/month-cataloge.js';
+import { each } from '../../utils';
+import errorableInput from '../shared-components/errorable-input';
+import { createStripeCheckoutSession } from './stripe';
+import errorBanner from '../shared-components/error-banner';
+import { changePassword } from '../../business-logic/login';
+import darkmodeCheckbox from 'component/darkmode-checkbox';
+import { $ } from 'abstract/$';
+import checkboxHolder from 'component/checkbox-holder';
 let changePasswordBtn = (event) => {
   event.preventDefault()
   let values = grabFormData('#password-change')
   changePassword(values.currentPassword, values.password, values.passwordRepeat)
 }
 
-module.exports = (data) => {
+export default (data) => {
   // add other screens to settings
   let user = window.lc.getData('user');
   let h = hash()
@@ -70,7 +70,7 @@ module.exports = (data) => {
     
     ${checkboxHolder([darkmodeCheckbox()])}
 `
-}
+};
 
 function getContents(data) {
   let currentHash = hash()

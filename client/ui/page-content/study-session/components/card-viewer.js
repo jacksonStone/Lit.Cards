@@ -1,10 +1,10 @@
-let { html } = require('lit')
-let { simulateKey } = require('abstract/keyboard')
-let { popupComponent, showPopup } = require('../../deck/components/card-image-popup')
-let { getTextToShowForCard, refreshEditor } = require('logic/deck.ts')
-let { runNextRender } = require('abstract/rendering-meta')
-let { showingAnswerKeyBindings, showingQuestionKeyBindings } = require('../key-commands')
-let { unsafeHTML } = require('lit-html/directives/unsafe-html')
+import { html } from 'lit';
+import { simulateKey } from 'abstract/keyboard';
+import { popupComponent, showPopup } from '../../deck/components/card-image-popup';
+import { getTextToShowForCard, refreshEditor } from 'logic/deck.ts';
+import { runNextRender } from 'abstract/rendering-meta';
+import { showingAnswerKeyBindings, showingQuestionKeyBindings } from '../key-commands';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 let spaceAction = () => {
   simulateKey('Space')
 }
@@ -15,7 +15,7 @@ let leftAction = () => {
   simulateKey('ArrowLeft')
 }
 
-module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
+export default (hasImage, showingAnswer, currentfontSize = 1) => {
   if (showingAnswer) {
     showingAnswerKeyBindings()
   } else {
@@ -74,4 +74,4 @@ module.exports = (hasImage, showingAnswer, currentfontSize = 1) => {
             </div>    
       </div>
 `
-}
+};

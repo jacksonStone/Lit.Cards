@@ -5,7 +5,7 @@ function getValueFromCheckbox (e) {
   return e.target.checked
 }
 
-module.exports = {
+export default {
   getValueFromInput,
   getValueFromCheckbox
-}
+};

@@ -10,6 +10,4 @@ function unauthorized (response) {
   return response === 'unauthorized'
 }
 
-exports.ok = ok
-exports.badInput = badInput
-exports.unauthorized = unauthorized
+export { ok, badInput, unauthorized };

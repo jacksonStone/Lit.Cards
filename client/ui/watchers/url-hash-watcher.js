@@ -1,4 +1,4 @@
-let { hash } = require('abstract/url');
+import { hash } from 'abstract/url';
 let lastSeenHash = hash()
 function listenForHashChange () {
   window.onhashchange = () => {
@@ -11,4 +11,4 @@ function listenForHashChange () {
   }
 }
 
-module.exports = listenForHashChange
+export default listenForHashChange;

@@ -1,4 +1,4 @@
-let { handleTransaction } = require('../routes/api/transaction')
+import { handleTransaction } from '../routes/api/transaction';
 
 function str2ab(str) {
   var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
@@ -8,8 +8,9 @@ function str2ab(str) {
   }
   return buf;
 }
-module.exports.handleTransaction = (transaction)=> {
+
+export const handleTransaction = (transaction)=> {
     //We try this because safari cannot send utf-16 strings, but reformats them to utf-8s
     let arrayBufferTransaction = str2ab(JSON.stringify(transaction));
     return handleTransaction(arrayBufferTransaction);
-}
+};

@@ -1,4 +1,4 @@
-let { jcompress, jdecompress } = require('shared/compress')
+import { jcompress, jdecompress } from 'shared/compress';
 
 function get (key) {
   return window.localStorage.getItem(key)
@@ -26,9 +26,9 @@ function retrieveStateStored () {
   window.lc._rerender()
 }
 
-module.exports = {
+export default {
   get,
   set,
   storeAllState,
   retrieveStateStored
-}
+};

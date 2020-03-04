@@ -142,9 +142,9 @@ function addImageDataToImage (data, targetId) {
   output.setAttribute('src', data)
 }
 
-module.exports = {
+export default {
   getFileData,
   renderPreviewImageWithRawData,
   addImageDataToImage,
   getImageAtDifferentSize
-}
+};

@@ -1,14 +1,6 @@
-let { listenForKey, resetAllKeyBindings, resetKey } = require('../../../browser-abstractions/keyboard')
-let {
-  previousCard,
-  nextCard
-} = require('logic/deck.ts')
-let {
-  flipCard,
-  markWrong,
-  markRight,
-  recordTheyAreTabNavigating
-} = require('../../../business-logic/study')
+import { listenForKey, resetAllKeyBindings, resetKey } from '../../../browser-abstractions/keyboard';
+import { previousCard, nextCard } from 'logic/deck.ts';
+import { flipCard, markWrong, markRight, recordTheyAreTabNavigating } from '../../../business-logic/study';
 
 function initKeyCommands () {
   resetAllKeyBindings()
@@ -28,8 +20,8 @@ function showingQuestionKeyBindings () {
   resetKey('ArrowRight')
 }
 
-module.exports = {
+export default {
   initKeyCommands,
   showingAnswerKeyBindings,
   showingQuestionKeyBindings
-}
+};

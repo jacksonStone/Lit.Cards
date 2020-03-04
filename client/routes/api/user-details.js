@@ -1,5 +1,5 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.getUserDetails = () => {
+export const getUserDetails = () => {
   return api('user/me')
-}
+};

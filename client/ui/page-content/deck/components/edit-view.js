@@ -1,12 +1,12 @@
-let { html } = require('lit')
-let editor = require('./card-editor')
-let {fullCardNavigation, cardCounter, upArrow, downArrow} = require('./side-numbers')
-let sidenav = require('./sidenav')
-let nameEdit = require('./name-edit')
-let darkmodeCheckbox = require('component/darkmode-checkbox')
-let checkboxHolder = require('component/checkbox-holder')
+import { html } from 'lit';
+import editor from './card-editor';
+import { fullCardNavigation, cardCounter, upArrow, downArrow } from './side-numbers';
+import sidenav from './sidenav';
+import nameEdit from './name-edit';
+import darkmodeCheckbox from 'component/darkmode-checkbox';
+import checkboxHolder from 'component/checkbox-holder';
 
-module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => {
+export default (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => {
     // 480
     const width = window.lc.getData('screen.width');
    return html`
@@ -31,4 +31,4 @@ module.exports = (cardId, cards, addImage, hasImage, showingAnswer, fontSize) =>
     </div>
     ${checkboxHolder([darkmodeCheckbox()])}
     `
-}
+};

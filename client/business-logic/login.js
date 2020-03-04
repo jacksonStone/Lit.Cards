@@ -1,12 +1,12 @@
-let { login, logout, verifyPasswordReset, resetPassword, signup, resendEmailVerification, verifyEmail, changePassword } = require('../routes/api/login')
-let { fetchUserNoCache, clearUserData } = require('./user')
-let code = require('../routes/api/response-codes')
-let pages = require('../routes/navigation/pages')
-let { getParam } = require('abstract/url')
-let { emailIsValid } = require('shared/email-address-validation')
-let { login: loginPage, signup: signupPage } = require('../routes/navigation/pages')
+import { login, logout, verifyPasswordReset, resetPassword, signup, resendEmailVerification, verifyEmail, changePassword } from '../routes/api/login';
+import { fetchUserNoCache, clearUserData } from './user';
+import code from '../routes/api/response-codes';
+import pages from '../routes/navigation/pages';
+import { getParam } from 'abstract/url';
+import { emailIsValid } from 'shared/email-address-validation';
+import { login as loginPage, signup as signupPage } from '../routes/navigation/pages';
 
-exports.login = async (userEmail, password) => {
+export const login = async (userEmail, password) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
   if (!userEmail || !password) {
@@ -25,9 +25,9 @@ exports.login = async (userEmail, password) => {
     return
   }
   recordError('abstract.loginFailed', true)
-}
+};
 
-exports.resetPassword = async (userEmail) => {
+export const resetPassword = async (userEmail) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
   if (!userEmail) {
@@ -39,9 +39,9 @@ exports.resetPassword = async (userEmail) => {
     return
   }
   return resetPassword(userEmail)
-}
+};
 
-exports.verifyPasswordReset = async (password, repeatPassword) => {
+export const verifyPasswordReset = async (password, repeatPassword) => {
   let recordError = window.lc.recordError
   window.lc.resetErrors() // make sure we have no field failures hanging around
 
@@ -66,16 +66,17 @@ exports.verifyPasswordReset = async (password, repeatPassword) => {
   if (code.ok(result)) {
     return pages.home()
   }
-}
+};
 
-exports.navigateToLoginPage = async () => {
+export const navigateToLoginPage = async () => {
   return loginPage()
-}
-exports.navigateToSignupPage = async () => {
-  return signupPage()
-}
+};
 
-exports.signup = async (userEmail, password, repeatPassword, displayName) => {
+export const navigateToSignupPage = async () => {
+  return signupPage()
+};
+
+export const signup = async (userEmail, password, repeatPassword, displayName) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
 
@@ -109,8 +110,9 @@ exports.signup = async (userEmail, password, repeatPassword, displayName) => {
     return pages.home()
   }
   recordError('abstract.usernameTaken', true)
-}
-exports.changePassword = async (currentPassword, password, repeatPassword) => {
+};
+
+export const changePassword = async (currentPassword, password, repeatPassword) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   window.lc.setData('updatedPassword', false)
   let recordError = window.lc.recordError
@@ -142,21 +144,22 @@ exports.changePassword = async (currentPassword, password, repeatPassword) => {
   if (result === 'wrong password') {
     recordError('abstract.wrongPassword', true)
   }
-}
+};
 
-exports.logout = async () => {
+export const logout = async () => {
   await logout()
   clearUserData()
   pages.landingPage()
-}
+};
 
-exports.verifyEmail = async () => {
+export const verifyEmail = async () => {
   let token = getParam('verification')
   if (!token) {
     return
   }
   await verifyEmail(token)
-}
-exports.resendEmailVerification = async () => {
+};
+
+export const resendEmailVerification = async () => {
   await resendEmailVerification()
-}
+};

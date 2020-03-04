@@ -28,4 +28,4 @@ function request (url, body, options = {}) {
   })
 }
 
-exports.request = request
+export { request };

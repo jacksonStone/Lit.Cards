@@ -1,7 +1,4 @@
-let {
-  getParam,
-  onPage
-} = require('../url')
+import { getParam, onPage } from '../url';
 
 // Window href and search are populated in test-setup
 describe('abstract/url', () => {
