@@ -1,5 +1,5 @@
-let { getUserDetails, setDarkMode, setMiscDetails } = require('../routes/api/user-details')
-let { recordAndSetDarkMode } = require('../browser-abstractions/darkmode')
+import { getUserDetails } from '../routes/api/user-details'
+import { recordAndSetDarkMode } from '../browser-abstractions/darkmode'
 let userDetails
 
 async function fetchUser () {
@@ -22,29 +22,15 @@ function fetchUserNoCache () {
   clearUserData()
   return fetchUser()
 }
-function updateDarkMode (darkMode) {
-  return setDarkMode(darkMode)
-}
-function updateHideProgress (value) {
-  return updateMiscUserConfig('hideProgress', value)
-}
-function updateHideNavigation (value) {
-  return updateMiscUserConfig('hideNavigation', value)
-}
 
-function updateMiscUserConfig (key, value) {
-  return setMiscDetails({ [key]: value })
-}
 function user () {
   return userDetails
 }
+const getUser = user
 
-module.exports = {
+export {
   fetchUser,
   fetchUserNoCache,
   clearUserData,
-  updateDarkMode,
-  updateHideNavigation,
-  updateHideProgress,
-  getUser: user
+  getUser
 }

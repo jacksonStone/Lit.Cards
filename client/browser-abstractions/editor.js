@@ -1,9 +1,9 @@
-let { $ } = require('./$')
-let pell = require('pell')
+import { $ } from './$'
+import pell from 'pell'
+import createDOMPurify from 'dompurify'
+import allowedTags from 'shared/allowedHTMLTags'
 let elementId = 'editor'
 let MAX_FONT_SIZE = 5
-let createDOMPurify = require('dompurify')
-let allowedTags = require('shared/allowedHTMLTags')
 let santizationConfig = { ALLOWED_TAGS: allowedTags }
 
 let sanitizer
@@ -127,8 +127,4 @@ function getTextOnly (content) {
   return wrapper.innerText
 }
 
-exports.initEditor = initEditor
-exports.setEditorData = setEditorData
-exports.getFontSize = getFontSize
-exports.getTextOnly = getTextOnly
-exports.childrenHaveTooMuchSpace = childrenHaveTooMuchSpace
+export { initEditor, setEditorData, getFontSize, getTextOnly, childrenHaveTooMuchSpace }

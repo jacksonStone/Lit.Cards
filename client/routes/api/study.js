@@ -1,17 +1,21 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.getStudySessionsAndBorrowedDecks = () => {
+export const getStudySessionsAndBorrowedDecks = () => {
   return api('study/me')
-}
-exports.getStudySession = (id) => {
+};
+
+export const getStudySession = (id) => {
   return api(`study/${id}`)
-}
-exports.getStudySessionForDeck = (deckId) => {
+};
+
+export const getStudySessionForDeck = (deckId) => {
   return api(`study/deck/${deckId}`)
-}
-exports.createStudySession = (deck, startingState) => {
+};
+
+export const createStudySession = (deck, startingState) => {
   return api('study/create', { deck, startingState })
-}
-exports.deleteStudySession = (id) => {
+};
+
+export const deleteStudySession = (id) => {
   return api('study/delete', { id })
-}
+};

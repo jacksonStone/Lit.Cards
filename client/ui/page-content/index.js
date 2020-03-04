@@ -1,5 +1,6 @@
-let { html } = require('lit')
-module.exports = () => {
+import { html } from 'lit';
+
+export default () => {
     return html`<div class="grid-container" style="text-align: center;">
     <div style="max-width: 650px; margin: 0 auto;">
 <div class="below-750">
@@ -115,7 +116,7 @@ module.exports = () => {
                 
     </div>
 `
-}
+};
 
 function cardFlipper(url, description, backContent) {
     return html` <div class="flip-container">

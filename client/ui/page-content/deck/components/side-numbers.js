@@ -1,6 +1,6 @@
 
-let { html } = require('lit')
-let { nextCard, previousCard } = require('logic/deck')
+import { html } from 'lit';
+import { nextCard, previousCard } from 'logic/deck';
 let fullCardNavigation = (currentCardId, cards) => {
   if (!cards) return
   const width = window.lc.getData('screen.width');
@@ -41,4 +41,4 @@ let cardCounter = (currentCardId, cards) => {
   ">${(index).toLocaleString()}<span style="font-size: 20px"> of ${cards.length.toLocaleString()}</span></h1></div>`
 }
 
-module.exports = {fullCardNavigation, cardCounter, upArrow, downArrow}
+export {fullCardNavigation, cardCounter, upArrow, downArrow};

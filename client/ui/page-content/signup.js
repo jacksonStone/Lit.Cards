@@ -1,14 +1,15 @@
-let { html } = require('lit')
-let { grabFormData } = require('../../browser-abstractions/grab-form')
-let { signup } = require('../../business-logic/login')
-let errorableInput = require('../shared-components/errorable-input')
-let errorBanner = require('../shared-components/error-banner')
+import { html } from 'lit';
+import { grabFormData } from '../../browser-abstractions/grab-form';
+import { signup } from '../../business-logic/login';
+import errorableInput from '../shared-components/errorable-input';
+import errorBanner from '../shared-components/error-banner';
 function signupBtn (event) {
   event.preventDefault()
   let signupData = grabFormData('#signup')
   return signup(signupData.email, signupData.password, signupData['password-repeat'], signupData['display-name'])
 }
-module.exports = (data) => {
+
+export default (data) => {
   let { fields: ef, abstract: ea } = data.errors
   return html`
     <div class="grid-container">
@@ -33,4 +34,4 @@ module.exports = (data) => {
     </div>
     </div> 
 `
-}
+};

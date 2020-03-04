@@ -1,6 +1,6 @@
-let { html } = require('lit')
+import { html } from 'lit';
 
-module.exports = (error, errorText, name, label, type = 'text', length) => {
+export default (error, errorText, name, label, type = 'text', length) => {
   if (error) {
     return html`
       <div class="usa-form-group usa-form-group--error">
@@ -12,4 +12,4 @@ module.exports = (error, errorText, name, label, type = 'text', length) => {
   return html`
       <label class="usa-label" for="${name}">${label}</label>
       <input class="usa-input" id="${name}" name="${name}" type="${type}" required aria-required="true">`
-}
+};

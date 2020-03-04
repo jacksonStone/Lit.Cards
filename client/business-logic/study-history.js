@@ -1,4 +1,4 @@
-let { getStudyhistory } = require('../routes/api/study-history')
+import { getStudyhistory } from '../routes/api/study-history'
 
 async function fetchStudyHistory () {
   let deckHistory = await getStudyhistory()
@@ -13,6 +13,6 @@ async function fetchStudyHistory () {
   return deckHistory
 }
 
-module.exports = {
+export {
   fetchStudyHistory
 }

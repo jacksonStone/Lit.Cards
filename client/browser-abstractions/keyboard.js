@@ -93,7 +93,7 @@ if (process.env.NODE_ENV !== 'test') {
   window.document.addEventListener('keydown', _handleKeyDown)
 }
 
-module.exports = {
+export {
   listenForKey,
   listenForKeyGlobal,
   resetKey,

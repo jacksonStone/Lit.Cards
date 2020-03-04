@@ -1,7 +1,7 @@
-let { html } = require('lit')
-let { simulateKey } = require('abstract/keyboard')
-let { removeCard, removeImage } = require('logic/deck')
-let { popupComponent, showPopup } = require('./card-image-popup')
+import { html } from 'lit';
+import { simulateKey } from 'abstract/keyboard';
+import { removeCard, removeImage } from 'logic/deck';
+import { popupComponent, showPopup } from './card-image-popup';
 let focusingOnTextProp = '_focusingOnText'
 
 let spaceAction = () => {
@@ -51,7 +51,7 @@ function alertCantRemove () {
   window.alert('You cannot delete any cards while they are being studied, if it\'s the last card, or if the deck has been made public')
 }
 
-module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
+export default (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
   const width = window.lc.getData('screen.width');
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
@@ -133,4 +133,4 @@ module.exports = (addImageAction, hasImage, showingAnswer, currentfontSize = 1) 
         </div>    
       </div>
 `
-}
+};

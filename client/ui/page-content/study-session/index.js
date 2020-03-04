@@ -1,8 +1,8 @@
-let { html } = require('lit')
-let studyView = require('./components/study-view')
-require('./key-commands')
-let { hasImage, getPresentFontSize } = require('logic/deck')
+import { html } from 'lit';
+import studyView from './components/study-view';
+import './key-commands';
+import { hasImage, getPresentFontSize } from 'logic/deck';
 
-module.exports = (data) => html`
+export default (data) => html`
      ${studyView(data.activeCardId, data.orderedCards, hasImage(), data.showingAnswer, getPresentFontSize())}
-`
+`;

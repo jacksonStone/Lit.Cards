@@ -1,3 +1,3 @@
-let { renderPage } = require('../ui/globals')
-let content = require('../ui/page-content/verify-password-reset')
+import { renderPage } from '../ui/globals'
+import content from '../ui/page-content/verify-password-reset'
 renderPage(content)

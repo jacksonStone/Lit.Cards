@@ -1,4 +1,4 @@
-let { request } = require('../../browser-abstractions/request')
+import { request } from '../../browser-abstractions/request';
 
 async function api (url, body, options = {}) {
   if(!body) {
@@ -12,6 +12,6 @@ async function api (url, body, options = {}) {
     }
   }
   return request('/api/' + url, body, options)
-};
+}
 
-exports.api = api
+export { api };

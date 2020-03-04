@@ -1,13 +1,13 @@
-require('uswds')
-let { render } = require('lit-html/lit-html')
-let { generateId } = require('../../shared/id-generator')
-let persistentDataChanges = require('./watchers/persistent-data-changes')
-let userInput = require('./watchers/user-input')
-let urlHashWatcher = require('./watchers/url-hash-watcher')
-let windowResizeWatcher = require('./watchers/window-resize')
-let appHeader = require('./shared-components/app-header')
-let { initDebug, deactivateDebug } = require('./debug-global')
-let { each } = require('utils')
+import 'uswds'
+import { render } from 'lit-html/lit-html'
+import { generateId } from 'shared/id-generator'
+import persistentDataChanges from './watchers/persistent-data-changes'
+import userInput from './watchers/user-input'
+import urlHashWatcher from './watchers/url-hash-watcher'
+import windowResizeWatcher from './watchers/window-resize'
+import appHeader from './shared-components/app-header'
+import { initDebug, deactivateDebug } from './debug-global'
+import { each } from 'utils'
 let defaultErrorObject = {
   fields: {},
   abstract: {}
@@ -182,11 +182,8 @@ function recordCurrentPage (pageContentFunc) {
   lc._presentPage = pageContentFunc
 }
 
-exports.renderPage = renderPage
-
-exports.makeTesting = () => {
+export const makeTesting = () => {
   lc.test = true
 }
 
-exports.initLC = initLC
-exports.resetData = resetData
+export { renderPage, initLC, resetData }

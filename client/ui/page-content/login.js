@@ -1,9 +1,9 @@
-let { html } = require('lit')
-let { grabFormData } = require('../../browser-abstractions/grab-form')
-let { navigateToSignupPage } = require('../../business-logic/login')
-let errorableInput = require('../shared-components/errorable-input')
-let errorBanner = require('../shared-components/error-banner')
-let { login } = require('../../business-logic/login')
+import { html } from 'lit';
+import { grabFormData } from '../../browser-abstractions/grab-form';
+import { navigateToSignupPage } from '../../business-logic/login';
+import errorableInput from '../shared-components/errorable-input';
+import errorBanner from '../shared-components/error-banner';
+import { login } from '../../business-logic/login';
 let loginBtn = (event) => {
   event.preventDefault()
   let values = grabFormData('#login')
@@ -40,7 +40,7 @@ function passwordField(error) {
       <input class="usa-input" id="password" name="password" type="password" required aria-required="true">`
 }
 
-module.exports = (data) => {
+export default (data) => {
   // TODO:: Add weird error message that
   // Changes based on how many failed logins
   let { fields: ef, abstract: ea } = data.errors
@@ -64,4 +64,4 @@ module.exports = (data) => {
     </div>
     </div> 
 `
-}
+};

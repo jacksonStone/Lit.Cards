@@ -1,9 +1,9 @@
 
-let { html } = require('lit')
-let { onExactPage, onPage } = require('abstract/url')
-let { navigateToLoginPage, logout } = require('logic/login')
-let { navigateToSettingsPage } = require('logic/settings')
-let { resendEmailVerification } = require('logic/login')
+import { html } from 'lit';
+import { onExactPage, onPage } from 'abstract/url';
+import { navigateToLoginPage, logout } from 'logic/login';
+import { navigateToSettingsPage } from 'logic/settings';
+import { resendEmailVerification } from 'logic/login';
 let shouldHideNavigation = () => {
   const user = window.lc.getData('user') || {};
   //TODO:: Swap true for on study page
@@ -11,7 +11,8 @@ let shouldHideNavigation = () => {
     return true;
   }
 }
-module.exports = (userInfo) => {
+
+export default (userInfo) => {
   if(shouldHideNavigation()) {
     return html`<div style="margin-top: 108px;"></div>`;
   }
@@ -29,7 +30,7 @@ module.exports = (userInfo) => {
             <div id="email-verification-bar" style="position: relative"><div style="position:absolute; width: 100%">${emailVerificationLink()}</div></div>
 
      </div>`
-}
+};
 
 function waitingOnEmailVerification() {
   let user = window.lc.getData('user')

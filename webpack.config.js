@@ -40,7 +40,7 @@ module.exports = {
       'utils': path.join(__dirname, 'client/utils'),
       'component': path.join(__dirname, 'client/ui/shared-components'),
       'abstract': path.join(__dirname, 'client/browser-abstractions'),
-      'shared': path.join(__dirname, 'shared')
+      'shared': path.join(__dirname, 'shared-client')
     }
   },
   plugins

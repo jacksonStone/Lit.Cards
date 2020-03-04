@@ -24,12 +24,12 @@ function listenToTextSelection () {
     window.lc.setData(propName, isFocusingOnText)
 }
 
-module.exports = () => {
+export default () => {
   window.document.addEventListener('focusin', (e) => {
     listenToTextSelection()
   })
   window.document.addEventListener('focusout', (e) => {
     listenToTextSelection()
   })
-}
+};
 

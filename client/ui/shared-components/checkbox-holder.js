@@ -1,7 +1,8 @@
-let { html } = require('lit')
+import { html } from 'lit';
 let focusingOnTextProp = '_focusingOnText'
+
 //You are working on this
-module.exports = (checkboxes, right = '10px') => {
+export default (checkboxes, right = '10px') => {
   let keyBoardInUse = window.lc.getData(focusingOnTextProp);
   let isMobile = window.lc.getData('screen.width') <= 750;
   if(keyBoardInUse && isMobile) return html``
@@ -20,4 +21,4 @@ module.exports = (checkboxes, right = '10px') => {
   </div>
       </div>
 `
-}
+};

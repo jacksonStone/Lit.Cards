@@ -1,12 +1,20 @@
-let { login, logout, verifyPasswordReset, resetPassword, signup, resendEmailVerification, verifyEmail, changePassword } = require('../routes/api/login')
-let { fetchUserNoCache, clearUserData } = require('./user')
-let code = require('../routes/api/response-codes')
-let pages = require('../routes/navigation/pages')
-let { getParam } = require('abstract/url')
-let { emailIsValid } = require('shared/email-address-validation')
-let { login: loginPage, signup: signupPage } = require('../routes/navigation/pages')
+import {
+  login as loginAPI,
+  logout as logoutAPI,
+  verifyPasswordReset as verifyPasswordResetAPI,
+  resetPassword as resetPasswordAPI,
+  signup as signupAPI,
+  resendEmailVerification as resendEmailVerificationAPI,
+  verifyEmail as verifyEmailAPI,
+  changePassword as changePasswordAPI
+} from '../routes/api/login'
+import { fetchUserNoCache, clearUserData } from './user'
+import code from '../routes/api/response-codes'
+import pages, { login as loginPage, signup as signupPage } from '../routes/navigation/pages'
+import { getParam } from 'abstract/url'
+import { emailIsValid } from 'shared/email-address-validation'
 
-exports.login = async (userEmail, password) => {
+export const login = async (userEmail, password) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
   if (!userEmail || !password) {
@@ -18,7 +26,7 @@ exports.login = async (userEmail, password) => {
     }
     return
   }
-  let result = await login(userEmail, password)
+  let result = await loginAPI(userEmail, password)
   await fetchUserNoCache()
   if (code.ok(result)) {
     pages.home()
@@ -27,7 +35,7 @@ exports.login = async (userEmail, password) => {
   recordError('abstract.loginFailed', true)
 }
 
-exports.resetPassword = async (userEmail) => {
+export const resetPassword = async (userEmail) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
   if (!userEmail) {
@@ -38,10 +46,10 @@ exports.resetPassword = async (userEmail) => {
     recordError('abstract.badEmail', true)
     return
   }
-  return resetPassword(userEmail)
+  return resetPasswordAPI(userEmail)
 }
 
-exports.verifyPasswordReset = async (password, repeatPassword) => {
+export const verifyPasswordReset = async (password, repeatPassword) => {
   let recordError = window.lc.recordError
   window.lc.resetErrors() // make sure we have no field failures hanging around
 
@@ -61,21 +69,22 @@ exports.verifyPasswordReset = async (password, repeatPassword) => {
   // TODO:: Maybe redirect them to a different page that
   // doesn't have it in the URL to prevent leaking on referer if they leave page
   // before finishing reset
-  let result = await verifyPasswordReset(getParam('user'), getParam('token'), password)
+  let result = await verifyPasswordResetAPI(getParam('user'), getParam('token'), password)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()
   }
 }
 
-exports.navigateToLoginPage = async () => {
+export const navigateToLoginPage = async () => {
   return loginPage()
 }
-exports.navigateToSignupPage = async () => {
+
+export const navigateToSignupPage = async () => {
   return signupPage()
 }
 
-exports.signup = async (userEmail, password, repeatPassword, displayName) => {
+export const signup = async (userEmail, password, repeatPassword, displayName) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   let recordError = window.lc.recordError
 
@@ -103,14 +112,15 @@ exports.signup = async (userEmail, password, repeatPassword, displayName) => {
     return
   }
 
-  let result = await signup(userEmail, password, displayName)
+  let result = await signupAPI(userEmail, password, displayName)
   await fetchUserNoCache()
   if (code.ok(result)) {
     return pages.home()
   }
   recordError('abstract.usernameTaken', true)
 }
-exports.changePassword = async (currentPassword, password, repeatPassword) => {
+
+export const changePassword = async (currentPassword, password, repeatPassword) => {
   window.lc.resetErrors() // make sure we have no field failures hanging around
   window.lc.setData('updatedPassword', false)
   let recordError = window.lc.recordError
@@ -132,7 +142,7 @@ exports.changePassword = async (currentPassword, password, repeatPassword) => {
     return
   }
 
-  let result = await changePassword(currentPassword, password)
+  let result = await changePasswordAPI(currentPassword, password)
   if (code.ok(result)) {
     return window.lc.setData('updatedPassword', true)
   }
@@ -144,19 +154,20 @@ exports.changePassword = async (currentPassword, password, repeatPassword) => {
   }
 }
 
-exports.logout = async () => {
-  await logout()
+export const logout = async () => {
+  await logoutAPI()
   clearUserData()
   pages.landingPage()
 }
 
-exports.verifyEmail = async () => {
+export const verifyEmail = async () => {
   let token = getParam('verification')
   if (!token) {
     return
   }
-  await verifyEmail(token)
+  await verifyEmailAPI(token)
 }
-exports.resendEmailVerification = async () => {
-  await resendEmailVerification()
+
+export const resendEmailVerification = async () => {
+  await resendEmailVerificationAPI()
 }

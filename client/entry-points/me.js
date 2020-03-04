@@ -1,13 +1,13 @@
-let { renderPage } = require('../ui/globals')
-let content = require('../ui/page-content/me')
-let { fetchUser } = require('../business-logic/user')
-let { getDecks } = require('../business-logic/decks')
-let { getStudySessionsAndBorrowedDecks } = require('../business-logic/study')
-let { fetchStudyHistory } = require('../business-logic/study-history')
-let { verifyEmail } = require('logic/login')
-let { defaultDarkMode } = require('../browser-abstractions/darkmode')
-let { getParam } = require('../browser-abstractions/url')
-let { keyBy } = require('utils')
+import { renderPage } from '../ui/globals'
+import content from '../ui/page-content/me'
+import { fetchUser } from '../business-logic/user'
+import { getDecks } from '../business-logic/decks'
+import { getStudySessionsAndBorrowedDecks } from '../business-logic/study'
+import { fetchStudyHistory } from '../business-logic/study-history'
+import { verifyEmail } from 'logic/login'
+import { defaultDarkMode } from '../browser-abstractions/darkmode'
+import { getParam } from '../browser-abstractions/url'
+import { keyBy } from 'utils'
 renderPage(content)
 ;(async () => {
   // Pull from userInfo

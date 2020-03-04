@@ -1,5 +1,5 @@
-let { api } = require('./api-request')
+import { api } from './api-request';
 
-exports.getStudyhistory = () => {
+export const getStudyhistory = () => {
   return api('study-history/me')
-}
+};

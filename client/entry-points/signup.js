@@ -1,3 +1,3 @@
-let { renderPage } = require('../ui/globals')
-let content = require('../ui/page-content/signup')
+import { renderPage } from '../ui/globals'
+import content from '../ui/page-content/signup'
 renderPage(content)

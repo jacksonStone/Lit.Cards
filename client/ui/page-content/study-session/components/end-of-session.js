@@ -1,12 +1,12 @@
-let { html } = require('lit')
-let { getNumberWrong, resetSession, deleteCurrentSession, studyWrongAnswers } = require('../../../../business-logic/study')
+import { html } from 'lit';
+import { getNumberWrong, resetSession, deleteCurrentSession, studyWrongAnswers } from '../../../../business-logic/study';
 
-module.exports = () => {
+export default () => {
   if (getNumberWrong()) {
     return someWrong()
   }
   return noneWrong()
-}
+};
 
 function oneClick (clickHandler) {
   let clicked = false

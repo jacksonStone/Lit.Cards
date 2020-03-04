@@ -1,13 +1,14 @@
-let { deck: deckPage } = require('../routes/navigation/pages')
-let { getParam } = require('abstract/url')
-let { getDeck, createDeck, deleteDeck, makePublic } = require('../routes/api/decks')
-let { reject } = require('utils')
-let { setEditorData, getFontSize, childrenHaveTooMuchSpace } = require('abstract/editor')
-let { getCardBody } = require('./card-bodies')
-let { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } = require('abstract/file-upload')
-let { runNextRender } = require('abstract/rendering-meta')
-let { compress } = require('shared/compress')
-let { intToChar, charToInt } = require('shared/char-encoding')
+import { deck as deckPage } from '../routes/navigation/pages'
+import { getParam } from 'abstract/url'
+import { getDeck as getDecekAPI, createDeck as createDeckAPI, deleteDeck as deleteDeckAPI, makePublic } from '../routes/api/decks'
+import { reject } from 'utils'
+import { setEditorData, getFontSize, childrenHaveTooMuchSpace } from 'abstract/editor'
+import { getCardBody } from './card-bodies'
+import { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } from 'abstract/file-upload'
+import { runNextRender } from 'abstract/rendering-meta'
+import { LZString } from 'shared/compress'
+import { intToChar, charToInt } from 'shared/char-encoding'
+const compress = LZString.compress
 
 function navigateToDeckPage (deckId) {
   return deckPage({ deck: deckId })
@@ -22,15 +23,15 @@ async function makeDeckPublic (deckId) {
 }
 let getDeckLogic = async (deckId) => {
   deckId = deckId || getParam('deck')
-  return JSON.parse(await getDeck(deckId))
+  return JSON.parse(await getDecekAPI(deckId))
 }
 let createDeckLogic = async (name) => {
-  let newDeck = JSON.parse(await createDeck(name))
+  let newDeck = JSON.parse(await createDeckAPI(name))
   navigateToDeckPage(newDeck.id)
 }
 
 let deleteDeckLogic = async (id) => {
-  await deleteDeck(id)
+  await deleteDeckAPI(id)
   let decks = window.lc.getData('decks')
   let studyHistory = window.lc.getData('studyHistory')
   let decksWithoutDeleted = reject(decks, { id })
@@ -257,12 +258,12 @@ async function updateCardBody (id, cards) {
   if (!currentCardBody) {
     refreshEditor('loading...')
     window.lc.setData('_cardBodyLoading', true, false)
-    try{
+    try {
       await getCardBody(id, undefined, cards)
       window.lc.setData('_cardBodyLoading', false)
       refreshEditor()
-    } catch(e) {
-      refreshEditor('Failed to load card');
+    } catch (e) {
+      refreshEditor('Failed to load card')
       window.lc.setData('_cardBodyLoading', false)
       refreshEditor()
     }
@@ -312,12 +313,14 @@ function _getCurrentCardIndex () {
   }
   return currentIndex
 }
-
-module.exports = {
+const getDeck = getDeckLogic
+const deleteDeck = deleteDeckLogic
+const createDeck = createDeckLogic
+export {
   navigateToDeckPage,
-  getDeck: getDeckLogic,
-  deleteDeck: deleteDeckLogic,
-  createDeck: createDeckLogic,
+  getDeck,
+  deleteDeck,
+  createDeck,
   makeDeckPublic,
   removeImage,
   pickImage,
