@@ -1,5 +1,5 @@
-let { $ } = require('./$')
-let { get, set } = require('./browser-storage')
+import { $ } from './$'
+import { get, set } from './browser-storage'
 function _setDarkMode (shouldBeDark) {
   if (shouldBeDark) {
     $('html').className = 'darkmode'
@@ -18,7 +18,8 @@ function recordAndSetDarkMode (value) {
   set('darkmode', value)
   _setDarkMode(value)
 }
-module.exports = {
+
+export {
   recordAndSetDarkMode,
   defaultDarkMode
 }

@@ -1,4 +1,4 @@
-let { redirect } = require('../../browser-abstractions/redirect')
+import { redirect } from '../../browser-abstractions/redirect';
 function setUpRoute (route) {
   route = '/site/' + route
   let routeFunction = function (params) {
@@ -33,12 +33,22 @@ landingPage.getRouteAsString = function () {
   return '/'
 }
 
-// Pages
-exports.landingPage = landingPage
-exports.home = setUpRoute('me')
-exports.decks = setUpRoute('me/decks')
-exports.deck = setUpRoute('me/deck')
-exports.study = setUpRoute('me/study')
-exports.settings = setUpRoute('me/settings')
-exports.login = setUpRoute('login')
-exports.signup = setUpRoute('signup')
+export { landingPage };
+export const home = setUpRoute('me');
+export const decks = setUpRoute('me/decks');
+export const deck = setUpRoute('me/deck');
+export const study = setUpRoute('me/study');
+export const settings = setUpRoute('me/settings');
+export const login = setUpRoute('login');
+export const signup = setUpRoute('signup');
+
+export default {
+  landingPage,
+  home,
+  decks,
+  deck,
+  study,
+  settings,
+  login,
+  signup,
+}

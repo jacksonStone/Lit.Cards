@@ -1,7 +1,7 @@
-let { getCardBody } = require('../routes/api/card-bodies')
-let { getParam } = require('../browser-abstractions/url')
-let { decompress } = require('shared/compress')
-let cachedCardBodies = {}
+import { getCardBody as apiGetCardBody } from '../routes/api/card-bodies'
+import { getParam } from '../browser-abstractions/url'
+import { LZString } from 'shared/compress'
+const decompress = LZString.decompress
 function getDefaultDeck (deck) {
   if (!deck) {
     deck = getParam('deck')
@@ -14,8 +14,9 @@ function getDefaultDeck (deck) {
   }
   return deck
 }
-let inProgressRequests = {};
-exports.getCardBody = async (card, deck, visibleCards) => {
+let inProgressRequests = {}
+
+export const getCardBody = async (card, deck, visibleCards) => {
   if (!card) {
     return
   }
@@ -36,18 +37,18 @@ exports.getCardBody = async (card, deck, visibleCards) => {
     }
   }
   deck = getDefaultDeck(deck)
-  let targetCard = card;
+  let targetCard = card
   // don't wait on other fetches
   return new Promise(async (resolve, reject) => {
     cardsToFetch.forEach(async (card) => {
-      let cardBodyDataId = `cardBody.${card}`;
-      let cachedCard = window.lc.getData(cardBodyDataId);
+      let cardBodyDataId = `cardBody.${card}`
+      let cachedCard = window.lc.getData(cardBodyDataId)
       try {
         if (!cachedCard && !inProgressRequests[cardBodyDataId]) {
           // No cache
-          inProgressRequests[cardBodyDataId] = getCardBody(deck, card)
-          let cardData = await inProgressRequests[cardBodyDataId];
-          delete inProgressRequests[cardBodyDataId];
+          inProgressRequests[cardBodyDataId] = apiGetCardBody(deck, card)
+          let cardData = await inProgressRequests[cardBodyDataId]
+          delete inProgressRequests[cardBodyDataId]
           let cardDataAsJSON = JSON.parse(cardData)
           if (cardDataAsJSON) {
             cardDataAsJSON.front = cardDataAsJSON.front || ''
@@ -62,10 +63,10 @@ exports.getCardBody = async (card, deck, visibleCards) => {
             }
           }
           if (card === targetCard) {
-            window.lc.setData(cardBodyDataId, cardDataAsJSON);
+            window.lc.setData(cardBodyDataId, cardDataAsJSON)
             resolve(JSON.parse(JSON.stringify(cardDataAsJSON)))
           } else {
-            window.lc.setData(cardBodyDataId, cardDataAsJSON, false);
+            window.lc.setData(cardBodyDataId, cardDataAsJSON, false)
           }
         } else if (inProgressRequests[cardBodyDataId]) {
           return inProgressRequests[cardBodyDataId]
@@ -79,14 +80,14 @@ exports.getCardBody = async (card, deck, visibleCards) => {
   })
 }
 
-exports.getCardBodyForEmptyState = (newId) => {
+export const getCardBodyForEmptyState = (newId) => {
   let emptyValue = { id: newId, isNew: true, front: '', back: '', deck: getDefaultDeck() }
   // Record we made this on the fly
   window.lc.setPersistent(`cardBody.${newId}`, emptyValue)
   return emptyValue
 }
 
-exports.persistCardBodyChange = (cardBody, key, value) => {
+export const persistCardBodyChange = (cardBody, key, value) => {
   let changeCardBodyId = getCardBodyChangeId(cardBody)
   let changePath = `${changeCardBodyId}.${key}`
   window.lc.setPersistent(changePath, value)
@@ -96,6 +97,7 @@ exports.persistCardBodyChange = (cardBody, key, value) => {
     window.lc.setPersistent(deckPath, getDefaultDeck())
   }
 }
+
 function getCardBodyChangeId (cardBody) {
   return `cardBody.${cardBody.id}`
 }

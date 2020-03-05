@@ -43,7 +43,8 @@ let hash = () => {
   if (!hash) return ''
   return hash.substring(1).split('?')[0]
 }
-module.exports = {
+
+export {
   hash,
   getParam,
   onPage,

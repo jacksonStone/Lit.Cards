@@ -1,6 +1,6 @@
-let { html } = require('lit-html/lit-html')
-let { deleteSession: deleteSessionInServerAndState } = require('logic/study')
-let { makeDeckPublic: makePublicInServerAndState } = require('logic/deck')
+import { html } from 'lit-html/lit-html';
+import { deleteSession as deleteSessionInServerAndState } from 'logic/study';
+import { makeDeckPublic as makePublicInServerAndState } from 'logic/deck';
 function getDeckId () {
   let deck = window.lc.getData('deck')
   return deck && deck.id
@@ -34,8 +34,9 @@ function copySharableLink () {
   textArea.remove();
   alert('Copied sharable link!');
 }
+
 //SHAREABLE LINK IS USED IN TEST SCRIPTS
-module.exports = () => {
+export default () => {
   return html`<ul class="site-sidenav usa-sidenav">
   <li class="usa-sidenav__item" >
     <a href="/site/me"><i class="far fa-arrow-alt-circle-left"></i>&nbsp;&nbsp;Decks</a>
@@ -56,4 +57,4 @@ module.exports = () => {
     <a id="share-deck-button" href="#" @click=${makePublic}><i class="far fa-share-square"></i>&nbsp;&nbsp;Make deck public</a>
   </li>`}
   </ul>`
-}
+};

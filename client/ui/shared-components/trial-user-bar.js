@@ -1,9 +1,10 @@
-let { html } = require('lit')
+import { html } from 'lit';
 let EMPTY = html``;
 function navigateToPlan() {
     location.href = "/site/me/settings#plan-details";
 }
-module.exports = () => {
+
+export default () => {
     const user = window.lc.getData('user');
     if(!user) {
         return EMPTY
@@ -25,4 +26,4 @@ module.exports = () => {
     }
     return html``;
 
-}
+};

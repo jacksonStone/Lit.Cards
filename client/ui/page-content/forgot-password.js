@@ -1,10 +1,9 @@
-let { html } = require('lit')
-let { grabFormData } = require('../../browser-abstractions/grab-form')
-let { navigateToSignupPage } = require('../../business-logic/login')
-let errorableInput = require('../shared-components/errorable-input')
-let errorBanner = require('../shared-components/error-banner')
-
-let { resetPassword } = require('../../business-logic/login')
+import { html } from 'lit';
+import { grabFormData } from '../../browser-abstractions/grab-form';
+import { navigateToSignupPage } from '../../business-logic/login';
+import errorableInput from '../shared-components/errorable-input';
+import errorBanner from '../shared-components/error-banner';
+import { resetPassword } from '../../business-logic/login';
 let resetBtn = async (event) => {
   event.preventDefault()
   let values = grabFormData('#forgot-password')
@@ -13,7 +12,7 @@ let resetBtn = async (event) => {
 }
 
 
-module.exports = (data) => {
+export default (data) => {
   let requestSent = window.lc.getData('requestSent')
   let { fields: ef } = data.errors
 
@@ -34,4 +33,4 @@ module.exports = (data) => {
     </div>
     </div> 
 `
-}
+};

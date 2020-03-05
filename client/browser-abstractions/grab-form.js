@@ -1,5 +1,6 @@
-let { $ } = require('./$')
-exports.grabFormData = function (selector) {
+import { $ } from './$'
+
+export const grabFormData = function (selector) {
   let formNode = $(selector)
   if (!formNode) {
     throw new Error('Bad form selector give')

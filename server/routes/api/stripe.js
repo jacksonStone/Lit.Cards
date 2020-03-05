@@ -3,14 +3,14 @@ let router = express.Router()
 let code = require('../../node-abstractions/response-codes')
 let { UNSAFE_USER, UNSAFE_setMisc, UNSAFE_USER_BY_CUSTOMER_ID } = require('../../buisness-logic/users/userDetails')
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
-const line_items_by_month = require('../../../shared/month-cataloge.js');
+const line_items_by_month = require('../../../shared/month-cataloge');
 let baseURL = process.env.SITE_DOMAIN_ROOT;
 /**
- * 
- * 
- * REMEMBER when testing you will need to run ngrok and make sure Stripe 
+ *
+ *
+ * REMEMBER when testing you will need to run ngrok and make sure Stripe
  * has that configured as the URL for the session.Completed webhook
- * 
+ *
  */
 router.post('/checkout', async (req, res) => {
     if (!req.userEmail) {
@@ -35,7 +35,7 @@ router.post('/checkout', async (req, res) => {
     }
     const current_user = await UNSAFE_USER(req.userEmail);
     if(!current_user.verifiedEmail) {
-        return code.unauthorized(res); 
+        return code.unauthorized(res);
     }
 
     const session_request = {
@@ -68,7 +68,7 @@ router.post('/checkout', async (req, res) => {
 });
 /**
  * This is what confirms a purchase from stripe
- * @param {Stripe Session Object} session 
+ * @param {Stripe Session Object} session
  */
 async function handleCheckoutSession(session) {
     if(!session.customer) {

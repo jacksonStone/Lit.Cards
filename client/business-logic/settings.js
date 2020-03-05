@@ -1,5 +1,5 @@
-let pages = require('../routes/navigation/pages')
+import pages from '../routes/navigation/pages'
 
-exports.navigateToSettingsPage = () => {
+export const navigateToSettingsPage = () => {
   pages.settings()
 }

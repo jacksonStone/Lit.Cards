@@ -1,6 +1,6 @@
-let { listenForKeyGlobal, resetKeyGlobal } = require('../browser-abstractions/keyboard')
-let { storeAllState, retrieveStateStored } = require('../browser-abstractions/browser-storage')
-let { api } = require('api/api-request')
+import { listenForKeyGlobal, resetKeyGlobal } from '../browser-abstractions/keyboard'
+import { storeAllState, retrieveStateStored } from '../browser-abstractions/browser-storage'
+import { api } from 'api/api-request'
 function initDebug (rerender) {
   window.lc._debugging = true
   rerender && window.lc._rerender()
@@ -27,7 +27,8 @@ async function getServerDBState (userEmail) {
 async function resetServerDBState () {
   console.info(JSON.parse(await api('debug-reset')))
 }
-module.exports = {
+
+export {
   initDebug,
   deactivateDebug
 }

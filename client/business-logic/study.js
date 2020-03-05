@@ -1,10 +1,16 @@
-let { study: studyPage, home } = require('../routes/navigation/pages')
-let { getParam } = require('../browser-abstractions/url')
-let { listenForKey, resetKey } = require('../browser-abstractions/keyboard')
-let { strToList } = require('shared/char-encoding')
-let { updateCardBody, flipCard } = require('./deck')
-let { setFocusTo } = require('abstract/focus')
-let { createStudySession, getStudySession, getStudySessionForDeck, getStudySessionsAndBorrowedDecks, deleteStudySession } = require('../routes/api/study')
+import { study as studyPage, home } from '../routes/navigation/pages'
+import { getParam } from '../browser-abstractions/url'
+import { listenForKey, resetKey } from '../browser-abstractions/keyboard'
+import { strToList } from 'shared/char-encoding'
+import { updateCardBody, flipCard as flipDeckCard } from './deck'
+import { setFocusTo } from 'abstract/focus'
+import {
+  createStudySession as createStudySessionAPI,
+  getStudySession as getStudySessionAPI,
+  getStudySessionForDeck as getStudySessionForDeckAPI,
+  getStudySessionsAndBorrowedDecks as getStudySessionsAndBorrowedDecksAPI,
+  deleteStudySession as deleteStudySessionAPI
+} from '../routes/api/study'
 // let { reject } = require('utils')
 let NOT_ANSWERED = '_'
 let RIGHT = 'R'
@@ -29,9 +35,9 @@ function focusOnFlipButton () {
 function recordTheyAreTabNavigating () {
   window.lc.setData('tabNavigating', true)
 }
-exports.recordTheyAreTabNavigating = recordTheyAreTabNavigating
-exports.flipCard = () => {
-  flipCard()
+
+export const flipCard = () => {
+  flipDeckCard()
   if (window.lc.getData('showingAnswer')) {
     listenForKey('ArrowLeft', markWrong)
     listenForKey('ArrowRight', markRight)
@@ -39,51 +45,60 @@ exports.flipCard = () => {
   }
   resetAnswerKeyListeners()
 }
-exports.navigateToStudySession = navigateToStudySession
 
-exports.getStudySession = async (id) => {
+export { recordTheyAreTabNavigating, navigateToStudySession }
+
+export const getStudySession = async (id) => {
   id = id || getParam('id')
   if (id) {
-    let result = JSON.parse(await getStudySession(id))
+    let result = JSON.parse(await getStudySessionAPI(id))
     if (result.none) return
     return result
   }
   let deckId = getParam('deck')
   if (deckId) {
-    let result = JSON.parse(await getStudySessionForDeck(deckId))
+    let result = JSON.parse(await getStudySessionForDeckAPI(deckId))
     if (result.none && getParam('upsert')) {
       // Clicked the study button on an edit page
-      let newSession = JSON.parse(await createStudySession(deckId))
+      let newSession = JSON.parse(await createStudySessionAPI(deckId))
       return newSession
     }
     return result
   }
 }
-exports.deleteSession = async (id) => {
+
+export const deleteSession = async (id) => {
   if (window.confirm('Are you sure you want to lose your study progress?')) {
-    await deleteStudySession(id)
+    await deleteStudySessionAPI(id)
     // maybedo:: Maybe have this be unset instead
     window.lc.setData('session', { none: true })
   }
 }
-exports.deleteCurrentSessionWithConfirmation = async () => {
+
+export const deleteCurrentSessionWithConfirmation = async () => {
   if (window.confirm('Are you sure you want to lose your study progress?')) {
     await deleteCurrentSessionAndGoHome()
   }
 }
-let deleteCurrentSessionAndGoHome = exports.deleteCurrentSession = async () => {
+
+const deleteCurrentSessionAndGoHome = async () => {
   let session = getSessionFromState()
-  await deleteStudySession(session.id)
+  await deleteStudySessionAPI(session.id)
   home()
 }
-exports.getStudySessionsAndBorrowedDecks = async () => {
-  return JSON.parse(await getStudySessionsAndBorrowedDecks())
+export const deleteCurrentSession = deleteCurrentSessionAndGoHome
+
+export const getStudySessionsAndBorrowedDecks = async () => {
+  return JSON.parse(await getStudySessionsAndBorrowedDecksAPI())
 }
-let createStudySessionAndNavigate = exports.createStudySession = async (deck, startingState) => {
-  let newSession = JSON.parse(await createStudySession(deck, startingState))
+const createStudySessionAndNavigate = async (deck, startingState) => {
+  let newSession = JSON.parse(await createStudySessionAPI(deck, startingState))
   navigateToStudySession(newSession.id)
 }
-exports.sortCardsBySession = (cards, session) => {
+// gross
+export const createStudySession = createStudySessionAndNavigate
+
+export const sortCardsBySession = (cards, session) => {
   let ordering = strToList(session.ordering)
   let shuffledCards = []
   for (let i = 0; i < cards.length; i++) {
@@ -91,7 +106,8 @@ exports.sortCardsBySession = (cards, session) => {
   }
   return shuffledCards
 }
-let trimCardsToOnesAwaitingAnswers = exports.trimCardsToOnesAwaitingAnswers = (cards, session) => {
+
+export const trimCardsToOnesAwaitingAnswers = (cards, session) => {
   if (!cards || !cards.length) return cards
   let state = session.studyState
   let unansweredCards = []
@@ -146,8 +162,9 @@ function updateStudyState (state) {
   updateCardBody(newCard, cards)
   focusOnFlipButton()
 }
+
 // If a card is added to a deck during the studying process
-exports.accountForNewCards = (session, cards) => {
+export const accountForNewCards = (session, cards) => {
   let count = 0
   let startingLength = session.studyState.length
   let targetLength = cards.length
@@ -161,25 +178,29 @@ exports.accountForNewCards = (session, cards) => {
   }
   return session
 }
-exports.resetSession = async () => {
+
+export const resetSession = async () => {
   let session = getSessionFromState()
-  await deleteStudySession(session.id)
+  await deleteStudySessionAPI(session.id)
   let deck = window.lc.getData('deck')
   await createStudySessionAndNavigate(deck.id)
 }
-exports.studyWrongAnswers = async () => {
+
+export const studyWrongAnswers = async () => {
   let session = getSessionFromState()
-  await deleteStudySession(session.id)
+  await deleteStudySessionAPI(session.id)
   let deck = window.lc.getData('deck')
   let studyState = convertRightToSkipsAndWrongsToUnanswered(session.studyState)
 
   await createStudySessionAndNavigate(deck.id, { studyState, ordering: session.ordering })
 }
+
 function convertRightToSkipsAndWrongsToUnanswered (state) {
   let rightsToSkips = state.split(RIGHT).join(SKIP)
   return rightsToSkips.split(WRONG).join(NOT_ANSWERED)
 }
-exports.getNumberRight = () => {
+
+export const getNumberRight = () => {
   let session = getSessionFromState()
   let state = session.studyState
   let count = 0
@@ -188,7 +209,8 @@ exports.getNumberRight = () => {
   }
   return count
 }
-exports.getNumberWrong = () => {
+
+export const getNumberWrong = () => {
   let session = getSessionFromState()
   let state = session.studyState
   let count = 0
@@ -197,6 +219,7 @@ exports.getNumberWrong = () => {
   }
   return count
 }
+
 function getActiveCardIndexInStudySession () {
   let activeId = window.lc.getData('activeCardId')
   let cards = getSessionOrderedCardsFromState()
@@ -211,7 +234,7 @@ function getCurrentCardIndex () {
     }
   }
 }
-let markRight = exports.markRight = () => {
+export const markRight = () => {
   let cardIndex = getActiveCardIndexInStudySession()
   let state = getSessionFromState().studyState
   let asArray = state.split('')
@@ -219,7 +242,7 @@ let markRight = exports.markRight = () => {
   let newState = asArray.join('')
   updateStudyState(newState)
 }
-let markWrong = exports.markWrong = () => {
+export const markWrong = () => {
   // Get session state, modify card to wrong, then go to the next card that works
   // Push changed to session state to "persistent changes"
   // If it's the last card, show menu of if they want to study wrong ones or stop

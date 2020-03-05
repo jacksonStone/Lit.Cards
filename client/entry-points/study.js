@@ -1,15 +1,14 @@
-let { renderPage } = require('../ui/globals')
-let { home: homePage } = require('../routes/navigation/pages')
-let content = require('../ui/page-content/study-session')
-let { initKeyCommands } = require('../ui/page-content/study-session/key-commands')
-let { defaultDarkMode } = require('abstract/darkmode')
-let { runNextRender } = require('abstract/rendering-meta')
-let { fetchUser } = require('logic/user')
-let { getCardBody } = require('logic/card-bodies')
-let { getDeck } = require('logic/deck')
-let { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } = require('logic/study')
-
-;(async () => {
+import { renderPage } from '../ui/globals'
+import { home as homePage } from '../routes/navigation/pages'
+import content from '../ui/page-content/study-session'
+import { initKeyCommands } from '../ui/page-content/study-session/key-commands'
+import { defaultDarkMode } from 'abstract/darkmode'
+import { runNextRender } from 'abstract/rendering-meta'
+import { fetchUser } from 'logic/user'
+import { getCardBody } from 'logic/card-bodies'
+import { getDeck } from 'logic/deck'
+import { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } from 'logic/study';
+(async () => {
   defaultDarkMode()
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   let deckId = studySession.deck

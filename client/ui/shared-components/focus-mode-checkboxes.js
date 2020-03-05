@@ -1,6 +1,6 @@
-let { html } = require('lit')
-let { getValueFromCheckbox } = require('abstract/events')
-let { recordAndSetDarkMode } = require('abstract/darkmode')
+import { html } from 'lit';
+import { getValueFromCheckbox } from 'abstract/events';
+import { recordAndSetDarkMode } from 'abstract/darkmode';
 let isHidingProgress= () => {
   let user = window.lc.getData('user')
   return user && user.hideProgress
@@ -21,7 +21,7 @@ let setHidingProgress = (e) => {
 
 //Components
 
-hideSideNav = () => html`
+const hideSideNav = () => html`
       ${
   isHidingNavigation() ? html`<input @change=${setHidingNavigation} class="usa-checkbox__input" id="hiding-navigation" type="checkbox" name="hiding-navigation" value="true" checked/>` : html`
         <input @change=${setHidingNavigation} class="usa-checkbox__input" id="hiding-navigation" type="checkbox" name="hiding-navigation" value="false"/>`
@@ -29,7 +29,7 @@ hideSideNav = () => html`
       <label class="usa-checkbox__label" for="hiding-navigation">Hide navigation</label>
 `
 
-hideProgress = () => html`
+const hideProgress = () => html`
       ${
   isHidingProgress() ? html`<input @change=${setHidingProgress} class="usa-checkbox__input" id="hiding-progress" type="checkbox" name="hiding-progress" value="true" checked/>` : html`
         <input @change=${setHidingProgress} class="usa-checkbox__input" id="hiding-progress" type="checkbox" name="hiding-progress" value="false"/>`
@@ -37,7 +37,7 @@ hideProgress = () => html`
       <label class="usa-checkbox__label" for="hiding-progress">Hide progress</label>
 `
 
-module.exports = {
+export {
   hideSideNav,
   hideProgress
-}
+};

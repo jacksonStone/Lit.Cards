@@ -1,7 +1,7 @@
-let { renderPage } = require('../ui/globals')
-let content = require('../ui/page-content/settings')
-let { defaultDarkMode } = require('abstract/darkmode')
-let { fetchUser } = require('logic/user')
+import { renderPage } from '../ui/globals'
+import content from '../ui/page-content/settings'
+import { defaultDarkMode } from 'abstract/darkmode'
+import { fetchUser } from 'logic/user'
 
 renderPage(content)
 ;(async () => {

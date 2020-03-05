@@ -1,6 +1,6 @@
-let { html } = require('lit')
+import { html } from 'lit';
 
-module.exports = (heading, subtext) => {
+export default (heading, subtext) => {
   return html`
   <div class="usa-alert usa-alert--error" role="alert">
   <div class="usa-alert__body">
@@ -8,4 +8,4 @@ module.exports = (heading, subtext) => {
     ${subtext && html`<p class="usa-alert__text">${subtext}</p>`}
   </div>
   </div>`
-}
+};

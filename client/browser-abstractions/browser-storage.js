@@ -1,5 +1,6 @@
-let { jcompress, jdecompress } = require('shared/compress')
-
+import { LZString } from 'shared/compress'
+const jcompress = LZString.jcompress
+const jdecompress = LZString.jdecompress
 function get (key) {
   return window.localStorage.getItem(key)
 }
@@ -26,7 +27,7 @@ function retrieveStateStored () {
   window.lc._rerender()
 }
 
-module.exports = {
+export {
   get,
   set,
   storeAllState,
