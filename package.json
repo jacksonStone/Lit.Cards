@@ -74,6 +74,8 @@
     "jest": "^24.7.1",
     "nodemon": "^1.18.11",
     "sass": "^1.18.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
     "webpack-cli": "^3.3.0"
   }
 }
