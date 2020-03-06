@@ -2,8 +2,20 @@
   "compilerOptions": {
     "outDir": ".assets/dist/",
     "noImplicitAny": true,
-    "module": "commonjs",
+    "module": "es2015",
     "target": "es2017",
     "allowJs": true
+  },
+  "baseUrl": "./",
+  "paths": {
+    "lit": ["node_modules/lit-html/lit-html"],
+    "misc/*": ["misc/*"],
+    "logic/*": ["client/business-logic/*"],
+    "api/*": ["client/routes/api/*"],
+    "site/*": ["client/routes/navigation/*"],
+    "utils/*": ["client/utils/*"],
+    "component/*": ["client/ui/shared-components/*"],
+    "abstract/*": ["client/browser-abstract ions/*"],
+    "shared/*": ["shared-client/*"]
   }
 }
