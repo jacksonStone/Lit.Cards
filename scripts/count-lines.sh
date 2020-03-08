@@ -9,4 +9,5 @@ echo "Server"
 cd ../server && ( find . -name '*.js' -print0 | xargs -0 cat ) | wc -l
 echo "Client"
 cd ../client && ( find . -name '*.js' -print0 | xargs -0 cat ) | wc -l
-
+echo "Client - TS"
+cd ../client && ( find . -name '*.ts' -print0 | xargs -0 cat ) | wc -l

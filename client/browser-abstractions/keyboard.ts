@@ -1,39 +1,43 @@
 // TODO:: Move all this to watchers
 let textFocusedPropName = '_focusingOnText'
-let keyBindings = {}
-let globalBindings = {}
-let cmdKeyBindings = {}
-let keysToStillLetThrough = {
-  'Tab': true
+interface keyBinding {
+  [key: string]: (event?: KeyboardEvent) => void
 }
+let keyBindings: keyBinding = {}
+let globalBindings: keyBinding = {}
+let cmdKeyBindings: keyBinding = {}
+
 // TODO::Move to one place
-function isMac () {
+function isMac (): boolean {
   return window.navigator.platform.indexOf('Mac') !== -1
 }
-function dataSaysTextIsFocused () {
+function dataSaysTextIsFocused (): boolean {
   return window.lc.getData(textFocusedPropName)
 }
 
-function listenForCMDKey (key, callback) {
+function listenForCMDKey (key: string, callback:  () => void) {
   cmdKeyBindings[key] = callback
 }
-function listenForKey (key, callback) {
+function listenForKey (key: string, callback:  () => void) {
   keyBindings[key] = callback
 }
 
-function listenForKeyGlobal (key, callback) {
+function listenForKeyGlobal (key: string, callback:  () => void) {
   globalBindings[key] = callback
 }
 
-function resetKeyGlobal (key) {
+function resetKeyGlobal (key: string) {
   delete globalBindings[key]
 }
 
-function resetKey (key) {
+function resetKey (key: string) {
   delete keyBindings[key]
 }
-
-let archivedKeyBindings = {}
+interface archivedKeyBindingsI {
+  keyBindings?: keyBinding,
+  cmdKeyBindings?: keyBinding
+}
+let archivedKeyBindings: archivedKeyBindingsI = {}
 function archiveCurrentKeyBindings () {
   archivedKeyBindings = {
     keyBindings: Object.assign(keyBindings),
@@ -54,15 +58,15 @@ function resetAllKeyBindings () {
   archivedKeyBindings = {}
 }
 
-function isMultipleKeys (e) {
+function isMultipleKeys (e: KeyboardEvent) {
   return e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
 }
 
-function _handleKeyDown (e) {
-  let keyForCMD = isMac() ? 'metaKey' : 'ctrlKey'
-  if (e[keyForCMD]) {
+function _handleKeyDown (e: KeyboardEvent) {
+  let isCMD: Boolean = isMac() ? e.metaKey : e.ctrlKey;
+  if (isCMD) {
     if (cmdKeyBindings[e.code]) {
-      if (!keysToStillLetThrough[(e.code)]) {
+      if (e.code !== 'Tab') {
         e.preventDefault()
       }
       return cmdKeyBindings[e.code](e)
@@ -73,20 +77,20 @@ function _handleKeyDown (e) {
     return
   }
   if (keyBindings[e.code] && !dataSaysTextIsFocused()) {
-    if (!keysToStillLetThrough[(e.code)]) {
+    if (e.code !== 'Tab') {
       e.preventDefault()
     }
     return keyBindings[e.code](e)
   }
   if (globalBindings[e.code] && !dataSaysTextIsFocused()) {
-    if (!keysToStillLetThrough[(e.code)]) {
+    if (e.code !== 'Tab') {
       e.preventDefault()
     }
     return globalBindings[e.code](e)
   }
 }
 
-function simulateKey (code) {
+function simulateKey (code: string) {
   keyBindings[code]()
 }
 if (process.env.NODE_ENV !== 'test') {

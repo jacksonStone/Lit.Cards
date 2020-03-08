@@ -11,13 +11,15 @@ import {
   getStudySessionsAndBorrowedDecks as getStudySessionsAndBorrowedDecksAPI,
   deleteStudySession as deleteStudySessionAPI
 } from '../routes/api/study'
+import 'types';
+
 // let { reject } = require('utils')
 let NOT_ANSWERED = '_'
 let RIGHT = 'R'
 let WRONG = 'W'
 let SKIP = 'S' // Not in this study run
 
-function navigateToStudySession (id) {
+function navigateToStudySession (id: string) {
   return studyPage({ id })
 }
 function resetAnswerKeyListeners () {
@@ -48,7 +50,7 @@ export const flipCard = () => {
 
 export { recordTheyAreTabNavigating, navigateToStudySession }
 
-export const getStudySession = async (id) => {
+export const getStudySession = async (id?: string) :Promise<StudySession> => {
   id = id || getParam('id')
   if (id) {
     let result = JSON.parse(await getStudySessionAPI(id))
@@ -67,7 +69,7 @@ export const getStudySession = async (id) => {
   }
 }
 
-export const deleteSession = async (id) => {
+export const deleteSession = async (id: string) => {
   if (window.confirm('Are you sure you want to lose your study progress?')) {
     await deleteStudySessionAPI(id)
     // maybedo:: Maybe have this be unset instead
@@ -91,14 +93,18 @@ export const deleteCurrentSession = deleteCurrentSessionAndGoHome
 export const getStudySessionsAndBorrowedDecks = async () => {
   return JSON.parse(await getStudySessionsAndBorrowedDecksAPI())
 }
-const createStudySessionAndNavigate = async (deck, startingState) => {
+interface startingStudyState {
+  ordering: string,
+  studyState: string
+}
+const createStudySessionAndNavigate = async (deck: string, startingState?: startingStudyState) => {
   let newSession = JSON.parse(await createStudySessionAPI(deck, startingState))
   navigateToStudySession(newSession.id)
 }
 // gross
 export const createStudySession = createStudySessionAndNavigate
 
-export const sortCardsBySession = (cards, session) => {
+export const sortCardsBySession = (cards: string, session: StudySession) :Array<string> => {
   let ordering = strToList(session.ordering)
   let shuffledCards = []
   for (let i = 0; i < cards.length; i++) {
@@ -107,8 +113,8 @@ export const sortCardsBySession = (cards, session) => {
   return shuffledCards
 }
 
-export const trimCardsToOnesAwaitingAnswers = (cards, session) => {
-  if (!cards || !cards.length) return cards
+export const trimCardsToOnesAwaitingAnswers = (cards: string, session: StudySession) :Array<string>|undefined => {
+  if (!cards || !cards.length) return;
   let state = session.studyState
   let unansweredCards = []
   for (let i = 0; i < state.length; i++) {
@@ -120,16 +126,16 @@ export const trimCardsToOnesAwaitingAnswers = (cards, session) => {
   return unansweredCards
 }
 
-function getSessionFromState () {
+function getSessionFromState () :StudySession {
   return window.lc.getData('session')
 }
-function getVisibleCardsFromState () {
+function getVisibleCardsFromState () :string {
   return window.lc.getData('orderedCards')
 }
-function getSessionOrderedCardsFromState () {
+function getSessionOrderedCardsFromState () :string {
   return window.lc.getData('sessionShuffledCards')
 }
-function updateStudyState (state) {
+function updateStudyState (state: string) {
   window.lc.setPersistent('session.studyState', state)
   let session = getSessionFromState()
   window.lc.setPersistent('session.id', session.id)
@@ -164,7 +170,7 @@ function updateStudyState (state) {
 }
 
 // If a card is added to a deck during the studying process
-export const accountForNewCards = (session, cards) => {
+export const accountForNewCards = (session: StudySession, cards: string) : StudySession => {
   let count = 0
   let startingLength = session.studyState.length
   let targetLength = cards.length
@@ -195,7 +201,7 @@ export const studyWrongAnswers = async () => {
   await createStudySessionAndNavigate(deck.id, { studyState, ordering: session.ordering })
 }
 
-function convertRightToSkipsAndWrongsToUnanswered (state) {
+function convertRightToSkipsAndWrongsToUnanswered (state: string) {
   let rightsToSkips = state.split(RIGHT).join(SKIP)
   return rightsToSkips.split(WRONG).join(NOT_ANSWERED)
 }

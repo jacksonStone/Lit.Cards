@@ -1,11 +1,12 @@
 import { LZString } from 'shared/compress'
 const jcompress = LZString.jcompress
 const jdecompress = LZString.jdecompress
-function get (key) {
+function get (key: string) : any {
   return window.localStorage.getItem(key)
 }
-function set (key, value) {
-  return window.localStorage.setItem(key, value)
+function set (key: string, value: string|boolean) {
+  value = value + '';
+  window.localStorage.setItem(key, value)
 }
 function storeAllState () {
   let data = window.lc.data

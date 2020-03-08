@@ -1,12 +1,12 @@
-function getFileFromFileUploadEvent (e) {
-  return e.currentTarget.files[0]
+function getFileFromFileUploadEvent (e: Event) {
+  return (<HTMLInputElement>e.currentTarget).files[0]
 }
 // //https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
 /*eslint-disable */
-function getOrientation (file, callback) {
+function getOrientation (file: Blob, callback: (orient: number) => void) {
   var reader = new window.FileReader()
   reader.onload = function (e) {
-    var view = new DataView(e.target.result)
+    var view = new DataView(<ArrayBuffer>e.target.result)
     if (view.getUint16(0, false) !== 0xFFD8) {
       return callback(-2)
     }
@@ -40,7 +40,7 @@ function getOrientation (file, callback) {
   reader.readAsArrayBuffer(file)
 }
 /* eslint-enable */
-function getFileData (e) {
+function getFileData (e: Event): Promise<Array<string|number>> {
   let file = getFileFromFileUploadEvent(e)
   return Promise.all([new Promise((resolve, reject) => {
     let reader = new window.FileReader()
@@ -51,7 +51,7 @@ function getFileData (e) {
     }, 5000)
     reader.onload = (e) => {
       window.clearTimeout(timeoutId)
-      resolve(e.target.result)
+      resolve(<string>e.target.result)
     }
     reader.readAsDataURL(file)
   }), new Promise(resolve => {
@@ -61,19 +61,19 @@ function getFileData (e) {
   ])
 }
 // https://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side/32490603#32490603
-async function getImageAtDifferentSize (imageDataAndOrientation, ...sizes) {
-  let [imageData, orientation] = imageDataAndOrientation
+async function getImageAtDifferentSize (imageDataAndOrientation: Array<string|number>): Promise<string> {
+  let imageData = <string> imageDataAndOrientation[0];
+  let orientation = <number> imageDataAndOrientation[0];
   let defaultSize = 600
-  sizes = !sizes.length ? [[defaultSize, defaultSize]] : sizes
   return new Promise((resolve) => {
     let img = document.createElement('img')
     let canvasElement = document.createElement('canvas')
-    img.src = imageData
+    img.src = <string>imageData
     img.onload = () => {
       let ctx = canvasElement.getContext('2d')
       let results = []
-      for (let i = 0; i < sizes.length; i++) {
-        let [MAX_WIDTH, MAX_HEIGHT] = sizes[i]
+      
+        let [MAX_WIDTH, MAX_HEIGHT] = [defaultSize, defaultSize]
         let width = img.width
         let height = img.height
 
@@ -114,20 +114,19 @@ async function getImageAtDifferentSize (imageDataAndOrientation, ...sizes) {
         ctx.drawImage(img, 0, 0, width, height)
 
         // rotateImageBasedOnOrientation(7, ctx, width, height);
-        results.push(canvasElement.toDataURL('image/jpeg', 0.9))
-      }
-      resolve(results)
+        resolve(canvasElement.toDataURL('image/jpeg', 0.9))
+      
     }
   })
 }
 
-function renderPreviewImageWithRawData (data, targetId = 'image-spot') {
+function renderPreviewImageWithRawData (data: string, targetId = 'image-spot') {
   const imageHolder = window.document.getElementById(targetId)
   if (imageHolder) {
     imageHolder.setAttribute('style', `background-image:url(${data}); `)
   }
 }
-function addImageDataToImage (data, targetId) {
+function addImageDataToImage (data: string, targetId: string) {
   let output = document.getElementById(targetId)
   output.setAttribute('src', data)
 }

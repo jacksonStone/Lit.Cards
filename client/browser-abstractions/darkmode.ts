@@ -1,6 +1,6 @@
 import { $ } from './$'
 import { get, set } from './browser-storage'
-function _setDarkMode (shouldBeDark) {
+function _setDarkMode (shouldBeDark: boolean) {
   if (shouldBeDark) {
     $('html').className = 'darkmode'
     $('body').className = 'darkmode'
@@ -14,7 +14,7 @@ function defaultDarkMode () {
   _setDarkMode(get('darkmode') === 'true')
 }
 
-function recordAndSetDarkMode (value) {
+function recordAndSetDarkMode (value: boolean) {
   set('darkmode', value)
   _setDarkMode(value)
 }

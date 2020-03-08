@@ -8,29 +8,30 @@ import { renderPreviewImageWithRawData, getFileData, getImageAtDifferentSize } f
 import { runNextRender } from 'abstract/rendering-meta'
 import { LZString } from 'shared/compress'
 import { intToChar, charToInt } from 'shared/char-encoding'
+import 'types';
 const compress = LZString.compress
 
-function navigateToDeckPage (deckId) {
+function navigateToDeckPage (deckId: string) {
   return deckPage({ deck: deckId })
 }
 
-async function makeDeckPublic (deckId) {
+async function makeDeckPublic (deckId: string) {
   deckId = deckId || getParam('deck')
   if (window.confirm('Once made public you will not be able to delete the deck or the cards, though you can still add and edit cards.')) {
     window.lc.setData(`deck.public`, true)
     await makePublic(deckId)
   }
 }
-let getDeckLogic = async (deckId) => {
+let getDeckLogic = async (deckId?: string) :Promise<Deck> => {
   deckId = deckId || getParam('deck')
-  return JSON.parse(await getDecekAPI(deckId))
+  return JSON.parse(await getDecekAPI(deckId)) 
 }
-let createDeckLogic = async (name) => {
+let createDeckLogic = async (name: string) => {
   let newDeck = JSON.parse(await createDeckAPI(name))
   navigateToDeckPage(newDeck.id)
 }
 
-let deleteDeckLogic = async (id) => {
+let deleteDeckLogic = async (id: string) => {
   await deleteDeckAPI(id)
   let decks = window.lc.getData('decks')
   let studyHistory = window.lc.getData('studyHistory')
@@ -40,7 +41,7 @@ let deleteDeckLogic = async (id) => {
   window.lc.setData('studyHistory', studyHistoryWithoutDeleted)
 }
 
-async function handleImageUpload (e) {
+async function handleImageUpload (e: any) {
   // Since image uploads can take a while - make sure we know we are
   // in the process of uploading a little early here for
   // reliable testing
@@ -63,19 +64,19 @@ async function handleImageUpload (e) {
   renderPreviewImageWithRawData(imagePreview, 'image-spot')
   refreshEditor()
 }
-function setPersistentForCardBodyCompressed (key, value) {
+function setPersistentForCardBodyCompressed (key: string, value: string|boolean|number) {
   let cardId = _getCurrentCardId()
   let changeKey = `cardBody.${cardId}.${key}`
   window.lc.setPersistentOnly(changeKey, compress(value))
   window.lc.setData(changeKey, value)
 }
-function setPersistentForCardBody (key, value) {
+function setPersistentForCardBody (key: string, value: string|boolean|number) {
   let cardId = _getCurrentCardId()
   let changeKey = `cardBody.${cardId}.${key}`
   window.lc.setPersistentOnly(`cardBody.${cardId}.deck`, window.lc.getData('deck').id)
   window.lc.setPersistent(changeKey, value)
 }
-function decreaseFontSizeIfOverflowing (oldFontSize = 1, frontOrBack) {
+function decreaseFontSizeIfOverflowing (oldFontSize = 1, frontOrBack: string) {
   let newFontSize = getFontSize(oldFontSize)
   if (newFontSize === oldFontSize) {
     return
@@ -88,7 +89,7 @@ function decreaseFontSizeIfOverflowing (oldFontSize = 1, frontOrBack) {
   })
 }
 
-function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack) {
+function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack: string) {
   if (oldFontSize <= 1) {
     return
   }
@@ -103,7 +104,7 @@ function increaseFontIfLotsOfSpace (oldFontSize = 1, frontOrBack) {
     increaseFontIfLotsOfSpace(newFontSize, frontOrBack)
   })
 }
-function updateFontSizeIfNecessary (oldCardBody, newText) {
+function updateFontSizeIfNecessary (oldCardBody: any, newText: string) {
   if (!oldCardBody) return
   if (showingAnswer()) {
     let deletedAChar = oldCardBody.back && (oldCardBody.back.length > newText.length)
@@ -128,7 +129,7 @@ function getPresentFontSize () {
   return cardBody.frontFontSize
 }
 
-function handleEditorTextChange (newText) {
+function handleEditorTextChange (newText: string) {
   if (window.lc.getData('_cardBodyLoading')) {
     return
   }
@@ -148,7 +149,7 @@ function handleEditorTextChange (newText) {
   setPersistentForCardBody('front', newText)
 }
 
-function getCardsForEmptyState (newId) {
+function getCardsForEmptyState (newId: string) {
   // Record we made this on the fly
   window.lc.setPersistent(`deck.cards`, newId)
   return newId
@@ -252,7 +253,7 @@ function _flipToQuestionSide () {
   window.lc.setData('showingAnswer', false)
 }
 
-async function updateCardBody (id, cards) {
+async function updateCardBody (id: string, cards: string) {
   _flipToQuestionSide()
   let currentCardBody = window.lc.getData('cardBody.' + id)
   if (!currentCardBody) {
@@ -274,7 +275,7 @@ async function updateCardBody (id, cards) {
   }
 }
 // Re-renders the card area
-function refreshEditor (data) {
+function refreshEditor (data?: any) {
   if (hasImage()) {
     renderPreviewImageWithRawData(getImageData())
   }
@@ -295,7 +296,7 @@ function getTextToShowForCard () {
   return cardBody.front
 }
 
-function _updateEditorData (data) {
+function _updateEditorData (data?: any) {
   setEditorData(data || getTextToShowForCard())
 }
 function _getCurrentCardId () {

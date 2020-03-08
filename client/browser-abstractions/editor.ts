@@ -6,8 +6,8 @@ let elementId = 'editor'
 let MAX_FONT_SIZE = 5
 let santizationConfig = { ALLOWED_TAGS: allowedTags }
 
-let sanitizer
-function sanitizeHTML (text) {
+let sanitizer: DOMPurify.DOMPurifyI
+function sanitizeHTML (text: string) :string {
   if (process.env.NODE_ENV !== 'test') {
     sanitizer = sanitizer || createDOMPurify(window)
     return sanitizer.sanitize(text, santizationConfig)
@@ -15,7 +15,7 @@ function sanitizeHTML (text) {
   return text
 }
 
-function initEditor (startingContent, onChange) {
+function initEditor (startingContent: string|undefined, onChange: (newValue: string) => void) {
   let editorElement = document.getElementById(elementId)
   let editor = pell.init({
     element: document.getElementById(elementId),
@@ -29,7 +29,7 @@ function initEditor (startingContent, onChange) {
     e.preventDefault()
 
     // get text representation of clipboard
-    var formattedHTML = (e.originalEvent || e).clipboardData.getData('text/html')
+    var formattedHTML = e.clipboardData.getData('text/html')
     let documentFragment = document.createRange().createContextualFragment(formattedHTML)
     let chidlens = documentFragment.querySelectorAll('[style]')
     if (chidlens && chidlens.length) {
@@ -45,14 +45,14 @@ function initEditor (startingContent, onChange) {
   })
 }
 
-function setEditorData (content) {
-  let editor = document.getElementById(elementId)
+function setEditorData (content: string) {
+  let editor = <any> document.getElementById(elementId)
   // If we are on the study page for example
   if (!editor || !editor.content) return
   editor.content.innerHTML = content
 }
 
-function getFontSize (currentFontSize) {
+function getFontSize (currentFontSize: number) {
   if (currentFontSize >= MAX_FONT_SIZE) return MAX_FONT_SIZE
 
   let contentOverflows = doesContentOverflow()
@@ -61,18 +61,18 @@ function getFontSize (currentFontSize) {
     return currentFontSize
   }
 
-  scrollToTopOfEditor(elementId)
+  scrollToTopOfEditor()
   return currentFontSize + 1
 }
 
-function getEditorContent () {
+function getEditorContent (): any {
   return $('.pell-content')
 }
 function scrollToTopOfEditor () {
   let editorContent = getEditorContent()
   editorContent.scrollTop = 0
 }
-function getTextNodeHeight (textNode) {
+function getTextNodeHeight (textNode: Node): number {
   let height = 0
   if (window.document.createRange) {
     let range = window.document.createRange()
@@ -114,16 +114,16 @@ function childrenHaveTooMuchSpace () {
   return false
 }
 
-function doesContentOverflow () {
+function doesContentOverflow (): boolean {
   let WYSIWYG = getEditorContent()
   let fullHeight = WYSIWYG.scrollHeight
   let clientHeight = WYSIWYG.clientHeight
   return fullHeight > clientHeight
 }
 
-function getTextOnly (content) {
+function getTextOnly (htmlContent:string): string {
   let wrapper = document.createElement('div')
-  wrapper.innerHTML = content
+  wrapper.innerHTML = htmlContent
   return wrapper.innerText
 }
 

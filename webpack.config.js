@@ -38,6 +38,7 @@ module.exports = {
       'lit': path.join(__dirname, 'node_modules/lit-html/lit-html'),
       'misc': path.join(__dirname, 'misc'),
       'logic': path.join(__dirname, 'client/business-logic'),
+      'types': path.join(__dirname, 'client/types/types'),
       'api': path.join(__dirname, 'client/routes/api'),
       'site': path.join(__dirname, 'client/routes/navigation'),
       'utils': path.join(__dirname, 'client/utils'),

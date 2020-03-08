@@ -1,8 +1,9 @@
 import { getUserDetails } from '../routes/api/user-details'
 import { recordAndSetDarkMode } from '../browser-abstractions/darkmode'
-let userDetails
+import 'types';
 
-async function fetchUser () {
+let userDetails: User;
+async function fetchUser () :Promise<User> {
   if (userDetails) return userDetails
   let userDetailsUnformatted = await getUserDetails()
   try {
@@ -18,12 +19,12 @@ function clearUserData () {
   userDetails = undefined
 }
 
-function fetchUserNoCache () {
+function fetchUserNoCache () :Promise<User> {
   clearUserData()
   return fetchUser()
 }
 
-function user () {
+function user () :User {
   return userDetails
 }
 const getUser = user
