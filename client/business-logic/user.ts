@@ -3,13 +3,13 @@ import { recordAndSetDarkMode } from '../browser-abstractions/darkmode'
 import 'types';
 
 let userDetails: User;
-async function fetchUser () :Promise<User> {
+async function fetchUser () :Promise<User|undefined> {
   if (userDetails) return userDetails
   let userDetailsUnformatted = await getUserDetails()
   try {
     userDetails = JSON.parse(userDetailsUnformatted)
   } catch (e) {
-    return userDetailsUnformatted
+    return
   }
   recordAndSetDarkMode(userDetails.darkMode)
   return userDetails

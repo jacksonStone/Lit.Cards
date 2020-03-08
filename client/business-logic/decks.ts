@@ -1,19 +1,20 @@
 import { getDecks as getDecksAPI, createDeck as createDeckAPI } from '../routes/api/decks'
 import { decks } from '../routes/navigation/pages'
 import { getParam } from '../browser-abstractions/url'
+import 'types';
 
-export const getDecks = async () => {
+export const getDecks = async (): Promise<Array<Deck>> => {
   return JSON.parse(await getDecksAPI())
 }
 
-export const createDeck = (name) => {
+export const createDeck = (name: string) : Promise<string> => {
   return createDeckAPI(name)
 }
 
 export const navigatgeToDeckListPage = () => {
-  return decks()
+  decks();
 }
 
-export const getDeckNameFromPage = () => {
+export const getDeckNameFromPage = () :string => {
   return getParam('deck')
 }

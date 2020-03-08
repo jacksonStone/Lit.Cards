@@ -1,6 +1,6 @@
 import { request } from '../../browser-abstractions/request';
 
-async function api (url, body, options = {}) {
+async function api (url: string, body?: Object, options = {}): Promise<string> {
   if(!body) {
     while(true) {
       try {

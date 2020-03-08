@@ -1,7 +1,7 @@
 import { listenForKeyGlobal, resetKeyGlobal } from '../browser-abstractions/keyboard'
 import { storeAllState, retrieveStateStored } from '../browser-abstractions/browser-storage'
 import { api } from 'api/api-request'
-function initDebug (rerender) {
+function initDebug (rerender?:boolean) {
   window.lc._debugging = true
   rerender && window.lc._rerender()
   window.lc.getServerDBState = getServerDBState
@@ -15,7 +15,7 @@ function deactivateDebug () {
   resetKeyGlobal('KeyR')
   resetKeyGlobal('KeyS')
 }
-async function getServerDBState (userEmail) {
+async function getServerDBState (userEmail:string) {
   let state
   if (userEmail) {
     state = JSON.parse(await api('debug', { userEmail }))

@@ -1,3 +1,8 @@
+interface Window {
+  lc: any;
+}
+
+
 interface Deck {
     lastModified: number,
     userEmail: string,
@@ -14,6 +19,10 @@ interface StudySession {
   ordering: string,
   deck: string,
   id: string
+}
+interface startingStudyState {
+  ordering: string,
+  studyState: string
 }
 
 interface User {
@@ -38,4 +47,18 @@ interface CardBody {
   backHasImage?: boolean,
   frontImage?: string,
   backImage?: string
+}
+
+interface Transaction {
+  session?: {[key: string]: StudySession},
+  cardBody?: {[key: string]: CardBody},
+  deck?: {[key: string]: Deck},
+  user?: {[key: string]: User},
+}
+
+interface map {
+  [key: string]:  string
+}
+interface map_of_maps {
+  [key: string]: map
 }

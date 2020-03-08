@@ -10,12 +10,6 @@ import { getCardBody, getCardBodyForEmptyState } from 'logic/card-bodies'
 import { getStudySession } from 'logic/study'
 import { getDeck, handleEditorTextChange, refreshEditor } from 'logic/deck';
 
-declare global {
-  interface Window {
-    lc: any;
-  }
-}
-
 (async () => {
   defaultDarkMode()
   let [user, deck, studySession] = await Promise.all([fetchUser(), getDeck(), getStudySession()])

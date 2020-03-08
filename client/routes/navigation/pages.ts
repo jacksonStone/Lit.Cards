@@ -1,7 +1,8 @@
 import { redirect } from '../../browser-abstractions/redirect';
-function setUpRoute (route) {
+interface map {[key: string]: string}
+function setUpRoute (route: string) {
   route = '/site/' + route
-  let routeFunction = function (params) {
+  let routeFunction: any = function (params: map) {
     redirect(route + convertJSONToURLParams(params))
   }
   // is for testing
@@ -11,7 +12,7 @@ function setUpRoute (route) {
   return routeFunction
 }
 
-function convertJSONToURLParams (params) {
+function convertJSONToURLParams (params: map): string {
   if (!params) return ''
   let keys = Object.keys(params)
   let paramString = '?'

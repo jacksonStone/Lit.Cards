@@ -1,7 +1,7 @@
-function runNextRender (callback) {
+function runNextRender (callback: () => void ) {
   window.requestAnimationFrame(callback)
 }
-async function waitForState (dataPath, callback) {
+async function waitForState (dataPath: string, callback: () => void ) {
   let waitTime = 20
   let maxWaitTime = 5000
   let iterationMax = (maxWaitTime / waitTime) | 0

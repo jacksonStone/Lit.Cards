@@ -1,6 +1,6 @@
 import { api } from './api-request';
 
-export const getCardBody = (deckId, card = '') => {
+export const getCardBody = (deckId: string, card = ''): Promise<string> => {
   const deck = window.lc.getData('deck');
   let url;
   if(card) {

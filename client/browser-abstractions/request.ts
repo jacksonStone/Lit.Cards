@@ -1,4 +1,8 @@
-function request (url, body, options = {}) {
+interface requestOptions {
+  binary?:boolean
+}
+
+function request (url: string, body: Object|string, options:requestOptions = {}): Promise<string> {
   let method = body ? 'POST' : 'GET'
   let binary = options.binary
   return new Promise((resolve, reject) => {
@@ -15,7 +19,7 @@ function request (url, body, options = {}) {
           xhr.send(JSON.stringify(body))
         } else {
           xhr.setRequestHeader('Content-Type', 'application/octet-stream')
-          xhr.send(body)
+          xhr.send(<string>body)
         }
       } else {
         xhr.send()

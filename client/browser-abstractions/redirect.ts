@@ -1,4 +1,4 @@
-function redirect (href) {
+function redirect (href: string) {
   window.location.href = href
 }
 

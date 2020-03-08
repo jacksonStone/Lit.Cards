@@ -1,12 +1,12 @@
 import { renderPage } from '../ui/globals'
 import content from '../ui/page-content/me'
-import { fetchUser } from '../business-logic/user'
-import { getDecks } from '../business-logic/decks'
-import { getStudySessionsAndBorrowedDecks } from '../business-logic/study'
-import { fetchStudyHistory } from '../business-logic/study-history'
+import { fetchUser } from 'logic/user'
+import { getDecks } from 'logic/decks'
+import { getStudySessionsAndBorrowedDecks } from 'logic/study'
+import { fetchStudyHistory } from 'logic/study-history'
 import { verifyEmail } from 'logic/login'
-import { defaultDarkMode } from '../browser-abstractions/darkmode'
-import { getParam } from '../browser-abstractions/url'
+import { defaultDarkMode } from 'abstract/darkmode'
+import { getParam } from 'abstract/url'
 import { keyBy } from 'utils'
 renderPage(content)
 ;(async () => {

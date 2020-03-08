@@ -89,14 +89,14 @@ const deleteCurrentSessionAndGoHome = async () => {
   home()
 }
 export const deleteCurrentSession = deleteCurrentSessionAndGoHome
-
-export const getStudySessionsAndBorrowedDecks = async () => {
+interface StudySessionsAndBorrowedDecks {
+  sessions: Array<StudySession>,
+  borrowedDecks: Array<Deck>
+}
+export const getStudySessionsAndBorrowedDecks = async (): Promise<StudySessionsAndBorrowedDecks> => {
   return JSON.parse(await getStudySessionsAndBorrowedDecksAPI())
 }
-interface startingStudyState {
-  ordering: string,
-  studyState: string
-}
+
 const createStudySessionAndNavigate = async (deck: string, startingState?: startingStudyState) => {
   let newSession = JSON.parse(await createStudySessionAPI(deck, startingState))
   navigateToStudySession(newSession.id)

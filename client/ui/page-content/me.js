@@ -119,21 +119,7 @@ function deckPreview (deck, sessionMapping, forSession) {
           overflow-wrap: break-word;
           ">${deck.name}</div>
         </div>
-        ${(forSession || deck.public) ? ((deck.public ) ? html`<div class="public-deck-marker">Public</div>` : html``): html`
-            <button
-            @click=${() => { deleteDeckBtn(deck.id) }}
-            class="usa-button usa-button--unstyled remove-button" >
-                <i class="far fa-times-circle" aria-hidden="true"></i>
-                <span class="sr-only">Remove Deck</span>
-            </button>
-            <button
-            style="position: absolute;
-              top: 125px;
-              left: 5px;
-              padding: 10px;"
-            class="usa-button usa-button--unstyled deck-edit-button" @click=${() => { navigateToDeckPage(deck.id) }}
-            >Edit</button>
-        `}
+        ${getDeckButtons(forSession, deck.public, deck.id)}
         <div style="position: absolute; top:  175px; right: 60px;">
           ${getStudyBtn(deck, sessionMapping)}
         </div>
@@ -145,6 +131,26 @@ function deckPreview (deck, sessionMapping, forSession) {
             
     </div>
 `
+}
+
+function getDeckButtons(forSession, deckPublic, deckId) {
+
+  return html`
+    ${(deckPublic) ? html`<div class="public-deck-marker">Public</div>` : html``}
+    ${(!forSession && !deckPublic) ? html`<button
+    @click=${() => { deleteDeckBtn(deckId) }}
+    class="usa-button usa-button--unstyled remove-button" >
+        <i class="far fa-times-circle" aria-hidden="true"></i>
+        <span class="sr-only">Remove Deck</span>
+    </button>` : html``}
+    ${(!forSession) ? html`<button
+    style="position: absolute;
+      top: 125px;
+      left: 5px;
+      padding: 10px;"
+    class="usa-button usa-button--unstyled deck-edit-button" @click=${() => { navigateToDeckPage(deckId) }}
+    >Edit</button>` : html``}
+    `
 }
 
 function recentlyStudiedPreview (deck) {

@@ -12,7 +12,7 @@ import { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, ac
   defaultDarkMode()
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])
   let deckId = studySession.deck
-  let [deck] = await Promise.all([getDeck(deckId)])
+  let deck = await getDeck(deckId)
   let cards = deck.cards || ''
   window.lc.setData('deck', deck)
   if (studySession) {
@@ -20,8 +20,8 @@ import { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, ac
   }
   let firstCardId = (cards && cards.length && cards[studySession.currentCard || 0]) || undefined
   let sessionOrderedCards = sortCardsBySession(cards, studySession)
-  let visibleCards = trimCardsToOnesAwaitingAnswers(sessionOrderedCards, studySession)
-  let cardBody = await getCardBody(firstCardId, deckId, visibleCards)
+  let visibleCards = trimCardsToOnesAwaitingAnswers(sessionOrderedCards.join(''), studySession)
+  let cardBody = await getCardBody(firstCardId, deckId, visibleCards.join(''))
   if (!cards || !cardBody) {
     return homePage()
   }

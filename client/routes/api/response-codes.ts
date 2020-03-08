@@ -1,12 +1,12 @@
-function ok (response) {
+function ok (response: string) {
   return response === 'OK'
 }
 
-function badInput (response) {
+function badInput (response: string) {
   return response === 'Bad Request'
 }
 
-function unauthorized (response) {
+function unauthorized (response: string) {
   return response === 'unauthorized'
 }
 

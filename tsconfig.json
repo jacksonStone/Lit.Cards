@@ -15,7 +15,7 @@
       "logic/*": ["client/business-logic/*"],
       "api/*": ["client/routes/api/*"],
       "site/*": ["client/routes/navigation/*"],
-      "utils/*": ["client/utils/*"],
+      "utils": ["client/utils.ts"],
       "component/*": ["client/ui/shared-components/*"],
       "abstract/*": ["client/browser-abstractions/*"],
       "shared/*": ["shared-client/*"]

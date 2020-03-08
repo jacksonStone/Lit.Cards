@@ -6,6 +6,6 @@ import { fetchUser } from 'logic/user'
 renderPage(content)
 ;(async () => {
   defaultDarkMode()
-  let [user] = await Promise.all([fetchUser()])
+  let user = await fetchUser()
   window.lc.setData('user', user)
 })()

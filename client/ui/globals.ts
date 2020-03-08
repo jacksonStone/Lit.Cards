@@ -1,5 +1,5 @@
 import 'uswds'
-import { render } from 'lit-html/lit-html'
+import { render, TemplateResult } from 'lit-html/lit-html'
 import { generateId } from 'shared/id-generator'
 import persistentDataChanges from './watchers/persistent-data-changes'
 import userInput from './watchers/user-input'
@@ -12,7 +12,7 @@ let defaultErrorObject = {
   fields: {},
   abstract: {}
 }
-let clone = (obj) => {
+let clone = (obj: any) => {
   return JSON.parse(JSON.stringify(obj))
 }
 let emptyDataState = {
@@ -27,7 +27,7 @@ function resetData () {
     screen: { width: window.innerWidth }
   }
 }
-function getParts (periodStr) {
+function getParts (periodStr: string) {
   const parts = []
   let i = 0
   let piece = ''
@@ -49,13 +49,15 @@ function getParts (periodStr) {
   return parts
 }
 function initLC () {
+  let testRoutes: Array<any> = [];
+  let _presentPage: (content: any) => TemplateResult;
   return {
     test: false,
-    testRoutes: [],
+    testRoutes,
     generateNewId: generateId,
-    _presentPage: () => {},
+    _presentPage: _presentPage,
     data: clone(emptyDataState),
-    getData: (key) => {
+    getData: (key:string) => {
       let currentPiece = lc.data
       let parts = getParts(key)
       for (let part of parts) {
@@ -65,10 +67,10 @@ function initLC () {
       // Do not clone this
       return currentPiece
     },
-    setSaving: (saving) => {
+    setSaving: (saving: boolean) => {
       lc.data.saving = saving
     },
-    setFileUploading: (uploading) => {
+    setFileUploading: (uploading: boolean) => {
       lc.data.fileUploading = uploading
     },
     hasPersistentChanges: () => {
@@ -83,7 +85,7 @@ function initLC () {
       })
     },
     _willRerender: false,
-    recordError: (path, error) => {
+    recordError: (path: string, error: any) => {
       lc.setData('errors.' + path, error)
     },
     resetErrors: () => {
@@ -94,7 +96,7 @@ function initLC () {
      * @param value: Current value to set the data
      * @param NO_UPDATE: Prevents setData from trying to re-render
      */
-    setData: (key, value, NO_UPDATE) => {
+    setData: (key: string, value: any, NO_UPDATE?:boolean) => {
       if (key) {
         let paths = getParts(key)
         let parent = lc.data
@@ -134,17 +136,18 @@ function initLC () {
     _rerender: () => {
       renderPage(lc._presentPage)
     },
-    setPersistent (key, value) {
+    setPersistent (key:string, value:any) {
       lc.setData('changes.' + key, value)
       lc.setData(key, value)
     },
-    setPersistentOnly (key, value) {
+    setPersistentOnly (key:string, value:any) {
       lc.setData('changes.' + key, value)
     },
-    setDeleted (obj, id) {
+    setDeleted (obj:string, id:string) {
       delete lc.data[obj][id]
       lc.setData(`changes.${obj}.${id}.deleted`, true)
     },
+    _debugging: false,
     debugging () {
       return false
       // return lc._debugging
@@ -169,8 +172,7 @@ if (process.env.NODE_ENV !== 'test') {
   urlHashWatcher()
   windowResizeWatcher()
 }
-
-function renderPage (pageContentFunc) {
+function renderPage (pageContentFunc: (content: any) => TemplateResult) {
   render(appHeader(lc.getData('user')), window.document.querySelector('#app-header'))
 
   render(pageContentFunc(lc.data), window.document.querySelector('#main-content'))
@@ -178,7 +180,7 @@ function renderPage (pageContentFunc) {
   recordCurrentPage(pageContentFunc)
 }
 
-function recordCurrentPage (pageContentFunc) {
+function recordCurrentPage (pageContentFunc: (content: any) => TemplateResult) {
   lc._presentPage = pageContentFunc
 }
 
