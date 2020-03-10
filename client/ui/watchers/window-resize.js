@@ -1,7 +1,7 @@
 function listenForResizeEvent () {
   let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-  window.lc.setData('screen.width', width, false);
+  window.lc.setData('screen.width', width, true);
 
   window.addEventListener('resize', () => {
     width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);

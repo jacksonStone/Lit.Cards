@@ -173,11 +173,13 @@ if (process.env.NODE_ENV !== 'test') {
   windowResizeWatcher()
 }
 function renderPage (pageContentFunc: (content: any) => TemplateResult) {
-  render(appHeader(lc.getData('user')), window.document.querySelector('#app-header'))
-
-  render(pageContentFunc(lc.data), window.document.querySelector('#main-content'))
-
+  if(!pageContentFunc) {
+    debugger;
+    return;
+  }
   recordCurrentPage(pageContentFunc)
+  render(appHeader(lc.getData('user')), window.document.querySelector('#app-header'))
+  render(pageContentFunc(lc.data), window.document.querySelector('#main-content'))
 }
 
 function recordCurrentPage (pageContentFunc: (content: any) => TemplateResult) {

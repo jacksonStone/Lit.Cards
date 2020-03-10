@@ -1,5 +1,5 @@
 import { renderPage } from '../ui/globals'
-import content from '../ui/page-content/deck/index.js'
+import content from '../ui/page-content/deck'
 import { initCommands } from '../ui/page-content/deck/key-commands'
 import { initEditor } from 'abstract/editor'
 import { runNextRender } from 'abstract/rendering-meta'

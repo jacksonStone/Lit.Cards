@@ -6,7 +6,7 @@ import nameEdit from './name-edit';
 import darkmodeCheckbox from 'component/darkmode-checkbox';
 import checkboxHolder from 'component/checkbox-holder';
 
-export default (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => {
+export default (cardId, cards) => {
     // 480
     const width = window.lc.getData('screen.width');
    return html`
@@ -19,7 +19,7 @@ export default (cardId, cards, addImage, hasImage, showingAnswer, fontSize) => {
             </div>
         </div>
             <div class="tablet:grid-col-6 mobile-lg:grid-col-10">
-                ${editor(addImage, hasImage, showingAnswer, fontSize)}
+                ${editor()}
 
             </div>
             <div class="tablet:grid-col-3 mobile-lg:grid-col-2">

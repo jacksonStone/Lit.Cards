@@ -1,7 +1,8 @@
-import { html } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { simulateKey } from 'abstract/keyboard';
-import { removeCard, removeImage } from 'logic/deck';
+import { removeCard, removeImage, handleImageUpload, hasImage as hasImagePresently, getPresentFontSize } from 'logic/deck';
 import { popupComponent, showPopup } from './card-image-popup';
+
 let focusingOnTextProp = '_focusingOnText'
 
 let spaceAction = () => {
@@ -31,14 +32,16 @@ function getNameOfShortcutKey() {
   }
   return 'ctrl'
 }
-function ifTextNotSelected(htmlTemplate, textSelectedHTMLTemplate) {
+function ifTextNotSelected(htmlTemplate:TemplateResult, textSelectedHTMLTemplate:TemplateResult) {
   if(!window.lc.getData(focusingOnTextProp)) {
     return htmlTemplate
   }
   return textSelectedHTMLTemplate || html``;
 }
-
-function getSession () {
+interface noneResult {
+  none: boolean
+}
+function getSession (): StudySession|noneResult {
   return window.lc.getData('session')
 }
 function tooFewCardsToDeleteOne () {
@@ -51,7 +54,12 @@ function alertCantRemove () {
   window.alert('You cannot delete any cards while they are being studied, if it\'s the last card, or if the deck has been made public')
 }
 
-export default (addImageAction, hasImage, showingAnswer, currentfontSize = 1) => {
+export default () => {
+  const addImageAction = handleImageUpload;
+  const hasImage = hasImagePresently();
+  const showingAnswer = window.lc.getData('showingAnswer');
+  const currentfontSize = getPresentFontSize() || 1;
+  debugger;
   const width = window.lc.getData('screen.width');
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">
@@ -86,7 +94,7 @@ export default (addImageAction, hasImage, showingAnswer, currentfontSize = 1) =>
             <div style="text-align: center">
             <div class="grid-row" style="margin-top:30px">
                     <div class="grid-col-3" style="text-align: left">
-                    ${((!getSession() || getSession().none) && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
+                    ${((!getSession() || (<noneResult>getSession()).none) && !tooFewCardsToDeleteOne() && !cardLoading() && !deckIsPublic()) ? html`<button class="usa-button usa-button--outline negative-button-no-outline"
                         @click=${removeCard}
                         id="remove-card-button-active"
                         style="
