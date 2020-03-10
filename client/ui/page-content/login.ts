@@ -4,17 +4,17 @@ import { navigateToSignupPage } from '../../business-logic/login';
 import errorableInput from '../shared-components/errorable-input';
 import errorBanner from '../shared-components/error-banner';
 import { login } from '../../business-logic/login';
-let loginBtn = (event) => {
+let loginBtn = (event: Event) => {
   event.preventDefault()
   let values = grabFormData('#login')
-  login(values.email, values.password)
+  login(<string>values.email, <string>values.password)
 }
-let signupBtn = (event) => {
+let signupBtn = (event: Event) => {
   event.preventDefault()
   navigateToSignupPage()
 }
 
-function passwordField(error) {
+function passwordField(error: boolean) {
   if (error) {
     return html`
       <div class="usa-form-group usa-form-group--error">
@@ -40,10 +40,11 @@ function passwordField(error) {
       <input class="usa-input" id="password" name="password" type="password" required aria-required="true">`
 }
 
-export default (data) => {
+export default () => {
   // TODO:: Add weird error message that
   // Changes based on how many failed logins
-  let { fields: ef, abstract: ea } = data.errors
+  let errors = window.lc.getData('errors');
+  let { fields: ef, abstract: ea } = errors
   return html`
     <div class="grid-container">
     <div class="grid-row">

@@ -1,15 +1,22 @@
 interface Window {
   lc: any;
+  Stripe: (key: string) => StripeAPI;
 }
 
+interface StripeAPI {
+  redirectToCheckout: any
+}
 
 interface Deck {
-    lastModified: number,
-    userEmail: string,
-    name: string,
-    date: number,
-    cards: string,
-    id: string,
+  lastModified: number,
+  userEmail: string,
+  displayName: string,
+  name: string,
+  date: number,
+  cards: string,
+  public: boolean,
+  borrowed: boolean,
+  id: string,
 }
 
 interface StudySession {
@@ -23,6 +30,10 @@ interface StudySession {
 interface startingStudyState {
   ordering: string,
   studyState: string
+}
+interface StudyHistory {
+  userEmail: string,
+  studied: string //Stringified Array of strings
 }
 
 interface User {

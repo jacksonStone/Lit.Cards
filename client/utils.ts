@@ -1,5 +1,5 @@
 interface map {
-  [key: string]:  string
+  [key: string]:  any
 }
 interface map_of_maps {
   [key: string]: map
@@ -24,7 +24,7 @@ export function keyBy<T>(list: Array<T>, key: string): {[key: string]: T} {
   return mapped
 };
 
-export const each = (obj: map, callback: (val: string, key: string) => void) => {
+export const each = (obj: map, callback: (val: any, key: string) => void) => {
   const keys = Object.keys(obj);
   keys.forEach(key => {
     callback(obj[key], key);

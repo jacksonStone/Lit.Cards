@@ -118,7 +118,7 @@ export default () => {
 `
 };
 
-function cardFlipper(url, description, backContent) {
+function cardFlipper(url: string, description: string, backContent: string) {
     return html` <div class="flip-container">
             <div class="flipper">
                 <div class="front">
@@ -152,7 +152,7 @@ function tryItButton() {
     window.location.href = '/site/signup';
 }
 function learnMoreButton() {
-    var learnMore = document.querySelector('#learnmore');
+    let learnMore: HTMLElement = document.querySelector('#learnmore');
     document.documentElement.scrollTop = learnMore.offsetTop;
     document.documentElement.scrollLeft = learnMore.offsetLeft;
 }

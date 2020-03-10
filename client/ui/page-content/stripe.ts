@@ -1,15 +1,16 @@
+let stripe: StripeAPI;
+declare const STRIPE_PUBLIC_KEY: string;
 
-let stripe;
 import { request } from '../../browser-abstractions/request';
 async function initializeStripe() {
   if (stripe) return true;
   while (!window.Stripe) {
     await new Promise(resolve => setTimeout(resolve, 20));
   }
-  stripe = Stripe(STRIPE_PUBLIC_KEY);
+  stripe = window.Stripe(STRIPE_PUBLIC_KEY);
 }
 
-async function createStripeCheckoutSession(monthDuration) {
+async function createStripeCheckoutSession(monthDuration: number) {
   await initializeStripe();
   const session = await request('/api/stripe/checkout', {month_duration: monthDuration});
   const sessionObj = JSON.parse(session);

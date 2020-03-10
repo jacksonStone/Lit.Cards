@@ -3,14 +3,15 @@ import { grabFormData } from '../../browser-abstractions/grab-form';
 import { signup } from '../../business-logic/login';
 import errorableInput from '../shared-components/errorable-input';
 import errorBanner from '../shared-components/error-banner';
-function signupBtn (event) {
+function signupBtn (event: Event) {
   event.preventDefault()
   let signupData = grabFormData('#signup')
-  return signup(signupData.email, signupData.password, signupData['password-repeat'], signupData['display-name'])
+  return signup(<string>signupData.email, <string>signupData.password, <string>signupData['password-repeat'], <string>signupData['display-name'])
 }
 
-export default (data) => {
-  let { fields: ef, abstract: ea } = data.errors
+export default () => {
+  let errors = window.lc.getData('errors');
+  let { fields: ef, abstract: ea } = errors
   return html`
     <div class="grid-container">
     <div class="grid-row">

@@ -1,4 +1,5 @@
-import { html } from 'lit';
+import { html, TemplateResult } from 'lit';
+
 import { grabFormData } from '../../browser-abstractions/grab-form';
 import { hash } from 'abstract/url';
 import month_catalog from 'shared/month-cataloge';
@@ -8,15 +9,14 @@ import { createStripeCheckoutSession } from './stripe';
 import errorBanner from '../shared-components/error-banner';
 import { changePassword } from '../../business-logic/login';
 import darkmodeCheckbox from 'component/darkmode-checkbox';
-import { $ } from 'abstract/$';
 import checkboxHolder from 'component/checkbox-holder';
-let changePasswordBtn = (event) => {
+let changePasswordBtn = (event: Event) => {
   event.preventDefault()
   let values = grabFormData('#password-change')
-  changePassword(values.currentPassword, values.password, values.passwordRepeat)
+  changePassword(<string>values.currentPassword, <string>values.password, <string>values.passwordRepeat)
 }
 
-export default (data) => {
+export default () => {
   // add other screens to settings
   let user = window.lc.getData('user');
   let h = hash()
@@ -47,7 +47,7 @@ export default (data) => {
     <div class="grid-row">
         <div class="grid-col-1"></div>
         <div class="grid-col-10">
-           ${(user && !user.verifiedEmail) ? html`<h3 style="margin-top:20px;">Must first confirm email before you can make edits to your account.</h3>` : getContents(data)}
+           ${(user && !user.verifiedEmail) ? html`<h3 style="margin-top:20px;">Must first confirm email before you can make edits to your account.</h3>` : getContents()}
         </div>
         <div class="grid-col-1"></div>
     </div>
@@ -72,18 +72,19 @@ export default (data) => {
 `
 };
 
-function getContents(data) {
+function getContents() {
   let currentHash = hash()
   if (!currentHash) {
-    return changePasswordInterface(data)
+    return changePasswordInterface()
   }
   if(currentHash === 'plan-details') {
-    return buyTimeInterface(data)
+    return buyTimeInterface()
   }
 }
 
-function changePasswordInterface(data){
-  let { fields: ef, abstract: ea } = data.errors
+function changePasswordInterface(){
+  let errors = window.lc.getData("errors");
+  let { fields: ef, abstract: ea } = errors;
   let updatedPassword = window.lc.getData('updatedPassword')
   return html` <form class="usa-form" id="password-change">
               <fieldset class="usa-fieldset">
@@ -112,7 +113,7 @@ function getRemainingDays() {
   return daysRemaining;
 }
 
-function savingsBox(savings) {
+function savingsBox(savings: number) {
   return html`<div style="
     position: absolute; 
     color: #005ea2; 
@@ -127,13 +128,13 @@ function buyTimeInterface() {
     if(!user) {
       return html`<h3 style="margin-top: 20px;">Loading...</h3>`;
     }
-    const buttons_for_purchasing = [];
+    const buttons_for_purchasing: Array<TemplateResult> = [];
     each(month_catalog, (entry, months) => {
       buttons_for_purchasing.push(
         html`<div style="margin-top: 20px;">
-        <button class="usa-button continue-studying" style="min-width: 250px; line-height: 20px; position: relative;" @click=${() => createStripeCheckoutSession(months|0)}>
-          ${months} ${(months|0) == 1 ? 'Month' : 'Months'}<br>
-          $${entry.price/100} ${(months|0) === 1 ? html`` : savingsBox(entry.savings)} </button>
+        <button class="usa-button continue-studying" style="min-width: 250px; line-height: 20px; position: relative;" @click=${() => createStripeCheckoutSession(parseInt(months))}>
+          ${months} ${(parseInt(months)) == 1 ? 'Month' : 'Months'}<br>
+          $${entry.price/100} ${(parseInt(months)) === 1 ? html`` : savingsBox(entry.savings)} </button>
           <div>`);
     });
     const daysRemaining = getRemainingDays();

@@ -3,14 +3,15 @@ import { grabFormData } from '../../browser-abstractions/grab-form';
 import { verifyPasswordReset } from '../../business-logic/login';
 import errorableInput from '../shared-components/errorable-input';
 import errorBanner from '../shared-components/error-banner';
-function confrimNewBtn (event) {
+function confrimNewBtn (event: Event) {
   event.preventDefault()
   let verifyData = grabFormData('#verify')
-  return verifyPasswordReset(verifyData.password, verifyData['password-repeat'])
+  return verifyPasswordReset(<string>verifyData.password, <string>verifyData['password-repeat'])
 }
 
-export default (data) => {
-  let { fields: ef, abstract: ea } = data.errors
+export default () => {
+  let errors = window.lc.getData('errors');
+  let { fields: ef, abstract: ea } = errors
   return html`
     <div class="grid-container">
     <div class="grid-row">

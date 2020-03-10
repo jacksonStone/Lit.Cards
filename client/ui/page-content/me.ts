@@ -21,12 +21,15 @@ function addDeckCard () {
     </div>
 </div>`
 }
-function deleteDeckBtn (id) {
+function deleteDeckBtn (id: string) {
   if (window.confirm('Are you sure you want to delete this deck?')) {
     deleteDeck(id)
   }
 }
-function getStudyBtn (deck, sessionMapping) {
+interface SessionMapping {
+  [key: string]: StudySession
+}
+function getStudyBtn (deck: Deck, sessionMapping: SessionMapping) {
   let session = sessionMapping[deck.id]
   if (!session) {
     return html`<button
@@ -41,10 +44,12 @@ function getStudyBtn (deck, sessionMapping) {
                 Continue Studying
             </button>`
 }
-function deckPreview (deck, sessionMapping, forSession) {
-  if (deck.addDeck) {
+
+function deckPreview (deckOrAdd: Deck | addDeckToken, sessionMapping: SessionMapping, forSession: boolean) {
+  if ((<addDeckToken>deckOrAdd).addDeck) {
     return addDeckCard()
   }
+  let deck = <Deck>deckOrAdd;
   let deckCount = deck.cards && deck.cards.length || 0
   if(deck.borrowed) {
     return html`
@@ -133,7 +138,7 @@ function deckPreview (deck, sessionMapping, forSession) {
 `
 }
 
-function getDeckButtons(forSession, deckPublic, deckId) {
+function getDeckButtons(forSession: boolean, deckPublic: boolean, deckId: string) {
 
   return html`
     ${(deckPublic) ? html`<div class="public-deck-marker">Public</div>` : html``}
@@ -153,7 +158,7 @@ function getDeckButtons(forSession, deckPublic, deckId) {
     `
 }
 
-function recentlyStudiedPreview (deck) {
+function recentlyStudiedPreview (deck: Deck) {
   let deckCount = deck.cards && deck.cards.length || 0
   const borrowed = deck.borrowed;
   if(borrowed) {
@@ -249,15 +254,15 @@ function recentlyStudiedPreview (deck) {
     </div>
 `
 }
-let _memo = {}
-function formatDate (date) {
+let _memo: map = {}
+function formatDate (date: number) {
   if (!_memo[date]) {
     _memo[date] = new Intl.DateTimeFormat().format(new Date(date))
   }
   return _memo[date]
 }
 
-function calculateNumOfBackgroundCards (cardCount) {
+function calculateNumOfBackgroundCards (cardCount: number) {
   if (cardCount <= 0) return 0
   if (cardCount < 3) return 1
   if (cardCount < 8) return 2
@@ -268,7 +273,7 @@ function calculateNumOfBackgroundCards (cardCount) {
   return 7
 }
 
-function makeBackgroundCards (startingTop, startingLeft, cardCount) {
+function makeBackgroundCards (startingTop: number, startingLeft: number, cardCount: number) {
   let pixelGap = 2
   let cards = []
   let numOfBackgroundCards = calculateNumOfBackgroundCards(cardCount)
@@ -287,31 +292,33 @@ function makeBackgroundCards (startingTop, startingLeft, cardCount) {
   return cards
 }
 
-function deckRow (decks, studySessionsByDeck, session) {
+function deckRow (decks: Array<Deck | addDeckToken>, studySessionsByDeck: SessionMapping, session?: boolean) {
   return html`<div class="grid-row grouping-of-three">${decks.map((deck) => { return deckPreview(deck, studySessionsByDeck, session) })}</div>`
 }
 
-function recentlyStudiedRow (decks) {
+function recentlyStudiedRow (decks: Array<Deck>) {
   return html`<div class="grid-row grouping-of-three">${decks.map((deck) => { return recentlyStudiedPreview(deck) })}</div>`
 }
-
-function deckRows (allDecks, studySessionsByDeck) {
-  allDecks = [...allDecks, { addDeck: true }]
+interface addDeckToken {
+  addDeck: boolean
+}
+function deckRows (allDecks: Array<Deck>, studySessionsByDeck: SessionMapping) {
+  let decksAndAdd: Array<Deck | addDeckToken> = [...allDecks, { addDeck: true }]
   let rows = []
-  for (let i = 0; i < allDecks.length; i = i + numPerRow) {
-    rows.push(deckRow(allDecks.slice(i, i + numPerRow), studySessionsByDeck))
+  for (let i = 0; i < decksAndAdd.length; i = i + numPerRow) {
+    rows.push(deckRow(decksAndAdd.slice(i, i + numPerRow), studySessionsByDeck))
   }
   return rows
 }
-function studyHistoryRows (allDecks) {
-  allDecks = [...allDecks]
+function studyHistoryRows (studyHistories: Array<Deck>) {
+  studyHistories = [...studyHistories]
   let rows = []
-  for (let i = 0; i < allDecks.length; i = i + numPerRow) {
-    rows.push(recentlyStudiedRow(allDecks.slice(i, i + numPerRow)))
+  for (let i = 0; i < studyHistories.length; i = i + numPerRow) {
+    rows.push(recentlyStudiedRow(studyHistories.slice(i, i + numPerRow)))
   }
   return rows
 }
-function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
+function studySessionRows (decks: Array<Deck>, borrowedDecks: Array<Deck>, studySessionsByDeck: SessionMapping) {
   let studySessions = decks.filter(deck => !!studySessionsByDeck[deck.id]);
   studySessions = studySessions.concat(borrowedDecks.filter(deck => {
       let hasSession = !!studySessionsByDeck[deck.id]
@@ -334,20 +341,25 @@ function studySessionRows (decks, borrowedDecks, studySessionsByDeck) {
 //   let values = grabFormData('#search-public-decks')
 // }
 
-export default (data = {}) => {
+export default () => {
+  let studySessions: Array<StudySession> = window.lc.getData('studySessions');
+  let decks: Array<Deck> = window.lc.getData('decks');
+  let borrowedDecks: Array<Deck> = window.lc.getData('borrowedDecks');
+  let studySessionsByDeck: SessionMapping = window.lc.getData('studySessionsByDeck');
+  let studyHistory: Array<Deck> = window.lc.getData('studyHistory');
   return html`
     <div class="grid-container">
-        ${(data.studySessions && data.studySessions.length) ? html`<h1 class="deck-header">Active Study Sessions</h1>
-        ${data.studySessions && studySessionRows(data.decks, data.borrowedDecks, data.studySessionsByDeck)}
+        ${(studySessions && studySessions.length) ? html`<h1 class="deck-header">Active Study Sessions</h1>
+        ${studySessions && studySessionRows(decks, borrowedDecks, studySessionsByDeck)}
          <div class="fancy-line" style="margin-top:80px"></div>`: html``}
         
         <h1 class="deck-header">Your Decks</h1>
-        ${data.decks && deckRows(data.decks, data.studySessionsByDeck)}
+        ${decks && deckRows(decks, studySessionsByDeck)}
         
-        ${(data.studyHistory && data.studyHistory.length) ? html`
+        ${(studyHistory && studyHistory.length) ? html`
         <div class="fancy-line" style="margin-top:80px"></div>
         <h1 class="deck-header">Recently Studied</h1> 
-        ${studyHistoryRows(data.studyHistory)}` : html``}
+        ${studyHistoryRows(studyHistory)}` : html``}
         <div style="margin-top:130px;"></div>
      </div>
      ${checkboxHolder([darkmodeCheckbox()])}

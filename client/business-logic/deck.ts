@@ -50,12 +50,12 @@ async function handleImageUpload (e: any) {
   let imageData = await getFileData(e)
   let imagePreview
   if (showingAnswer()) {
-    let [largeImage] = await getImageAtDifferentSize(imageData)
+    let largeImage = await getImageAtDifferentSize(imageData)
     setPersistentForCardBody('backHasImage', true)
     setPersistentForCardBodyCompressed('backImage', largeImage)
     imagePreview = largeImage
   } else {
-    let [largeImage] = await getImageAtDifferentSize(imageData)
+    let largeImage = await getImageAtDifferentSize(imageData)
     setPersistentForCardBody('frontHasImage', true)
     setPersistentForCardBodyCompressed('frontImage', largeImage)
     imagePreview = largeImage
