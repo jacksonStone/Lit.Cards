@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "outDir": ".assets/dist/",
+    "noImplicitAny": true,
+    "module": "es2015",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "allowJs": false,
+    "baseUrl": "./",
+    "paths": {
+      "lit": ["node_modules/lit-html/lit-html"],
+      "types": ["client/types/types"],
+      "misc/*": ["misc/*"],
+      "logic/*": ["client/business-logic/*"],
+      "api/*": ["client/routes/api/*"],
+      "site/*": ["client/routes/navigation/*"],
+      "utils": ["client/utils.ts"],
+      "component/*": ["client/ui/shared-components/*"],
+      "abstract/*": ["client/browser-abstractions/*"],
+      "shared/*": ["client/shared-client/*"]
+    }
+  }
+}
