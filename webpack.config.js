@@ -33,7 +33,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: [ '.ts', '.js' ],
     alias: {
       'lit': path.join(__dirname, 'node_modules/lit-html/lit-html'),
       'misc': path.join(__dirname, 'misc'),

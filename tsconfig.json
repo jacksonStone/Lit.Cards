@@ -6,7 +6,7 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
-    "allowJs": true,
+    "allowJs": false,
     "baseUrl": "./",
     "paths": {
       "lit": ["node_modules/lit-html/lit-html"],
