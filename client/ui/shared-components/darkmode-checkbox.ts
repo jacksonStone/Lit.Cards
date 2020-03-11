@@ -6,7 +6,7 @@ let isDarkMode = () => {
   let user = window.lc.getData('user')
   return user && user.darkMode
 }
-let setDarkMode = (e) => {
+let setDarkMode = (e: Event) => {
   let value = getValueFromCheckbox(e)
   recordAndSetDarkMode(value)
   window.lc.setPersistent('user.darkMode', value, false)

@@ -8,7 +8,7 @@ export default () => {
   return noneWrong()
 };
 
-function oneClick (clickHandler) {
+function oneClick (clickHandler: () => void) {
   let clicked = false
   return () => {
     if (clicked) return

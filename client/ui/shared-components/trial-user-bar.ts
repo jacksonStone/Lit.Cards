@@ -5,7 +5,7 @@ function navigateToPlan() {
 }
 
 export default () => {
-    const user = window.lc.getData('user');
+    const user = <User>window.lc.getData('user');
     if(!user) {
         return EMPTY
     }

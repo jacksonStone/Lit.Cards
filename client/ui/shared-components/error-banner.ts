@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-export default (heading, subtext) => {
+export default (heading:string, subtext:string) => {
   return html`
   <div class="usa-alert usa-alert--error" role="alert">
   <div class="usa-alert__body">

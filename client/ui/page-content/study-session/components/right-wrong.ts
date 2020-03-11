@@ -8,9 +8,10 @@ function stillStudying() {
   return true
 }
 
-function cardStack(currentCardId, cards) {
+function cardStack() {
   // Humans are 1-based
-  if (!cards) return
+const cards = window.lc.getData('orderedCards')
+if (!cards) return
   return html`<div
 style="text-align: center">
         <h1  style="
@@ -34,8 +35,9 @@ margin-top: 20px;
     </div>`
 }
 
-function smallCardStack(currentCardId, cards) {
+function smallCardStack() {
    // Humans are 1-based
+   const cards = window.lc.getData('orderedCards')
    if (!cards) return
    return html`<div style="position: relative">
       <div style="text-align: center; width: 200px; margin-top: -40px; font-size:16px; position: absolute; top: 50px; margin-left: auto;

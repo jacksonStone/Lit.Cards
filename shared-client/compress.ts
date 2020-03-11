@@ -13,26 +13,26 @@
 let f = String.fromCharCode
 let ownProp = Object.prototype.hasOwnProperty
 export let LZString = {
-  jcompress: function (inputObj) {
+  jcompress: function (inputObj: Object) {
     return LZString.compress(JSON.stringify(inputObj))
   },
-  jdecompress: function (compressed) {
+  jdecompress: function (compressed: string) {
     return JSON.parse(LZString.decompress(compressed))
   },
-  compress: function (input) {
+  compress: function (input: string) {
     if (input == null) return ''
-    return LZString._compress(input, 15, function (a) { return f(a + 32) }) + ' '
+    return LZString._compress(input, 15, function (a:number) { return f(a + 32) }) + ' '
   },
-  decompress: function (compressed) {
+  decompress: function (compressed: string) {
     if (compressed == null) return ''
     if (compressed == '') return null
-    return LZString._decompress(compressed.length, 16384, function (index) { return compressed.charCodeAt(index) - 32 })
+    return LZString._decompress(compressed.length, 16384, function (index:number) { return compressed.charCodeAt(index) - 32 })
   },
-  _compress: function (uncompressed, bitsPerChar, cfi) {
+  _compress: function (uncompressed: string, bitsPerChar: number, cfi: (index: number) => string) {
     if (uncompressed == null) return ''
     let i; let value
-    let cd = {}
-    let ctx_dictionaryToCreate = {}
+    let cd: {[key: string]: any} = {}
+    let ctx_dictionaryToCreate: {[key: string]: any} = {}
     let ctx_c = ''
     let ctx_wc = ''
     let ctx_w = ''
@@ -239,8 +239,8 @@ export let LZString = {
     }
     return ctx_d.join('')
   },
-  _decompress: function (length, resetValue, gnv) {
-    let dictionary = []
+  _decompress: function (length: number, resetValue: number, gnv:  (index: number) => number) {
+    let dictionary: Array<number|string> = []
     let next
     let enlargeIn = 4
     let dictSize = 4
@@ -377,7 +377,7 @@ export let LZString = {
       }
 
       if (dictionary[c]) {
-        entry = dictionary[c]
+        entry = <string>dictionary[c]
       } else {
         if (c === dictSize) {
           entry = w + w.charAt(0)

@@ -1,8 +1,8 @@
-import { html } from 'lit';
+import { html, TemplateResult } from 'lit';
 let focusingOnTextProp = '_focusingOnText'
 
 //You are working on this
-export default (checkboxes, right = '10px') => {
+export default (checkboxes: Array<TemplateResult>, right = '10px') => {
   let keyBoardInUse = window.lc.getData(focusingOnTextProp);
   let isMobile = window.lc.getData('screen.width') <= 750;
   if(keyBoardInUse && isMobile) return html``

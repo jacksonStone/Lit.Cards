@@ -12,7 +12,7 @@ let shouldHideNavigation = () => {
   }
 }
 
-export default (userInfo) => {
+export default (userInfo: User) => {
   if(shouldHideNavigation()) {
     return html`<div style="margin-top: 108px;"></div>`;
   }
@@ -73,9 +73,9 @@ function justVerifiedEmail () {
   return window.lc.getData('justVerifiedEmail')
 }
 
-function getNavOptions (userInfo) {
+function getNavOptions (userInfo: User) {
   if (userInfo) {
-    return loggedInHeader(userInfo)
+    return loggedInHeader()
   } else if (!onPage('login') && !onPage('signup')) {
     return notLoggedInHeader()
   } else {
@@ -90,7 +90,7 @@ function notLoggedInHeader () {
              <button class="usa-button" id="login-button" @click=${navigateToLoginPage}>Login</button>
             `
 }
-function loggedInHeader (userInfo) {
+function loggedInHeader () {
   return html`
              <div style="display:inline"><a href="#" class="above-750 usa-button usa-button--unstyled" id="settings-page-link" @click=${settings} style="margin-right: 10px">Account Settings</a></div>
              <div style="display:inline"><a href="#" class="above-350 usa-button usa-button--outline" id="logout-link" @click=${logout}>Logout</a></div>

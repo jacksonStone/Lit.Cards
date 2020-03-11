@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-export default (action) => {
+export default (action: (e?: Event) => void) => {
   return html`
 <button class="usa-button usa-button--outline flip-card"
 style="box-shadow: none;"

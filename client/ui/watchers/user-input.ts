@@ -8,7 +8,7 @@ function focusingOnTextInput () {
   return isTextField(window.document.activeElement)
 }
 
-function isTextField (activeElement) {
+function isTextField (activeElement: Element) {
   if(activeElement.nodeName === 'INPUT') {
     return true;
   }
@@ -16,7 +16,7 @@ function isTextField (activeElement) {
 }
 
 function listenToTextSelection () {
-    let wasFocusingOnText = window.lc.getData(propName)
+    let wasFocusingOnText = <boolean>window.lc.getData(propName)
     let isFocusingOnText = focusingOnTextInput()
     if(isFocusingOnText === wasFocusingOnText) {
       return

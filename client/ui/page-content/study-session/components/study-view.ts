@@ -3,7 +3,6 @@ import viewer from './card-viewer';
 import { cardStack, smallCardStack } from './right-wrong';
 import sidenav from './sidenav';
 import nextSteps from './end-of-session';
-
 // let { storeAllState, retrieveStateStored } = require('abstract/browser-storage')
 import darkmodeCheckbox from 'component/darkmode-checkbox';
 
@@ -14,7 +13,9 @@ let getUser = () => {
   return user || {};
 }
 
-export default (cardId, cards, hasImage, showingAnswer, fontSize) => {
+export default () => {
+  const cardId = window.lc.getData('activeCardId');
+  const cards = window.lc.getData('orderedCards');
   const screenWidth = window.lc.getData('screen.width');
   return html`
     <div class="grid-container">
@@ -27,15 +28,15 @@ export default (cardId, cards, hasImage, showingAnswer, fontSize) => {
             </div>` }
           </div>
           <div class="grid-col-6">      
-            ${cards.length ? viewer(hasImage, showingAnswer, fontSize) : nextSteps()}
+            ${cards.length ? viewer() : nextSteps()}
           </div>
           <div class="grid-col-3 study-side-nav">
-            ${getUser().hideProgress ? html``: cardStack(cardId, cards) }
+            ${getUser().hideProgress ? html``: cardStack() }
           </div>
         </div>` : html`
         <div style="max-width: 450px; margin: 0 auto">
-            ${cards.length ? viewer(hasImage, showingAnswer, fontSize) : nextSteps()}
-            ${getUser().hideProgress ? html``: smallCardStack(cardId, cards) }
+            ${cards.length ? viewer() : nextSteps()}
+            ${getUser().hideProgress ? html``: smallCardStack() }
         </div>
         `}
         

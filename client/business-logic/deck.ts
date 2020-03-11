@@ -67,7 +67,7 @@ async function handleImageUpload (e: any) {
 function setPersistentForCardBodyCompressed (key: string, value: string|boolean|number) {
   let cardId = _getCurrentCardId()
   let changeKey = `cardBody.${cardId}.${key}`
-  window.lc.setPersistentOnly(changeKey, compress(value))
+  window.lc.setPersistentOnly(changeKey, compress(<string>value))
   window.lc.setData(changeKey, value)
 }
 function setPersistentForCardBody (key: string, value: string|boolean|number) {

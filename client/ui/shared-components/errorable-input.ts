@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-export default (error, errorText, name, label, type = 'text', length) => {
+export default (error: boolean, errorText:string, name:string, label:string, type = 'text', length?:number) => {
   if (error) {
     return html`
       <div class="usa-form-group usa-form-group--error">

@@ -5,6 +5,7 @@ import { getTextToShowForCard, refreshEditor } from 'logic/deck';
 import { runNextRender } from 'abstract/rendering-meta';
 import { showingAnswerKeyBindings, showingQuestionKeyBindings } from '../key-commands';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { hasImage as calculateHasImage, getPresentFontSize } from 'logic/deck';
 let spaceAction = () => {
   simulateKey('Space')
 }
@@ -15,13 +16,17 @@ let leftAction = () => {
   simulateKey('ArrowLeft')
 }
 
-export default (hasImage, showingAnswer, currentfontSize = 1) => {
+export default () => {
+  const showingAnswer = window.lc.getData('showingAnswer');
+  const currentfontSize = getPresentFontSize() || 1;
+  const hasImage = calculateHasImage();
+  const width = window.lc.getData('screen.width');
+
   if (showingAnswer) {
     showingAnswerKeyBindings()
   } else {
     showingQuestionKeyBindings()
   }
-  const width = window.lc.getData('screen.width');
   runNextRender(refreshEditor)
   let getTextForCard = getTextToShowForCard();
   return html`

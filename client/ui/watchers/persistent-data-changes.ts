@@ -27,7 +27,7 @@ async function _handleChanges () {
   window.lc.setSaving(false);
 }
 
-async function _handleTransaction(transaction) {
+async function _handleTransaction(transaction: Transaction) {
   //Clean no-ops
   if (transaction.cardBody) {
     each(transaction.cardBody, (cardBody, cardId) => {

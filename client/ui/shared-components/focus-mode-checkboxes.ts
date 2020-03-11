@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import { getValueFromCheckbox } from 'abstract/events';
-import { recordAndSetDarkMode } from 'abstract/darkmode';
 let isHidingProgress= () => {
   let user = window.lc.getData('user')
   return user && user.hideProgress
@@ -9,11 +8,11 @@ let isHidingNavigation= () => {
   let user = window.lc.getData('user')
   return user && user.hideNavigation
 }
-let setHidingNavigation = (e) => {
+let setHidingNavigation = (e: Event) => {
   let value = getValueFromCheckbox(e)
   window.lc.setPersistent('user.hideNavigation', value)
 }
-let setHidingProgress = (e) => {
+let setHidingProgress = (e: Event) => {
   let value = getValueFromCheckbox(e)
   window.lc.setPersistent('user.hideProgress', value)
 }
