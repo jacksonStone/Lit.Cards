@@ -1,4 +1,4 @@
-function shuffle (a) {
+function shuffle (a: Array<number>) {
   let j
   let x
   let i
