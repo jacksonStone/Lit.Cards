@@ -18,7 +18,7 @@ function dataSaysTextIsFocused (): boolean {
 function listenForCMDKey (key: string, callback:  () => void) {
   cmdKeyBindings[key] = callback
 }
-function listenForKey (key: string, callback:  () => void) {
+function listenForKey (key: string, callback:  (e?:KeyboardEvent) => void) {
   keyBindings[key] = callback
 }
 

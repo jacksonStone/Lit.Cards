@@ -6,7 +6,7 @@ import nameEdit from './name-edit';
 import darkmodeCheckbox from 'component/darkmode-checkbox';
 import checkboxHolder from 'component/checkbox-holder';
 
-export default (cardId, cards) => {
+export default () => {
     // 480
     const width = window.lc.getData('screen.width');
    return html`
@@ -23,10 +23,10 @@ export default (cardId, cards) => {
 
             </div>
             <div class="tablet:grid-col-3 mobile-lg:grid-col-2">
-                ${width >= 480 ? fullCardNavigation(cardId, cards) : html``}
+                ${width >= 480 ? fullCardNavigation() : html``}
             </div>
             ${width < 480 ? html`
-                <div style="margin: 10px auto;"><span style="margin-right: 20px;">${upArrow()}</span><span>${downArrow()}</span>${cardCounter(cardId, cards)}</div>` : html``}
+                <div style="margin: 10px auto;"><span style="margin-right: 20px;">${upArrow()}</span><span>${downArrow()}</span>${cardCounter()}</div>` : html``}
         </div>
     </div>
     ${checkboxHolder([darkmodeCheckbox()])}

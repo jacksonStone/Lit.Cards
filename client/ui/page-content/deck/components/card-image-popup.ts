@@ -7,7 +7,7 @@ import { getImageData } from 'logic/deck';
 
 import { runNextRender } from 'abstract/rendering-meta';
 
-let _hidePopup = (e) => {
+let _hidePopup = (e: KeyboardEvent) => {
   e.preventDefault()
   restoreArchivedKeyBindings()
   window.lc.setData('showingPopup', false)
@@ -18,7 +18,7 @@ let showPopup = () => {
   listenForKey('Escape', _hidePopup)
   window.lc.setData('showingPopup', true)
 }
-let getPopupWidthAndHeight = function(width){
+let getPopupWidthAndHeight = function(width: number): string{
   if(width > 600) {
     return `
       width: 600px;

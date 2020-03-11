@@ -1,7 +1,10 @@
 
 import { html } from 'lit';
 import { nextCard, previousCard } from 'logic/deck';
-let fullCardNavigation = (currentCardId, cards) => {
+let fullCardNavigation = () => {
+  const currentCardId = window.lc.getData('activeCardId');
+  const cards = window.lc.getData('orderedCards');
+
   if (!cards) return
   const width = window.lc.getData('screen.width');
   // Humans are 1-based
@@ -27,9 +30,10 @@ let upArrow = () => {
 let downArrow = () => {
   return html`<button class="usa-button usa-button--outline prev-next" @click=${()=>{nextCard()}}><i class="far fa-caret-square-down"><span class="sr-only">Next card</span></i></button>`;
 }
-let cardCounter = (currentCardId, cards) => {
+let cardCounter = () => {
+  const currentCardId = window.lc.getData('activeCardId');
+  const cards = window.lc.getData('orderedCards');
   if (!cards) return
-  const width = window.lc.getData('screen.width');
   // Humans are 1-based
   let index = cards.indexOf(currentCardId) + 1
 

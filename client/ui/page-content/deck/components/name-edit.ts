@@ -4,7 +4,7 @@ import { getParam } from '../../../../browser-abstractions/url';
 function getName () {
   return window.lc.getData('deck.name')
 }
-function setName (e) {
+function setName (e: Event) {
   let value = getValueFromInput(e)
   window.lc.setPersistent('deck.name', value)
   window.lc.setPersistent('deck.id', getParam('deck'))
