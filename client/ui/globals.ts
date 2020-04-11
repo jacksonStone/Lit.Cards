@@ -174,7 +174,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 function renderPage (pageContentFunc: (content: any) => TemplateResult) {
   if(!pageContentFunc) {
-    debugger;
     return;
   }
   recordCurrentPage(pageContentFunc)

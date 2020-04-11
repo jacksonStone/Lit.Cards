@@ -4,13 +4,14 @@ import { onExactPage, onPage } from 'abstract/url';
 import { navigateToLoginPage, logout } from 'logic/login';
 import { navigateToSettingsPage } from 'logic/settings';
 import { resendEmailVerification } from 'logic/login';
+
 declare const URL_ROOT: string;
 const electron = !!URL_ROOT;
 
 let shouldHideNavigation = () => {
   const user = window.lc.getData('user') || {};
   //TODO:: Swap true for on study page
-  if (user.hideNavigation && window.location.href.indexOf('/me/study') !== -1) {
+  if (user.hideNavigation && window.location.href.indexOf('/study') !== -1) {
     return true;
   }
 }
@@ -19,6 +20,7 @@ export default (userInfo: User) => {
   if(shouldHideNavigation()) {
     return html`<div style="margin-top: 108px;"></div>`;
   }
+  //@TODO:: Electron figure out what to redirect to here.
   return html`
     <div class="grid-container">
             <div class="navbar-custom"  style="height: 110px">
@@ -44,7 +46,7 @@ function waitingOnEmailVerification() {
 }
 
 function emailVerificationLink() {
-  if(!onExactPage('me/settings') && !onExactPage('me')) {
+  if(!onExactPage('settings') && !onExactPage('me')) {
     return html``;
   }
   if(justVerifiedEmail()) {

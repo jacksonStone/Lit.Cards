@@ -10,7 +10,7 @@ let makePageRoute = (path, details, auth) => {
     }
     if(details.subOnly) {
       if(!req.userSubbed) {
-        return res.redirect('/site/me/settings#plan-details');
+        return res.redirect('/site/settings#plan-details');
       }
     }
     return sendPage(res, details, req.user)
@@ -22,7 +22,7 @@ let pages = {
     darkModeable: false,
     title: 'Lit.Cards',
     description: "Fast and simple online notecards",
-    entryFile: 'index.js',
+    entryFile: 'login.html.js',
     auth: false
   },
   '/forgot-password': {
@@ -65,22 +65,22 @@ let pages = {
     entryFile: 'me.js',
     // auth: true - default
   },
-  '/me/deck': {
+  '/deck': {
     title: 'Lit: Edit deck',
     darkModeable: true,
     description: "Edit deck",
     entryFile: 'deck.js',
-    page: 'me/deck',
+    page: 'deck',
     subOnly: true
   },
-  '/me/settings': {
+  '/settings': {
     title: 'Lit: Settings',
     description: "User settings",
     entryFile: 'settings.js',
     additionalFiles: `<script src=https://js.stripe.com/v3/></script>`,
     darkModeable: true,
   },
-  '/me/study': {
+  '/study': {
     title: 'Lit: Study',
     entryFile: 'study.js',
     description: "Study session",

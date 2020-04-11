@@ -59,7 +59,6 @@ export default () => {
   const hasImage = hasImagePresently();
   const showingAnswer = window.lc.getData('showingAnswer');
   const currentfontSize = getPresentFontSize() || 1;
-  debugger;
   const width = window.lc.getData('screen.width');
   return html`
     <div class="card-editor ${hasImage ? 'card-editor-with-image' : ''}">

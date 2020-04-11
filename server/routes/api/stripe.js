@@ -53,7 +53,7 @@ router.post('/checkout', async (req, res) => {
         },
         mode: 'payment',
         success_url: process.env.SITE_DOMAIN_ROOT + '/site/me',
-        cancel_url: process.env.SITE_DOMAIN_ROOT + '/site/me/settings#plan-details',
+        cancel_url: process.env.SITE_DOMAIN_ROOT + '/site/settings#plan-details',
       };
     if(current_user.stripeCustomerId) {
         session_request.customer = current_user.stripeCustomerId;

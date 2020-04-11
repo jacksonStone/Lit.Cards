@@ -10,8 +10,8 @@ function createWindow () {
     }
   })
 
-  // and load the index.html of the app.
-  win.loadFile('index.html')
+  // and load the me.html of the app.
+  win.loadFile('me.html')
 }
 
 app.whenReady().then(createWindow)

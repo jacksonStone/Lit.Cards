@@ -9,6 +9,7 @@ import { fetchUser } from 'logic/user'
 import { getCardBody, getCardBodyForEmptyState } from 'logic/card-bodies'
 import { getStudySession } from 'logic/study'
 import { getDeck, handleEditorTextChange, refreshEditor } from 'logic/deck';
+import { home as homePage } from '../routes/navigation/pages'
 
 (async () => {
   defaultDarkMode()
@@ -31,7 +32,7 @@ import { getDeck, handleEditorTextChange, refreshEditor } from 'logic/deck';
 
   if (!cardBody) {
     // In case something went sideways
-    window.location.href = '/'
+    homePage();
   }
   window.lc.setData('orderedCards', cards)
   window.lc.setData('activeCardId', firstCardId)
