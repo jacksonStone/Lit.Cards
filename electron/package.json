@@ -2,7 +2,7 @@
   "name": "lit.cards.electron",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "electron-node.js",
   "scripts": {
     "start": "electron ."
   },

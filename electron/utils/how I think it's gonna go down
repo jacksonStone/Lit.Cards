@@ -1,0 +1,24 @@
+So basically
+
+Have directories for each Object
+
+Decks
+CardBody
+...
+
+and in those have files with names corresponding to the uriencoded id
+
+Decks/1.json
+Decks/2.json
+...
+
+Except CardBody which is grouped further by Deck Id
+
+CardBody/1/1.json
+CardBody/1/2.json
+...
+CardBody/2/1.json
+CardBody/2/2.json
+...
+
+I think it will be as simple as that to code

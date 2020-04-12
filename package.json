@@ -36,11 +36,14 @@
     "ss": "npm run sw",
     "ws": "npm run sw",
     "sassw": "sass --watch assets/scss/index.scss assets/dist/index.css",
+    "sassw-electron": "sass --watch assets/scss/index.scss electron/assets/dist/index.css",
+    "ww-electron": "ELECTRON=true webpack -w",
     "sw": "cd server && nodemon index.js",
     "lint": "eslint --fix server/**/*.js client/**/*.js shared/**/*.js",
     "massage-assets": "node ./scripts/massage-assets.js",
     "build": "node ./server/validate-envs.js && node ./server/database/external-connections/mongo-stuff/index-creation && sass assets/scss/index.scss assets/dist/index.css && webpack && npm run massage-assets",
-    "build-electron": "npm run webpack-electron && sass assets/scss/index.scss electron/assets/dist/index.css"
+    "build-electron": "npm run webpack-electron && sass assets/scss/index.scss electron/assets/dist/index.css",
+    "ew": "concurrently --kill-others \"./scripts/build-for-electron.sh\" \"npm run ww-electron\" \"npm run ss\" \"npm run sassw-electron\""
   },
   "author": "",
   "license": "ISC",
