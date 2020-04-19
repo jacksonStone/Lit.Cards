@@ -1,23 +1,68 @@
 const fileIO = require('../utils/file-io');
+//These are copied from the ../../server folder - DO NOT EDIT DIRECTLY
 const deckController = require('../server/buisness-logic/deck');
+const userController = require('../server/buisness-logic/users/userDetails');
+
+const studyController = require('../server/buisness-logic/study');
+const cardController = require('../server/buisness-logic/card-body');
+const studyHistoryController = require('../server/buisness-logic/study-history');
+const transactionController = require('../server/buisness-logic/transaction');
 
 function handleGetRequest(path) {
   console.log(`Get: ${path}`);
 
-  if (path === 'decks/me') {
-    return meDecks();
-  }
-
-  if (path === 'study/me') {
-    return meStudys();
+  if (path.startsWith('decks')) {
+    if(path.includes('/me')) {
+      // deck/me
+      return deckController.getDecks();
+    } else {
+      // deck/:id
+      const deckId = path.split('/')[1];
+      return deckController.getDeck(undefined, deckId);
+    }
   }
 
   if (path === 'study-history/me') {
-    return meStudys();
+    return studyHistoryController.getDeckDetailsFromStudyHistory();
+  }
+
+  if(path.startsWith('study')) {
+    if(path.includes('/me')) {
+      // study/me
+      return studyController.getSessionsAndBorrowedDecks();
+    }
+    if(path.includes('/deck/')) {
+      // study/deck/:id
+      const deckId = path.split('/')[2];
+      return studyController.getSessionByDeck(undefined, deckId);
+    }
+    else {
+      // study/:id
+      const id = path.split('/')[1];
+      return studyController.getSession(undefined, id);
+    }
+  }
+
+  if(path.startsWith('card-body')) {
+    /**
+     * card-body/:deck?card=card
+     * card-body/:deck?card=card&t=foo
+     * card-body/:deck
+    */
+    let deckId, cardId;
+
+    if(!path.includes('?')) {
+      deckId = path.split('/')[1];
+    }
+    else {
+      deckId = path.split('/')[1].split('?')[0];
+      cardId = decodeURIComponent(path.split('card=')[1].split('&')[0]);
+    }
+    return cardController.getCardBody(undefined, deckId, cardId);
   }
 
   if (path === 'user/me') {
-    return meUser();
+    return userController.getUserDetails();
   }
   console.log("UNSUPPORTED GET: " + path);
   throw Error("Unsupported get");
@@ -28,31 +73,28 @@ function handlePostRequest(path, body) {
   console.log(`Post: ${path}, ${JSON.stringify(body)}`);
 
   if(path === "transaction") {
-    return handleTransaction(body);
+    return transactionController.handleTransaction(undefined, body);
   }
   if(path === "decks/create") {
     return deckController.addDeck(undefined, body.name);
+  }
+  if(path === "decks/delete") {
+    return deckController.deleteDeck(undefined, body.id);
+  }
+  if(path === "decks/make-public") {
+    return deckController.makeDeckPublic(undefined, body.id);
+  }
+  if(path === "study/create") {
+    return studyController.createSession(undefined, body.deck, body.startingState)
+  }
+  if(path === "study/delete") {
+    return studyController.deleteSession(undefined, body.id)
   }
   console.log("UNSUPPORTED POST", path, body);
   return JSON.stringify([]);
 }
 
 
-async function meDecks(){
-  const decks = await fileIO.getDirFiles('deck');
-  const deckPayloads = await Promise.all(decks.map(async deckId => {
-    return JSON.parse(await fileIO.getFile('deck/' + deckId));
-  }));
-  return deckPayloads;
-}
-async function meStudys(){
-  const sessions = await fileIO.getDirFiles('studySession');
-  return sessions;
-}
-async function meStudyHistories(){
-  const histories = await fileIO.getDirFiles('studyHistory');
-  return histories;
-}
 async function meUser(){
   const userStr = await fileIO.getFile('user');
   const user = JSON.parse(userStr);
@@ -60,35 +102,7 @@ async function meUser(){
 }
 
 
-
-
-async function createDeck(body) {
-  const id = uuidv4();
-  const name = body.name || 'Untitled';
-
-}
-
-async function handleTransaction(transaction) {
-  if (transaction.user) {
-    const userStr = await fileIO.getFile('user');
-    let user = JSON.parse(userStr);
-    user = {...user, ...transaction.user};
-    await fileIO.setFile('user', JSON.stringify(user));
-  }
-  if(transaction.deck) {
-    console.log(transaction.deck);
-  }
-
-}
 module.exports = {
   handleGetRequest,
   handlePostRequest
 };
-
-
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}

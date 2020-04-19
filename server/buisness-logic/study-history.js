@@ -3,6 +3,7 @@ let { getStudyHistory, upsertStudyHistory, editStudyHistory } = require('../data
 let HISTORY_LIMIT = 6
 
 async function getDeckDetailsFromStudyHistory (userEmail) {
+  console.log("GETTTING STUDY HISTORY")
   let studyHistory = await getStudyHistory(userEmail)
   let history = JSON.parse(studyHistory.studied)
   let decks = await Promise.all(history.map(deckId => {
