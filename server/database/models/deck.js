@@ -3,19 +3,20 @@ let tableName = 'deck'
 let { userExists } = require('./user')
 let { generateId } = require('../../../shared/id-generator')
 let { intToChar } = require('../../../shared/char-encoding')
+let isElectron = require('../../node-abstractions/is-electron');
 async function getDecks (userEmail) {
   let results = await db.getRecord(tableName, { userEmail })
   return results || []
 }
 async function getDeck (userEmail, deck, requireUserIdMatch = false) {
   let query = { id: deck };
-  if(requireUserIdMatch) {
+  if(requireUserIdMatch && !isElectron()) {
     query.userEmail = userEmail;
   }
   let results = await db.getRecord(tableName, query, 1)
   if (results) {
     let firstResult = results;
-    if (firstResult.userEmail === userEmail || firstResult.public) {
+    if (isElectron() || firstResult.userEmail === userEmail || firstResult.public) {
       if(firstResult.userEmail !== userEmail) {
         //We don't want to make emails public
         delete firstResult.userEmail;
@@ -56,7 +57,7 @@ async function deleteCard (userEmail, deck, card) {
   await editDeck(deckRecord, { cards: newCards })
 }
 async function createDeck (userEmail, name, displayName) {
-  if (!userEmail || !name || !displayName) return
+  if (!isElectron() && (!userEmail || !name || !displayName)) return
   let id = generateId()
   let dateMade = Date.now()
   let cards = intToChar(0);
@@ -64,7 +65,7 @@ async function createDeck (userEmail, name, displayName) {
 }
 
 async function deleteDeck (userEmail, id) {
-  if (!userEmail || !id) return
+  if (!isElectron() && (!userEmail || !id)) return
   // Required
   let currentUser = await userExists(userEmail)
   if (!currentUser) return

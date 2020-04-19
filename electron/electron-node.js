@@ -1,6 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
-const handleGetRequest = require('./api/getRequest');
-const handlePostRequest = require('./api/postRequest');
+const {handleGetRequest, handlePostRequest} = require('./api/entryPoints');
 const {
   getFile,
   setFile,
