@@ -1,15 +1,17 @@
-const fileIO = require('../utils/file-io');
-//These are copied from the ../../server folder - DO NOT EDIT DIRECTLY
+
+//These below dependencies are copied from the ../../server folder during a build
+//and are shared between the web version of the app and the electron version
+
+//***DO NOT EDIT THESE REQUIRED FILES DIRECTLY***
 const deckController = require('../server/buisness-logic/deck');
 const userController = require('../server/buisness-logic/users/userDetails');
-
 const studyController = require('../server/buisness-logic/study');
 const cardController = require('../server/buisness-logic/card-body');
 const studyHistoryController = require('../server/buisness-logic/study-history');
 const transactionController = require('../server/buisness-logic/transaction');
+//***DO NOT EDIT THE ABOVE REQUIRED FILES DIRECTLY***
 
 function handleGetRequest(path) {
-  console.log(`Get: ${path}`);
 
   if (path.startsWith('decks')) {
     if(path.includes('/me')) {
@@ -26,7 +28,7 @@ function handleGetRequest(path) {
     return studyHistoryController.getDeckDetailsFromStudyHistory();
   }
 
-  if(path.startsWith('study')) {
+  if(path.startsWith('study/')) {
     if(path.includes('/me')) {
       // study/me
       return studyController.getSessionsAndBorrowedDecks();
@@ -43,7 +45,7 @@ function handleGetRequest(path) {
     }
   }
 
-  if(path.startsWith('card-body')) {
+  if(path.startsWith('card-body/')) {
     /**
      * card-body/:deck?card=card
      * card-body/:deck?card=card&t=foo
@@ -91,14 +93,7 @@ function handlePostRequest(path, body) {
     return studyController.deleteSession(undefined, body.id)
   }
   console.log("UNSUPPORTED POST", path, body);
-  return JSON.stringify([]);
-}
-
-
-async function meUser(){
-  const userStr = await fileIO.getFile('user');
-  const user = JSON.parse(userStr);
-  return user;
+  throw Error("Unsupported POST");
 }
 
 

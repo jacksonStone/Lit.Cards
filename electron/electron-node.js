@@ -19,10 +19,19 @@ const defaultFiles = [
 ]
 
 async function initializeDataLayout() {
+  let formatted;
+  try {
+    formatted = await getFile('formatted');
+  } catch(e) {
+    formatted = false;
+  }
+  if (formatted) return;
+
   await Promise.all(objectTypes.map((objName) => {
     return createDir(objName, true);
   }));
   await setFile('user', '{}');
+  await setFile('formatted', 'true');
 }
 
 async function createWindow () {

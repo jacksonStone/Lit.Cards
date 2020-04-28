@@ -26,6 +26,15 @@ function setFile(path, data) {
   })
 }
 
+function unsetFile(path) {
+  return new Promise((resolve, reject) => {
+    fs.unlink(nodePath.join(whereDataBe, path), (err) => {
+      if (err) return reject(err);
+      resolve();
+    });
+  })
+}
+
 function getDirFiles(path) {
   return new Promise((resolve, reject) => {
     fs.readdir(nodePath.join(whereDataBe, path), (err, data) => {
@@ -36,6 +45,14 @@ function getDirFiles(path) {
     });
   });
 }
+
+async function getAllFileContentInDir(path) {
+  const files = await getDirFiles(path);
+  return Promise.all(files.map(fileName => {
+    return getFile(`${path}/${fileName}`);
+  }));
+}
+
 function createDir(path, tolerateError) {
   return new Promise((resolve, reject) => {
     fs.mkdir(nodePath.join(whereDataBe, path), (err) => {
@@ -61,7 +78,9 @@ function removeDir(path, tolerateError) {
 module.exports = {
   getFile,
   setFile,
+  unsetFile,
   getDirFiles,
+  getAllFileContentInDir,
   createDir,
   removeDir
 };
