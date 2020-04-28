@@ -6,18 +6,18 @@ let _ = require('lodash')
 let fileIO = require('../../../utils/file-io');
 let user = {};
 async function getRecord (table, conditions, limit) {
-  if(table === 'user') {
-    let userStr = await fileIO.getFile('user');
-    let user = JSON.parse(userStr);
-    console.log(userStr);
-    if(limit === 1) return user;
-    return [user];
+  if(table === 'user' || table === 'studyHistory') {
+    let recordStr = await fileIO.getFile(table);
+    let record = JSON.parse(recordStr);
+    console.log(recordStr);
+    if(limit === 1) return record;
+    return [record];
   }
   if(conditions) {
     delete conditions.userEmail;
   }
   // Should probably do decks first
-  if(table !== 'cardBody' && table !== 'studyHistory') {
+  if(table !== 'cardBody') {
     let results;
     if (!conditions.id) {
       let deckStrs = await fileIO.getAllFileContentInDir(table);
@@ -78,16 +78,19 @@ async function setRecord (table, values) {
     //We don't create users
     throw Error('We don\'t create users in electron');
   }
+  if(table === "studyHistory") {
+    return editRecord(table, {}, values);
+  }
   if (values.userEmail) {
     delete values.userEmail;
   }
-if(table !== 'cardBody' && table !== 'studyHistory') {
-  if(!values.id) {
-    throw Error("Record creation requires an id field");
+  if(table !== 'cardBody') {
+    if(!values.id) {
+      throw Error("Record creation requires an id field");
+    }
+    await fileIO.setFile(`${table}/${values.id}`, JSON.stringify(values));
+    return values;
   }
-  await fileIO.setFile(`${table}/${values.id}`, JSON.stringify(values));
-  return values;
-}
   let tableData = fakeDatabaseConnector[table]
 
   if (!tableData) return
@@ -99,7 +102,10 @@ async function unsetRecord (table, values) {
   if(values) {
     delete values.userEmail
   }
-  if(table !== 'cardBody' && table !== 'studyHistory') {
+  if(table === 'studyHistory') {
+    return editRecord(table, {}, {});
+  }
+  if(table !== 'cardBody') {
     if(!values.id) {
       const records = await getRecord(table, values);
       return Promise.all(records.map(async record => {
@@ -126,15 +132,15 @@ async function unsetRecord (table, values) {
 }
 
 async function editRecord (table, filter, values) {
-  if(table === 'user') {
-    console.log("USER FILE EDIT");
-    let userStr = await fileIO.getFile('user');
-    console.log(userStr);
-    let user = JSON.parse(userStr);
-    user = Object.assign(user, values);
-    userStr = JSON.stringify(user);
-    console.log(userStr);
-    await fileIO.setFile('user', userStr);
+  if(table === 'user' || table === 'studyHistory') {
+    let record = await getRecord(table, {}, 1);
+    if(Object.keys(values).length === 0) {
+      record = {};
+    } else {
+      record = Object.assign(record, values);
+    }
+    let recordStr = JSON.stringify(record);
+    await fileIO.setFile(table, recordStr);
     return values;
   }
   delete filter.userEmail;

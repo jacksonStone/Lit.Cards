@@ -68,6 +68,7 @@ function removeDir(path, tolerateError) {
   return new Promise((resolve, reject) => {
     fs.rmdir(nodePath.join(whereDataBe, path), {recursive: true}, (err) => {
       if(err && !tolerateError) {
+        console.log("ERROR", err, tolerateError);
         reject(err);
       }
       resolve();

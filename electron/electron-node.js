@@ -3,19 +3,20 @@ const {handleGetRequest, handlePostRequest} = require('./api/entryPoints');
 const {
   getFile,
   setFile,
+  unsetFile,
   getDirFiles,
   createDir,
   removeDir
 } = require('./utils/file-io');
 
 const objectTypes = [
-  'studyHistory',
   'deck',
   'cardBody',
   'studySession'
 ]
 const defaultFiles = [
-  'user'
+  'user',
+  'studyHistory',
 ]
 
 async function initializeDataLayout() {
@@ -26,11 +27,19 @@ async function initializeDataLayout() {
     formatted = false;
   }
   if (formatted) return;
+  // await Promise.all(objectTypes.map((objName) => {
+  //   return removeDir(objName, true);
+  // }));
+  // await removeDir('studyHistory', true);
+  // await unsetFile('user');
 
   await Promise.all(objectTypes.map((objName) => {
     return createDir(objName, true);
   }));
-  await setFile('user', '{}');
+  await Promise.all(defaultFiles.map(fileName => {
+    return setFile(fileName, '{}');
+  }));
+
   await setFile('formatted', 'true');
 }
 
