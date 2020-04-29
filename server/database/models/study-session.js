@@ -6,6 +6,8 @@ let { getDeck } = require('./deck')
 let shuffle = require('../../../shared/shuffle')
 let { strToList } = require('../../../shared/char-encoding')
 let { generateId } = require('../../../shared/id-generator')
+let isElectron = require('../../node-abstractions/is-electron');
+
 async function getStudySessions (userEmail) {
   let results = await db.getRecord(tableName, { userEmail })
   return results || []
@@ -27,7 +29,7 @@ async function getStudySessionByDeckId (userEmail, deck) {
 }
 
 async function createStudySession (userEmail, deckId, startingState) {
-  if (!userEmail || !deckId) return
+  if (!isElectron() && (!userEmail || !deckId)) return
   let deck = await getDeck(userEmail, deckId)
   // Required
   if (deck.none) return {noDeck: true};
@@ -85,7 +87,7 @@ function getRandomOrderingStr (len) {
   return ordering;
 }
 async function deleteStudySession (userEmail, id) {
-  if (!userEmail || !id) return
+  if (!isElectron() && (!userEmail || !id)) return
   return db.unsetRecord(tableName, { userEmail, id })
 }
 
@@ -96,7 +98,7 @@ async function editStudySessionState(userEmail, id, sessionChanges) {
 }
 
 async function deleteStudySessionByDeck (userEmail, deck) {
-  if (!userEmail || !deck) return
+  if (!isElectron() && (!userEmail || !deck)) return
   // Required
   let currentUser = await userExists(userEmail)
   if (!currentUser) return

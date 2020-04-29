@@ -6,7 +6,7 @@ let { deleteAllCardBodies } = require('./card-body')
 let { removeFromStudyHistory } = require('./study-history')
 async function addDeck (userEmail, name) {
   const user = await User.getUser(userEmail)
-  const newDeck = await Deck.createDeck(userEmail, name, user.displayName)
+  const newDeck = await Deck.createDeck(userEmail, name, user && user.displayName)
   await CardBody.addCardBody(userEmail, newDeck.id, newDeck.cards)
   return newDeck
 }

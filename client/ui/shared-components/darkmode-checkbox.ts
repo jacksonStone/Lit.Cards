@@ -4,7 +4,8 @@ import { recordAndSetDarkMode } from 'abstract/darkmode';
 
 let isDarkMode = () => {
   let user = window.lc.getData('user')
-  return user && user.darkMode
+  let dm = user && user.darkMode;
+  return dm;
 }
 let setDarkMode = (e: Event) => {
   let value = getValueFromCheckbox(e)
@@ -13,7 +14,6 @@ let setDarkMode = (e: Event) => {
 }
 
 export default () => {
-  
 return  html`
       ${
         isDarkMode() ? html`<input @change=${setDarkMode} class="usa-checkbox__input" id="darkmode" type="checkbox" name="darkmode" value="true" checked/>` : html`

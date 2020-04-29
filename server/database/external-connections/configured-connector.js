@@ -1,7 +1,10 @@
 let mongoConnector = require('./mongo-stuff/mongodb-stuff');
 let fakeDB = require('./fake-database-connector');
 let exportedValue;
-if(process.env.NODE_ENV === 'test') {
+let isElectron = require('../../node-abstractions/is-electron');
+if (isElectron()) {
+    exportedValue = require('./electron-file-system-connector');
+} else if(process.env.NODE_ENV === 'test') {
     exportedValue = fakeDB;
 } else {
     exportedValue = mongoConnector;

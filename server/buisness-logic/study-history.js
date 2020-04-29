@@ -4,7 +4,7 @@ let HISTORY_LIMIT = 6
 
 async function getDeckDetailsFromStudyHistory (userEmail) {
   let studyHistory = await getStudyHistory(userEmail)
-  let history = JSON.parse(studyHistory.studied)
+  let history = studyHistory.studied && JSON.parse(studyHistory.studied) || [];
   let decks = await Promise.all(history.map(deckId => {
     return getDeck(userEmail, deckId)
   }))
@@ -13,7 +13,7 @@ async function getDeckDetailsFromStudyHistory (userEmail) {
 
 async function removeFromStudyHistory (userEmail, deck) {
   let studyHistory = await getStudyHistory(userEmail)
-  let history = JSON.parse(studyHistory.studied)
+  let history = studyHistory.studied && JSON.parse(studyHistory.studied) || [];
   let existingIndex = history.findIndex(entry => entry === deck)
   if (existingIndex !== -1) {
     // remove from list
@@ -26,7 +26,7 @@ async function removeFromStudyHistory (userEmail, deck) {
 async function pushStudyHistory (userEmail, deck) {
   if (!deck) return
   let studyHistory = await getStudyHistory(userEmail)
-  let history = JSON.parse(studyHistory.studied)
+  let history = studyHistory.studied && JSON.parse(studyHistory.studied) || [];
   let existingIndex = history.findIndex(entry => entry === deck)
   if (existingIndex !== -1) {
     // remove from list so we can add to the front
@@ -37,7 +37,7 @@ async function pushStudyHistory (userEmail, deck) {
   }
   // Put at the front
   history.unshift(deck)
-  studyHistory.studied = JSON.stringify(history)
+  studyHistory.studied = JSON.stringify(history);
   await upsertStudyHistory(studyHistory, history)
 }
 

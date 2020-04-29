@@ -1,0 +1,17 @@
+{
+  "name": "lit.cards.electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "electron-node.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.1.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}

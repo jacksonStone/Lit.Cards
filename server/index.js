@@ -63,14 +63,14 @@ app.get('/', function (req, res) {
 })
 app.use('/site', routes.siteNavigation.router)
 
-//Third party assets
-app.use('/uswds', (req, res, next) => {
-  if(PROD && req.url.indexOf('uswds.min.css') > -1) {
-      res.setHeader("Content-Encoding", "gzip");
-      // res.setHeader("Content-Type", )
-  }
-  next();
-}, express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
+// //Third party assets
+// app.use('/uswds', (req, res, next) => {
+//   if(PROD && req.url.indexOf('uswds.min.css') > -1) {
+//       res.setHeader("Content-Encoding", "gzip");
+//       // res.setHeader("Content-Type", )
+//   }
+//   next();
+// }, express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
 app.use('/webfonts', express.static(path.join(ROOT, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: ONE_YEAR }))
 app.use('/fonts', express.static(path.join(ROOT, 'assets/fonts'), { maxAge: ONE_YEAR }))
 app.use('/favicon.ico', express.static(path.join(ROOT, 'assets/static-images/favicon.ico'), { maxAge: ONE_YEAR }))

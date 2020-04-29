@@ -1,7 +1,9 @@
 import { html } from 'lit';
+import { settings as settingsPage } from '../../routes/navigation/pages'
+
 let EMPTY = html``;
 function navigateToPlan() {
-    location.href = "/site/me/settings#plan-details";
+    settingsPage(undefined, "#plan-details");
 }
 
 export default () => {

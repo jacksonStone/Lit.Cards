@@ -4,10 +4,13 @@ import { onExactPage, onPage } from 'abstract/url';
 import { navigateToLoginPage, logout } from 'logic/login';
 import { navigateToSettingsPage } from 'logic/settings';
 import { resendEmailVerification } from 'logic/login';
+
+declare const electron: any;
+
 let shouldHideNavigation = () => {
   const user = window.lc.getData('user') || {};
   //TODO:: Swap true for on study page
-  if (user.hideNavigation && window.location.href.indexOf('/me/study') !== -1) {
+  if (user.hideNavigation && window.location.href.indexOf('/study') !== -1) {
     return true;
   }
 }
@@ -16,11 +19,12 @@ export default (userInfo: User) => {
   if(shouldHideNavigation()) {
     return html`<div style="margin-top: 108px;"></div>`;
   }
+  //@TODO:: Electron figure out what to redirect to here.
   return html`
     <div class="grid-container">
             <div class="navbar-custom"  style="height: 110px">
              <div class="usa-logo" id="basic-logo" style="float:left; position: relative;">
-                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">L<img aria-hidden="true" src="/static-images/dot.svg" style="position: absolute; top: 4px; left: 19px;"></img>it.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
+                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">L<img aria-hidden="true" src="${electron ? 'assets/static-images/dot.svg' : '/static-images/dot.svg'}" style="position: absolute; top: 4px; left: 19px;"/>it.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
             </div>  
             <div style="float:right; margin-top:50px;">
                 ${getNavOptions(userInfo)}
@@ -41,7 +45,7 @@ function waitingOnEmailVerification() {
 }
 
 function emailVerificationLink() {
-  if(!onExactPage('me/settings') && !onExactPage('me')) {
+  if(!onExactPage('settings') && !onExactPage('me')) {
     return html``;
   }
   if(justVerifiedEmail()) {

@@ -16,7 +16,6 @@ async function editStudyHistory(studyHistory, history) {
 
 async function upsertStudyHistory(studyHistory, history) {
   let studyHistoryRecord = await db.getRecord(tableName, { userEmail: studyHistory.userEmail }, 1)
-
   //If we have a length of one, was a new array that had first item appended
   if(!studyHistoryRecord) {
     await db.setRecord(tableName, studyHistory);

@@ -4,6 +4,16 @@ let webpack = require('webpack')
 
 let entries = fs.readdirSync('./client/entry-points/');
 let prodMode = process.env.NODE_ENV === 'production'
+let electron = process.env.ELECTRON === 'true'
+let URL_ROOT;
+if(electron && prodMode) {
+  URL_ROOT = 'https://www.lit.cards';
+} else if(electron) {
+  URL_ROOT = 'http://localhost:3000'
+} else {
+  //We want relative URLs
+  URL_ROOT = ''
+}
 entryForWebpack = {}
 entries.forEach(entry => {
   let entryName = entry.split('.')[0]
@@ -11,7 +21,8 @@ entries.forEach(entry => {
 })
 const plugins = [
   new webpack.DefinePlugin({
-    'STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.STRIPE_PUBLIC_KEY)
+    'STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.STRIPE_PUBLIC_KEY),
+    'URL_ROOT': JSON.stringify(URL_ROOT || '')
   })
 ];
 
@@ -21,7 +32,7 @@ module.exports = {
   // watch: !prodMode,
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, './assets/dist')
+    path: electron ? path.resolve(__dirname, './electron/assets/dist') : path.resolve(__dirname, './assets/dist')
   },
   module: {
     rules: [

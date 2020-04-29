@@ -90,3 +90,9 @@ typings/
 .DS_Store
 
 node_modules/
+
+electron/node_modules/
+electron/assets/
+electron/server/
+electron/shared/
+

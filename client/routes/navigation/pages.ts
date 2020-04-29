@@ -1,9 +1,14 @@
 import { redirect } from '../../browser-abstractions/redirect';
 interface map {[key: string]: string}
+declare const electron: any;
 function setUpRoute (route: string) {
-  route = '/site/' + route
-  let routeFunction: any = function (params: map) {
-    redirect(route + convertJSONToURLParams(params))
+  if(electron) {
+    route = route + '.html';
+  } else {
+    route = '/site/' + route;
+  }
+  let routeFunction: any = function (params?: map, hash:string = '') {
+    redirect(route + convertJSONToURLParams(params) + hash)
   }
   // is for testing
   routeFunction.getRouteAsString = function () {
@@ -12,10 +17,13 @@ function setUpRoute (route: string) {
   return routeFunction
 }
 
-function convertJSONToURLParams (params: map): string {
+function convertJSONToURLParams (params?: map): string {
   if (!params) return ''
   let keys = Object.keys(params)
-  let paramString = '?'
+  let paramString = ''
+  if(keys.length) {
+    paramString = '?'
+  }
   for (let i = 0; i < keys.length; i++) {
     let key = keys[i]
     let value = params[key]
@@ -36,17 +44,15 @@ landingPage.getRouteAsString = function () {
 
 export { landingPage };
 export const home = setUpRoute('me');
-export const decks = setUpRoute('me/decks');
-export const deck = setUpRoute('me/deck');
-export const study = setUpRoute('me/study');
-export const settings = setUpRoute('me/settings');
+export const deck = setUpRoute('deck');
+export const study = setUpRoute('study');
+export const settings = setUpRoute('settings');
 export const login = setUpRoute('login');
 export const signup = setUpRoute('signup');
 
 export default {
   landingPage,
   home,
-  decks,
   deck,
   study,
   settings,

@@ -1,5 +1,7 @@
 let db = require('../external-connections/configured-connector')
 let tableName = 'cardBody'
+let isElectron = require('../../node-abstractions/is-electron');
+
 async function getCardBody (userEmail, deck, card) {
   let results
   if (card) {
@@ -7,7 +9,7 @@ async function getCardBody (userEmail, deck, card) {
   } else {
     cardBody = await db.getRecord(tableName, { deck }, 1)
   }
-  if(cardBody && (cardBody.userEmail === userEmail || cardBody.public)) {
+  if(cardBody && (isElectron() || (cardBody.userEmail === userEmail || cardBody.public))) {
     return cardBody;
   }
   return {}
