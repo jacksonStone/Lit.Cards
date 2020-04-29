@@ -4,10 +4,10 @@ const nodePath = require('path');
 
 const whereDataBe = app.getPath('userData');
 
-function getFile(path) {
+function getFile(path, tolerateErrors) {
   return new Promise((resolve, reject) => {
     fs.readFile(nodePath.join(whereDataBe, path), 'utf16le', (err, data) => {
-      if(err) {
+      if(err && !tolerateErrors) {
         reject(err);
       }
       resolve(data);
@@ -35,10 +35,10 @@ function unsetFile(path) {
   })
 }
 
-function getDirFiles(path) {
+function getDirFiles(path, tolerateError) {
   return new Promise((resolve, reject) => {
     fs.readdir(nodePath.join(whereDataBe, path), (err, data) => {
-      if(err) {
+      if(err && !tolerateError) {
         reject(err);
       }
       resolve(data);
@@ -46,10 +46,10 @@ function getDirFiles(path) {
   });
 }
 
-async function getAllFileContentInDir(path) {
-  const files = await getDirFiles(path);
+async function getAllFileContentInDir(path, tolerateErrors) {
+  const files = await getDirFiles(path, tolerateErrors);
   return Promise.all(files.map(fileName => {
-    return getFile(`${path}/${fileName}`);
+    return getFile(`${path}/${fileName}`, tolerateErrors);
   }));
 }
 
@@ -60,6 +60,20 @@ function createDir(path, tolerateError) {
         reject(err);
       }
       resolve();
+    });
+  });
+}
+
+function pathExists(path) {
+  return new Promise((resolve, reject) => {
+    // Check if the file exists in the current directory.
+    fs.access(nodePath.join(whereDataBe, path), fs.constants.F_OK, (err) => {
+      if(!err) {
+        resolve(true);
+      }
+      else {
+        resolve(false);
+      }
     });
   });
 }
@@ -81,6 +95,7 @@ module.exports = {
   setFile,
   unsetFile,
   getDirFiles,
+  pathExists,
   getAllFileContentInDir,
   createDir,
   removeDir

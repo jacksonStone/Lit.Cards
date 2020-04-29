@@ -4,64 +4,71 @@
 let fakeDatabaseConnector = require('../../mocked-data');
 let _ = require('lodash')
 let fileIO = require('../../../utils/file-io');
-let user = {};
+
+
+let encodeId = (id) => {
+  const encoded = encodeURIComponent(id);
+  return encoded.replace('\\', 'UU');
+}
+
 async function getRecord (table, conditions, limit) {
-  if(table === 'user' || table === 'studyHistory') {
-    let recordStr = await fileIO.getFile(table);
-    let record = JSON.parse(recordStr);
-    console.log(recordStr);
-    if(limit === 1) return record;
-    return [record];
-  }
+  let results;
+
   if(conditions) {
     delete conditions.userEmail;
   }
-  // Should probably do decks first
-  if(table !== 'cardBody') {
-    let results;
-    if (!conditions.id) {
-      let deckStrs = await fileIO.getAllFileContentInDir(table);
-      decks = deckStrs.map(str => JSON.parse(str));
-      results = _.filter(decks, dbEntry => {
-        let match = true
-        _.each(conditions, (conditionValue, conditionKey) => {
-          if (dbEntry[conditionKey] !== conditionValue) {
-            match = false
-            return false
-          }
-        })
-        return match
-      });
+
+  if(table === 'user' || table === 'studyHistory') {
+    let recordStr = await fileIO.getFile(table, true);
+    if(!recordStr) {
+      results = [];
     } else {
-      let recordResultStr = await fileIO.getFile(`${table}/${conditions.id}`);
-      let record = JSON.parse(recordResultStr);
+      let record = JSON.parse(recordStr);
       results = [record];
     }
-    if (limit === 1 && results && results.length) {
-      return results[0]
-    } else if(limit === 1) {
-      return;
-    } else if(limit) {
-      return results.slice(0, limit)
-    }
-    return results;
   }
-  let tableData = fakeDatabaseConnector[table]
-  if (!tableData) return
-  let results = _.map(
-    _.filter(tableData, dbEntry => {
-      let match = true
-      _.each(conditions, (conditionValue, conditionKey) => {
-        if (dbEntry[conditionKey] !== conditionValue) {
-          match = false
-          return false
-        }
-      })
-      return match
-    }), v => {
-      return _.cloneDeep(v)
+
+  if(table === 'cardBody') {
+    if(!conditions.deck) {
+      throw Error('Card queries must specify a deck');
     }
-  )
+    if (!conditions.id) {
+      let cardBodyStrs = (await fileIO.getAllFileContentInDir(`${table}/${conditions.deck}`, true)).filter(str => {
+        return !!str;
+      });
+      let cardBodies = cardBodyStrs.map(str => JSON.parse);
+      if(Object.keys(conditions).length > 1) {
+        cardBodies = _.filter(cardBodies, conditions);
+      }
+      results = cardBodies;
+    } else {
+      let uriEncodedId = encodeId(conditions.id);
+      let cardBodyStr = await fileIO.getFile(`${table}/${conditions.deck}/${uriEncodedId}`, true);
+      if (cardBodyStr) {
+        let cardBody = JSON.parse(cardBodyStr);
+        results = [cardBody];
+      } else {
+        results = [];
+      }
+    }
+  }
+
+  if(!(table === 'user' || table === 'studyHistory' || table === 'cardBody')) {
+    if (!conditions.id) {
+      let recordResultStrs = await fileIO.getAllFileContentInDir(table, true);
+      let records = recordResultStrs.filter(Boolean).map(str => JSON.parse(str));
+      results = _.filter(records, conditions);
+    } else {
+      let recordResultStr = await fileIO.getFile(`${table}/${conditions.id}`, true);
+      if(!recordResultStr) {
+        results = [];
+      } else {
+        let record = JSON.parse(recordResultStr);
+        results = [record];
+      }
+
+    }
+  }
 
   if (limit === 1 && results && results.length) {
     return results[0]
@@ -78,27 +85,39 @@ async function setRecord (table, values) {
     //We don't create users
     throw Error('We don\'t create users in electron');
   }
-  if(table === "studyHistory") {
-    return editRecord(table, {}, values);
-  }
+
   if (values.userEmail) {
     delete values.userEmail;
   }
-  if(table !== 'cardBody') {
+
+  if(table === "studyHistory") {
+    await editRecord(table, {}, values);
+    return values;
+  } else {
     if(!values.id) {
       throw Error("Record creation requires an id field");
     }
-    await fileIO.setFile(`${table}/${values.id}`, JSON.stringify(values));
-    return values;
   }
-  let tableData = fakeDatabaseConnector[table]
 
-  if (!tableData) return
-  tableData.push(values)
+  if(table !== 'cardBody') {
+    await fileIO.setFile(`${table}/${values.id}`, JSON.stringify(values));
+  } else {
+    const exists = await fileIO.pathExists(`${table}/${values.deck}`);
+    if (!exists) {
+
+      await fileIO.createDir(`${table}/${values.deck}`);
+    }
+    //Cardbodies are grouped by deckId/cardId
+    await fileIO.setFile(`${table}/${values.deck}/${encodeId(values.id)}`, JSON.stringify(values));
+  }
+
   return values
 }
 
 async function unsetRecord (table, values) {
+  if(table === 'user') {
+    throw Error('Cannot delete user record in electron');
+  }
   if(values) {
     delete values.userEmail
   }
@@ -111,24 +130,40 @@ async function unsetRecord (table, values) {
       return Promise.all(records.map(async record => {
         try {
           await fileIO.unsetFile(`${table}/${record.id}`);
-          console.log(`Deleted ${table}, id: ${record.id}`);
 
         } catch(e) {
-          console.log("Deleted non-existence file");
         }
       }));
     }
     try {
       await fileIO.unsetFile(`${table}/${values.id}`);
     } catch(e) {
-      console.log("Deleted non-existence file");
     }
     return;
+  } else {
+    //cardBodies
+    if(!values.deck) {
+      throw Error("Deck required for delete card bodies");
+    }
+    if(!values.id) {
+      let deck;
+      const records = await getRecord(table, values);
+      await Promise.all(records.map(async record => {
+        try {
+          deck = record.deck;
+          await fileIO.unsetFile(`${table}/${record.deck}/${encodeId(record.id)}`);
+        } catch(e) {
+        }
+      }));
+      const files = await fileIO.getDirFiles(`${table}/${deck}`, true);
+      if(files && !files.length) {
+        //Remove dir - keep it clean.
+        await fileIO.removeDir(`${table}/${deck}`, true)
+      }
+    } else {
+      await fileIO.unsetFile(`${table}/${values.deck}/${encodeId(values.id)}`);
+    }
   }
-
-  let tableData = fakeDatabaseConnector[table]
-  if (!tableData) return
-  fakeDatabaseConnector[table] = _.reject(tableData, values)
 }
 
 async function editRecord (table, filter, values) {
@@ -145,14 +180,11 @@ async function editRecord (table, filter, values) {
   }
   delete filter.userEmail;
 
-  if(table !== 'cardBody' && table !== 'studyHistory') {
+  if (table !== 'cardBody') {
     if(!filter.id) {
       const records = await getRecord(table, filter);
-      console.log("All records");
-      console.log(records);
       return Promise.all(records.map(async record => {
         const newRecord = Object.assign(record, values);
-        console.log("Attempting to edit");
         return fileIO.setFile(`${table}/${newRecord.id}`, JSON.stringify(newRecord));
       }));
     } else {
@@ -161,16 +193,23 @@ async function editRecord (table, filter, values) {
       return fileIO.setFile(`${table}/${record.id}`, JSON.stringify(record));
     }
   }
+  if (table === 'cardBody') {
+    if(!filter.id) {
 
-  let tableData = fakeDatabaseConnector[table]
-  if (!tableData) return
-  let entries = _.filter(tableData, filter)
-  console.log("Entries to modify: ", entries.length);
-  console.log(filter, values);
-  for (let i = 0; i < entries.length; i++) {
-    let entry = entries[i]
-    Object.assign(entry, values)
-    console.log("New Entry", entry.front);
+      const records = await getRecord(table, filter);
+      return Promise.all(records.map(async record => {
+        const newRecord = Object.assign(record, values);
+        return fileIO.setFile(
+          `${table}/${record.deck}/${encodeId(newRecord.id)}`,
+          JSON.stringify(newRecord)
+        );
+      }));
+    } else {
+      const recordStr = await fileIO.getFile(`${table}/${filter.deck}/${encodeId(filter.id)}`);
+      const record = Object.assign(JSON.parse(recordStr), values);
+      return fileIO.setFile(`${table}/${record.deck}/${encodeId(record.id)}`, JSON.stringify(record));
+    }
   }
 }
+
 module.exports = { getRecord, setRecord, unsetRecord, editRecord }
