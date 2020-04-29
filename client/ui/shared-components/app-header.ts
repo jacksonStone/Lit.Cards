@@ -5,8 +5,7 @@ import { navigateToLoginPage, logout } from 'logic/login';
 import { navigateToSettingsPage } from 'logic/settings';
 import { resendEmailVerification } from 'logic/login';
 
-declare const URL_ROOT: string;
-const electron = !!URL_ROOT;
+declare const electron: any;
 
 let shouldHideNavigation = () => {
   const user = window.lc.getData('user') || {};
@@ -25,7 +24,7 @@ export default (userInfo: User) => {
     <div class="grid-container">
             <div class="navbar-custom"  style="height: 110px">
              <div class="usa-logo" id="basic-logo" style="float:left; position: relative;">
-                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">L<img aria-hidden="true" src="${electron ? 'assets/static-images/dot.svg' : '/static-images/dot.svg'}" style="position: absolute; top: 4px; left: 19px;"></img>it.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
+                <em class="usa-logo__text"><a href="/" title="Home" aria-label="Home" style="font-size:35px">L<img aria-hidden="true" src="${electron ? 'assets/static-images/dot.svg' : '/static-images/dot.svg'}" style="position: absolute; top: 4px; left: 19px;"/>it.Cards</a><div style="font-size:12px">Get lit!<span style="font-size:8px">&nbsp About studying!</span></div></em>
             </div>  
             <div style="float:right; margin-top:50px;">
                 ${getNavOptions(userInfo)}

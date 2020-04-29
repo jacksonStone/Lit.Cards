@@ -9,8 +9,6 @@ async function getCardBody (userEmail, deck, card) {
   } else {
     cardBody = await db.getRecord(tableName, { deck }, 1)
   }
-  console.log(userEmail, deck, card)
-  console.log(cardBody);
   if(cardBody && (isElectron() || (cardBody.userEmail === userEmail || cardBody.public))) {
     return cardBody;
   }
@@ -24,7 +22,6 @@ async function addCardBody (userEmail, deck, card, changes) {
 }
 async function editCardBody (userEmail, deck, card, changes) {
   // Account for images not being changes and text being changed
-  console.log("EDITING CARD BODY RECORD", { userEmail, deck, id: card }, changes)
   return db.editRecord(tableName, { userEmail, deck, id: card }, changes)
 }
 async function deleteCardBody (userEmail, deck, card) {

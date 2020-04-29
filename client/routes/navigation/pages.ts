@@ -1,7 +1,6 @@
 import { redirect } from '../../browser-abstractions/redirect';
 interface map {[key: string]: string}
-declare const URL_ROOT: string;
-const electron = !!URL_ROOT;
+declare const electron: any;
 function setUpRoute (route: string) {
   if(electron) {
     route = route + '.html';

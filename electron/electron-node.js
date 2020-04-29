@@ -27,11 +27,6 @@ async function initializeDataLayout() {
     formatted = false;
   }
   if (formatted) return;
-  // await Promise.all(objectTypes.map((objName) => {
-  //   return removeDir(objName, true);
-  // }));
-  // await removeDir('studyHistory', true);
-  // await unsetFile('user');
 
   await Promise.all(objectTypes.map((objName) => {
     return createDir(objName, true);

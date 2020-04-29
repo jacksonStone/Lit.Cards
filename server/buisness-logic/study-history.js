@@ -37,6 +37,7 @@ async function pushStudyHistory (userEmail, deck) {
   }
   // Put at the front
   history.unshift(deck)
+  studyHistory.studied = JSON.stringify(history);
   await upsertStudyHistory(studyHistory, history)
 }
 
