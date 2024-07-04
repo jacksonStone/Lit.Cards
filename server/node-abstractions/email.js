@@ -1,5 +1,5 @@
 const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.CARDS_SENDGRID_API_KEY)
 
 let isTest = process.env.NODE_ENV === 'test'
 let transporter
@@ -39,7 +39,7 @@ async function sendMail (to, subject, text, html) {
   try {
     // Returns unused info object
     await transporter.sendMail({
-      from: `Lit.Cards 🔥<${process.env.EMAIL_ADDRESS}>`, // sender address
+      from: `Lit.Cards 🔥<${process.env.CARDS_EMAIL_ADDRESS}>`, // sender address
       to,
       subject,
       text,

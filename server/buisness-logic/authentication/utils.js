@@ -2,11 +2,11 @@ let uuidV4 = require('uuid/v4')
 let crypto = require('crypto')
 let HASHING_FUNCTION_NAME = 'sha256'
 let ENCRYPTION_FUNCTION_NAME = 'aes-128-cbc'
-let ENCRYPTION_PASSWORD = process.env.SIMPLE_NOTE_ENCRYPTION.slice(0, 16)
-let HMAC_KEY = process.env.SIMPLE_NOTE_HMAC_KEY.slice(0, 16)
+let ENCRYPTION_PASSWORD = process.env.ENCRYPTION_KEY.slice(0, 16)
+let HMAC_KEY = process.env.HMAC_KEY.slice(0, 16)
 
-if (!ENCRYPTION_PASSWORD) throw new Error('Must have SIMPLE_NOTE_ENCRYPTION env value')
-if (!HMAC_KEY) throw new Error('Must have SIMPLE_NOTE_HMAC_KEY env value')
+if (!ENCRYPTION_PASSWORD) throw new Error('Must have ENCRYPTION_KEY env value')
+if (!HMAC_KEY) throw new Error('Must have HMAC_KEY env value')
 
 function getSalt () {
   return uuidV4()

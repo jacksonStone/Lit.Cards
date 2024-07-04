@@ -3,14 +3,14 @@ let db;
 let client;
 async function connectToDatabase() {
     return new Promise((resolve, reject)=> {
-        MongoClient.connect(process.env.MONGO_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }, (err, c) => {
+        MongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, c) => {
             client = c;
             if(err) {
                 console.log("Unable to connect!", err);
                 reject(err);
                 return;
             }
-            db = client.db(process.env.MONGO_DATABASE_NAME);
+            db = client.db(process.env.CARDS_MONGO_DATABASE_NAME);
             resolve();
         });
     })

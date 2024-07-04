@@ -13,7 +13,7 @@ async function connectToDatabase() {
     console.log("Connecting to DB...");
 
     return new Promise((resolve, reject)=> {
-        MongoClient.connect(process.env.MONGO_CONNECTION_STRING, DB_OPTIONS, (err, c) => {
+        MongoClient.connect(process.env.MONGODB_URI, DB_OPTIONS, (err, c) => {
             if(err) {
                 console.log("Unable to connect!", err);
                 setTimeout(() => {
@@ -32,7 +32,7 @@ async function connectToDatabase() {
                 console.log("Connection ERROR!");
                 connectToDatabase()
             });
-            database = client.db(process.env.MONGO_DATABASE_NAME);
+            database = client.db(process.env.CARDS_MONGO_DATABASE_NAME);
             console.log("Connected to Mongo successfully!");
             resolve();
         });

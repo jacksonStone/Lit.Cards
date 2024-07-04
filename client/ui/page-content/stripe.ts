@@ -1,5 +1,5 @@
 let stripe: StripeAPI;
-declare const STRIPE_PUBLIC_KEY: string;
+declare const CARDS_STRIPE_PUBLIC_KEY: string;
 
 import { request } from '../../browser-abstractions/request';
 async function initializeStripe() {
@@ -7,7 +7,7 @@ async function initializeStripe() {
   while (!window.Stripe) {
     await new Promise(resolve => setTimeout(resolve, 20));
   }
-  stripe = window.Stripe(STRIPE_PUBLIC_KEY);
+  stripe = window.Stripe(CARDS_STRIPE_PUBLIC_KEY);
 }
 
 async function createStripeCheckoutSession(monthDuration: number) {

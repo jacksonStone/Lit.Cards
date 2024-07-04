@@ -46,7 +46,6 @@
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@sendgrid/mail": "^6.4.0",
     "@types/dompurify": "^2.0.1",
-    "aws-sdk": "^2.600.0",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.1",
     "cookie-parser": "^1.4.4",

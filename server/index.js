@@ -19,8 +19,8 @@ app.enable('etag')
 app.use('/', routes.stripeWebhook);
 app.use(cookieParser())
 let PROD = process.env.NODE_ENV === 'production';
-let SITE_ROOT = process.env.SITE_DOMAIN_ROOT;
-let REAL_PROD = SITE_ROOT === 'https://www.lit.cards';
+let SITE_ROOT = process.env.CARDS_SITE_DOMAIN_ROOT;
+let REAL_PROD = SITE_ROOT === 'https://www.libby.cards';
 app.use(function(req, res, next){
   if(REAL_PROD && (req.headers['x-forwarded-proto'] !== 'https' || req.host.indexOf('www.') === -1)) {
     res.redirect(SITE_ROOT + req.url);
@@ -94,7 +94,7 @@ app.use( (req, res, next) => {
   next();
 }, express.static(path.join(ROOT, '/assets/dist')))
 
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 3001;
 (async () =>{
   await dataConnector.connectToDatabase();
   app.listen(port, () => console.info('App listening on port '+port+'!'))

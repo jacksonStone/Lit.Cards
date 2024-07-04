@@ -11,7 +11,7 @@ entries.forEach(entry => {
 })
 const plugins = [
   new webpack.DefinePlugin({
-    'STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.STRIPE_PUBLIC_KEY)
+    'CARDS_STRIPE_PUBLIC_KEY' : JSON.stringify(process.env.CARDS_STRIPE_PUBLIC_KEY)
   })
 ];
 
