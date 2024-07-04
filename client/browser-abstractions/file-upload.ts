@@ -40,7 +40,7 @@ function getOrientation (file: Blob, callback: (orient: number) => void) {
   reader.readAsArrayBuffer(file)
 }
 /* eslint-enable */
-function getFileData (e: Event): Promise<Array<string|number>> {
+function getFileData (e: Event): Promise<Array<any>> {
   let file = getFileFromFileUploadEvent(e)
   return Promise.all([new Promise((resolve, reject) => {
     let reader = new window.FileReader()
