@@ -6,7 +6,7 @@ let { getLoginCookie } = require('./login')
 let authUtils = require('./utils');
 let millisInADay = 1000 * 60 * 60 * 24;
 let routeToVerifyReset = '/site/verify?token='
-let baseURL = process.env.SITE_DOMAIN_ROOT
+let baseURL = process.env.CARDS_SITE_DOMAIN_ROOT
 
 function generateRandomReset() {
   return randomString(20, 'hex')

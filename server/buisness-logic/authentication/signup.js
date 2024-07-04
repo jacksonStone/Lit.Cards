@@ -1,7 +1,7 @@
 let authUtils = require('./utils')
 let { User } = require('../../database')
 let { sendMail } = require('../../node-abstractions/email')
-let baseURL = process.env.SITE_DOMAIN_ROOT
+let baseURL = process.env.CARDS_SITE_DOMAIN_ROOT
 let routeToVerifyEmail = '/site/me?verification='
 
 async function signup (userEmail, plainTextPassword, displayName) {
