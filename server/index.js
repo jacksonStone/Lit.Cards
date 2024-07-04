@@ -21,8 +21,8 @@ app.use(cookieParser())
 let PROD = process.env.NODE_ENV === 'production';
 let SITE_ROOT = process.env.CARDS_SITE_DOMAIN_ROOT;
 let REAL_PROD = SITE_ROOT === 'https://www.libby.cards';
-app.use(function(req, res, next){
-  if(REAL_PROD && (req.headers['x-forwarded-proto'] !== 'https' || req.host.indexOf('www.') === -1)) {
+app.use(function (req, res, next) {
+  if (REAL_PROD && (req.headers['x-forwarded-proto'] !== 'https' || req.host.indexOf('www.') === -1)) {
     res.redirect(SITE_ROOT + req.url);
     return;
   }
@@ -34,12 +34,12 @@ app.use(async (req, res, next) => {
   if (user) {
     req.userEmail = user.userEmail
     req.user = user
-    if(req.user.planExpiration && req.user.planExpiration > Date.now()) {
+    if (req.user.planExpiration && req.user.planExpiration > Date.now()) {
       req.userSubbed = true;
     }
     //We want to check these off the live database each time rather than fetch from
     //use the cookie as these may have changed
-    if(!req.user.verifiedEmail || !req.userSubbed) {
+    if (!req.user.verifiedEmail || !req.userSubbed) {
       //TODO::Maybe put all this somewhere else
       let freshUser = await User.getUser(user.userEmail);
       if (freshUser.planExpiration && freshUser.planExpiration > Date.now()) {
@@ -65,9 +65,9 @@ app.use('/site', routes.siteNavigation.router)
 
 //Third party assets
 app.use('/uswds', (req, res, next) => {
-  if(PROD && req.url.indexOf('uswds.min.css') > -1) {
-      res.setHeader("Content-Encoding", "gzip");
-      // res.setHeader("Content-Type", )
+  if (PROD && req.url.indexOf('uswds.min.css') > -1) {
+    res.setHeader("Content-Encoding", "gzip");
+    // res.setHeader("Content-Type", )
   }
   next();
 }, express.static(path.join(ROOT, 'node_modules/uswds'), { maxAge: ONE_YEAR }))
@@ -79,23 +79,29 @@ app.use('/static-images', express.static(path.join(ROOT, 'assets/static-images')
 
 //We need to use this before setting up bodyParser.json
 app.use('/api/transaction', require('./routes/api/middleware').requireActiveSub);
-app.use('/api/transaction', bodyParser.raw({type:'application/octet-stream', limit:'1mb'}))
+app.use('/api/transaction', bodyParser.raw({ type: 'application/octet-stream', limit: '1mb' }))
 app.use('/api/transaction', require('./routes/api/transaction'))
 
 //API endpoints
 app.use('/api', routes.api)
 //App pages
-app.use( (req, res, next) => {
-  if(PROD) {
-    if(req.url.indexOf('.js') > -1 || req.url.indexOf('.css') > -1) {
+app.use((req, res, next) => {
+  if (PROD) {
+    if (req.url.indexOf('.js') > -1 || req.url.indexOf('.css') > -1) {
       res.setHeader("Content-Encoding", "gzip");
+      if (req.url.indexOf('.js') > -1) {
+        // Set MIME Type
+        res.setHeader("Content-Type", "text/javascript")
+      } else {
+        res.setHeader("Content-Type", "text/css")
+      }
     }
   }
   next();
 }, express.static(path.join(ROOT, '/assets/dist')))
 
 let port = process.env.PORT || 3001;
-(async () =>{
+(async () => {
   await dataConnector.connectToDatabase();
-  app.listen(port, () => console.info('App listening on port '+port+'!'))
+  app.listen(port, () => console.info('App listening on port ' + port + '!'))
 })();
