@@ -30,7 +30,7 @@
     "tt": "npm run wt",
     "start": "node server/index.js",
     "w": "rm -rf assets/dist && concurrently --kill-others \"npm run ww\" \"npm run ss\" \"npm run sassw\"",
-    "webpack": "webpack",
+    "webpack": "NODE_OPTIONS=--openssl-legacy-provider webpack",
     "ww": "webpack -w",
     "ss": "npm run sw",
     "ws": "npm run sw",
@@ -38,7 +38,7 @@
     "sw": "cd server && nodemon index.js",
     "lint": "eslint --fix server/**/*.js client/**/*.js shared/**/*.js",
     "massage-assets": "node ./scripts/massage-assets.js",
-    "build": "node ./server/validate-envs.js && node ./server/database/external-connections/mongo-stuff/index-creation && sass assets/scss/index.scss assets/dist/index.css && webpack && npm run massage-assets"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider node ./server/validate-envs.js && node ./server/database/external-connections/mongo-stuff/index-creation && sass assets/scss/index.scss assets/dist/index.css && NODE_OPTIONS=--openssl-legacy-provider webpack && npm run massage-assets"
   },
   "author": "",
   "license": "ISC",

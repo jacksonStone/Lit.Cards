@@ -25,16 +25,20 @@ function getTableName(table) {
     verifiyIdentifier(table)
     return "libby_cards_" + table
 }
-function executeSQLCommand(sqlQuery, params) {
-    return fetch(SQLiteUrl+"/execute", {
+async function executeSQLCommand(sqlQuery, table, params) {
+    const start = Date.now()
+    await fetch(SQLiteUrl+"/execute", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({query: sqlQuery, parameters: params || []})
     })
+    const end = Date.now()
+    console.log(`took ${end - start}ms: Execution against table: ${table}`)
 }
-async function runSqlQueryAndGetBackRows(sqlQuery, params) {
+async function runSqlQueryAndGetBackRows(sqlQuery, table, params) {
+    const start = Date.now()
     response = await fetch(`${SQLiteUrl}/query`, {
         method: 'POST',
         headers: {
@@ -42,6 +46,8 @@ async function runSqlQueryAndGetBackRows(sqlQuery, params) {
         },
         body: JSON.stringify({query: sqlQuery, parameters: params || []})
     })
+    const end = Date.now()
+    console.log(`took ${end - start}ms: Query against table: ${table}`)
     return response.json()
 }
 async function getRecord(table, conditions, limit) {
@@ -51,7 +57,7 @@ async function getRecord(table, conditions, limit) {
     if (limit) {
         sqlQuery += ` LIMIT ${verifyNumber(limit)}`
     }
-    results = await runSqlQueryAndGetBackRows(sqlQuery, orderedConditions.map(k => conditions[k]))
+    results = await runSqlQueryAndGetBackRows(sqlQuery, actualTable, orderedConditions.map(k => conditions[k]))
     if (limit === 1 && results && results.length) {
         return results[0]
     } else if (limit === 1) {
@@ -65,8 +71,7 @@ async function setRecord(table, values) {
     values["_id"] = crypto.randomUUID()
     const orderedColumns = Object.keys(values).map(verifiyIdentifier)
     let sqlQuery = `INSERT INTO ${actualTable} (${orderedColumns.join(', ')}) VALUES (${orderedColumns.map(() => '?').join(', ')})`
-    const result = await executeSQLCommand(sqlQuery, orderedColumns.map(k => values[k]))
-    console.log(result)
+    await executeSQLCommand(sqlQuery, actualTable, orderedColumns.map(k => values[k]))
     return values
 }
 
@@ -74,7 +79,7 @@ async function unsetRecord(table, values) {
     actualTable = getTableName(table)
     const orderedConditions = Object.keys(values).map(verifiyIdentifier)
     let sqlQuery = `DELETE FROM ${actualTable} WHERE ${orderedConditions.map(k => `${k} = ?`).join(' AND ')}`;    
-    await executeSQLCommand(sqlQuery, orderedConditions.map(k => values[k]))
+    await executeSQLCommand(sqlQuery, actualTable, orderedConditions.map(k => values[k]))
 }
 
 async function editRecord(table, filter, values) {
@@ -82,7 +87,7 @@ async function editRecord(table, filter, values) {
     const orderedColumnsForValues = Object.keys(values).map(verifiyIdentifier)
     const orderedConditions = Object.keys(filter).map(verifiyIdentifier)
     let sqlQuery = `UPDATE ${actualTable} SET ${orderedColumnsForValues.map(k => `${k} = ?`).join(', ')} WHERE ${orderedConditions.map(k => `${k} = ?`).join(' AND ')}`
-    return executeSQLCommand(sqlQuery, orderedColumnsForValues.map(k => values[k]).concat(orderedConditions.map(k => filter[k])))
+    return executeSQLCommand(sqlQuery, actualTable, orderedColumnsForValues.map(k => values[k]).concat(orderedConditions.map(k => filter[k])))
 }
 
 module.exports = { getRecord, setRecord, unsetRecord, editRecord, connectToDatabase: async () => { } }
