@@ -1,7 +1,7 @@
-const { renameDeck } = require('./deck')
-const { editCardBody, upsertCardBody, deleteCardBody } = require('./card-body')
+const { renameDeck } = require('./deck.js')
+const { editCardBody, upsertCardBody, deleteCardBody } = require('./card-body.js')
 const { setMisc } = require('./users/userDetails.js')
-const { editSessionState } = require('./study')
+const { editSessionState } = require('./study.js')
 
 // TODO:: Do better
 let alertIt = (e) => {

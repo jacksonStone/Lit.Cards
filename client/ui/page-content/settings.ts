@@ -149,7 +149,7 @@ function buyTimeInterface() {
       header = html`<h2>Your account has run out of access time</h2>`
     }
     else {
-      header = html`<h2>${daysRemaining + ' ' + daysOrDay} of Lit.Cards access remaining.</h2>`
+      header = html`<h2>${daysRemaining + ' ' + daysOrDay} of Libby.Cards access remaining.</h2>`
     }
     return html`
       ${header}

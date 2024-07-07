@@ -1,5 +1,5 @@
 import 'uswds'
-import { render, TemplateResult } from 'lit-html/lit-html'
+import { render, TemplateResult } from 'lit-html'
 import { generateId } from 'shared/id-generator'
 import persistentDataChanges from './watchers/persistent-data-changes'
 import userInput from './watchers/user-input'

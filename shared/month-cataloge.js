@@ -1,20 +1,14 @@
 module.exports = {
-    "1": {
-        "name": "1 month of Lit.Cards",
-        "description": "One time purchase (no auto-renewal) for one month access to Lit.Cards, with unlimited decks and cards.",
-        "price": 300,
-        "savings": 0
-    },
     "3": {
-        "name": "3 months of Lit.Cards",
-        "description": "One time purchase (no auto-renewal) for three months worth of access to Lit.Cards, with unlimited decks and cards.",
-        "price": 700,
+        "name": "3 months of Libby.Cards",
+        "description": "One time purchase (no auto-renewal) for three months worth of access to Libby.Cards, with unlimited decks and cards.",
+        "price": 200,
         "savings": 20
     },
     "12": {
-        "name": "12 months of Lit.Cards",
-        "description": "One time purchase (no auto-renewal) for twelve months worth of access to Lit.Cards, with unlimited decks and cards.",
-        "price": 2000,
+        "name": "12 months of Libby.Cards",
+        "description": "One time purchase (no auto-renewal) for twelve months worth of access to Libby.Cards, with unlimited decks and cards.",
+        "price": 500,
         "savings": 40
     },
 };

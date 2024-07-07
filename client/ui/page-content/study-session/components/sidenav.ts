@@ -1,4 +1,4 @@
-import { html } from 'lit-html/lit-html';
+import { html } from 'lit-html';
 import { deleteCurrentSessionWithConfirmation } from 'logic/study';
 
 function getDeckId () {

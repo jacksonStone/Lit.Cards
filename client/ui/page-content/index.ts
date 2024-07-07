@@ -7,7 +7,7 @@ export default () => {
                 <div style="margin-top:20px">
 
                 <div>
-                    <img alt="Lit.cards logo" src="/static-images/logo.svg" style="width: 200px; height: 175px"/>
+                    <img alt="Libby.cards logo" src="/static-images/logo.svg" style="width: 200px; height: 175px"/>
                 </div>
                 <div style=" text-align: center;">
                 <div style="position: relative; max-width: 265px;  margin: 0 auto;">
@@ -29,7 +29,7 @@ export default () => {
 <div class="above-750">
     <div class="grid-row" style="margin-top:20px">
         <div class="grid-col-6">
-            <img alt="Lit.cards logo" src="/static-images/logo.svg" style="width: 250px; height: 219px"/>
+            <img alt="Libby.cards logo" src="/static-images/logo.svg" style="width: 250px; height: 219px"/>
         </div>
         <div class="grid-col-6">
             <p style="text-align: left; max-width: 265px; font-weight: bold; font-size: 24px;">Fast and simple online note cards built for<br>
@@ -50,7 +50,7 @@ export default () => {
 </div>
 
     <div style="border-bottom: 1px solid #d5d8df; margin: 50px 0;" id="learnmore"></div>
-    <h3 style="font-size: 24px;">Why Lit.Cards?</h3>
+    <h3 style="font-size: 24px;">Why Libby.Cards?</h3>
     
 <div class="above-750">
          <div class="grid-row" style="max-width: 750px; margin: 20px auto;">
@@ -100,7 +100,7 @@ export default () => {
         <h3 style="font-size: 24px;">Contact/About</h3>
         <div style="max-width: 505px; margin: 0 auto 50px auto; text-align: left; font-size: 18px;">
         <p>
-            I created Lit.Cards because my wife, a med-student, was unable to
+            I created Libby.Cards because my wife, a med-student, was unable to
             find a suitable app to handle her study work load of 1000’s of cards. 
             Now onto her third year she’s beyond the need for many note cards, but 
             I hope this app can serve those like her and get out of your way 
@@ -109,7 +109,7 @@ export default () => {
              <p>
            If you have any questions, issues or ideas for the application, you 
            can contact me, the creator of the app, directly via email at:
-           <a href="mailto:jackson@lit.cards?subject=Question!">jackson@lit.cards</a>
+           <a href="mailto:jackson@libby.cards?subject=Question!">jackson@libby.cards</a>
         </p><br>
         <b>- Jackson Stone</b>
         </div>

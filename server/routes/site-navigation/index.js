@@ -20,7 +20,7 @@ let makePageRoute = (path, details, auth) => {
 let pages = {
   '/': {
     darkModeable: false,
-    title: 'Lit.Cards',
+    title: 'Libby.Cards',
     description: "Fast and simple online notecards",
     entryFile: 'index.js',
     auth: false

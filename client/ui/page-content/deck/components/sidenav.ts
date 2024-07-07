@@ -1,4 +1,4 @@
-import { html } from 'lit-html/lit-html';
+import { html } from 'lit-html';
 import { deleteSession as deleteSessionInServerAndState } from 'logic/study';
 import { makeDeckPublic as makePublicInServerAndState } from 'logic/deck';
 function getDeckId () {
