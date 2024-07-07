@@ -174,8 +174,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 function renderPage (pageContentFunc: (content: any) => TemplateResult) {
   if(!pageContentFunc) {
-    debugger;
-    return;
+=    return;
   }
   recordCurrentPage(pageContentFunc)
   render(appHeader(lc.getData('user')), window.document.querySelector('#app-header'))

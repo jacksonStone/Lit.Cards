@@ -2,7 +2,7 @@ let express = require('express')
 let router = express.Router()
 let code = require('../../node-abstractions/response-codes')
 let { UNSAFE_USER, UNSAFE_setMisc, UNSAFE_USER_BY_CUSTOMER_ID } = require('../../buisness-logic/users/userDetails')
-const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+const stripe = require('stripe')(process.env.CARDS_STRIPE_PRIVATE_KEY);
 const line_items_by_month = require('../../../shared/month-cataloge');
 let baseURL = process.env.CARDS_SITE_DOMAIN_ROOT;
 /**

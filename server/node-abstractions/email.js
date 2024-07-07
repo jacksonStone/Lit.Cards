@@ -38,16 +38,23 @@ async function sendMail (to, subject, text, html) {
 // send mail with defined transport object
   try {
     // Returns unused info object
-    await transporter.sendMail({
-      from: `Lit.Cards 🔥<${process.env.CARDS_EMAIL_ADDRESS}>`, // sender address
+    let info = await transporter.sendMail({
+      from: `Libby.Cards 🔥<${process.env.CARDS_EMAIL_ADDRESS}>`, // sender address
       to,
       subject,
       text,
       html
     })
+    console.log("Sent Email!", { from: `Libby.Cards 🔥<${process.env.CARDS_EMAIL_ADDRESS}>`, // sender address
+    to,
+    subject,
+    text,
+    html})
 
+    console.log('Message sent: %s', info)
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
   } catch (e) {
+    console.log(e)
     console.error(e)
   }
 }

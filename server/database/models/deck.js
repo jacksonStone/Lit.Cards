@@ -56,10 +56,11 @@ async function deleteCard (userEmail, deck, card) {
   await editDeck(deckRecord, { cards: newCards })
 }
 async function createDeck (userEmail, name, displayName) {
-  if (!userEmail || !name || !displayName) return
+  if (!userEmail || !name || !displayName) console.error('Missing required parameters')
   let id = generateId()
   let dateMade = Date.now()
   let cards = intToChar(0);
+  console.log("About to set record...")
   return db.setRecord(tableName, { userEmail, displayName, name, id, date: dateMade, cards })
 }
 

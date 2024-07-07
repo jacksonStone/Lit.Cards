@@ -19,15 +19,6 @@ app.enable('etag')
 app.use('/', routes.stripeWebhook);
 app.use(cookieParser())
 let PROD = process.env.NODE_ENV === 'production';
-let SITE_ROOT = process.env.CARDS_SITE_DOMAIN_ROOT;
-let REAL_PROD = SITE_ROOT === 'https://www.libby.cards';
-app.use(function (req, res, next) {
-  if (REAL_PROD && (req.headers['x-forwarded-proto'] !== 'https' || req.host.indexOf('www.') === -1)) {
-    res.redirect(SITE_ROOT + req.url);
-    return;
-  }
-  next();
-});
 //User middleware
 app.use(async (req, res, next) => {
   let user = loginUtils.getUserFromCookie(req.cookies)
