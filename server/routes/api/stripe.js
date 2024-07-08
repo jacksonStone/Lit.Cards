@@ -13,6 +13,7 @@ let baseURL = process.env.CARDS_SITE_DOMAIN_ROOT;
  *
  */
 router.post('/checkout', async (req, res) => {
+    console.log("CHECKOUT")
     if (!req.userEmail) {
         return code.unauthorized(res)
     }
