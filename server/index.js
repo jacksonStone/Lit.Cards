@@ -33,9 +33,13 @@ app.use(async (req, res, next) => {
     if (!req.user.verifiedEmail || !req.userSubbed) {
       //TODO::Maybe put all this somewhere else
       let freshUser = await User.getUser(user.userEmail);
+      if (!freshUser) {
+        return res.redirect('/site/logout')
+      }
+      let cookie = loginUtils.getLoginCookie(freshUser)
+      addCookie(res, cookie)
+
       if (freshUser.planExpiration && freshUser.planExpiration > Date.now()) {
-        let cookie = loginUtils.getLoginCookie(freshUser)
-        addCookie(res, cookie)
         req.userSubbed = true;
       } else {
         req.userSubbed = false;
