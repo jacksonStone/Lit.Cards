@@ -13,8 +13,8 @@ cp -r server libby_cards
 cp -r shared libby_cards
 zip -r -X libby_cards.zip libby_cards
 
-scp -i /Users/jacksonstone/Desktop/Jackson\ Personal\ Site\ Key.pem libby_cards.zip ubuntu@3.19.146.227:/home/ubuntu/.temp/
-ssh -i /Users/jacksonstone/Desktop/Jackson\ Personal\ Site\ Key.pem ubuntu@3.19.146.227 << EOF
+scp -i $EC2_PEM_PATH libby_cards.zip ubuntu@$EC2_PUBLIC_IP:/home/ubuntu/.temp/
+ssh -i $EC2_PEM_PATH ubuntu@$EC2_PUBLIC_IP << EOF
   mv ./.temp/libby_cards.zip . || { echo "Failed to move the file"; exit 1; }
   rm -rf libby_cards
   unzip libby_cards.zip -d libby_cards
