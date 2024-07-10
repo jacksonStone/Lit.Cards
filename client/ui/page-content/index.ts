@@ -108,8 +108,8 @@ export default () => {
         </p>
              <p>
            If you have any questions, issues or ideas for the application, you 
-           can contact me, the creator of the app, directly via email at:
-           <a href="mailto:jackson@libby.cards?subject=Question!">jackson@libby.cards</a>
+           can contact me, the creator of the app, directly at:
+           <a href="https://www.jacksonstone.info/contact">jacksonstone.info/contact</a>
         </p><br>
         <b>- Jackson Stone</b>
         </div>
