@@ -8,7 +8,9 @@ const DB_OPTIONS = {
     useUnifiedTopology: true
 };
 async function connectToDatabase() {
-    console.log("Connecting to DB...");
+    // console.log the stack trace
+    console.log("Connecting to DB!!...");
+    console.log(new Error().stack);
 
     return new Promise((resolve, reject)=> {
         MongoClient.connect(process.env.MONGODB_URI, DB_OPTIONS, (err, c) => {
@@ -114,14 +116,5 @@ async function editRecord (table, filter, values) {
         });
     });
 }
-
-// (async () => {
-//     if(!database) await connectToDatabase();
-//     let now = Date.now();
-//     let res = await getRecord('user', {userEmail: 'jacksonastone@gmail.com'}, 1)
-//     let finish = Date.now() - now;
-//     console.log(res, finish);
-//     client.close();
-// })();
 
 module.exports = { getRecord, setRecord, unsetRecord, editRecord, connectToDatabase }

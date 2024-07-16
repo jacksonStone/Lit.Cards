@@ -6,11 +6,12 @@ let { User } = require('./database')
 let { addCookie } = require('./node-abstractions/cookie')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
-
 let ROOT = path.join(__dirname, '../')
 let express = require('express')
 let app = express()
 let routes = require('./routes')
+require('./async-error-handling')
+
 let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
 
 global.preventTransactions = false;
@@ -31,8 +32,13 @@ app.use(async (req, res, next) => {
     //We want to check these off the live database each time rather than fetch from
     //use the cookie as these may have changed
     if (!req.user.verifiedEmail || !req.userSubbed) {
-      //TODO::Maybe put all this somewhere else
-      let freshUser = await User.getUser(user.userEmail);
+      let freshUser;
+      try {
+        freshUser = await User.getUser(user.userEmail);
+      } catch (error) {
+        console.error(error)
+        return res.redirect('/site/logout')
+      }
       if (!freshUser) {
         return res.redirect('/site/logout')
       }
@@ -94,7 +100,16 @@ app.use((req, res, next) => {
   }
   next();
 }, express.static(path.join(ROOT, '/assets/dist')))
-
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      message: err.message,
+      // Add more details if needed
+    }
+  });
+});
 let port = process.env.PORT || 3001;
 (async () => {
   await dataConnector.connectToDatabase();

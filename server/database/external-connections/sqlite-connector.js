@@ -27,13 +27,18 @@ function getTableName(table) {
 }
 async function executeSQLCommand(sqlQuery, table, params) {
     const start = Date.now()
-    await fetch(SQLiteUrl+"/execute", {
+    const result = await fetch(SQLiteUrl + "/execute", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: sqlQuery, parameters: params || []})
+        body: JSON.stringify({ query: sqlQuery, parameters: params || [] })
     })
+    // do some error handling
+    if (!result.ok) {
+        const errorMessage = await result.text(); // Read the error message from the response body
+        throw new Error(`Failed to execute SQL Command: ${result.statusText} - ${errorMessage}`);
+    }
     const end = Date.now()
     console.log(`took ${end - start}ms: Execution against table: ${table}`)
 }
@@ -44,8 +49,13 @@ async function runSqlQueryAndGetBackRows(sqlQuery, table, params) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: sqlQuery, parameters: params || []})
+        body: JSON.stringify({ query: sqlQuery, parameters: params || [] })
     })
+    // do some error handling
+    if (!response.ok) {
+        const errorMessage = await response.text(); // Read the error message from the response body
+        throw new Error(`Failed to execute SQL Query: ${response.statusText} - ${errorMessage}`);
+    }
     const end = Date.now()
     console.log(`took ${end - start}ms: Query against table: ${table}`)
     return response.json()
@@ -62,7 +72,7 @@ async function getRecord(table, conditions, limit) {
         return results[0]
     } else if (limit === 1) {
         return;
-    } 
+    }
     return results
 }
 
@@ -78,7 +88,7 @@ async function setRecord(table, values) {
 async function unsetRecord(table, values) {
     actualTable = getTableName(table)
     const orderedConditions = Object.keys(values).map(verifiyIdentifier)
-    let sqlQuery = `DELETE FROM ${actualTable} WHERE ${orderedConditions.map(k => `${k} = ?`).join(' AND ')}`;    
+    let sqlQuery = `DELETE FROM ${actualTable} WHERE ${orderedConditions.map(k => `${k} = ?`).join(' AND ')}`;
     await executeSQLCommand(sqlQuery, actualTable, orderedConditions.map(k => values[k]))
 }
 
