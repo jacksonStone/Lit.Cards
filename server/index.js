@@ -1,8 +1,12 @@
 require('./validate-envs');
+// This must be required before any routes are defined in ExpressJS for error handling to operate correctly
+require('./async-error-handling');
+
 let path = require('path')
 let loginUtils = require('./buisness-logic/authentication/login')
 let dataConnector = require('./database/external-connections/configured-connector');
 let { User } = require('./database')
+
 let { addCookie } = require('./node-abstractions/cookie')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
@@ -10,7 +14,6 @@ let ROOT = path.join(__dirname, '../')
 let express = require('express')
 let app = express()
 let routes = require('./routes')
-require('./async-error-handling')
 
 let ONE_YEAR = 1000 * 60 * 60 * 24 * 365
 
@@ -85,6 +88,16 @@ app.use('/api/transaction', require('./routes/api/transaction'))
 
 //API endpoints
 app.use('/api', routes.api)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      message: err.message,
+      // Add more details if needed
+    }
+  });
+});
 //App pages
 app.use((req, res, next) => {
   if (PROD) {
@@ -100,16 +113,7 @@ app.use((req, res, next) => {
   }
   next();
 }, express.static(path.join(ROOT, '/assets/dist')))
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500);
-  res.json({
-    error: {
-      message: err.message,
-      // Add more details if needed
-    }
-  });
-});
+
 let port = process.env.PORT || 3001;
 (async () => {
   await dataConnector.connectToDatabase();

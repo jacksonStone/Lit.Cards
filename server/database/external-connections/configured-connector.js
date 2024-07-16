@@ -1,13 +1,10 @@
-let mongoConnector = require('./mongo-stuff/mongodb-stuff');
-let sqliteConnector = require('./sqlite-connector');
-let fakeDB = require('./fake-database-connector');
 let exportedValue;
 if (process.env.NODE_ENV === 'test') {
-    exportedValue = fakeDB;
+    exportedValue = require('./fake-database-connector');
 } else if (process.env.SQLITE_URL) {
-    exportedValue = sqliteConnector;
+    exportedValue = require('./sqlite-connector');
 } else {
-    exportedValue = mongoConnector;
+    exportedValue = require('./mongo-stuff/mongodb-stuff');
 }
 
 module.exports = exportedValue;

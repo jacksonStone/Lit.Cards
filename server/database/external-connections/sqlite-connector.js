@@ -2,7 +2,6 @@
  * This writes parameterized SQL queries to a small go server I've written whose main job is interfacing with the SQLite driver locally
  * This sqlite wrapper is only intended to be run locally on the same machine as this service as it is unauthenticated
  */
-let _ = require('lodash')
 const SQLiteUrl = process.env.SQLITE_URL;
 const identifierRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/
 const numberRegex = /^[0-9]*$/
