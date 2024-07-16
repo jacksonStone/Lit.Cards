@@ -90,3 +90,5 @@ typings/
 .DS_Store
 
 node_modules/
+libby_cards.zip
+libby_cards/
