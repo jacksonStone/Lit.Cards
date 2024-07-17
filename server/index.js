@@ -94,7 +94,6 @@ app.use((err, req, res, next) => {
   res.json({
     error: {
       message: err.message,
-      // Add more details if needed
     }
   });
 });
