@@ -1,11 +1,11 @@
 [Unit]
-Description=TheologianChat
+Description=LibbyCards
 After=network.target
 [Service]
 Type=simple
 User=ubuntu
 WorkingDirectory=/home/ubuntu
-ExecStart=/home/ubuntu/.nvm/versions/node/v20.15.0/bin/node /home/ubuntu/theologian_chat/server-build/index.js
+ExecStart=/home/ubuntu/.nvm/versions/node/v20.15.0/bin/node /home/ubuntu/libby_cards/libby_cards/server/index.js
 EnvironmentFile=/home/ubuntu/.ubuntu-env
 Restart=on-failure
 [Install]

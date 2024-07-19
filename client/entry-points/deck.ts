@@ -1,4 +1,4 @@
-import { renderPage } from '../ui/globals'
+import { renderPage, ping } from '../ui/globals'
 import content from '../ui/page-content/deck'
 import { initCommands } from '../ui/page-content/deck/key-commands'
 import { initEditor } from 'abstract/editor'
@@ -12,6 +12,7 @@ import { getDeck, handleEditorTextChange, refreshEditor } from 'logic/deck';
 
 (async () => {
   defaultDarkMode()
+  ping()
   let [user, deck, studySession] = await Promise.all([fetchUser(), getDeck(), getStudySession()])
   let cards = deck.cards || ''
   // For when you navigate from study to edit

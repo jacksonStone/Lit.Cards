@@ -1,4 +1,4 @@
-import { renderPage } from '../ui/globals'
+import { renderPage, ping } from '../ui/globals'
 import { home as homePage } from '../routes/navigation/pages'
 import content from '../ui/page-content/study-session'
 import { initKeyCommands } from '../ui/page-content/study-session/key-commands'
@@ -8,6 +8,8 @@ import { fetchUser } from 'logic/user'
 import { getCardBody } from 'logic/card-bodies'
 import { getDeck } from 'logic/deck'
 import { getStudySession, sortCardsBySession, trimCardsToOnesAwaitingAnswers, accountForNewCards } from 'logic/study';
+
+ping();
 (async () => {
   defaultDarkMode()
   let [user, studySession] = await Promise.all([fetchUser(), getStudySession()])

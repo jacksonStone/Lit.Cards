@@ -188,5 +188,7 @@ function recordCurrentPage (pageContentFunc: (content: any) => TemplateResult) {
 export const makeTesting = () => {
   lc.test = true
 }
-
-export { renderPage, initLC, resetData }
+const ping = () => {
+  fetch(window.location.origin + window.location.pathname + '/_ping')
+}
+export { renderPage, initLC, resetData, ping }

@@ -1,4 +1,4 @@
-import { renderPage } from '../ui/globals'
+import { renderPage, ping } from '../ui/globals'
 import content from '../ui/page-content/me'
 import { fetchUser } from 'logic/user'
 import { getDecks } from 'logic/decks'
@@ -8,6 +8,7 @@ import { verifyEmail } from 'logic/login'
 import { defaultDarkMode } from 'abstract/darkmode'
 import { getParam } from 'abstract/url'
 import { keyBy } from 'utils'
+ping()
 renderPage(content)
 ;(async () => {
   // Pull from userInfo
