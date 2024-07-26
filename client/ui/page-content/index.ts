@@ -109,7 +109,7 @@ export default () => {
              <p>
            If you have any questions, issues or ideas for the application, you 
            can contact me, the creator of the app, directly at:
-           <a href="https://www.jacksonstone.info/contact">jacksonstone.info/contact</a>
+           <a href="https://www.jacksonst.one/contact">www.jacksonst.one/contact</a>
         </p><br>
         <b>- Jackson Stone</b>
         </div>
