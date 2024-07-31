@@ -189,6 +189,6 @@ export const makeTesting = () => {
   lc.test = true
 }
 const ping = () => {
-  fetch(window.location.origin + window.location.pathname + '/_ping')
+  fetch(window.location.origin + window.location.pathname + '/____reserved/_ping')
 }
 export { renderPage, initLC, resetData, ping }
